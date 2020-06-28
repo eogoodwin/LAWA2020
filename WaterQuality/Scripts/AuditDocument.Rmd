@@ -1,0 +1,539 @@
+---
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+params:
+  agency: TLA
+  sos:    www.yourServerHere.com
+title: "`r paste(toupper(params$agency),'WQ Audit')`"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE,echo=FALSE}
+library(tidyverse)
+library(DT)#https://rstudio.github.io/DT/
+require(Hmisc)#For hiding TOC
+source('H:/ericg/16666LAWA/LAWA2020/Scripts/LAWAFunctions.R')
+siteTable=loadLatestSiteTableRiver()
+lawaset=c("NH4", "TURB", "BDISC",  "DRP",  "ECOLI",  "TN",  "TP",  "TON",  "PH")
+agency=params$agency
+urls          <- read.csv("H:/ericg/16666LAWA/LAWA2020/Metadata/CouncilWFS.csv",stringsAsFactors=FALSE)
+
+agencyFiles = data.frame(name=tail(dir(path = "H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/",
+                                  pattern = paste0('^',agency,'.csv'),
+                                  full.names = T,recursive = T,ignore.case = T),6),
+                         nCol = 0,nRow=0,nsite=0,stringsAsFactors = F)
+
+NH4rep=data.frame(LawaSiteID=unique(tolower(siteTable$LawaSiteID[siteTable$Agency==agency])))
+rownames(NH4rep)=unique(siteTable$LawaSiteID[siteTable$Agency==agency])
+TURBrep=NH4rep
+BDISCrep=NH4rep
+DRPrep=NH4rep
+ECOLIrep=NH4rep
+TNrep=NH4rep
+TPrep=NH4rep
+TONrep=NH4rep
+PHrep=NH4rep
+for(af in seq_along(agencyFiles$name)){
+  agencyCSV = read.csv(agencyFiles[af,1],stringsAsFactors=F)
+  if(length(which(names(agencyCSV)=="CouncilSiteID"))==2){
+    agencyCSV=agencyCSV[,-which(names(agencyCSV)=="CouncilSiteID")[2]]
+  }
+  agencyFiles$nCol[af]=dim(agencyCSV)[2]
+  agencyFiles$nRow[af]=dim(agencyCSV)[1]
+  agencyFiles$nsite[af]=length(unique(tolower(agencyCSV$CouncilSiteID)))
+  if('parameter'%in%names(agencyCSV)){
+    names(agencyCSV)[names(agencyCSV)=="parameter"] <- "Measurement"
+  }
+  if('SiteName'%in%names(agencyCSV)&!"CouncilSiteID"%in%names(agencyCSV)){
+    names(agencyCSV)[names(agencyCSV)=='SiteName'] <- "CouncilSiteID"
+  }
+  if(!"LawaSiteID"%in%names(agencyCSV)){
+    agencyCSV$LawaSiteID=siteTable$LawaSiteID[match(tolower(agencyCSV$CouncilSiteID),tolower(siteTable$CouncilSiteID))]
+    agencyCSV$LawaSiteID[is.na(agencyCSV$LawaSiteID)] = 
+      siteTable$LawaSiteID[match(tolower(agencyCSV$CouncilSiteID[is.na(agencyCSV$LawaSiteID)]),tolower(siteTable$SiteID))]
+  }
+  if(all(is.na(agencyCSV$LawaSiteID))){next}
+  
+  agencyCSV$LawaSiteID=tolower(agencyCSV$LawaSiteID)
+  thisNH4 = agencyCSV%>%filter(Measurement=="NH4")%>%
+			group_by(LawaSiteID)%>%transmute(n=n())%>%ungroup%>%distinct
+  names(thisNH4)[2]= paste0("pull",strTo(strFrom(agencyFiles$name[af],'//'),'/'))
+  NH4rep=merge(NH4rep,thisNH4,all.y = T)
+  
+  thisTURB = agencyCSV%>%filter(Measurement=="TURB")%>%group_by(LawaSiteID)%>%transmute(n=n())%>%ungroup%>%distinct
+  names(thisTURB)[2]= paste0("pull",strTo(strFrom(agencyFiles$name[af],'//'),'/'))
+  TURBrep=merge(TURBrep,thisTURB,all.y = T)
+  
+  thisBDISC = agencyCSV%>%filter(Measurement=="BDISC")%>%group_by(LawaSiteID)%>%transmute(n=n())%>%ungroup%>%distinct
+  names(thisBDISC)[2]= paste0("pull",strTo(strFrom(agencyFiles$name[af],'//'),'/'))
+  BDISCrep=merge(BDISCrep,thisBDISC,all.y = T)
+  
+  thisDRP = agencyCSV%>%filter(Measurement=="DRP")%>%group_by(LawaSiteID)%>%transmute(n=n())%>%ungroup%>%distinct
+  names(thisDRP)[2]= paste0("pull",strTo(strFrom(agencyFiles$name[af],'//'),'/'))
+  DRPrep=merge(DRPrep,thisDRP,all.y = T)
+  
+  thisECOLI = agencyCSV%>%filter(Measurement=="ECOLI")%>%group_by(LawaSiteID)%>%transmute(n=n())%>%ungroup%>%distinct
+  names(thisECOLI)[2]= paste0("pull",strTo(strFrom(agencyFiles$name[af],'//'),'/'))
+  ECOLIrep=merge(ECOLIrep,thisECOLI,all.y = T)
+  
+  thisTN = agencyCSV%>%filter(Measurement=="TN")%>%group_by(LawaSiteID)%>%transmute(n=n())%>%ungroup%>%distinct
+  names(thisTN)[2]= paste0("pull",strTo(strFrom(agencyFiles$name[af],'//'),'/'))
+  TNrep=merge(TNrep,thisTN,all.y = T)
+  
+  thisTP = agencyCSV%>%filter(Measurement=="TP")%>%group_by(LawaSiteID)%>%transmute(n=n())%>%ungroup%>%distinct
+  names(thisTP)[2]= paste0("pull",strTo(strFrom(agencyFiles$name[af],'//'),'/'))
+  TPrep=merge(TPrep,thisTP,all.y = T)
+  
+  thisTON = agencyCSV%>%filter(Measurement=="TON")%>%group_by(LawaSiteID)%>%transmute(n=n())%>%ungroup%>%distinct
+  names(thisTON)[2]= paste0("pull",strTo(strFrom(agencyFiles$name[af],'//'),'/'))
+  TONrep=merge(TONrep,thisTON,all.y = T)
+  
+  thisPH = agencyCSV%>%filter(Measurement=="PH")%>%group_by(LawaSiteID)%>%transmute(n=n())%>%ungroup%>%distinct
+  names(thisPH)[2]= paste0("pull",strTo(strFrom(agencyFiles$name[af],'//'),'/'))
+  PHrep=merge(PHrep,thisPH,all.y = T)
+  rm(agencyCSV)
+  rm(list=ls(pattern='^this'))
+}
+NH4rep=NH4rep[order(NH4rep$LawaSiteID),]
+TURBrep=TURBrep[order(TURBrep$LawaSiteID),]
+BDISCrep=BDISCrep[order(BDISCrep$LawaSiteID),]
+DRPrep=DRPrep[order(DRPrep$LawaSiteID),]
+ECOLIrep=ECOLIrep[order(ECOLIrep$LawaSiteID),]
+TNrep=TNrep[order(TNrep$LawaSiteID),]
+TPrep=TPrep[order(TPrep$LawaSiteID),]
+TONrep=TONrep[order(TONrep$LawaSiteID),]
+PHrep=PHrep[order(PHrep$LawaSiteID),]
+NH4rep = NH4rep[,!apply(NH4rep,2,function(x)all(is.na(x)))]
+TURBrep = TURBrep[,!apply(TURBrep,2,function(x)all(is.na(x)))]
+BDISCrep = BDISCrep[,!apply(BDISCrep,2,function(x)all(is.na(x)))]
+DRPrep = DRPrep[,!apply(DRPrep,2,function(x)all(is.na(x)))]
+ECOLIrep = ECOLIrep[,!apply(ECOLIrep,2,function(x)all(is.na(x)))]
+TNrep = TNrep[,!apply(TNrep,2,function(x)all(is.na(x)))]
+TPrep = TPrep[,!apply(TPrep,2,function(x)all(is.na(x)))]
+TONrep = TONrep[,!apply(TONrep,2,function(x)all(is.na(x)))]
+PHrep = PHrep[,!apply(PHrep,2,function(x)all(is.na(x)))]
+
+wqdata=loadLatestDataRiver()
+wqAudit = read.csv(tail(dir(path="H:/ericg/16666LAWA/LAWA2020/WaterQuality/Audit",
+                            pattern = "WQAudit.*csv",
+                            recursive = T,full.names = T,ignore.case = T),1),
+                   stringsAsFactors = F)
+
+agencyCSV=loadLatestCSVRiver(agency = agency,maxHistory = 30)
+
+siteTableLIDs=unique(tolower(siteTable$LawaSiteID[which(siteTable$Agency==agency)]))
+agencyCSVLIDs = unique(tolower(agencyCSV$LawaSiteID))
+wqDataLIDs = unique(tolower(wqdata$LawaSiteID[which(wqdata$Agency==agency)]))
+siteTableCSIDs=unique(tolower(siteTable$CouncilSiteID[which(siteTable$Agency==agency)]))
+agencyCSVCSIDs = unique(tolower(agencyCSV$CouncilSiteID))
+wqDataCSIDs = unique(tolower(wqdata$CouncilSiteID[which(wqdata$Agency==agency)]))
+
+agencyLIDs=unique(c(siteTableLIDs,agencyCSVLIDs,wqDataLIDs))
+
+df <- read.csv(paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Metadata/",agency,"SWQ_config.csv"),sep=",",stringsAsFactors=FALSE)
+Measurements <- subset(df,df$Type=="Measurement")[,2]
+
+agencyRep=read.csv('h:/ericg/16666LAWA/LAWA2020/Metadata/AgencyRepWFS.csv',check.names = F)
+
+#RiverState Summary
+ss <- read.csv(tail(dir(path = "h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis",
+                        pattern = 'AuditRiverSTATE',
+						full.names = T,recursive=T,ignore.case=T),1),stringsAsFactors = F)
+ss=ss[which(ss$LawaID%in%agencyLIDs),]
+ss=ss%>%filter(Altitude=='All'&Landuse=='All')
+
+#Replace the NIWA siteID names with the council siteID names, getting them from the siteTable after excluding NIWA
+if(any(ss$Agency=='niwa')){
+  ss$CouncilSiteID[which(ss$Agency=='niwa')] <- 
+    tolower(siteTable$CouncilSiteID[siteTable$Agency!='niwa'][match(ss$LawaID[which(ss$Agency=='niwa')],
+                                                            siteTable$LawaSiteID[siteTable$Agency!='niwa'])])
+}
+ss$Catchment = siteTable$Catchment[match(ss$LawaID,siteTable$LawaSiteID)]
+
+#River NOFTableSummary
+nfts <- read.csv(tail(dir(path = "h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis",
+                        pattern = 'NOFSummaryTable_Overall.csv',
+                      full.names=T,recursive=T,ignore.case=T),1),stringsAsFactors=F)
+nfts <- nfts[which(nfts$LawaSiteID%in%agencyLIDs),]
+
+#Replace the NIWA siteID names with the council siteID names, getting them from the siteTable after excluding NIWA
+if(any(nfts$Agency=='niwa')){
+  nfts$CouncilSiteID[which(nfts$Agency=='niwa')] <- 
+    tolower(siteTable$CouncilSiteID[siteTable$Agency!='niwa'][match(nfts$LawaSiteID[which(nfts$Agency=='niwa')],
+                                                            siteTable$LawaSiteID[siteTable$Agency!='niwa'])])
+}
+nfts$Catchment = siteTable$Catchment[match(nfts$LawaSiteID,siteTable$LawaSiteID)]
+
+#River WQTrend Summary
+wqtrend=read_csv(tail(dir(path = "h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis",
+                          pattern="RiverWQ_Trend*.*",
+                          full.names=T,recursive=T,ignore.case=T),1),guess_max = 20000)
+wqtrend <- wqtrend[which(wqtrend$LawaSiteID%in%agencyLIDs),]
+wqtrend <- wqtrend%>%filter(Measurement!="MCI")
+wqtrend$SiteID <- siteTable$SiteID[siteTable$Agency!='niwa'][match(wqtrend$LawaSiteID,
+                                                                   siteTable$LawaSiteID[siteTable$Agency!='niwa'])]
+
+#Replace the NIWA siteID names with the council siteID names, getting them from the siteTable after excluding NIWA
+if(any(wqtrend$Agency=='niwa')){
+  wqtrend$CouncilSiteID[which(wqtrend$Agency=='niwa')] <- 
+    tolower(siteTable$CouncilSiteID[siteTable$Agency!='niwa'][match(wqtrend$LawaSiteID[which(wqtrend$Agency=='niwa')],
+                                                            siteTable$LawaSiteID[siteTable$Agency!='niwa'])])
+}
+wqtrend <- wqtrend%>%select(CouncilSiteID,SiteID,LawaSiteID,Measurement,nMeasures,frequency,period,TrendScore,ConfCat)
+wqtrend$frequency[is.na(wqtrend$frequency)] <- 'unassessed'
+
+wqtrend$nReq = wqtrend$period*12*0.9
+wqtrend$note = paste0("NA n=",wqtrend$numMonths,'/',wqtrend$nReq)
+wqtrend$note[!is.na(wqtrend$ConfCat)] = wqtrend$frequency[!is.na(wqtrend$ConfCat)]
+wqtrend$TrendScore[is.na(wqtrend$ConfCat)] = wqtrend$note[is.na(wqtrend$ConfCat)]
+wqtrend$TrendScore[!is.na(wqtrend$ConfCat)] = paste0(wqtrend$ConfCat,' (',wqtrend$note,')')[!is.na(wqtrend$ConfCat)]
+wqtrend=wqtrend%>%
+  select(-ConfCat,-frequency,-nMeasures,-note,-nReq)%>%
+  tidyr::spread(key = c('Measurement'),value="TrendScore")
+wqtrend$Catchment=siteTable$Catchment[match(wqtrend$LawaSiteID,siteTable$LawaSiteID)]
+wqtrend <- wqtrend%>%select(CouncilSiteID,SiteID,LawaSiteID,Catchment,everything())
+```
+`r Hmisc::hidingTOC(tocSide='right')`
+# Measurement names
+
+We hope to report on BDISC, TURB, NH4, PH, TON, TN, DRP, TP, and ECOLI, and these go by various nomenclatures at different councils.  The list of measurement names that I call from `r agency` is `r paste(Measurements,collapse=', ')`. It would be great to know whether this list is correct, if some could be removed, or others should be added.
+
+# WFS sites announced
+
+The council WFS site `r I(print(urls$URL[tolower(urls$Agency)==agency]))` announces `r I(print(length(siteTableCSIDs)))` unique CouncilSiteIDs, with the following `r I(print(length(siteTableLIDs)))` LawaSiteIDs:
+
+```{r wfsSites,echo=F,results='asis'}
+DT::datatable(siteTable%>%filter(Agency==agency)%>%select(SiteID,CouncilSiteID,LawaSiteID,Catchment)%>%arrange(LawaSiteID),rownames=F)
+```
+
+Over time the number of sites announced on the WFS may change.
+
+```{r echo=F,results='asis'}
+DT::datatable(agencyRep[,c(1,max(2,dim(agencyRep)[2]-6):(dim(agencyRep)[2]))],options=list(pageLength=20),rownames=F)
+```
+
+```{r echo=F,results='asis'}
+missingCSIDs=siteTableCSIDs[!siteTableCSIDs%in%agencyCSVCSIDs]
+if((length(missingCSIDs))>0){
+  cat('  \n## Missing data\n\n')
+  cat(length(missingCSIDs),
+      " of the CouncilSiteIDs announced on the WFS are missing from the timeseries server.\nThese are:\n",
+paste(missingCSIDs,collapse=', '),'.\nThey may well simply be named differently between WFS and time series server, but that\'s enough to thoroughly confuse me!\n',sep='')
+  DT::datatable(siteTable%>%
+                  filter(CouncilSiteID%in%missingCSIDs|tolower(SiteID)%in%missingCSIDs)%>%
+                  select(SiteID,CouncilSiteID,LawaSiteID,Catchment)%>%
+                  arrange(LawaSiteID),rownames=F)
+}
+```
+
+```{r siteDouble, echo=F,results='asis'}
+if(any(as.numeric(names(table(table(siteTable$LawaSiteID[siteTable$Agency==agency]))))>1)){
+  cat('  \n## Site doubleups\n\n')
+  cat("There appear to be some double-ups in LawaSiteIDs.  That is, multiple different sitenames with the same LawaSiteID.  But if you dont see any here, you don't have any!")
+  Thesens=names(which(table(siteTable$LawaSiteID[siteTable$Agency==agency])>1))
+  DT::datatable(siteTable%>%
+                       dplyr::filter(LawaSiteID%in%Thesens)%>%
+                       dplyr::select(LawaSiteID,CouncilSiteID,SiteID,Catchment)%>%
+                       dplyr::arrange(LawaSiteID),rownames=F)
+  rm(Thesens)
+}
+```
+
+
+# Data pull
+```{r dataPull, echo=F,results='asis'}
+print(paste("From the timeseries/SOS server ",params$sos,"data is pulled for ",length(unique(agencyCSV$LawaSiteID))," sites.\nThere are ",length(unique(wqdata$LawaSiteID[which(wqdata$Agency==agency)])),"in the combined-councils water quality dataset for analysis."))
+
+if(sum(wqdata$Agency==agency,na.rm=T)==0){
+  print("If data is available from an old CSV file, the remainder of this audit will be based on that data, but they will not be compared against other councils.")
+  }
+if(sum(wqdata$Agency==agency,na.rm=T)>sum(siteTable$Agency==agency)){
+  print("Additional sites may be sourced separately from NIWA as part of the NRWQN program.")
+  }
+print(paste("Data was last harvested from the timeseries server",checkXMLageRiver(agency),"days before",as.character(Sys.Date())))
+```
+
+## Council representation
+
+The 16 different councils have different numbers of sites present in the combined dataset, with different date ranges, and different numbers of measurements. This table summarises those differences.  Absent councils currently have no data in the combined dataset.
+
+```{r councilRep, echo=F, results='asis'}
+DT::datatable(wqAudit%>%dplyr::group_by(agency)%>%
+                     dplyr::summarise(totalSites=max(nSite,na.rm=T),
+                                                    latestDate=max(dmy(latest),na.rm=T),
+                                                    nMeasTypes=length(unique(var))),rownames = F)
+cat('  \n')
+if(any(!c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")%in%unique(wqAudit$agency))){
+cat(c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")[!c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")%in%unique(wqAudit$agency)]," currently no data available.")
+}
+```
+
+
+# Summary audit
+
+A summary audit for `r agency` follows.  For each measurement ('var'), this gives the date range accessed, the number of values, number in the last 5 years, number of sites with values for that measurement, the average value in the returned data, the maximum and minimum values, and number of NA values.  See below the plots for more (per-site) detail.
+```{r echo=F,results='asis'}
+DT::datatable(wqAudit[which(wqAudit$agency==agency),-c(1:2)],rownames = F)
+```
+
+# Per site measurement representation
+
+The success of data pulling may change week by week. The following tables show an analysis of how many values were retrieved for each variable, by site.   Only those sites are shown where the number of data changed week by week. So, if nothing is shown here, that means consistent site-delivery for that measurement type. 
+This count includes all years available, whereas subsequent analysis below limits data to the last five years.  So numbers here may look generous even if subsequent analyses have NA results.
+
+```{r echo=F,results='asis'}
+options(warn=-1)
+theseNH4= which(apply(NH4rep,1,FUN=function(x)var(x,na.rm=T)!=0|is.na(tail(x,1))))
+theseTURB= which(apply(TURBrep,1,FUN=function(x)var(x,na.rm=T)!=0|is.na(tail(x,1))))
+theseBDISC= which(apply(BDISCrep,1,FUN=function(x)var(x,na.rm=T)!=0|is.na(tail(x,1))))
+theseDRP= which(apply(DRPrep,1,FUN=function(x)var(x,na.rm=T)!=0|is.na(tail(x,1))))
+theseECOLI= which(apply(ECOLIrep,1,FUN=function(x)var(x,na.rm=T)!=0|is.na(tail(x,1))))
+theseTN= which(apply(TNrep,1,FUN=function(x)var(x,na.rm=T)!=0|is.na(tail(x,1))))
+theseTP= which(apply(TPrep,1,FUN=function(x)var(x,na.rm=T)!=0|is.na(tail(x,1))))
+theseTON= which(apply(TONrep,1,FUN=function(x)var(x,na.rm=T)!=0|is.na(tail(x,1))))
+thesePH= which(apply(PHrep,1,FUN=function(x)var(x,na.rm=T)!=0|is.na(tail(x,1))))
+options(warn=0)
+if(length(theseBDISC)>0){
+  cat('  \n### BDisc\n')
+  DT::datatable(BDISCrep[theseBDISC],rownames=F)
+}
+if(length(theseDRP)>0){
+  cat('  \n### DRP\n')
+  DT::datatable(DRPrep[theseDRP],rownames=F)
+}
+if(length(theseECOLI)>0){
+  cat('  \n### ECOLI\n')
+  DT::datatable(ECOLIrep[theseECOLI],rownames=F)
+}
+if(length(theseNH4)>0){
+  cat('  \n### NH4\n')
+  DT::datatable(NH4rep[theseNH4],rownames=F)
+}
+if(length(thesePH)>0){
+  cat('  \n### PH\n')
+  DT::datatable(PHrep[thesePH],rownames=F)
+}
+if(length(theseTN)>0){
+  cat('  \n### TN\n')
+  DT::datatable(TNrep[theseTN],rownames=F)
+}
+if(length(theseTON)>0){
+  cat('  \n### TON\n')
+  DT::datatable(TONrep[theseTON],rownames=F)
+}
+if(length(theseTP)>0){
+  cat('  \n### TP\n')
+  DT::datatable(TPrep[theseTP],rownames=F)
+}
+if(length(theseTURB)>0){
+  cat('  \n### TURB\n')
+  DT::datatable(TURBrep[theseTURB],rownames=F)
+}
+```
+
+# Replicate data
+Calculating state and trend values requires measurements representative of multiple time periods.  Sometimes there may be multiple measurements available for a single time period, especially if quarterly trends are being calculated.  The most extreme case of this is where replicate samples have been taken on the same day, or multiple measurements may have been made of the same sample.  If this is present in your data, replicates will be listed here.
+
+```{r echo=F, results='asis'}
+agencyCSVn = agencyCSV%>%group_by(Date,CouncilSiteID,Measurement)%>%transmute(n=n())%>%ungroup
+if(any(agencyCSVn$n>1)){
+  cat("Yep, you've got remplicates alright, in your data.\n\n")
+
+  reps = agencyCSVn%>%filter(n>1)%>%distinct
+  DT::datatable(reps,rownames = F)
+  }
+```
+
+# Measurement ranges for unit checking
+## `r I(toupper(agency))` Within Councils
+The following plots show data relative to other councils from whom data has been collected.
+```{r echo=F,results='asis'}
+cat('  \n### BDisc\n')
+knitr::include_graphics(tail(dir(path="H:/ericg/16666LAWA/LAWA2020/WaterQuality/Audit",
+                                 pattern="BDISC.*png",
+                                 recursive = T,full.names = T,ignore.case = T),1))
+cat('  \n  \n### DRP\n')
+knitr::include_graphics(tail(dir(path="H:/ericg/16666LAWA/LAWA2020/WaterQuality/Audit",
+                                 pattern="DRP.*png",
+                                 recursive = T,full.names = T,ignore.case = T),1))
+cat('  \n  \n### ECOLI\n')
+knitr::include_graphics(tail(dir(path="H:/ericg/16666LAWA/LAWA2020/WaterQuality/Audit",
+                                 pattern="ECOLI.*png",
+                                 recursive = T,full.names = T,ignore.case = T),1))
+cat('  \n  \n### NH4\n')
+knitr::include_graphics(tail(dir(path="H:/ericg/16666LAWA/LAWA2020/WaterQuality/Audit",
+                                 pattern="NH4.*png",
+                                 recursive = T,full.names = T,ignore.case = T),1))
+cat('  \n  \n### PH\n')
+knitr::include_graphics(tail(dir(path="H:/ericg/16666LAWA/LAWA2020/WaterQuality/Audit",
+                                 pattern="PH.*png",
+                                 recursive = T,full.names = T,ignore.case = T),1))
+cat('  \n  \n### TN\n')
+knitr::include_graphics(tail(dir(path="H:/ericg/16666LAWA/LAWA2020/WaterQuality/Audit",
+                                 pattern="TN.*png",
+                                 recursive = T,full.names = T,ignore.case = T),1))
+cat('  \n  \n### TON\n')
+knitr::include_graphics(tail(dir(path="H:/ericg/16666LAWA/LAWA2020/WaterQuality/Audit",
+                                 pattern="TON.*png",
+                                 recursive = T,full.names = T,ignore.case = T),1))
+cat('  \n  \n### TP\n')
+knitr::include_graphics(tail(dir(path="H:/ericg/16666LAWA/LAWA2020/WaterQuality/Audit",
+                                 pattern="TP.*png",
+                                 recursive = T,full.names = T,ignore.case = T),1))
+cat('  \n  \n### TURB\n')
+knitr::include_graphics(tail(dir(path="H:/ericg/16666LAWA/LAWA2020/WaterQuality/Audit",
+                                 pattern="TURB.*png",
+                                 recursive = T,full.names = T,ignore.case = T),1))
+```
+
+## Sites Within `r I(toupper(agency))`
+
+The following plots are for this council only, comparing sites against one another, then timeseries per site.
+```{r echo=F,fig.width=10,fig.height=10,warning=F,results='asis'}
+toLog=data.frame(msms=c("PH", "TP", "TN", "NH4", "TON", "BDISC", "TURB", "ECOLI", "DRP"),
+                 logy=c("","y","y","y","y","y","y","y","y"),stringsAsFactors=F)
+agencyWQdata=wqdata%>%dplyr::filter(Agency==agency)
+agencyWQdata$Date=lubridate::dmy(agencyWQdata$Date)
+for(msm in unique(agencyWQdata$Measurement)){
+  cat('  \n  \n###',toupper(msm),' within',agency,'\n')
+  par(mfrow=c(1,1),mar=c(20,4,4,2))
+  bpDat=agencyWQdata%>%filter(Measurement==msm)
+  yLog=toLog$logy[which(toLog$msms==msm)]
+  if(yLog=='y'){
+    if(any(bpDat$Value<=0,na.rm=T)){
+      cat("  \n Some zero or negative values in",msm,"at sites",unique(bpDat$CouncilSiteID[which(bpDat$Value<=0)]))
+      bpDat <- bpDat%>%filter(Value>0)
+    }
+  }
+  boxplot(data=bpDat,
+          Value~factor(CouncilSiteID),
+          main=msm,log=yLog,las=2)
+  yrng=range(bpDat$Value[bpDat$Value>0],na.rm=T)
+  xrng=range(bpDat$Date,na.rm=T)
+  par(mfrow=c(4,4),mar=c(3,4,2,1))
+  for(csi in sort(unique(agencyWQdata$CouncilSiteID))){
+    tsDat=bpDat%>%filter(CouncilSiteID==csi)
+    if(dim(tsDat)[1]>0){
+      plot(data=tsDat,Value~Date,log=yLog,ylab=msm,xlab='',main=csi,type='p',ylim=yrng,xlim=xrng)
+    }else{
+      plot(0,0,xaxt='n',yaxt='n',xlab='n',ylab='n',main=csi)
+      text(0,0,'no data')
+    }
+  }
+}
+```
+
+# Clarity vs black disk
+
+And here's one that plots water turbidity against black disk clarity, which should relate.
+
+```{r echo=F,fig.width=10,fig.height=10,warning=F,results='asis'}
+#cbd is ClarityBlackDisc (for this council) and then abd is for All councils (A).
+if(all(c("BDISC","TURB")%in%unique(agencyWQdata$Measurement))){
+  abd = wqdata%>%dplyr::select(CouncilSiteID,Measurement,Value,Date)%>%
+    dplyr::filter(Measurement%in%c("BDISC","TURB"))%>%
+    group_by(CouncilSiteID,Measurement,Date)%>%
+    summarise_all(mean)%>%
+    spread(Measurement,Value)%>%
+    drop_na(BDISC,TURB)
+
+  cbd = agencyWQdata%>%dplyr::select(CouncilSiteID,Measurement,Value,Date)%>%
+    dplyr::filter(Measurement%in%c("BDISC","TURB"))%>%
+    group_by(CouncilSiteID,Measurement,Date)%>%
+    summarise_all(mean)%>%
+    spread(Measurement,Value)%>%
+    drop_na(BDISC,TURB)
+  
+  plot(abd$BDISC,abd$TURB,pch=46,col='grey',
+       xlab='Black disc clarity',ylab='Turbidity',main=paste0(toupper(agency),' amongst all councils'),log='xy')
+  points(cbd$BDISC,cbd$TURB)
+  legend('topright',c("All councils",toupper(agency)),pch=c(46,1))
+  par(mfrow=c(4,4))
+  for(csi in unique(cbd$CouncilSiteID)){
+    csub = cbd%>%filter(CouncilSiteID==csi)
+    if(dim(csub)[1]>0){
+      plot(cbd$BDISC,cbd$TURB,pch=46,col='grey',
+           xlab='Black disc clarity',ylab='Turbidity',main=paste0(csi,'\namongst all ',toupper(agency)),log='xy')
+      points(csub$BDISC,csub$TURB)
+    }
+  }
+}else{
+  cat("Missing",c("BDISC","TURB")[!c("BDISC","TURB")%in%unique(agencyWQdata$Measurement)])
+}
+```
+
+# State, NOF and Trend Results
+## Median values per site
+
+```{r echo=F,results='asis'}
+DT::datatable(ss%>%
+                dplyr::select(CouncilSiteID,Catchment,Parameter,Median)%>%
+                dplyr::mutate(Median=signif(Median,2))%>%spread(Parameter,Median),rownames = F)
+```
+
+## Scores per site, relative all other sites
+
+These are quartile based.  1 means in the top quartile, 4 in the lowest quartile.  NA couldnt be assessed.
+```{r echo=F,results='asis'}
+DT::datatable(ss%>%dplyr::select(CouncilSiteID,Catchment,Parameter,StateScore)%>%spread(Parameter,StateScore))
+```
+
+## NOF scores per site, overall
+
+Sites can meet criteria for multiple bands, so can receive multiple grades.  Missing grades should be more fully explained in subsequent tables (below).
+
+### Bands summary
+
+```{r echo=F,results='asis'}
+DT::datatable(nfts%>%dplyr::select(CouncilSiteID,Catchment,contains('band'))%>%
+                     rename_all(.funs = ~gsub(x=.,pattern = '_band|band',replacement = '',ignore.case = T)),rownames = F)
+cat('  \n')
+
+if(any(nfts$NitrateAnalysisNote!="")){
+  cat('  \n### Nitrate\n')
+  DT::datatable(nfts%>%filter(NitrateAnalysisNote!='')%>%
+                       dplyr::select(CouncilSiteID,Catchment,NitrateMed:NitrateAnalysisNote)%>%
+                       rename_all(.funs = ~gsub(x=.,pattern = 'Nitrate|Nitrate_',replacement = '',ignore.case=T)),rownames=F)
+  cat('  \n')
+}
+
+if(any(nfts$AmmoniaAnalysisNote!="")){
+    cat('  \n### Ammonia\n')
+DT::datatable(nfts%>%filter(NitrateAnalysisNote!='')%>%
+                       dplyr::select(CouncilSiteID,Catchment,NitrateMed:NitrateAnalysisNote)%>%
+                       rename_all(.funs = ~gsub(x=.,pattern = 'Nitrate|Nitrate_',replacement = '',ignore.case=T)),rownames=F)
+  cat('  \n')
+}
+
+if(any(!is.na(nfts$E_coliAnalysisNote)&nfts$E_coliAnalysisNote!="")){
+  cat('  \n### Escherischia coli\n')
+  names(nfts)[which(names(nfts)=="E_coli_band")] <- "MedianBand"
+DT::datatable(nfts%>%filter(E_coliAnalysisNote!='')%>%
+                       dplyr::select(CouncilSiteID,Catchment,E_coli_Period,E_coliSummaryband,E_coliAnalysisNote)%>%
+                       rename_all(.funs = ~gsub(x=.,pattern = 'E_coli_|E_coli',replacement = '',ignore.case=F)),rownames=F)
+    cat('  \n')
+  DT::datatable(nfts%>%filter(E_coliAnalysisNote!='')%>%
+                       dplyr::select(CouncilSiteID,Catchment,E_coli_Median:E_coliRecHealth260_Band)%>%
+                       rename_all(.funs = ~gsub(x=.,pattern = 'E_coli_|E_coli',replacement = '',ignore.case=F)),rownames=F)
+  cat('  \n')
+}
+
+```
+
+## Trend scores per site
+
+Trends are in 5 categories, with -2 meaning a likely degrading trend, and 2 meaning a likely improving trend. 0 is indeterminate, and NA when there is insufficient data to calculate a trend. For 5 year trends we need 54 measures, for 10 year trends we need 108 measures, and for 15 year trends we need 162 measures.  There is a fallback for ten and fifteen year trends, which can be calculated with quarterly rather than monthly data, if  54 quarterly measures (for 15 year) or 36 quarterly (for 10 year) measures are available.  In all cases, 90% of years need representation in that measurement set.  That is, missing measures can not all be missing from the same year.
+I'll first print out the filename of the trend data file. Its datestamp should match the one we see on the wall calendar today.
+Note that you can turn columns on and off, as well as re-order them (drag columns left or right), filter by them or sort the table by them.
+
+```{r echo=F,results='asis'}
+cat(tail(dir(path = "h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis",
+                          pattern="RiverWQ_Trend*.*",
+                          full.names=F,recursive=T,ignore.case=T),1),' \n\n')
+DT::datatable(wqtrend,extensions=c('Buttons','ColReorder','FixedColumns'),
+              options=list(dom='Bfrtip',colReorder=T,buttons=c('colvis','csv'),scrollX=TRUE,fixedColumns=list(leftColumns=5)),
+              filter='top',rownames=F)
+```

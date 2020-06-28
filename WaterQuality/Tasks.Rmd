@@ -1,0 +1,18 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+22 June	(NEW/Refinement) Pull in the QA/QC and methodology metadata this year (purpose to start to collate these data, to help drive these data being captured, so follow the 80:20 rule in effort here).
+
+22 June	(NEW/Refinement) Rivers and Lakes – provide outputs showing rolling state (NOF bands) over last 10 years.  So current state = 5-year median (2015-2019), then previous states going back as far as we can with the current dataset range (2014-2018, 2013-2017…..2005-2009)   
+
+
+
+
+
+
+
+29 June  HBRC ammonia name changed to Total Ammoniacal-N - hit the Config and the transfers files
+
+22 June	(NEW/Refinement) Audit file outputs that enable councils to review sites grouped by catchments

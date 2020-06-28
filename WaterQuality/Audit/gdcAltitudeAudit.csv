@@ -1,0 +1,11 @@
+"Region","Agency","CouncilSiteID","SiteID","LawaSiteID","NZReach","Lat","Long","SWQAltitude","AltitudeCl","Altitude"
+"gisborne","niwa","GS1","Waipaoa at Kanakanaia (NRWQN) (GS1)","gdc-00027",5010399,-38.4685478210449,177.881820678711,"unstated","Upland",177
+"gisborne","gdc","Ihungia River at Ihungia Rd Br","ihungia river at ihungia rd br","gdc-00005",5004508,-38.04691689,178.1766513,"unstated","Upland",220
+"gisborne","gdc","Mangaoporo River at Tutumatai Bridge","mangaoporo river at tutumatai bridge","gdc-00009",5002342,-37.83774273,178.29385929,"lowland","Upland",302
+"gisborne","gdc","Mangatu River at Omapere Station","mangatu river at omapere station","gdc-00010",5008473,-38.37861727,177.79314223,"lowland","Upland",186.5
+"gisborne","gdc","Mangatutu Str at Sh35-Waipahuru Bridge","mangatutu str at sh35-waipahuru bridge","lawa-100336",5000205,-37.59944782,178.26023485,"lowland","Upland",198
+"gisborne","gdc","Mata River at Aorangi (Makarika Road)","mata river at aorangi (makarika road)","gdc-00011",5003470,-37.94877976,178.21088895,"lowland","Upland",200
+"gisborne","gdc","Ratahi Lagoon at Sh35 Culvert","ratahi lagoon at sh35 culvert","gdc-00039",5004634,-38.05290109,178.30501341,"lowland","Upland",241
+"gisborne","gdc","Waikohu River at Mahaki Station","waikohu river at mahaki station","gdc-00021",5009510,-38.42684599,177.7223845,"lowland","Upland",183.5
+"gisborne","gdc","Waingaromia River at Terrace Station","waingaromia river at terrace station","gdc-00024",5008416,-38.359148,177.93349507,"lowland","Upland",298
+"gisborne","gdc","Waipaoa River at Matawhero Bridge","waipaoa river at matawhero bridge","gdc-00028",5007146,-38.65370647,177.91769479,"lowland","Upland",173

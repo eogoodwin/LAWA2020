@@ -1,0 +1,316 @@
+---
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+params:
+  agency: TLA
+  sos:    www.yourServerHere.com
+title: "`r paste(toupper(params$agency),'Macro Audit')`"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE,echo=FALSE}
+library(tidyverse)
+library(DT)
+require(Hmisc)#For hiding TOC
+source('H:/ericg/16666LAWA/LAWA2020/Scripts/LAWAFunctions.R')
+siteTable=loadLatestSiteTableMacro()
+agency=params$agency
+urls          <- read.csv("H:/ericg/16666LAWA/LAWA2020/Metadata/CouncilWFS.csv",stringsAsFactors=FALSE)
+c("% EPT Richness", "Total Richness", "MCI", "TaxaRichness", "PercentageEPTTaxa")
+
+agencyFiles = data.frame(name=tail(dir(path = "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Data/",
+                                  pattern = paste0(agency,'.csv'),
+                                  full.names = T,recursive = T,ignore.case = T),6),
+                         nCol = 0,nRow=0,nsite=0,stringsAsFactors = F)
+
+MCIrep=data.frame(LawaSiteID=unique(tolower(siteTable$LawaSiteID[siteTable$Agency==agency])))
+rownames(MCIrep)=unique(siteTable$LawaSiteID[siteTable$Agency==agency])
+TaxaRichnessrep=MCIrep
+PercentageEPTTaxarep=MCIrep
+
+for(af in seq_along(agencyFiles$name)){
+  agencyCSV = read.csv(agencyFiles[af,1],stringsAsFactors=F)
+  agencyFiles$nCol[af]=dim(agencyCSV)[2]
+  agencyFiles$nRow[af]=dim(agencyCSV)[1]
+  agencyFiles$nsite[af]=length(unique(agencyCSV$CouncilSiteID))
+  if('parameter'%in%names(agencyCSV)){
+    names(agencyCSV)[names(agencyCSV)=="parameter"] <- "Measurement"
+  }
+ if('SiteName'%in%names(agencyCSV)&!"CouncilSiteID"%in%names(agencyCSV)){
+    names(agencyCSV)[names(agencyCSV)=='SiteName'] <- "CouncilSiteID"
+  }
+  if(!"LawaSiteID"%in%names(agencyCSV)){
+    agencyCSV$LawaSiteID=siteTable$LawaSiteID[match(tolower(agencyCSV$CouncilSiteID),tolower(siteTable$CouncilSiteID))]
+    agencyCSV$LawaSiteID[is.na(agencyCSV$LawaSiteID)] = 
+      siteTable$LawaSiteID[match(tolower(agencyCSV$CouncilSiteID[is.na(agencyCSV$LawaSiteID)]),tolower(siteTable$SiteID))]
+  }
+  if(all(is.na(agencyCSV$LawaSiteID))){next}
+  agencyCSV$LawaSiteID=tolower(agencyCSV$LawaSiteID)
+  thisMCI = agencyCSV%>%filter(Measurement=="MCI")%>%group_by(LawaSiteID)%>%transmute(n=n())%>%ungroup%>%distinct
+  names(thisMCI)[2]= paste0("pull ",strTo(strFrom(agencyFiles$name[af],'//'),'/'))
+  MCIrep=merge(MCIrep,thisMCI,all.y = T)
+  
+  thisTaxaRichness = agencyCSV%>%filter(Measurement=="TaxaRichness")%>%group_by(LawaSiteID)%>%transmute(n=n())%>%ungroup%>%distinct
+  names(thisTaxaRichness)[2]= paste0("pull",strTo(strFrom(agencyFiles$name[af],'//'),'/'))
+  TaxaRichnessrep=merge(TaxaRichnessrep,thisTaxaRichness,all.y = T)
+  
+  thisPercentageEPTTaxa = agencyCSV%>%filter(Measurement=="PercentageEPTTaxa")%>%group_by(LawaSiteID)%>%transmute(n=n())%>%ungroup%>%distinct
+  names(thisPercentageEPTTaxa)[2]= paste0("pull",strTo(strFrom(agencyFiles$name[af],'//'),'/'))
+  PercentageEPTTaxarep=merge(PercentageEPTTaxarep,thisPercentageEPTTaxa,all.y = T)
+
+  rm(agencyCSV)
+  rm(list=ls(pattern='^this'))
+}
+MCIrep=MCIrep[order(MCIrep$LawaSiteID),]
+TaxaRichnessrep=TaxaRichnessrep[order(TaxaRichnessrep$LawaSiteID),]
+PercentageEPTTaxarep=PercentageEPTTaxarep[order(PercentageEPTTaxarep$LawaSiteID),]
+MCIrep = MCIrep[,!apply(MCIrep,2,function(x)all(is.na(x)))]
+TaxaRichnessrep = TaxaRichnessrep[,!apply(TaxaRichnessrep,2,function(x)all(is.na(x)))]
+PercentageEPTTaxarep = PercentageEPTTaxarep[,!apply(PercentageEPTTaxarep,2,function(x)all(is.na(x)))]
+
+
+macroData <- loadLatestDataMacro()
+
+macroAudit = read.csv(tail(dir(path="H:/ericg/16666LAWA/LAWA2020/Macroinvertebrates/Audit",
+                            pattern = "macroAudit.*csv",
+                            recursive = T,full.names = T,ignore.case = T),1),
+                   stringsAsFactors = F)
+agencyCSV=loadLatestCSVmacro(agency = agency,maxHistory = 30)
+agencyCSV$LawaSiteID = siteTable$LawaSiteID[match(tolower(agencyCSV$CouncilSiteID),tolower(siteTable$CouncilSiteID))]
+agencyCSV$LawaSiteID[is.na(agencyCSV$LawaSiteID)] = siteTable$LawaSiteID[match(tolower(agencyCSV$CouncilSiteID[is.na(agencyCSV$LawaSiteID)]),
+                                                                   tolower(siteTable$SiteID))]
+
+siteTableLIDs=unique(tolower(siteTable$LawaSiteID[which(siteTable$Agency==agency)]))
+agencyCSVLIDs = unique(tolower(agencyCSV$LawaSiteID))
+macroLIDs= unique(tolower(macroData$LawaSiteID[which(macroData$Agency==agency)]))
+
+agencyRep=read.csv('h:/ericg/16666LAWA/LAWA2020/Metadata/AgencyRepMacroWFS.csv',check.names = F)
+
+ss <- read.csv(tail(dir(path = "h:/ericg/16666LAWA/LAWA2020/Macroinvertebrates/Analysis",
+                        pattern = 'Macro_*State',
+                        full.names = T,recursive=T,ignore.case = T),
+                    1),
+               stringsAsFactors = F)
+ss$Agency=siteTable$Agency[match(tolower(ss$LAWAID),tolower(siteTable$LawaSiteID))]
+ss$Region=siteTable$Region[match(tolower(ss$LAWAID),tolower(siteTable$LawaSiteID))]
+ss=ss%>%filter(Agency==agency)
+ss$CouncilSiteID=siteTable$CouncilSiteID[match(tolower(ss$LAWAID),tolower(siteTable$LawaSiteID))]
+ss$Catchment=siteTable$Catchment[match(tolower(ss$LAWAID),tolower(siteTable$LawaSiteID))]
+
+
+macroTrend=read_csv(tail(dir(path = "h:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Analysis",
+                             pattern="MacroMCI_Trend*.*",
+                             full.names=T,recursive=T,ignore.case=T),1))
+
+macroTrend <- macroTrend%>%filter(Agency==agency)
+macroTrend$CouncilSiteID = siteTable$CouncilSiteID[match(tolower(macroTrend$LawaSiteID),tolower(siteTable$LawaSiteID))]
+macroTrend$SiteID = siteTable$SiteID[match(tolower(macroTrend$LawaSiteID),tolower(siteTable$LawaSiteID))]
+macroTrend <- macroTrend%>%select(CouncilSiteID,SiteID,Measurement,nMeasures,frequency,period,TrendScore,ConfCat)
+macroTrend$frequency[is.na(macroTrend$frequency)] <- 'unassessed'
+
+macroTrend$nReq = macroTrend$period*12*0.9
+macroTrend$note = paste0("NA n=",macroTrend$nMeasures,'/',macroTrend$nReq)
+macroTrend$note[!is.na(macroTrend$ConfCat)] = macroTrend$frequency[!is.na(macroTrend$ConfCat)]
+macroTrend$TrendScore[is.na(macroTrend$ConfCat)] = macroTrend$note[is.na(macroTrend$ConfCat)]
+macroTrend$TrendScore[!is.na(macroTrend$ConfCat)] = paste0(macroTrend$TrendScore[!is.na(macroTrend$ConfCat)],
+                                                           ' (',macroTrend$note[!is.na(macroTrend$ConfCat)],')')
+macroTrend$Catchment = siteTable$Catchment[match(macroTrend$CouncilSiteID,siteTable$CouncilSiteID)]
+macroTrend=macroTrend%>%distinct%>%select(-frequency,-nMeasures,-note,-nReq)
+# %>%tidyr::spread(key = c('Measurement','period'),value="TrendScore")
+
+```
+`r Hmisc::hidingTOC(tocSide='right')`
+# WFS sites announced
+
+The council WFS site `r I(print(urls$URL[tolower(urls$Agency)==agency]))` announces the following `r I(print(length(siteTableLIDs)))` sites:
+
+```{r wfsSites,echo=F,results='asis'}
+DT::datatable(siteTable%>%filter(Agency==agency)%>%select(SiteID,CouncilSiteID,LawaSiteID,Catchment)%>%arrange(LawaSiteID),rownames=F)
+```
+
+Over time the number of sites announced on the WFS may change.
+
+```{r echo=F,results='asis'}
+DT::datatable(agencyRep[,c(1,max(2,dim(agencyRep)[2]-6):(dim(agencyRep)[2]))],options=list(pageLength=20),rownames=F)
+```
+
+```{r echo=F,results='asis'}
+missingCSIDs=siteTableLIDs[!siteTableLIDs%in%agencyCSVLIDs]
+if((length(missingCSIDs)>0)){
+  cat('  \n## Missing data\n\n')
+  cat(length(missingCSIDs),
+" of the sites announced on the WFS are missing from the timeseries server.  This is / These are: ",
+paste(siteTableLIDs[!siteTableLIDs%in%agencyCSVLIDs],collapse=', '),
+'.\n They may well simply be named differently between WFS and time series server.\n')
+
+  DT::datatable(siteTable%>%
+                  filter(CouncilSiteID%in%missingCSIDs|tolower(SiteID)%in%missingCSIDs)%>%
+                  select(SiteID,CouncilSiteID,LawaSiteID,Catchment)%>%
+                  arrange(LawaSiteID),rownames=F)}
+```
+
+```{r echo=F,results='asis'}
+if(any(as.numeric(names(table(table(siteTable$LawaSiteID[siteTable$Agency==agency]))))>1)){
+  cat('  \n## Site doubleups\n\n')
+  cat("There appear to be some double-ups in LawaSiteIDs.  That is, multiple different sitenames with the same LawaSiteID.")
+  Thesens=names(which(table(siteTable$LawaSiteID[siteTable$Agency==agency])>1))
+  DT::datatable(siteTable%>%
+                       dplyr::filter(LawaSiteID%in%Thesens)%>%
+                       dplyr::select(LawaSiteID,CouncilSiteID,SiteID,Catchment)%>%
+                       dplyr::arrange(LawaSiteID),rownames=F)
+  rm(Thesens)
+}
+```
+
+
+# Data pull
+
+From the timeseries/SOS server `r I(print(params$sos))` data is pulled for `r I(print(length(unique(agencyCSV$LawaSiteID))))` sites.
+There are `r I(print(length(unique(macroData$LawaSiteID[which(macroData$Agency==agency)]))))` in the combined-councils water quality dataset for analysis.
+
+`r if(sum(macroData$Agency==agency,na.rm=T)==0){"If data is available from an old CSV file, the remainder of this audit will be based on that data, but they will not be compared against other councils."}`
+`r if(sum(macroData$Agency==agency,na.rm=T)>sum(siteTable$Agency==agency)){"Additional sites may be sourced separately from NIWA as part of the NRWQN program."}`
+
+Data was last harvested from the timeseries server `r I(print(checkXMLageMacro(agency)))` days before `r I(print(Sys.Date()))`.  An "NA" would suggest data is delivered by some means other than the usual web-based.
+
+## Council representation
+
+The 16 different councils have different numbers of sites present in the combined dataset, with different date ranges, and different numbers of measurements. This table summarises those differences.  Absent councils currently have no data in the combined dataset.
+
+```{r echo=F, results='asis'}
+DT::datatable(macroAudit%>%dplyr::group_by(agency)%>%dplyr::summarise(totalSites=max(nSite,na.rm=T),
+                                                    latestDate=max(dmy(latest),na.rm=T),
+                                                    nMeasTypes=length(unique(var))),
+              options = list(pageLength=length(unique(macroAudit$agency))))
+cat('  \n')
+if(any(!c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")%in%unique(macroAudit$agency))){
+cat(c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")[!c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")%in%unique(macroAudit$agency)]," currently no data available.")
+}
+```
+
+
+
+# Summary audit
+
+A summary audit for `r agency` follows.  For each measurement ('var'), this gives the date range accessed, the number of values, number of sites with values for that measurement, the average value in the returned data, the maximum and minimum values, and number of NA values.  See below the plots for more (per-site) detail.
+```{r echo=F,results='asis'}
+DT::datatable(macroAudit[which(macroAudit$agency==agency),-c(1:2)],rownames = F)
+```
+
+# Per site measurement representation
+
+The success of data pulling may change week by week. The following tables show an analysis of how many values were retrieved for each variable, by site.   Only those sites are shown where the number of data changed week by week.
+This count includes all years available, whereas subsequent analysis below limits data to the last five years.  So numbers here may look generous even if subsequent analyses have NA results.    Further, an apparent lack of content in this section implies a consistent data delivery, with no change in the number of rows acheived per pull. 
+
+```{r echo=F,results='asis'}
+options(warn=-1)
+theseMCI= which(apply(MCIrep,1,FUN=function(x)var(x,na.rm=T)!=0|is.na(tail(x,1))))
+theseTaxaRichness= which(apply(TaxaRichnessrep,1,FUN=function(x)var(x,na.rm=T)!=0|is.na(tail(x,1))))
+thesePercentageEPTTaxa= which(apply(PercentageEPTTaxarep,1,FUN=function(x)var(x,na.rm=T)!=0|is.na(tail(x,1))))
+options(warn=0)
+if(length(theseMCI)>0){
+  cat('  \n### MCI\n')
+  DT::datatable(MCIrep[theseMCI,])
+}
+if(length(theseTaxaRichness)>0){
+  cat('  \n### TaxaRichness\n')
+  DT::datatable(TaxaRichnessrep[theseTaxaRichness,])
+}
+if(length(thesePercentageEPTTaxa)>0){
+  cat('  \n### PercentageEPTTaxa\n')
+  DT::datatable(PercentageEPTTaxarep[thesePercentageEPTTaxa,])
+}
+```
+
+# Replicate data
+Calculating state and trend values requires measurements representative of multiple time periods.  Sometimes there may be multiple measurements avialable for a single time period, especially if quarterly trends are being calculated.  The most extreme case of this is where replicate samples have been taken on the same day, or multiple measurements may have been made of the same sample.  If this is present in your data, replicates will be listed here.
+
+```{r echo=F, results='asis'}
+agencyCSVn = agencyCSV%>%group_by(Date,CouncilSiteID,Measurement)%>%transmute(n=n())%>%ungroup
+if(any(agencyCSVn$n>1)){
+  cat("Yep, you've got remplicates alright, in your data.\n\n")
+
+  reps = agencyCSVn%>%filter(n>1)%>%distinct%>%dplyr::arrange(desc(n))
+  DT::datatable(reps)
+  }
+```
+
+
+# Measurement ranges for unit checking
+## `r I(toupper(agency))` Within Councils
+The following plots show data relative to other councils from whom data has been collected.
+```{r echo=F,results='asis'}
+cat('  \n### MCI\n')
+knitr::include_graphics(tail(dir(path="H:/ericg/16666LAWA/LAWA2020/Macroinvertebrates/Audit",
+                                 pattern="MCI.*png",
+                                 recursive = T,full.names = T,ignore.case = T),1))
+cat('  \n  \n### PercentageEPTtaxa\n')
+knitr::include_graphics(tail(dir(path="H:/ericg/16666LAWA/LAWA2020/Macroinvertebrates/Audit",
+                                 pattern="Percentage.*png",
+                                 recursive = T,full.names = T,ignore.case = T),1))
+cat('  \n  \n### TaxaRichness\n')
+knitr::include_graphics(tail(dir(path="H:/ericg/16666LAWA/LAWA2020/Macroinvertebrates/Audit",
+                                 pattern="TaxaR.*png",
+                                 recursive = T,full.names = T,ignore.case = T),1))
+```
+
+## Sites Within `r I(toupper(agency))`
+
+The following plots are for this council only, comparing sites against one another, then timeseries per site.
+```{r echo=F,fig.width=10,fig.height=10,warning=F,results='asis'}
+toLog=data.frame(msms=c("TaxaRichness","PercentageEPTTaxa","MCI","% EPT Richness","Total Richness"),
+                 logy=c("","","","",""),stringsAsFactors=F)
+agencymacroData=macroData%>%dplyr::filter(Agency==agency)
+agencymacroData$Date=lubridate::dmy(agencymacroData$Date)
+for(msm in unique(agencymacroData$Measurement)){
+  cat('  \n  \n###',toupper(msm),' within',agency,'\n')
+  par(mfrow=c(1,1),mar=c(20,4,4,2))
+  bpDat=agencymacroData%>%filter(Measurement==msm)
+  yLog=toLog$logy[which(toLog$msms==msm)]
+  if(yLog=='y'){
+    if(any(bpDat$Value<=0,na.rm=T)){
+      cat("  \n Some zero or negative values in",msm,"at sites",unique(bpDat$CouncilSiteID[which(bpDat$Value<=0)]))
+      bpDat <- bpDat%>%filter(Value>0)
+    }
+  }
+  boxplot(data=bpDat,
+          Value~factor(CouncilSiteID),
+          main=msm,log=yLog,las=2)
+  yrng=range(bpDat$Value[bpDat$Value>0],na.rm=T)
+  xrng=range(bpDat$Date,na.rm=T)
+  par(mfrow=c(4,4),mar=c(3,4,2,1))
+  for(csi in unique(bpDat$CouncilSiteID)){
+    tsDat=bpDat%>%filter(CouncilSiteID==csi)
+    if(dim(tsDat)[1]>0){
+      plot(data=tsDat,Value~Date,log=yLog,ylab=msm,xlab='',main=csi,type='p',ylim=yrng,xlim=xrng)
+    }else{
+      plot(0,0,xaxt='n',yaxt='n',xlab='n',ylab='n',main=csi)
+      text(0,0,'no data')
+    }
+  }
+}
+```
+
+
+# State and Trend Results
+## Median values per site
+
+```{r echo=F,results='asis'}
+DT::datatable(spread(data=ss%>%
+                            dplyr::select(CouncilSiteID,Catchment,Parameter,Median)%>%
+                            dplyr::mutate(Median=signif(Median,4)),Parameter,Median))
+```
+
+## Trend scores per site
+
+Trends are in 5 categories, with -2 meaning a likely degrading trend, and 2 meaning a likely improving trend. 0 is indeterminate, and NA when there is insufficient data to calculate a trend. For 10 year trends we need 9 years to be represented, and for 15 year trends we need 13 years with data.
+There are requirements for the number of 'unique' values - that is, if you have 15 years' measurements, but they're all 132, or they're all either 126 or 144 (examples), the trend function will reject the data.  Likewise, if there is a long run of the same value the data will be rejected and no trend calculated.
+Other requirements are around diversity of values.  If n requirements appear to be met, check the timeseries plots for many of teh same value in a row, or simply a low variety of values per timeseries.
+```{r echo=F,results='asis'}
+DT::datatable(macroTrend,extensions=c('Buttons','ColReorder','FixedColumns'),
+              options=list(dom='Bfrtip',colReorder=T,buttons=c('colvis','csv'),scrollX=TRUE,fixedColumns=list(leftColumns=5)),
+              filter='top',rownames=F)
+```

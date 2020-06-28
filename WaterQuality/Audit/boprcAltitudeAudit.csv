@@ -1,0 +1,5 @@
+"Region","Agency","CouncilSiteID","SiteID","LawaSiteID","NZReach","Lat","Long","SWQAltitude","AltitudeCl","Altitude"
+"bay of plenty","boprc","BQ739463","waitekohe at sh2","ebop-00040",4000461,-37.5993647067078,175.915601617197,"lowland","Upland",212
+"bay of plenty","boprc","CO543022","ngamuwahine at old bridge","ebop-00009",4002930,-37.816784458299,176.015399445936,"lowland","Upland",177.5
+"bay of plenty","niwa","RO1","Tarawera at Lake outlet (NRWQN) (RO1)","ebop-00051",4014379,-38.1819496154785,176.502365112305,"unstated","Upland",531.5
+"bay of plenty","niwa","RO5","Rangitaiki at Te Teko (NRWQN) (RO5)","ebop-00070",4009262,-38.0398063659668,176.799774169922,"unstated","Lowland",-3

@@ -1,0 +1,180 @@
+Agency,CallName,LAWAName
+arc,NH3+NH4 as N (mg/l),NH4
+arc,E. coli (CFU/100ml),ECOLI
+arc,pH (pH units),PH
+arc,Dis Rx P (mg/l),DRP
+arc,Tot N (mg/l),TN
+arc,NO3+NO2 (mg/l),TON
+arc,Tot P (mg/l),TP
+arc,Black Disk (m),BDISC
+arc,Turb,TURB
+,,
+boprc,Ammoniacal N_LabResult,NH4
+boprc,DRP_LabResult,DRP
+boprc,E coli_LabResult,ECOLI
+boprc,N _Tot__LabResult,TN
+boprc,Nitrite Nitrate _as N__LabResult,TON
+boprc,pH_LabResult,PH
+boprc,P _Tot__LabResult,TP
+boprc,Turbidity_ Nephelom_LabResult,TURB
+boprc,Water Clarity_LabResult,BDISC
+,,
+ecan,Ammoniacal Nitrogen,NH4
+ecan,Black Disc Clarity,BDISC
+ecan,Dissolved Reactive Phosphorus,DRP
+ecan,E. coli,ECOLI
+ecan,Nitrate-N Nitrite-N,TON
+ecan,pH,PH
+ecan,pH (Field),PH
+ecan,Total Nitrogen,TN
+ecan,Total Phosphorus,TP
+ecan,Turbidity,TURB
+,,
+es,Clarity (Black Disc Field),BDISC
+es,E-Coli <CFU>,ECOLI
+es,Nitrogen (Nitrate Nitrite),TON
+es,Nitrogen (Total Ammoniacal),NH4
+es,Nitrogen (Total),TN
+es,pH (Lab),PH
+es,Phosphorus (Dissolved Reactive),DRP
+es,Phosphorus (Total),TP
+es,Turbidity (Lab),TURB
+,,
+gdc,Ammoniacal Nitrogen as N,NH4
+gdc,Clarity Tube (cm)-Field,BDISC
+gdc,Dissolved Reactive Phosphorus,DRP
+gdc,E.Coli CFU/100mL,ECOLI
+gdc,pH (Field),PH
+gdc,Nitrogen Total,TN
+gdc,Total Oxidised Nitrogen,TON
+gdc,Total Phosphorus,TP
+gdc,Turbidity (Lab),TURB
+,,
+gwrc,Ammoniacal Nitrogen,NH4
+gwrc,Black Disc,BDISC
+gwrc,Dissolved Reactive Phosphorus,DRP
+gwrc,E-Coli,ECOLI
+gwrc,Nitrite-Nitrate Nitrogen,TON
+gwrc,pH (Field)(X),PH
+gwrc,Total Nitrogen,TN
+gwrc,Total Phosphorus,TP
+gwrc,Turbidity (Lab)(X),TURB
+,,
+hbrc,Total Ammoniacal-N,NH4
+hbrc,Black Disc,BDISC
+hbrc,Dissolved Reactive Phosphorus,DRP
+hbrc,E. Coli,ECOLI
+hbrc,Nitrate + Nitrite Nitrogen,TON
+hbrc,pH (Field),PH
+hbrc,Total Nitrogen,TN
+hbrc,Total Phosphorus,TP
+hbrc,Total Phosphorus[Total Phosphorus],TP
+hbrc,Turbidity (Field),TURB
+hbrc,Turbidity (Lab),TURB
+,,
+hrc,Ammoniacal-N (HRC),NH4
+hrc,Black Disc (HRC),BDISC
+hrc,DRP (HRC),DRP
+hrc,E. coli by MPN (HRC),ECOLI
+hrc,Field pH (HRC),PH
+hrc,TN (HRC),TN
+hrc,TON (HRC),TON
+hrc,Total Nitrogen (HRC),TN
+hrc,TP (HRC),TP
+hrc,Turbidity EPA (HRC),TURB
+hrc,WQ Sample,WQ Sample
+,,
+mdc,Ammonia - Nitrogen,NH4
+mdc,Black Disc,BDISC
+mdc,Dissolved Reactive Phosphorus,DRP
+mdc,E. coli,ECOLI
+mdc,Nitrite/Nitrate - Nitrogen,TON
+mdc,pH (Lab),PH
+mdc,Total Nitrogen,TN
+mdc,Total Phosphorus,TP
+mdc,Turbidity (Lab),TURB
+,,
+ncc,Ammoniacal Nitrogen,NH4
+ncc,Black Disc Clarity,BDISC
+ncc,Dissolved Reactive Phosphorus,DRP
+ncc,E. coli CFU,ECOLI
+ncc,pH,PH
+ncc,Total Nitrogen,TN
+ncc,Total Phosphorus,TP
+ncc,Turbidity,TURB
+,,
+niwa,NH4-N (Dis),NH4
+niwa,DRP-P,DRP
+niwa,E Coli,ECOLI
+niwa,pH,PH
+niwa,N (Tot),TN
+niwa,NO3+NO2 as N,TON
+niwa,P (Tot),TP
+niwa,Turbidity (Nephelom),TURB
+niwa,Visual Water Clarity,BDISC
+,,
+nrc,Total Oxidised Nitrogen,TON
+nrc,Total Nitrogen,TN
+nrc,Ammoniacal Nitrogen,NH4
+nrc,DRP,DRP
+nrc,TP,TP
+nrc,Turbidity,TURB
+nrc,pH,PH
+nrc,BDISC,BDISC
+nrc,Ecoli,ECOLI
+nrc,pH (Lab),PH
+nrc,pH [pH (Discrete)],PH
+nrc,Turbidity [Turbidity (X)],TURB
+,,
+orc,Ammoniacal Nitrogen,NH4
+orc,Black Disk Horizontal,BDISC
+orc,Dissolved Reactive Phosphorus,DRP
+orc,E-Coli MPN,ECOLI
+orc,Nitrite/Nitrate Nitrogen,TON
+orc,pH (Lab),PH
+orc,Total Nitrogen,TN
+orc,Total Phosphorus,TP
+orc,Turbidity (X),TURB
+,,
+tdc,Dissolved Reactive Phosphorus,DRP
+tdc,E.coli,ECOLI
+tdc,Nitrate-N + Nitrite-N (Lachat),TON
+tdc,pH,PH
+tdc,Total Ammonia,NH4
+tdc,Total Nitrogen,TN
+tdc,Total Phosphorus,TP
+tdc,Turbidity,TURB
+tdc,Water Clarity,BDISC
+,,
+trc,BDISC,BDISC
+trc,DRP,DRP
+trc,ECOL,ECOLI
+trc,NH4,NH4
+trc,NNN,TON
+trc,TON,TON
+trc,PH,PH
+trc,TN,TN
+trc,TP,TP
+trc,TURBY,TURB
+trc,TURB,TURB
+,,
+wcrc,Ammonia Total,NH4
+wcrc,Dissolved Reactive Phosphorus,DRP
+wcrc,E.coli (Mem Filtration),ECOLI
+wcrc,Nitrate + Nitrite,TON
+wcrc,Nitrogen (Total),TN
+wcrc,pH,PH
+Xwcrc,Phosphorous Total,TP
+wcrc,Phosphorous (Total),TP
+wcrc,Turbidity,TURB
+wcrc,Water Clarity (Black Disc),BDISC
+,,
+wrc,Black Disk,BDISC
+wrc,DRP,DRP
+wrc,EColi,ECOLI
+wrc,NH4,NH4
+wrc,NNN,TON
+wrc,pH,PH
+wrc,Total Phosphorus,TP
+wrc,TotalNitrogen,TN
+wrc,Turb_Misc,TURB
