@@ -14,8 +14,7 @@ Measurements <- subset(df,df$Type=="Measurement")[,1]
 
 siteTable=loadLatestSiteTableLakes(maxHistory=30)
 sites = unique(siteTable$CouncilSiteID[siteTable$Agency==agency])
-
-
+lakeDataColumnLabels=NULL
 
 for(i in 1:length(sites)){
   cat('\n',i,'out of',length(sites),'\n')
@@ -35,6 +34,24 @@ for(i in 1:length(sites)){
      next
    }
     cat(Measurements[j],'\t')
+    # browser()
+      datAsList = XML::xmlToList(xmlfile)
+      newDataColumnLabels = sort(unique(unlist(invisible(
+        sapply(
+          datAsList$Measurement$Data,
+          FUN = function(y) {
+            sapply(y,
+              FUN = function(x) {
+                if ('Name' %in% names(x)) {
+                  x[['Name']]
+                }
+              }
+            )
+          }
+        )
+      ))))
+      lakeDataColumnLabels=sort(unique(c(lakeDataColumnLabels,newDataColumnLabels)))
+      rm(datAsList,newDataColumnLabels)
     #STEP 1: Load wml2:DefaultTVPMetadata to a vector
     xattrs_qualifier         <- xpathSApply(xmlfile, "//wml2:DefaultTVPMeasurementMetadata/wml2:qualifier/@xlink:title")
     if(is.null(xattrs_qualifier)){
@@ -226,3 +243,4 @@ con$closeTag() # Measurement
 saveXML(con$value(), paste0("D:/LAWA/2020/",agency,"LWQ.xml"))
 file.copy(from=paste0("D:/LAWA/2020/",agency,"LWQ.xml"),
           to=paste0("H:/ericg/16666LAWA/LAWA2020/Lakes/Data/",format(Sys.Date(),"%Y-%m-%d"),"/",agency,"LWQ.xml"))
+if(length(lakeDataColumnLabels)>0)write.csv(row.names=F,lakeDataColumnLabels,paste0("H:/ericg/16666LAWA/LAWA2020/Lakes/Data/",format(Sys.Date(),"%Y-%m-%d"),"/",agency,"LakeDataColumnLabels.csv"))

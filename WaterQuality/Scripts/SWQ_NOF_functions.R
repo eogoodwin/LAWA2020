@@ -69,6 +69,43 @@ NOF_FindBand <- function(value, bandColumn){
   paste(LETTERS[which(unlist(lapply(gsub(pattern = 'x',replacement = value,x = bandColumn),FUN = function(x){eval(parse(text=x))})))],collapse='')
 }
 #=======================================================================================================
+rolling5 <- function(siteChemSet,quantProb,extendToSix=F,nreq=30){
+  sapply(yr[grepl('to',yr)],FUN=function(dt){
+    startYear = as.numeric(strTo(s = dt,c = 'to'))
+    stopYear = as.numeric(strFrom(s= dt,c = 'to'))
+    inTime = siteChemSet$Year>=startYear & siteChemSet$Year<=stopYear
+    if(sum(inTime)>=nreq){
+      as.character(quantile(siteChemSet$Value[inTime],prob=quantProb,type=5,na.rm=T,names=F))
+    }else{
+      if(extendToSix){
+        inTime = siteChemSet$Year>=(startYear-1) & siteChemSet$Year<=stopYear #give it an extra year at the start
+        if(sum(inTime)>=nreq){
+          paste(as.character(quantile(siteChemSet$Value[inTime],prob=quantProb,type=5,na.rm=T,names=F)),'_6y')
+        }else{
+          paste0('y',sum(inTime))
+        }
+      }else{
+        paste0('y',sum(inTime))
+      }
+    }
+  })
+}
+count5 <- function(siteChemSet,extendToSix=F){
+  #Called from tail end of NOF scoring, to count data contributing to rolling averages
+  siteChemSet <- siteChemSet%>%tidyr::drop_na(Value)
+  sapply(yr,FUN=function(dt){
+    if(!grepl('to',dt)){
+      startYear=as.numeric(dt)
+      stopYear=as.numeric(dt)
+    }else{
+      startYear = as.numeric(strTo(s = dt,c = 'to'))
+      stopYear = as.numeric(strFrom(s= dt,c = 'to'))
+    }
+    inTime=siteChemSet$Year>=startYear & siteChemSet$Year<=stopYear
+    sum(inTime)
+  })
+}
+
 
 #Create a function to add value into the table of compliance (created later as each site is processed) with proposed National Objectives Framework
 #value : the table that has values to be added 

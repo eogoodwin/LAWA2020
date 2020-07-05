@@ -553,6 +553,25 @@ plot(x=as.numeric(AgencyRep[1,-1]),type='l',ylim=c(10,200))
 apply(AgencyRep[,-1],1,function(x)lines(x))
 text(rep(par('usr')[2]*0.95,dim(AgencyRep)[1]),AgencyRep[,dim(AgencyRep)[2]],AgencyRep[,1])
 
+#    agency 23Jun20 25Jun20 03Jul20
+# 1     arc      41      41      41
+# 2   boprc      47      47      47
+# 3    ecan     183     183     184
+# 4      es      60      60      60
+# 5     gdc      39      39      39
+# 6    gwrc      43      43      43
+# 7    hbrc      71      71      85
+# 8     hrc     138     138     138
+# 9     mdc      32      32      32
+# 10    ncc      25      25      25
+# 11   niwa      77      77      77
+# 12    nrc      32      32      32
+# 13    orc      50      50      50
+# 14    tdc      26      26      26
+# 15    trc      22      22      22
+# 16   wcrc      38      38      38
+# 17    wrc       0     108     108
+
 # agency 07Jun19 10Jun19 19Jun19 19Jun19am 20Jun19 08Jul19 11Jul19 17Jul19 22Jul19 29Jul19 02Aug19 05Aug19 12Aug19 19Aug19   26Aug19
 #   arc       5       5      41        36      41      41      36      36      36      36      41      41      41      41       41
 # boprc      54      54      54        54      54      54      54      47      47      47      47      47      47      47       47

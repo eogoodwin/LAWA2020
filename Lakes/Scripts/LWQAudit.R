@@ -14,7 +14,41 @@ LWQdata$NewValues=LWQdata$Value
 if(mean(LWQdata$Value[which(LWQdata$Measurement%in%c('NH4N','TN','TP'))],na.rm=T)<250){
   LWQdata$Value[which(LWQdata$Measurement%in%c('NH4N','TN','TP'))]=LWQdata$Value[which(LWQdata$Measurement%in%c('NH4N','TN','TP'))]*1000
 }
-if(lubridate::year(Sys.Date())==2020){
+
+#Let's can we find out, what servers were used by which councils
+urls$Agency[grep(pattern = 'SOS',x = urls$SOSwq)]  #ARC, BOPRC, HRC, WRC
+urls$Agency[grep(pattern = 'Hilltop',x = urls$SOSwq)] # "ECAN" "ES"   "GDC"  "GWRC" "HBRC" "MDC"  "NCC"  "xNRC" "NRC"  "ORC"  "TDC"  "TRC"  "WCRC"
+
+urls$SOSwq[urls$Agency%in%c("ARC","BOPRC","HRC","WRC")]
+urls$SOSwq[urls$Agency%in%c("ES","ECAN","ORC","NRC","HBRC","TRC")] #These have the column label info comign out nicely
+urls$SOSwq[urls$Agency%in%c("GDC","GWRC","MDC","NCC","WCRC")]      #These use hilltop, but dont have column labels coming out.
+                                                                  #But some of them dont have data either
+
+#WCRC, WRC and BOPRC currently (30/6/2020) have data but no column label info
+# WCRC uses the Hilltop, so why is that one not workling?    WCRC has only "E"s in its Measurement$Data, which have only times and values
+# WRC and ARC are in the habit of using KiWIS; HRC are indeed using hilltop, and BOP is an amazon based 52North
+
+#         Hilltop  KiWIS 52N  XML  Data  ColLabs
+"arc                 X              X           ?       "   #Loaded from file
+"boprc                    X    X    X           ?       "   #Format matches same as HRC       MeasurementTVPs
+"ecan       X                  X    X        X          "
+"es         X                  X    X        X          "
+"gdc        X                                           "
+"gwrc       X                  O    X           ?       "   #Seem to be having today a no-data situation
+"hbrc       X                  X    X        X          "
+"hrc        X                  O    X           ?       "   #jeez just a completely different format, like the KiWIS.   MeasurementTVPs
+"mdc        X                                           "
+"ncc        X                                           "
+"nrc        X                  X    X        X          "
+"orc        X                  X    X        X          "
+"tdc        X                                           "
+"trc        X                  X    X        X          "
+"wcrc       X                  X    X     only 'e's     "   #Not much metadata published. 
+"wrc                X          X    X           ?       "   #Format same as matches HRC       MeasurementTVPs
+
+
+
+if(lubridate::year(Sys.Date())==2019){
   # Lake Omapere in northland was being measured for chlorophyll in the wrong units.  It's values need converting.
   these = which(LWQdata$CouncilSiteID==100501 & LWQdata$Measurement=='CHLA')
   if(mean(LWQdata$Value[these],na.rm=T)<1){
@@ -68,7 +102,17 @@ LWQaudit%>%dplyr::group_by(agency)%>%dplyr::summarise(xmlAge=mean(xmlAge,na.rm=T
 
 write.csv(LWQaudit,paste0("h:/ericg/16666LAWA/LAWA2020/Lakes/Audit/",format(Sys.Date(),"%Y-%m-%d"),"/LWQaudit.csv"))
 
-
+if(0){
+allLabs=NULL
+for(agency in c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")){
+  colLab = loadLatestColumnHeadingLake(agency,maxHistory = 100)
+  if(!is.null(colLab)){
+    eval(parse(text=paste0('colLab',agency,'=colLab')))
+    allLabs = sort(unique(c(allLabs,colLab[,2])))
+  }
+  rm(colLab)
+}
+}
 
 #Per agency audit site/measurement start, stop, n and range ####
 for(agency in c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")){
@@ -139,7 +183,7 @@ library(parallel)
 library(doParallel)
 workers <- makeCluster(7)
 registerDoParallel(workers)
-foreach(agency = c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc"),
+foreach(agency = c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc"),
         .combine=rbind,.errorhandling='stop')%dopar%{
           if(length(dir(path = paste0("H:/ericg/16666LAWA/LAWA2020/Lakes/Audit/",format(Sys.Date(),"%Y-%m-%d")),
                         pattern = paste0('^',agency,".*audit\\.csv"),

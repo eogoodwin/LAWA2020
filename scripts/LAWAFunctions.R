@@ -229,74 +229,93 @@ ldWFS <- function(urlIn,dataLocation,agency,case.fix=TRUE,method='curl'){
   return(xmlfile)
 }
 
-ldWQ <- function(url,agency,method='curl',...){
-  dl=try(download.file(url,destfile=paste0("D:/LAWA/2020/tmp",agency,".xml"),method=method,quiet=T,...),silent = T)
-  if('try-error'%in%attr(dl,'class')){
+ldWQ <- function(url,agency,method='curl',module='',...){
+  tempFileName=paste0("D:/LAWA/2020/tmp",module,agency,".xml")
+  dl=try(download.file(url,destfile=tempFileName,method=method,quiet=T,...),silent = T)
+  xmlfile <- try(xmlParse(file = tempFileName),silent=T)
+  error<-try(as.character(sapply(getNodeSet(doc=xmlfile, path="//Error"), xmlValue)),silent=T)
+  if('try-error'%in%attr(dl,'class')||is.null(xmlfile)||'try-error'%in%attr(xmlfile,'class')||length(error)>0){
     method=ifelse(method=='curl',yes = 'wininet',no = 'curl')
-    dl=try(download.file(url,destfile=paste0("D:/LAWA/2020/tmp",agency,".xml"),method=method,quiet=T,...),silent = T)
-  }
-  if('try-error'%in%attr(dl,'class')){
-    return(NULL)
-  }
-  xmlfile <- try(xmlParse(file = paste0("D:/LAWA/2020/tmp",agency,".xml")),silent=T)
-  unlink(paste0("tmp",agency,".xml"))
-  if(is.null(xmlfile)|('try-error'%in%attr(xmlfile,'class'))){
-    return(NULL)
-  }else{
+    dl=try(download.file(url,destfile=tempFileName,method=method,quiet=T,...),silent = T)
+    xmlfile <- try(xmlParse(file = tempFileName),silent=T)
     error<-as.character(sapply(getNodeSet(doc=xmlfile, path="//Error"), xmlValue))
-    if(length(error)==0){
-      return(xmlfile)   # if no error, return the data
-    } else {
-      return(NULL)
-    }
   }
+  if('try-error'%in%attr(dl,'class')|is.null(xmlfile)|'try-error'%in%attr(xmlfile,'class')||length(error)>0){
+    return(NULL)
+  }
+  # xmlfile <- try(xmlParse(file = tempFileName),silent=T)
+  unlink(tempFileName)
+  # if(is.null(xmlfile)|('try-error'%in%attr(xmlfile,'class'))){
+  # return(NULL)
+  # }else{
+  # error<-as.character(sapply(getNodeSet(doc=xmlfile, path="//Error"), xmlValue))
+  # if(length(error)==0){
+  return(xmlfile)   # if no error, return the data
+  # } else {
+  # return(NULL)
+  # }
+  # }
 }
 
-ldLWQ <- function(url,agency,method='curl',...){
-  dl=try(download.file(url,destfile=paste0("D:/LAWA/2020/tmpL",agency,".xml"),method=method,quiet=T,...),silent = T)
-  if('try-error'%in%attr(dl,'class')){
-    method=ifelse(method=='curl',yes = 'wininet',no = 'curl')
-    dl=try(download.file(url,destfile=paste0("D:/LAWA/2020/tmpL",agency,".xml"),method=method,quiet=T,...),silent = T)
-  }
-  if('try-error'%in%attr(dl,'class')){
-    return(NULL)
-  }
-  xmlfile <- try(xmlParse(file = paste0("D:/LAWA/2020/tmpL",agency,".xml")),silent=T)
-  unlink(paste0("tmpL",agency,".xml"))
-  if(is.null(xmlfile)|('try-error'%in%attr(xmlfile,'class'))){
-    return(NULL)
-  }else{
-    error<-as.character(sapply(getNodeSet(doc=xmlfile, path="//Error"), xmlValue))
-    if(length(error)==0){
-      return(xmlfile)   # if no error, return the data
-    } else {
-      return(NULL)
-    }
-  }
+ldLWQ <- function(...){
+  ldWQ(...,module='L')
 }
 
-ldMWQ <- function(url,agency,method='curl',...){
-  dl=try(download.file(url,destfile=paste0("D:/LAWA/2020/tmpM",agency,".xml"),method=method,quiet=T,...),silent = T)
-  if('try-error'%in%attr(dl,'class')){
-    method=ifelse(method=='curl',yes = 'wininet',no = 'curl')
-    dl=try(download.file(url,destfile=paste0("D:/LAWA/2020/tmpM",agency,".xml"),method=method,quiet=T,...),silent = T)
-  }
-  if('try-error'%in%attr(dl,'class')){
-    return(NULL)
-  }
-  xmlfile <- try(xmlParse(file = paste0("D:/LAWA/2020/tmpM",agency,".xml")),silent=T)
-  unlink(paste0("tmpM",agency,".xml"))
-  if(is.null(xmlfile)|('try-error'%in%attr(xmlfile,'class'))){
-    return(NULL)
-  }else{
-    error<-as.character(sapply(getNodeSet(doc=xmlfile, path="//Error"), xmlValue))
-    if(length(error)==0){
-      return(xmlfile)   # if no error, return the data
-    } else {
-      return(NULL)
-    }
-  }
+ldMWQ <- function(...){
+  ldWQ(...,module='M')
 }
+
+# 
+# ldLWQ <- function(url,agency,method='curl',...){
+#   tempFileName=paste0("D:/LAWA/2020/tmpL",agency,".xml")
+#   dl=try(download.file(url,destfile=tempFileName,method=method,quiet=T,...),silent = T)
+#   xmlfile <- try(xmlParse(file = tempFileName),silent=T)
+#   error<-try(as.character(sapply(getNodeSet(doc=xmlfile, path="//Error"), xmlValue)),silent=T)
+#   if('try-error'%in%attr(dl,'class')||is.null(xmlfile)||'try-error'%in%attr(xmlfile,'class')||length(error)>0){
+#     method=ifelse(method=='curl',yes = 'wininet',no = 'curl')
+#     dl=try(download.file(url,destfile=tempFileName,method=method,quiet=T,...),silent = T)
+#     xmlfile <- try(xmlParse(file = tempFileName),silent=T)
+#     error<-as.character(sapply(getNodeSet(doc=xmlfile, path="//Error"), xmlValue))
+#   }
+#   if('try-error'%in%attr(dl,'class')|is.null(xmlfile)|'try-error'%in%attr(xmlfile,'class')||length(error)>0){
+#     return(NULL)
+#   }
+#   # xmlfile <- try(xmlParse(file = tempFileName),silent=T)
+#   unlink(tempFileName)
+#   # if(is.null(xmlfile)|('try-error'%in%attr(xmlfile,'class'))){
+#     # return(NULL)
+#   # }else{
+#     # error<-as.character(sapply(getNodeSet(doc=xmlfile, path="//Error"), xmlValue))
+#     # if(length(error)==0){
+#       return(xmlfile)   # if no error, return the data
+#     # } else {
+#       # return(NULL)
+#     # }
+#   # }
+# }
+# 
+# ldMWQ <- function(url,agency,method='curl',...){
+#   dl=try(download.file(url,destfile=paste0("D:/LAWA/2020/tmpM",agency,".xml"),method=method,quiet=T,...),silent = T)
+#   if('try-error'%in%attr(dl,'class')){
+#     method=ifelse(method=='curl',yes = 'wininet',no = 'curl')
+#     dl=try(download.file(url,destfile=paste0("D:/LAWA/2020/tmpM",agency,".xml"),method=method,quiet=T,...),silent = T)
+#   }
+#   if('try-error'%in%attr(dl,'class')){
+#     return(NULL)
+#   }
+#   xmlfile <- try(xmlParse(file = paste0("D:/LAWA/2020/tmpM",agency,".xml")),silent=T)
+#   unlink(paste0("tmpM",agency,".xml"))
+#   if(is.null(xmlfile)|('try-error'%in%attr(xmlfile,'class'))){
+#     return(NULL)
+#   }else{
+#     error<-as.character(sapply(getNodeSet(doc=xmlfile, path="//Error"), xmlValue))
+#     if(length(error)==0){
+#       return(xmlfile)   # if no error, return the data
+#     } else {
+#       return(NULL)
+#     }
+#   }
+# }
 checkCSVageRiver <- function(agency,maxHistory=100){
   stepBack=0
   while(stepBack<maxHistory){
@@ -520,7 +539,7 @@ xml2csvRiver <- function(maxHistory=365,quiet=F,reportCensor=F,agency,reportVars
             teppo$Value[is.na(teppo$Value)]=unlist(teppo[is.na(teppo$Value),FieldCol])
             teppo=teppo[,-c(LabCol,FieldCol)]
             teppo$Measurement=matchy[mm]
-            teppo <- left_join(teppo,unique(forcsv[,c(1,7:19)]),by="CouncilSiteID")%>%as.data.frame
+            teppo <- left_join(teppo,unique(forcsv[,c(1,7:20)]),by="CouncilSiteID")%>%as.data.frame
             forcsv=rbind(forcsv[-grep(pattern = matchy[mm],x = forcsv$Measurement,ignore.case = T),],teppo)
             rm(teppo)
           }
@@ -936,6 +955,26 @@ loadLatestCSVLake <- function(agency,maxHistory=365,quiet=F){
         }
         return(read.csv(paste0("h:/ericg/16666LAWA/LAWA2020/Lakes/Data/",
                                format(Sys.Date()-stepBack,'%Y-%m-%d'),"/",agency,".csv"),
+                        stringsAsFactors = F))
+      }
+    }
+    stepBack=stepBack+1
+  }
+  cat("\n************",agency,"not found*************\n\n")
+  return(NULL)
+}
+loadLatestColumnHeadingLake <- function(agency,maxHistory=365,quiet=F){
+  stepBack=0
+  while(stepBack<maxHistory){
+    if(dir.exists(paste0("h:/ericg/16666LAWA/LAWA2020/Lakes/Data/",
+                         format(Sys.Date()-stepBack,'%Y-%m-%d'),"/"))){
+      if(file.exists(paste0("h:/ericg/16666LAWA/LAWA2020/Lakes/Data/",
+                            format(Sys.Date()-stepBack,'%Y-%m-%d'),"/",agency,"LakeDataColumnLabels.csv"))){
+        if(!quiet){
+          cat("loading",agency,"column names from",stepBack,"days ago,",format(Sys.Date()-stepBack,'%Y-%m-%d'),"\n")
+        }
+        return(read.csv(paste0("h:/ericg/16666LAWA/LAWA2020/Lakes/Data/",
+                               format(Sys.Date()-stepBack,'%Y-%m-%d'),"/",agency,"LakeDataColumnLabels.csv"),
                         stringsAsFactors = F))
       }
     }

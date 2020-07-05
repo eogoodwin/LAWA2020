@@ -15,7 +15,7 @@ Measurements <- subset(df,df$Type=="Measurement")[,1]
 
  lakeSiteTable=loadLatestSiteTableLakes()
  sites = unique(lakeSiteTable$CouncilSiteID[lakeSiteTable$Agency==agency])
-
+lakeDataColumnLabels=NULL
 
 suppressWarnings(rm(Data))
 for(i in 1:length(sites)){
@@ -30,6 +30,25 @@ for(i in 1:length(sites)){
     if(!is.null(xmlfile) && 
        grepl(pattern = sites[i],x = xmlValue(xmlRoot(xmlfile)),ignore.case = T) &&
        !grepl(pattern = 'invalid',x = xmlValue(xmlRoot(xmlfile)),ignore.case = T)){
+      # browser()
+      datAsList = XML::xmlToList(xmlfile)
+      newDataColumnLabels = sort(unique(unlist(invisible(
+        sapply(
+          datAsList$Measurement$Data,
+          FUN = function(y) {
+            sapply(
+              y,
+              FUN = function(x) {
+                if ('Name' %in% names(x)) {
+                  x[['Name']]
+                }
+              }
+            )
+          }
+        )
+      ))))
+      lakeDataColumnLabels=sort(unique(c(lakeDataColumnLabels,newDataColumnLabels)))
+      rm(datAsList,newDataColumnLabels)
       #Create vector of times
       time <- sapply(getNodeSet(doc=xmlfile, "//wml2:time"), xmlValue)
       #Create vector of  values
@@ -193,4 +212,4 @@ saveXML(con$value(), paste0("D:/LAWA/2020/",agency,"LWQ.xml"))
 file.copy(from=paste0("D:/LAWA/2020/",agency,"LWQ.xml"),
           to=paste0("H:/ericg/16666LAWA/LAWA2020/Lakes/Data/",format(Sys.Date(),"%Y-%m-%d"),"/",agency,"LWQ.xml"),
           overwrite=T)
-
+if(length(lakeDataColumnLabels)>0)write.csv(row.names=F,lakeDataColumnLabels,paste0("H:/ericg/16666LAWA/LAWA2020/Lakes/Data/",format(Sys.Date(),"%Y-%m-%d"),"/",agency,"LakeDataColumnLabels.csv"))

@@ -155,7 +155,7 @@ ss$Catchment = siteTable$Catchment[match(ss$LawaID,siteTable$LawaSiteID)]
 
 #River NOFTableSummary
 nfts <- read.csv(tail(dir(path = "h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis",
-                        pattern = 'NOFSummaryTable_Overall.csv',
+                        pattern = 'NOFSummaryTable_Rolling.csv',  #Was ~_Overall until 2 July2020
                       full.names=T,recursive=T,ignore.case=T),1),stringsAsFactors=F)
 nfts <- nfts[which(nfts$LawaSiteID%in%agencyLIDs),]
 
@@ -298,39 +298,39 @@ thesePH= which(apply(PHrep,1,FUN=function(x)var(x,na.rm=T)!=0|is.na(tail(x,1))))
 options(warn=0)
 if(length(theseBDISC)>0){
   cat('  \n### BDisc\n')
-  DT::datatable(BDISCrep[theseBDISC],rownames=F)
+  DT::datatable(BDISCrep[theseBDISC,],rownames=F)
 }
 if(length(theseDRP)>0){
   cat('  \n### DRP\n')
-  DT::datatable(DRPrep[theseDRP],rownames=F)
+  DT::datatable(DRPrep[theseDRP,],rownames=F)
 }
 if(length(theseECOLI)>0){
   cat('  \n### ECOLI\n')
-  DT::datatable(ECOLIrep[theseECOLI],rownames=F)
+  DT::datatable(ECOLIrep[theseECOLI,],rownames=F)
 }
 if(length(theseNH4)>0){
   cat('  \n### NH4\n')
-  DT::datatable(NH4rep[theseNH4],rownames=F)
+  DT::datatable(NH4rep[theseNH4,],rownames=F)
 }
 if(length(thesePH)>0){
   cat('  \n### PH\n')
-  DT::datatable(PHrep[thesePH],rownames=F)
+  DT::datatable(PHrep[thesePH,],rownames=F)
 }
 if(length(theseTN)>0){
   cat('  \n### TN\n')
-  DT::datatable(TNrep[theseTN],rownames=F)
+  DT::datatable(TNrep[theseTN,],rownames=F)
 }
 if(length(theseTON)>0){
   cat('  \n### TON\n')
-  DT::datatable(TONrep[theseTON],rownames=F)
+  DT::datatable(TONrep[theseTON,],rownames=F)
 }
 if(length(theseTP)>0){
   cat('  \n### TP\n')
-  DT::datatable(TPrep[theseTP],rownames=F)
+  DT::datatable(TPrep[theseTP,],rownames=F)
 }
 if(length(theseTURB)>0){
   cat('  \n### TURB\n')
-  DT::datatable(TURBrep[theseTURB],rownames=F)
+  DT::datatable(TURBrep[theseTURB,],rownames=F)
 }
 ```
 

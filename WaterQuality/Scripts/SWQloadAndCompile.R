@@ -269,6 +269,7 @@ foreach(agency =1:length(agencies),.combine = rbind,.errorhandling = 'stop')%dop
 }->wqdata   #23/6/2020    797484                                          990644 without backfill  1062994 with. 1055269 without ECAN backfill
             #23/6/2020pm  856506
             #25/6/2020    999530
+            #3/7/2020    1005143
 stopCluster(workers)
 rm(workers)
 
@@ -289,7 +290,7 @@ wqdata$SWQAltitude=pseudo.titlecase(wqdata$SWQAltitude)
 
 table(wqdata$SWQLanduse,wqdata$SWQAltitude)
 
-wqdata=unique(wqdata)  #999356
+wqdata=unique(wqdata)  #1004961
 
 wqdata$SiteID=trimws(wqdata$SiteID)
 wqdata$CouncilSiteID=trimws(wqdata$CouncilSiteID)
@@ -318,6 +319,7 @@ wqdata$CenType[wqdata$CenType%in%c("R","Right")] <- "Right"
 #797385 Jun 23 2020
 #856506 Jun23 pm
 #999356 Jun25 2020
+#1004961 Jul32020
 
 table(unique(tolower(wqdata$LawaSiteID))%in%tolower(siteTable$LawaSiteID))
 table(unique(tolower(wqdata$CouncilSiteID))%in%tolower(siteTable$CouncilSiteID))

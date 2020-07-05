@@ -18,12 +18,13 @@ sites = unique(siteTable$CouncilSiteID[siteTable$Agency=='hrc'])
 sites[length(sites)+1]="Omanuka Lagoon (Composite)"
 sites[length(sites)+1]="Lake Pauri (Composite)"
 sites=unique(sites)
+lakeDataColumnLabels=NULL
 
 suppressWarnings(rm(Data))
 for(i in 1:length(sites)){
   cat(sites[i],i,'out of',length(sites),'\n')
   for(j in 1:length(Measurements)){
-    url <- paste0("http://tsdata.horizons.govt.nz/boo.hts?service=SOS&agency=LAWA&request=GetObservation&",
+    url <- paste0("http://tsdata.horizons.govt.nz/boo.hts?service=SOS&agency=LAWA&request=GetObservation",
                  "&FeatureOfInterest=",sites[i],
                  "&ObservedProperty=",Measurements[j],
                  "&TemporalFilter=om:phenomenonTime,2004-01-01,2020-01-01")
@@ -31,6 +32,25 @@ for(i in 1:length(sites)){
     
     xmlfile <- ldLWQ(url,agency)
     if(!is.null(xmlfile)&&((!grepl(pattern = "No data|^501",x = xmlValue(xmlRoot(xmlfile)),ignore.case = T)))){
+      # browser()
+      datAsList = XML::xmlToList(xmlfile)
+      newDataColumnLabels = sort(unique(unlist(invisible(
+        sapply(
+          datAsList$Measurement$Data,
+          FUN = function(y) {
+            sapply(
+              y,
+              FUN = function(x) {
+                if ('Name' %in% names(x)) {
+                  x[['Name']]
+                }
+              }
+            )
+          }
+        )
+      ))))
+      lakeDataColumnLabels=sort(unique(c(lakeDataColumnLabels,newDataColumnLabels)))
+      rm(datAsList,newDataColumnLabels)
       #Create vector of times
       time <- sapply(getNodeSet(doc=xmlfile, "//wml2:time"), xmlValue)          #Create vector of  values
       value <- sapply(getNodeSet(doc=xmlfile, "//wml2:value",namespaces=c(wml2="http://www.opengis.net/waterml/2.0")), xmlValue)
@@ -184,3 +204,4 @@ if(length(t)==0){
 saveXML(con$value(), paste0("D:/LAWA/2020/",agency,"LWQ.xml"))
 file.copy(from=paste0("D:/LAWA/2020/",agency,"LWQ.xml"),
           to=paste0("H:/ericg/16666LAWA/LAWA2020/Lakes/Data/",format(Sys.Date(),"%Y-%m-%d"),"/",agency,"LWQ.xml"))
+if(length(lakeDataColumnLabels)>0)write.csv(row.names=F,lakeDataColumnLabels,paste0("H:/ericg/16666LAWA/LAWA2020/Lakes/Data/",format(Sys.Date(),"%Y-%m-%d"),"/",agency,"LakeDataColumnLabels.csv"))

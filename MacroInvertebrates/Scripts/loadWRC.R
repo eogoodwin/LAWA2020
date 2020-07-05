@@ -19,9 +19,8 @@ sites = unique(siteTable$CouncilSiteID[siteTable$Agency==agency])
 for(i in 1:length(sites)){
   cat(i,'out of',length(sites),'\n')
   for(j in 1:length(Measurements)){
-    
-    
-    url <- paste0("http://envdata.waikatoregion.govt.nz:8080/KiWIS/KiWIS?datasource=0&service=SOS&version=2.0&request=GetObservation&procedure=Cmd.P",
+    url <- paste0("http://envdata.waikatoregion.govt.nz:8080/KiWIS/KiWIS?datasource=0&service=SOS&",
+                  "version=2.0&request=GetObservation&procedure=Cmd.P",
                   "&featureOfInterest=",sites[i],
                   "&observedProperty=", Measurements[j],
                   "&temporalfilter=om:phenomenonTime,P30Y", sep="")

@@ -415,7 +415,7 @@ if(dim(ss)[1]>0){
 DT::datatable(TLI%>%drop_na(Value)%>%
                 transmute(CouncilSiteID=factor(SiteID),
                           LawaSiteID=factor(LawaSiteID),
-                          LFENZID=factor(LFENZID),Year,TLI=signif(Value,3),Med5=signif(median5yr,3)),
+                          LFENZID=factor(LFENZID),Year,TLI=signif(Value,3),TLI=signif(TLI,3)),
               extensions='RowGroup',options=list(rowGroup=list(dataSrc=2),pageLength=12),filter='top',rownames = F)
 ```
 

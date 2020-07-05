@@ -37,7 +37,7 @@ if(!exists('wqdata')){
   wqdYear=lubridate::isoyear(dmy(wqdata$Date))
   wqdata <- wqdata[which((wqdYear>=(StartYear5) & wqdYear<=EndYear)),]
   rm(wqdYear)
-  #797385 to 333500
+  #797385 to 408860
 }
 
 

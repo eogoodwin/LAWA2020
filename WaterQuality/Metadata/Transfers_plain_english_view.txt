@@ -60,7 +60,7 @@ gwrc,Total Nitrogen,TN
 gwrc,Total Phosphorus,TP
 gwrc,Turbidity (Lab)(X),TURB
 ,,
-hbrc,Total Ammoniacal-N,NH4
+hbrc,Ammoniacal Nitrogen,NH4
 hbrc,Black Disc,BDISC
 hbrc,Dissolved Reactive Phosphorus,DRP
 hbrc,E. Coli,ECOLI

@@ -15,13 +15,9 @@ Measurements <- subset(df,df$Type=="Measurement")[,1]
 
 siteTable=loadLatestSiteTableLakes(maxHistory=30)
 sites = unique(siteTable$CouncilSiteID[siteTable$Agency==agency])
+lakeDataColumnLabels=NULL
 
-
-
-
-      tab="\t"
-
-
+tab="\t"
 
 con <- xmlOutputDOM("Hilltop")
 con$addTag("Agency", toupper(agency))
@@ -39,6 +35,24 @@ for(i in 1:length(sites)){
       url <- URLencode(url)
       xmlfile <- ldLWQ(url,agency)
     if(!is.null(xmlfile)){
+      datAsList = XML::xmlToList(xmlfile)
+      newDataColumnLabels = sort(unique(unlist(invisible(
+        sapply(
+          datAsList$Measurement$Data,
+          FUN = function(y) {
+            sapply(
+              y,
+              FUN = function(x) {
+                if ('Name' %in% names(x)) {
+                  x[['Name']]
+                }
+              }
+            )
+          }
+        )
+      ))))
+      lakeDataColumnLabels=sort(unique(c(lakeDataColumnLabels,newDataColumnLabels)))
+      rm(datAsList,newDataColumnLabels)
       cat("getting",Measurements[j],'\t')
       xmltop<-xmlRoot(xmlfile)
       m<-xmltop[['Measurement']]
@@ -135,4 +149,5 @@ for(i in 1:length(sites)){
 saveXML(con$value(), paste0("D:/LAWA/2020/",agency,"LWQ.xml"))
 file.copy(from=paste0("D:/LAWA/2020/",agency,"LWQ.xml"),
           to=paste0("H:/ericg/16666LAWA/LAWA2020/Lakes/Data/",format(Sys.Date(),"%Y-%m-%d"),"/",agency,"LWQ.xml"),overwrite=T)
+if(length(lakeDataColumnLabels)>0)write.csv(row.names=F,lakeDataColumnLabels,paste0("H:/ericg/16666LAWA/LAWA2020/Lakes/Data/",format(Sys.Date(),"%Y-%m-%d"),"/",agency,"LakeDataColumnLabels.csv"))
 
