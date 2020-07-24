@@ -79,6 +79,7 @@ for(i in 1:length(sites)){
         DataType <- sapply(getNodeSet(doc=xmlfile, "//DataType"), xmlValue)
         # print(DataType)
         if(length(DataType)==0){next}
+        cat(Measurements[j],'\t')
         if (DataType == "WQData"){
           #Create vector of times
           time <- sapply(getNodeSet(doc=xmlfile, "//T"), xmlValue)

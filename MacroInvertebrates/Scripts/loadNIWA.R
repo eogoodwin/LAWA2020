@@ -6,18 +6,22 @@ source("H:/ericg/16666LAWA/LAWA2020/scripts/LAWAFunctions.R")
 # to get a lawasiteID assigned to it.  Most of those lawasiteIDs should be in the siteTable
 # But who cares anyway, just keep the lawaIDs trackign across to the end. 
 
-riverSiteTable=loadLatestSiteTableMacro()
-# riverSiteTable$CouncilSiteIDlc=tolower(riverSiteTable$CouncilSiteID)
-extraMacroTable=riverSiteTable#[riverSiteTable$CouncilSiteIDlc%in%NIWAMCIl$SiteNamelc,]
-rm(riverSiteTable)
-extraMacroTable=rbind(extraMacroTable,data.frame(CouncilSiteID="SQ10067",LawaSiteID="ECAN-10004",SiteID="Hakataramea River u/s SH82 bridge",
-                                                 SWQuality=FALSE,SWQAltitude="Upland",SWQLanduse='Rural',SWQFrequencyAll=NA,
-                                                 SWQFrequencyLast5=NA,Region="Canterbury",Agency='niwa',Lat=-44.72610032651481,
-                                                 Long=170.4903439007408,accessDate='19-Sep-2018'))
-extraMacroTable=rbind(extraMacroTable,data.frame(CouncilSiteID="103248",LawaSiteID="NRC-10008",SiteID="Waipapa @ Forest Ranger",
-                                                 SWQuality=FALSE,SWQAltitude="",SWQLanduse='',SWQFrequencyAll=NA,
-                                                 SWQFrequencyLast5=NA,Region="Northland",Agency='niwa',Lat=-35.2763146207668,
-                                                 Long= 173.684049395477,accessDate='19-Sep-2018'))
+macroSiteTable=loadLatestSiteTableMacro()
+# macroSiteTable$CouncilSiteIDlc=tolower(macroSiteTable$CouncilSiteID)
+extraMacroTable=macroSiteTable#[macroSiteTable$CouncilSiteIDlc%in%NIWAMCIl$SiteNamelc,]
+rm(macroSiteTable)
+extraMacroTable=rbind(extraMacroTable,
+                      data.frame(CouncilSiteID="SQ10067",SiteID="Hakataramea River u/s SH82 bridge",LawaSiteID="ECAN-10004",
+                                 NZReach=NA,Region='canterbury',Agency='niwa',
+                                 SWQAltitude="Upland",SWQLanduse='Rural',Catchment=NA,Lat=-44.72610032651481,
+                                                 Long=170.4903439007408,accessDate='19-Sep-2018',
+                                 Landcover=NA,Altitude=NA,Order=NA,StreamOrder=NA,AltitudeCl=NA))
+extraMacroTable=rbind(extraMacroTable,
+                      data.frame(CouncilSiteID="103248",SiteID="Waipapa @ Forest Ranger",LawaSiteID="NRC-10008",
+                                 NZReach=NA,Region="northland",Agency='niwa',
+                                 SWQAltitude="",SWQLanduse='',Catchment=NA,Lat=-35.2763146207668,
+                                                 Long= 173.684049395477,accessDate='19-Sep-2018',
+                                 Landcover=NA,Altitude=NA,Order=NA,StreamOrder=NA,AltitudeCl=NA))
 extraMacroTable$Macro=F
 extraMacroTable <- extraMacroTable%>%select("SiteID","CouncilSiteID","LawaSiteID","Macro","Region","Agency","SWQLanduse","SWQAltitude","Lat","Long")
 write.csv(extraMacroTable,file='h:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Data/ExtraMacrotable.csv',row.names=F)
@@ -29,7 +33,7 @@ write.csv(extraMacroTable,file='h:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/D
 
 source('k:/R_functions/nzmg2WGS.r')
 NIWAmacroSites=readxl::read_xlsx('h:/ericg/16666LAWA/2018/MacroInvertebrates/1.Imported/NIWAInvertebrate.xlsx',sheet = 'site metadata')
-lawaIDs=read.csv("H:/ericg/16666LAWA/2018/WaterQuality/R/lawa_state/H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Metadata/LAWAMasterSiteListasatMarch2018.csv",stringsAsFactors = F)
+lawaIDs=read.csv("H:/ericg/16666LAWA/LAWA2019/Metadata/LAWAMasterSiteListasatMarch2018.csv",stringsAsFactors = F)
 lawaIDs <- lawaIDs%>%dplyr::filter(Module=="Freshwater Quality")
 lawaIDs$Long=as.numeric(lawaIDs$Longitude)
 lawaIDs$Lat=as.numeric(lawaIDs$Latitude)
@@ -72,8 +76,8 @@ NIWAMCIl$SiteNamelc=tolower(NIWAMCIl$SiteName)
 NIWAMCIl$Method=NA
 
 rm(lawaIDs)
-
-write.csv(NIWAMCIl%>%select(SiteName,Date,Value,Method,parameter),
+NIWAMCIl$Measurement="MCI"
+write.csv(NIWAMCIl%>%select(LawaSiteID,CouncilSiteID=lawaid,Date,Measurement,Value,Agency=agency),
           file=paste0( 'H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Data/',format(Sys.Date(),"%Y-%m-%d"),'/','NIWA.csv'),
           row.names=F)
 

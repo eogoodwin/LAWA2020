@@ -26,15 +26,14 @@ for(i in 1:length(sites)){
   cat(sites[i],i,"out of ",length(sites),'\n')
   for(j in 1:length(Measurements)){
     
-    url <- paste0("https://data.hbrc.govt.nz/Envirodata/WQForTrend.hts?service=Hilltop&request=GetData",
+    url <- paste0("https://data.hbrc.govt.nz/Envirodata/EMARTest.hts?service=Hilltop&request=GetData",
                  "&Site=",sites[i],
                  "&Measurement=",Measurements[j],
                  "&From=2004-01-01",
                  "&To=2020-01-01")
     url <- URLencode(url)
 
-    xmlfile <- ldLWQ(url,agency)
-    
+    xmlfile <- ldLWQ(url,agency,method='wininet')
     
     if(!is.null(xmlfile)){
       datAsList = XML::xmlToList(xmlfile)

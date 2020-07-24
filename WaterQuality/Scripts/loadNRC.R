@@ -7,17 +7,18 @@ require(RCurl)
 setwd("H:/ericg/16666LAWA/LAWA2020/WaterQuality")
 agency='nrc'
 tab='\t'
-df <- read.csv(paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/MetaData/",agency,"SWQ_config.csv"),sep=",",stringsAsFactors=FALSE)
-# configsites <- subset(df,df$Type=="Site")[,2]
-# configsites <- as.vector(configsites)
-Measurements <- subset(df,df$Type=="Measurement")[,2]
+Measurements <- read.table("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Metadata/Transfers_plain_english_view.txt",sep=',',header=T,stringsAsFactors = F)%>%
+  filter(Agency==agency)%>%select(CallName)%>%unname%>%unlist
+Measurements=c(Measurements,'WQ Sample')
 
 siteTable=loadLatestSiteTableRiver()
 sites = unique(siteTable$CouncilSiteID[siteTable$Agency==agency])
 
 con <- xmlOutputDOM("Hilltop")
 con$addTag("Agency", toupper(agency))
-
+dataDFval=NULL
+dataDFdate=NULL
+dataDFtype=NULL
 for(i in 1:length(sites)){
   cat(sites[i],i,'out of',length(sites),'\n')
   for(j in 1:length(Measurements)){
@@ -27,53 +28,53 @@ for(i in 1:length(sites)){
                  "&From=2005-01-01",
                  "&To=2020-01-01")
     url <- URLencode(url)
-    xmlfile <- ldWQ(url,agency,extra='-g')
+    xmlfile <- ldWQ(url,agency,extra='-g',QC=T)
     if(!is.null(xmlfile)){
       cat("got",Measurements[j],'\t')
       xmltop<-xmlRoot(xmlfile)
       m<-xmltop[['Measurement']]
       # Create new node to replace existing <Data /> node in m
       DataNode <- newXMLNode("Data",attrs=c(DateFormat="Calendar",NumItems="2"))
-      #work on this to make more efficient
       if(Measurements[j]=="WQ Sample"){
         ## Make new E node
         # Get Time values
-        ans <- xpathApply(m,"//T",xmlValue)
-        ans <- unlist(ans)
-        #new bit here
+        ans <- xpathSApply(m,"//T",xmlValue)
         for(k in 1:length(ans)){
-          # Adding the new "E" node
-          addChildren(DataNode, newXMLNode(name = "E",parent = DataNode))
-          # Adding the new "T" node
-          addChildren(DataNode[[xmlSize(DataNode)]], newXMLNode(name = "T",ans[k]))
           # Identifying and iterating through Parameter Elements of "m"
           p <- m[["Data"]][[k]] 
           # i'th E Element inside <Data></Data> tags
           c <- length(xmlSApply(p, xmlSize)) # number of children for i'th E Element inside <Data></Data> tags
-          for(n in 2:c){   # Starting at '2' and '1' is the T element for time
-            #added in if statement to pass over if any date&times with no metadata attached
-            if(!is.null(p[[n]])){
+          if(c>1){
+            # Adding the new "E" node
+            addChildren(DataNode, newXMLNode(name = "E",parent = DataNode))
+            # Adding the new "T" node
+            addChildren(DataNode[[xmlSize(DataNode)]], newXMLNode(name = "T",ans[k]))
+            for(n in 2:c){   # Starting at '2' and '1' is the T element for time
+              #added in if statement to pass over if any date&times with no metadata attached
               metaName  <- as.character(xmlToList(p[[n]])[1])   ## Getting the name attribute
               metaValue <- as.character(xmlToList(p[[n]])[2])   ## Getting the value attribute
               if(n==2){      # Starting at '2' and '1' is the T element for time
-                item1 <- paste(metaName,metaValue,sep=tab)
+                item1 <- paste(metaName,metaValue,sep="\t")     ## Concatenating all pairs separated by tabs. Ack.
               } else {
-                item1 <- paste(item1,metaName,metaValue,sep=tab)
+                item1 <- paste(item1,metaName,metaValue,sep="\t")
               }
             }
+            rm(n)
+            # Adding the Item1 node
+            addChildren(DataNode[[xmlSize(DataNode)]], newXMLNode(name = "I1",item1))
+            rm(item1)
           }
-          # Adding the Item1 node
-          addChildren(DataNode[[xmlSize(DataNode)]], newXMLNode(name = "I1",item1))
+          rm(p)
         }
-        
+        rm(k)
       } else {
         ## Make new E node
         # Get Time values
-        ansTime <- lapply(c("T"),function(var) unlist(xpathApply(m,paste("//",var,sep=""),xmlValue)))
-        ansTime <- unlist(ansTime)
-        ansValue <- lapply(c("Value"),function(var) unlist(xpathApply(m,paste("//",var,sep=""),xmlValue)))
-        ansValue <- unlist(ansValue)
-        
+        ansTime <- xpathSApply(m,"//T",xmlValue)
+        ansValue <- xpathSApply(m,"//Value",xmlValue)
+        dataDFval=c(dataDFval,ansValue)
+        dataDFdate=c(dataDFdate,ansTime)
+        dataDFtype=c(dataDFtype,rep(Measurements[j],length(ansValue)))
         # loop through TVP nodes
         for(N in 1:xmlSize(m[['Data']])){  ## Number of Time series values
           # loop through all Children - T, Value, Parameters ..    
@@ -108,7 +109,9 @@ for(i in 1:length(sites)){
             }
           }
           addChildren(DataNode[[xmlSize(DataNode)]], newXMLNode(name = "I2",item2))
-        } 
+          rm(item2)
+        }
+        rm(N)
       }
       oldNode <- m[['Data']]
       newNode <- DataNode

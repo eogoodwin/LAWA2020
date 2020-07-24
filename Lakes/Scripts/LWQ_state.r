@@ -23,7 +23,7 @@ lakeSiteTable$GeomorphicLType = pseudo.titlecase(tolower(lakeSiteTable$Geomorphi
 #In 2019 we can report on data to June 2018, which is the 2017/18 hydrological year
 #Coding hydrological years as the first year and 'h', this means that in 2019 we want data up to hydrological year 2017h.
 
-try(dir.create(paste0("H:/ericg/16666LAWA/LAWA2020/Lakes/Analysis/",format(Sys.Date(),"%Y-%m-%d")),recursive = T))
+dir.create(paste0("H:/ericg/16666LAWA/LAWA2020/Lakes/Analysis/",format(Sys.Date(),"%Y-%m-%d")),recursive = T,showWarnings = F)
 # write.csv(lakeData,paste0("H:/ericg/16666LAWA/LAWA2020/Lakes/Analysis/",format(Sys.Date(),"%Y-%m-%d"),"/lakesAllCouncils.csv"),row.names = F)
 
 #Load the latest made 

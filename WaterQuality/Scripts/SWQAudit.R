@@ -14,7 +14,7 @@ wqdata=loadLatestDataRiver()
 #Overall audit xmlAge, start, stop, n, nSite, mean, max, min audit ####
 library(lubridate)
 wqAudit=data.frame(agency=NULL,xmlAge=NULL,var=NULL,nMeas=NULL,nSite=NULL,earliest=NULL,latest=NULL,minMeas=NULL,meanMeas=NULL,maxMeas=NULL,nNA=NULL)
-for(agency in c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")){
+for(agency in c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")){
   xmlAge = checkXMLageRiver(agency)
   agencyWQdata=loadLatestCSVRiver(agency)
   if(!is.null(agencyWQdata)&&dim(agencyWQdata)[1]>0){
@@ -57,7 +57,7 @@ wqAudit%>%dplyr::group_by(agency)%>%dplyr::summarise(xmlAge=mean(xmlAge,na.rm=T)
 
 
 #Per agency audit site/measurement start, stop, n and range ####
-for(agency in c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")){
+for(agency in c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")){
   agencyWQdata=loadLatestCSVRiver(agency,maxHistory = 40)
   if(!is.null(agencyWQdata)&&dim(agencyWQdata)[1]>0){
     if(agency=='niwa'){
@@ -114,11 +114,12 @@ for(param in 1:length(params)){
 
 
 #And the ubercool html summary audit report doncuments per council!
-workers <- makeCluster(7)
-registerDoParallel(workers)
-foreach(agency = c("arc","boprc","ecan","es","hbrc","hrc","orc","wcrc","wrc","gdc","gwrc","mdc","ncc","nrc","tdc","trc"),
-        .combine=rbind,.errorhandling="stop")%dopar%{
-  # for(agency in c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")){
+startTime=Sys.time()
+# workers <- makeCluster(7)
+# registerDoParallel(workers)
+# foreach(agency = c("ac","boprc","ecan","es","hbrc","hrc","orc","wcrc","wrc","gdc","gwrc","mdc","ncc","nrc","tdc","trc"),
+#         .combine=rbind,.errorhandling="stop")%dopar%{
+ for(agency in c("hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")){#"ac","boprc","ecan","es","gdc","gwrc",
           urls          <- read.csv("H:/ericg/16666LAWA/LAWA2020/Metadata/CouncilWFS.csv",stringsAsFactors=FALSE)
           if(length(dir(path = paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Audit/",format(Sys.Date(),"%Y-%m-%d")),
                 pattern = paste0('^',agency,".*audit\\.csv"),
@@ -130,16 +131,18 @@ foreach(agency = c("arc","boprc","ecan","es","hbrc","hrc","orc","wcrc","wrc","gd
                               output_file = paste0(toupper(agency),"Audit",format(Sys.Date(),'%d%b%y'),".html"),
                               envir = new.env())
           }
-  return(NULL)
+  # return(NULL)
 }
-stopCluster(workers)
-remove(workers)
+# stopCluster(workers)
+# remove(workers)
+Sys.time()-startTime
+
 
 # Audit the presence of measurements between config files and transfer table file, to allow the transfer table
 # to be used as the source of names to call variables for from
 # transfers=read.table("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Metadata/transfers_plain_english_view.txt",
 #                      sep=',',header = T,stringsAsFactors = F)
-# for(agency in c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")){
+# for(agency in c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")){
 #   df <- read.csv(paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/MetaData/",agency,"SWQ_config.csv"),sep=",",stringsAsFactors=FALSE)
 #   ta <- transfers%>%filter(Agency==agency)  
 #   if(any(!tolower(subset(df,df$Type=="Measurement")[,2])%in%tolower(ta$CallName))){

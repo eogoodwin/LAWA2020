@@ -5,8 +5,9 @@ library(doParallel)
 source("h:/ericg/16666LAWA/LWPTrends_v1901/LWPTrends_v1901.R")
 source("h:/ericg/16666LAWA/LAWA2020/Scripts/LAWAFunctions.R")
 source("h:/ericg/16666LAWA/LAWA2020/WaterQuality/scripts/SWQ_state_functions.R")
-try(dir.create(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d"))))
+try(dir.create(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d"))),silent=T)
 
+startTime=Sys.time()
 Mode=function(x) {
   ux <- unique(x)
   ux[which.max(tabulate(match(x, ux)))]
@@ -522,19 +523,27 @@ for(uparam in seq_along(uMeasures)){
   theseDeg <- which(subwq$LawaSiteID==subTrend$LawaSiteID[worstDeg] & subwq$Year>=startYear10)
   theseInd <- which(subwq$LawaSiteID==subTrend$LawaSiteID[leastKnown] & subwq$Year>=startYear10)
   theseImp <- which(subwq$LawaSiteID==subTrend$LawaSiteID[bestImp] & subwq$Year>=startYear10)
+  if(length(theseDeg)>0){
   Deg_med <- eval(parse(text=paste0("summaryBy(formula=",uMeasures[uparam],"~LawaSiteID+monYear,
                          id=~Censored+CenType+myDate+Year+Month+Qtr+Season,
                          data=subwq[theseDeg,], 
                          FUN=quantile, prob=c(0.5), type=5, na.rm=TRUE, keep.name=TRUE)")))
-  Ind_med <- eval(parse(text=paste0("summaryBy(formula=",uMeasures[uparam],"~LawaSiteID+monYear,
+  }
+if(length(theseInd)>0){
+Ind_med <- eval(parse(text=paste0("summaryBy(formula=",uMeasures[uparam],"~LawaSiteID+monYear,
                          id=~Censored+CenType+myDate+Year+Month+Qtr+Season,
                                       data=subwq[theseInd,], 
                                       FUN=quantile, prob=c(0.5), type=5, na.rm=TRUE, keep.name=TRUE)")))
-  Imp_med <- eval(parse(text=paste0("summaryBy(formula=",uMeasures[uparam],"~LawaSiteID+monYear,
+  }
+if(length(theseImp)>0){
+Imp_med <- eval(parse(text=paste0("summaryBy(formula=",uMeasures[uparam],"~LawaSiteID+monYear,
                          id=~Censored+CenType+myDate+Year+Month+Qtr+Season,
                                       data=subwq[theseImp,], 
                                       FUN=quantile, prob=c(0.5), type=5, na.rm=TRUE, keep.name=TRUE)")))
-  st <- SeasonalityTest(x = Deg_med,main=uMeasures[uparam],ValuesToUse = uMeasures[uparam],do.plot =F)
+  }
+  
+  if(length(theseDeg)>0){
+    st <- SeasonalityTest(x = Deg_med,main=uMeasures[uparam],ValuesToUse = uMeasures[uparam],do.plot =F)
   if(!is.na(st$pvalue)&&st$pvalue<0.05){
     SeasonalKendall(x = Deg_med,ValuesToUse = uMeasures[uparam],doPlot = F)
     SeasonalSenSlope(HiCensor=T,x = Deg_med,ValuesToUse = uMeasures[uparam],ValuesToUseforMedian = uMeasures[uparam],doPlot = T,mymain = subTrend$LawaSiteID[worstDeg])
@@ -542,8 +551,9 @@ for(uparam in seq_along(uMeasures)){
     MannKendall(HiCensor=T,x = Deg_med,ValuesToUse = uMeasures[uparam],doPlot=F)
     SenSlope(HiCensor=T,x = Deg_med,ValuesToUse = uMeasures[uparam],ValuesToUseforMedian = uMeasures[uparam],doPlot = T,mymain = subTrend$LawaSiteID[worstDeg])
   }
-  
-  st <- SeasonalityTest(x = Ind_med,main=uMeasures[uparam],ValuesToUse = uMeasures[uparam],do.plot =F)
+  }
+  if(length(theseInd)>0){
+    st <- SeasonalityTest(x = Ind_med,main=uMeasures[uparam],ValuesToUse = uMeasures[uparam],do.plot =F)
   if(!is.na(st$pvalue)&&st$pvalue<0.05){
     SeasonalKendall(HiCensor=T,x = Ind_med,ValuesToUse = uMeasures[uparam],doPlot = F)
     SeasonalSenSlope(HiCensor=T,x = Ind_med,ValuesToUse = uMeasures[uparam],ValuesToUseforMedian = uMeasures[uparam],doPlot = T,mymain = subTrend$LawaSiteID[leastKnown])
@@ -551,8 +561,9 @@ for(uparam in seq_along(uMeasures)){
     MannKendall(HiCensor=T,x = Ind_med,ValuesToUse = uMeasures[uparam],doPlot=F)
     SenSlope(HiCensor=T,x = Ind_med,ValuesToUse = uMeasures[uparam],ValuesToUseforMedian = uMeasures[uparam],doPlot = T,mymain = subTrend$LawaSiteID[leastKnown])
   }
-  
-  st <- SeasonalityTest(x = Imp_med,main=uMeasures[uparam],ValuesToUse = uMeasures[uparam],do.plot =F)
+  }
+  if(length(theseImp)>0){
+    st <- SeasonalityTest(x = Imp_med,main=uMeasures[uparam],ValuesToUse = uMeasures[uparam],do.plot =F)
   if(!is.na(st$pvalue)&&st$pvalue<0.05){
     SeasonalKendall(HiCensor=T,x = Imp_med,ValuesToUse = uMeasures[uparam],doPlot = F)
     if(is.na(SeasonalSenSlope(HiCensor=T,x = Imp_med,ValuesToUse = uMeasures[uparam],ValuesToUseforMedian = uMeasures[uparam],doPlot = T,mymain = subTrend$LawaSiteID[bestImp])$Sen_Probability)){
@@ -561,6 +572,7 @@ for(uparam in seq_along(uMeasures)){
   }else{
     MannKendall(HiCensor=T,x = Imp_med,ValuesToUse = uMeasures[uparam],doPlot=F)
     SenSlope(HiCensor=T,x = Imp_med,ValuesToUse = uMeasures[uparam],ValuesToUseforMedian = uMeasures[uparam],doPlot = T,mymain = subTrend$LawaSiteID[bestImp])
+  }
   }
   if(names(dev.cur())=='tiff'){dev.off()}
   rm(theseDeg,theseImp,theseInd)
@@ -580,7 +592,7 @@ table(TrendsForPlotting$Measurement[which(is.na(TrendsForPlotting$TrendScore))])
 #     2    36    16   105    12    30    11     5   489 
 #Drop the NAs
 TrendsForPlotting = TrendsForPlotting%>%tidyr::drop_na(TrendScore)
-#4439 to 3733
+#4439 to 3802
 #Starts as DRP   NH4   TP    TON   TURB  ECOLI TN    BDISC  MCI
 #labelled  DRP   NH4   TP    TON   TURB  ECOLI TN    CLAR   MCI
 #Reorder 2 CLAR TURB   TN    TON   NH4   TP    DRP   ECOLI  MCI
@@ -788,3 +800,4 @@ if(names(dev.cur())=='tiff'){dev.off()}
 par(mfrow=c(1,1))
 
 
+Sys.time()-startTime

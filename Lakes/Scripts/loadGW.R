@@ -27,12 +27,13 @@ for(i in 1:length(sites)){
     url <- paste0("http://hilltop.gw.govt.nz/Data.hts?service=Hilltop&request=GetData",
                  "&Site=",sites[i],
                  "&Measurement=",Measurements[j],
-                 "&From=2004-01-01&To=2020-01-01")
+                 "&From=2004-01-01&To=2020-01-01")#,
+                 # "&tstype=stdqualseries")
     url <- URLencode(url)
 
     xmlfile <- ldLWQ(url,agency,method='wininet')
     if(!is.null(xmlfile)){
-      # browser()
+       # browser()
       datAsList = XML::xmlToList(xmlfile)
       newDataColumnLabels = sort(unique(unlist(invisible(
         sapply(

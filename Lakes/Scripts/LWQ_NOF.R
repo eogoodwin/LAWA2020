@@ -21,7 +21,7 @@ setwd("h:/ericg/16666LAWA/LAWA2020/Lakes/")
 source("h:/ericg/16666LAWA/LAWA2020/scripts/LAWAFunctions.R")
 source("h:/ericg/16666Lawa/LAWA2020/WaterQuality/scripts/SWQ_NOF_Functions.R")
 
-try(dir.create(paste0("h:/ericg/16666LAWA/LAWA2020/Lakes/Analysis/",format(Sys.Date(),'%Y-%m-%d'))))
+try(dir.create(paste0("h:/ericg/16666LAWA/LAWA2020/Lakes/Analysis/",format(Sys.Date(),'%Y-%m-%d')),showWarnings = F))
 
 #hydrological year runs e.g. 1 July 2017 to 30 June 2018, and is named like 2017/18
 
@@ -46,18 +46,18 @@ NOFbandDefinitions <- read.csv("H:/ericg/16666LAWA/LAWA2020/Lakes/Metadata/NOFla
 
 #===================================================================================================
 ## Load LAWA Data
-#Reference Dates
-EndYear <- lubridate::isoyear(Sys.Date())-1
-StartYear5 <- EndYear - 5 + 1
-yr  <- c(as.character(StartYear5:EndYear),"Overall")
-reps  <- length(yr)
-
 # loads lawaLakesdata dataframe  from LAWA_State.r  - has altered values from censoring, and calculated medians
 lakesMonthlyMedians=read.csv(tail(dir(path="h:/ericg/16666LAWA/LAWA2020/Lakes/Analysis",
                                       pattern="lakeMonthlyMedian.*csv",  #"ForITE"
                                       recursive = T,full.names = T,ignore.case = T),1),stringsAsFactors=F)
-# lakesMonthlyMedians$Value[which(lakesMonthlyMedians$Measurement%in%c('NH4N'))]= #,'TN','TP'
-#   lakesMonthlyMedians$Value[which(lakesMonthlyMedians$Measurement%in%c('NH4N'))]/1000  #mg/L to mg/m3
+stopifnot(min(lakesMonthlyMedians$Year,na.rm=T)>1990)
+#Reference Dates
+EndYear <- lubridate::isoyear(Sys.Date())-1
+StartYear5 <- EndYear - 5 + 1
+firstYear = min(lakesMonthlyMedians$Year,na.rm=T)
+yr <- c(as.character(firstYear:EndYear),paste0(as.character(firstYear:(EndYear-4)),'to',as.character((firstYear+4):EndYear)))
+rollyrs=which(grepl('to',yr))
+reps <- length(yr)
 
 lakesMonthlyMedians$Date=lubridate::dmy(paste0('1-',lakesMonthlyMedians$month,'-',lakesMonthlyMedians$Year))
 lakesMonthlyMedians$Measurement=toupper(lakesMonthlyMedians$Measurement)
@@ -74,7 +74,7 @@ clarSub$Year=lubridate::isoyear(clarSub$Date)
 annualClar <- clarSub%>%dplyr::filter(Year>=StartYear5)%>%
   dplyr::group_by(LawaSiteID)%>%dplyr::mutate(count=n())%>%ungroup%>%
   dplyr::group_by(LawaSiteID,Year)%>%dplyr::summarise(medVal=median(Value,na.rm=T),count=unique(count))%>%filter(count>=30)
-medianClar <- annualClar%>%dplyr::group_by(LawaSiteID)%>%dplyr::summarise(medClar=median(medVal,na.rm=T),)%>%ungroup
+medianClar <- annualClar%>%dplyr::group_by(LawaSiteID)%>%dplyr::summarise(medClar=median(medVal,na.rm=T))%>%ungroup
 medianClar$ClarityScore <- cut(medianClar$medClar,breaks=c(-10,1,3,7,Inf),labels=c('D','C','B','A'))
 write.csv(medianClar,paste0("h:/ericg/16666LAWA/LAWA2020/Lakes/Analysis/",format(Sys.Date(),'%Y-%m-%d'),"/LakesClarBandForITE_",
                             format(Sys.time(),"%d%b%Y"),".csv"),row.names = F)
@@ -106,7 +106,7 @@ write.csv(chlNOF,paste0("h:/ericg/16666LAWA/LAWA2020/Lakes/Analysis/",format(Sys
 
 # Subset to just have the variables that are tested against NOF standards
 sub_lwq <- lakesMonthlyMedians%>%dplyr::filter(Year>=StartYear5)%>%
-  dplyr::select(c("LawaSiteID","CouncilSiteID","Measurement","Value","Date"))%>%
+  dplyr::select(c("LawaSiteID","CouncilSiteID","Measurement","Value","Date","Year"))%>%
   dplyr::filter(tolower(Measurement)%in%tolower(c("NH4N","TN","TP","ECOLI","PH","SECCHI","CHLA")))
 sub_lwq$Measurement[sub_lwq$Measurement=="NH4N"] <- "NH4"
 
@@ -130,324 +130,295 @@ registerDoParallel(workers)
 clusterCall(workers,function(){
   library(tidyverse)
 })
-
+startTime=Sys.time()
 foreach(i = 1:length(uclids),.combine=rbind,.errorhandling='stop')%dopar%{
   suppressWarnings(rm(tnsite,tpsite,nh4site,ecosite,rightSite,value,Value)  )
   rightSite=sub_lwq[(sub_lwq$uclid==uclids[i]),]
   rightSite=rightSite[!is.na(rightSite$Value),]
   # create table of compliance with proposed National Objectives Framework
-  Com_NOF <- data.frame (LawaSiteID               = rep(unique(rightSite$LawaSiteID),length(yr)),
-                         CouncilSiteID            = rep(unique(rightSite$CouncilSiteID),length(yr)),
+  Com_NOF <- data.frame (LawaSiteID               = rep(unique(rightSite$LawaSiteID),reps),
+                         CouncilSiteID            = rep(unique(rightSite$CouncilSiteID),reps),
                          Year                     = yr,
-                         Total_Nitrogen           = as.numeric(rep(NA,reps)),
-                         Tot_Nitr_Band            = factor(rep(NA,reps),levels=c("A","B","C","D")),
+                         NitrogenMed            = rep(as.numeric(NA),reps),
+                         NitrogenMed_Band       = rep(as.character(NA),reps),
                          NitrateAnalysisNote      = rep('',reps),
-                         Total_Phosphorus         = as.numeric(rep(NA,reps)),
-                         Tot_Phos_Band            = factor(rep(NA,reps),levels = c("A","B","C","D")),
-                         PhosphorusAnalysisNote      = rep('',reps),
-                         AmmoniacalMed        = as.numeric(rep(NA,reps)),
-                         Med_Ammoniacal_Band      = factor(rep(NA,reps),levels = c("A","B","C","D")),
-                         Max_Ammoniacal           = as.numeric(rep(NA,reps)),
-                         Max_Ammoniacal_Band      = factor(rep(NA,reps),levels = c("A","B","C","D")),
-                         Ammonia_Toxicity_Band    = factor(rep(NA,reps),levels = c("A","B","C","D")),
+                         PhosphorusMed          = rep(as.numeric(NA),reps),
+                         PhosphorusMed_Band     = rep(as.character(NA),reps),
+                         PhosphorusAnalysisNote   = rep('',reps),
+                         AmmoniacalMed            = rep(as.numeric(NA),reps),
+                         AmmoniacalMed_Band       = rep(as.character(NA),reps),
+                         AmmoniacalMax            = rep(as.numeric(NA),reps),
+                         AmmoniacalMax_Band       = rep(as.character(NA),reps),
+                         Ammonia_Toxicity_Band    = rep(as.character(NA),reps),
                          AmmoniaAnalysisNote      = rep('',reps),
-                         Median_Clarity           = as.numeric(rep(NA,reps)),
-                         Med_Clarity_Band         = factor(rep(NA,reps),levels = c("A","B","C","D")),
+                         ClarityMedian            = rep(as.numeric(NA),reps),
+                         ClarityMedian_Band       = rep(as.character(NA),reps),
                          ClarityAnalysisNote      = rep('',reps),
-                         Median_ChlA              = as.numeric(rep(NA,reps)),
-                         Med_ChlA_Band            = factor(rep(NA,reps),levels = c("A","B","C","D")),
-                         Max_ChlA                 = as.numeric(rep(NA,reps)),
-                         Max_ChlA_Band            = factor(rep(NA,reps),levels = c("A","B","C","D")),
-                         ChlASummaryBand          = factor(rep(NA,reps),levels = c("A","B","C","D")),
-                         ChlAAnalysisNote      = rep('',reps),
-                         E_coli_Period            = as.numeric(rep(NA,reps)),
-                         E_coli_Median            = as.numeric(rep(NA,reps)),
-                         E_coli_band              = rep(NA,reps),
-                         E_coli95                 = as.numeric(rep(NA,reps)),
-                         E_coli95_band            = rep(NA,reps),
-                         E_coliRecHealth540       = as.numeric(rep(NA,reps)),
-                         E_coliRecHealth540_Band  = rep(NA,reps),
-                         E_coliRecHealth260       = as.numeric(rep(NA,reps)),
-                         E_coliRecHealth260_Band  = rep(NA,reps),
-                         E_coliSummaryband        = factor(rep(NA,reps),levels=c("A","B","C","D","E")),
-                         E_coliAnalysisNote       = rep('',reps),
+                         ChlAMed                  = rep(as.numeric(NA),reps),
+                         ChlAMed_Band             = rep(as.character(NA),reps),
+                         ChlAMax                  = rep(as.numeric(NA),reps),
+                         ChlAMax_Band             = rep(as.character(NA),reps),
+                         ChlASummaryBand          = rep(as.character(NA),reps),
+                         ChlAAnalysisNote         = rep('',reps),
+                         EcoliPeriod              = rep(as.numeric(NA),reps),
+                         EcoliMedian              = rep(as.numeric(NA),reps),
+                         EcoliBand                = rep(NA),reps,
+                         Ecoli95                  = rep(as.numeric(NA),reps),
+                         Ecoli95_Band             = rep(NA),reps,
+                         EcoliRecHealth540        = rep(as.numeric(NA),reps),
+                         EcoliRecHealth540_Band   = rep(NA),reps,
+                         EcoliRecHealth260        = rep(as.numeric(NA),reps),
+                         EcoliRecHealth260_Band   = rep(NA),reps,
+                         EcoliSummaryBand         = rep(as.character(NA),reps),
+                         EcoliAnalysisNote        = rep('',reps),
                          stringsAsFactors = FALSE)
   
   
   ######################  Nitrogen  ########################################
   tnsite=rightSite[rightSite$Measurement=="TN",]
-  annualMedian <- tapply(tnsite$Value, format(tnsite$Date, '%Y'), na.rm=TRUE, quantile,prob=c(0.5),type=5)
+  annualMedian <- tnsite%>%dplyr::group_by(Year)%>%dplyr::summarise(value=quantile(Value,prob=0.5,type=5))
   
-  if(length(annualMedian)!=0){
-    Com_NOF$Total_Nitrogen <- annualMedian[match(Com_NOF$Year,names(annualMedian))]
-    #Overall median
-    
-    if(length(tnsite$Value)>=30){  #6 measurements per year please
-      Com_NOF$Total_Nitrogen[nrow(Com_NOF)] <- quantile(tnsite$Value,prob=c(0.5),type=5,na.rm=T)
-    }else{
-      Com_NOF$NitrateAnalysisNote[nrow(Com_NOF)] = paste0(Com_NOF$NitrateAnalysisNote[nrow(Com_NOF)],
-                                                          ' Need 30 nitrate values for overall median, have ',sum(!is.na(tnsite$Value)))
-    }
-    #find the band which each value belong to
+  if(dim(annualMedian)[1]!=0){
+    Com_NOF$NitrogenMed <- annualMedian$value[match(Com_NOF$Year,annualMedian$Year)]
+    #Rolling 5yr median
+    rollingMeds=rolling5(siteChemSet=tnsite,quantProb=0.5)
+    rollFails=is.na(as.numeric(rollingMeds))
+    Com_NOF$NitrogenMed[yr%in%names(rollingMeds)] <- as.numeric(rollingMeds)
+    Com_NOF$NitrateAnalysisNote[rollyrs[rollFails]] <- paste0("Need 30 values for median, have",
+                                                              strFrom(s=rollingMeds[rollFails],c='y'))
+    #find the Band which each value belong to
     if(lakeSiteTable$LType[which(lakeSiteTable$uclid==uclids[i])]%in%c("stratified","brackish","icoll","monomictic")){
-      Com_NOF$Tot_Nitr_Band <- unlist(lapply(Com_NOF$Total_Nitrogen,NOF_FindBand,bandColumn = NOFbandDefinitions$TotalNitrogenseasonally.stratified.and.brackish))
-      Com_NOF$Tot_Nitr_Band <- unlist(lapply(Com_NOF$Tot_Nitr_Band,FUN=function(x){min(unlist(strsplit(x,split = '')))}))
+      Com_NOF$NitrogenMed_Band <- sapply(Com_NOF$NitrogenMed,NOF_FindBand,bandColumn = NOFbandDefinitions$TotalNitrogenseasonally.stratified.and.brackish)
+      Com_NOF$NitrogenMed_Band <- sapply(Com_NOF$NitrogenMed_Band,FUN=function(x){min(unlist(strsplit(x,split = '')))})
     }else{ #assuming polymictic
-      Com_NOF$Tot_Nitr_Band <- unlist(lapply(Com_NOF$Total_Nitrogen,NOF_FindBand,bandColumn = NOFbandDefinitions$TotalNitrogenpolymictic))
-      Com_NOF$Tot_Nitr_Band <- unlist(lapply(Com_NOF$Tot_Nitr_Band,FUN=function(x){min(unlist(strsplit(x,split = '')))}))
+      Com_NOF$NitrogenMed_Band <- sapply(Com_NOF$NitrogenMed,NOF_FindBand,bandColumn = NOFbandDefinitions$TotalNitrogenpolymictic)
+      Com_NOF$NitrogenMed_Band <- sapply(Com_NOF$NitrogenMed_Band,FUN=function(x){min(unlist(strsplit(x,split = '')))})
     }
+    rm(rollingMeds,rollFails)
   }
   rm(tnsite,annualMedian)
   
   ######################  Phosphorus  ########################################
   tpsite=rightSite[rightSite$Measurement=="TP",]
-  annualMedian <- tapply(tpsite$Value, format(tpsite$Date, '%Y'), na.rm=TRUE, quantile,prob=c(0.5),type=5)
+  annualMedian <- tpsite%>%dplyr::group_by(Year)%>%dplyr::summarise(value=quantile(Value,prob=0.5,type=5,na.rm=T))
   
-  if(length(annualMedian)!=0){
-    #adding annualMedians into Com_NOF table
-    Com_NOF$Total_Phosphorus <- annualMedian[match(Com_NOF$Year,names(annualMedian))]
-    
-    if(length(tpsite$Value)>=30){
-      Com_NOF$Total_Phosphorus[nrow(Com_NOF)] <- quantile(tpsite$Value,prob=c(0.5),type=5,na.rm=T)
-    }else{
-      Com_NOF$PhosphorusAnalysisNote[nrow(Com_NOF)] = paste0(Com_NOF$PhosphorusAnalysisNote[nrow(Com_NOF)],
-                                                             ' Need 30 nitrate values for overall median, have ',
-                                                             sum(!is.na(tpsite$Value)))
-    }
+  if(dim(annualMedian)[1]!=0){
+    Com_NOF$PhosphorusMed <- annualMedian$value[match(Com_NOF$Year,annualMedian$Year)]
+    #Rolling 5yr median
+    rollingMeds=rolling5(siteChemSet=tpsite,quantProb=0.5)
+    rollFails=is.na(as.numeric(rollingMeds))
+    Com_NOF$PhosphorusMed[yr%in%names(rollingMeds)] <- as.numeric(rollingMeds)
+    Com_NOF$PhosphorusAnalysisNote[rollyrs[rollFails]] <- paste0("Need 30 values for median, have",
+                                                                 strFrom(s=rollingMeds[rollFails],c='y'))
     #find the band which each value belong to
-    Com_NOF$Tot_Phos_Band <- unlist(lapply(Com_NOF$Total_Phosphorus,NOF_FindBand,bandColumn = NOFbandDefinitions$TotalPhosphorus))
-    Com_NOF$Tot_Phos_Band <- unlist(lapply(Com_NOF$Tot_Phos_Band,FUN=function(x){min(unlist(strsplit(x,split = '')))}))
+    Com_NOF$PhosphorusMed_Band <- sapply(Com_NOF$PhosphorusMed,NOF_FindBand,bandColumn = NOFbandDefinitions$TotalPhosphorus)
+    Com_NOF$PhosphorusMed_Band <- sapply(Com_NOF$PhosphorusMed_Band,FUN=function(x){min(unlist(strsplit(x,split = '')))})
+    rm(rollingMeds,rollFails)
   }
   rm(tpsite,annualMedian)
   
   ###################### Ammonia  ############################
   nh4site=rightSite[rightSite$Measurement=="NH4",]
   if(dim(nh4site)[1]==0){
-    Com_NOF$AmmoniaAnalysisNote=paste0(Com_NOF$AmmoniaAnalysisNote,'n = ',sum(!is.na(nh4site$Value)),
-                                       ' No NH4 data ')
+    Com_NOF$AmmoniaAnalysisNote='No NH4 data '
   }else{
     if(all(nh4site$Value==-99)){
-      Com_NOF$AmmoniaAnalysisNote=paste0(Com_NOF$AmmoniaAnalysisNote,'n = ',sum(!is.na(nh4site$Value)),
-                                         ' No pH data available for NH4 adjustment, so NH4 cannot be judged against NOF standards. ')
-    }
-    #Median Ammoniacal Nitrogen
-    annualMedian <- tapply(nh4site$Value,format(nh4site$Date, '%Y'), na.rm=TRUE, quantile,prob=c(0.5),type=5)
-    
-    if(length(annualMedian)!=0){
-      Com_NOF$AmmoniacalMed = annualMedian[match(Com_NOF$Year,names(annualMedian))]
-      
-      #overall median
-      if(length(nh4site$Value)>=30){
-        Com_NOF$AmmoniacalMed[nrow(Com_NOF)] <- quantile(nh4site$Value,prob=c(0.5),type=5)
+      Com_NOF$AmmoniaAnalysisNote='No pH data available for NH4 adjustment, so NH4 cannot be judged against NOF standards.'
+    }else{
+      #Median Ammoniacal Nitrogen
+      annualMedian <- nh4site%>%dplyr::group_by(Year)%>%dplyr::summarise(value=quantile(Value,prob=0.5,type=5))
+      if(dim(annualMedian)[1]!=0){
+        Com_NOF$AmmoniacalMed = annualMedian$value[match(Com_NOF$Year,annualMedian$Year)]
+        #Rolling 5yr median
+        rollingMeds=rolling5(siteChemSet=nh4site,quantProb=0.5)
+        rollFails=is.na(as.numeric(rollingMeds))
+        Com_NOF$AmmoniacalMed[yr%in%names(rollingMeds)] <- as.numeric(rollingMeds)
+        Com_NOF$AmmoniaAnalysisNote[rollyrs[rollFails]] <- paste0("Need 30 values for median, have",
+                                                                     strFrom(s=rollingMeds[rollFails],c='y'))
+        Com_NOF$AmmoniacalMed_Band <- sapply(Com_NOF$AmmoniacalMed,NOF_FindBand,bandColumn=NOFbandDefinitions$Median.Ammoniacal.N)
+        Com_NOF$AmmoniacalMed_Band <- sapply(Com_NOF$AmmoniacalMed_Band,FUN=function(x){min(unlist(strsplit(x,split = '')))})
+        rm(rollingMeds,rollFails)
+        
+        #-------maximum annual Ammoniacal Nitrogen--------------------------------------
+        annualMax <- nh4site%>%dplyr::group_by(Year)%>%dplyr::summarise(value=max(Value,na.rm=T))
+        Com_NOF$AmmoniacalMax <- annualMax$value[match(Com_NOF$Year,annualMax$Year)]
+        
+        #rolling 5yr max
+        rollingMax=rolling5(nh4site,quantProb=1.0)
+        rollFails=is.na(as.numeric(rollingMax))
+        Com_NOF$AmmoniacalMax[yr%in%names(rollingMax)]=as.numeric(rollingMax)
+        Com_NOF$AmmoniaAnalysisNote[rollyrs[rollFails]] <- paste0('Need 30 values for median, have ',
+                                                                     strFrom(s=rollingMax[rollFails],c='y'))
+        Com_NOF$AmmoniacalMax_Band <-sapply(Com_NOF$AmmoniacalMax,NOF_FindBand,bandColumn=NOFbandDefinitions$Max.Ammoniacal.N) 
+        Com_NOF$AmmoniacalMax_Band <- sapply(Com_NOF$AmmoniacalMax_Band,FUN=function(x){min(unlist(strsplit(x,split = '')))})
+        rm(rollingMax,rollFails,annualMax)
+        #------------------Finding the band for Ammonia Toxicity-------------------------------
+        Com_NOF$Ammonia_Toxicity_Band=apply(select(Com_NOF,AmmoniacalMed_Band, AmmoniacalMax_Band),1,max,na.rm=T)
       }else{
-        Com_NOF$AmmoniaAnalysisNote[nrow(Com_NOF)]=paste0(Com_NOF$AmmoniaAnalysisNote[nrow(Com_NOF)],
-                                                          ' Need 30 values for overall median, have ',
-                                                          sum(!is.na(nh4site$Value)))
+        Com_NOF$AmmoniaAnalysisNote=paste0(Com_NOF$AmmoniaAnalysisNote,'n = ',sum(!is.na(nh4site$Value)),
+                                           ' Insufficient to calculate annual medians. ')
       }
-      Com_NOF$Med_Ammoniacal_Band <- unlist(lapply(Com_NOF$AmmoniacalMed,NOF_FindBand,bandColumn=NOFbandDefinitions$Median.Ammoniacal.N)) 
-      Com_NOF$Med_Ammoniacal_Band <- unlist(lapply(Com_NOF$Med_Ammoniacal_Band,FUN=function(x){min(unlist(strsplit(x,split = '')))}))
       rm(annualMedian)
-      #-------maximum annual Ammoniacal Nitrogen--------------------------------------
-      annualMax<- tapply(nh4site$Value, format(nh4site$Date, '%Y'), na.rm=TRUE, max)
-      Com_NOF$Max_Ammoniacal <- annualMax[match(Com_NOF$Year,names(annualMax))]
-      
-      #overall 95th%ile
-      if(length(nh4site$Value)>=30){
-        Com_NOF$Max_Ammoniacal[nrow(Com_NOF)] <- quantile(nh4site$Value,prob=c(0.95),type=5)
-      }else{
-        Com_NOF$AmmoniaAnalysisNote[nrow(Com_NOF)]=paste0(Com_NOF$AmmoniaAnalysisNote[nrow(Com_NOF)],
-                                                          ' Need 30 values for overall 95%ile, have ',sum(!is.na(nh4site$Value)))
-      }
-      
-      #find the band which each value belong to
-      Com_NOF$Max_Ammoniacal_Band <-unlist(lapply(Com_NOF$Max_Ammoniacal,NOF_FindBand,
-                                                  bandColumn=NOFbandDefinitions$Max.Ammoniacal.N)) 
-      Com_NOF$Max_Ammoniacal_Band <- unlist(lapply(Com_NOF$Max_Ammoniacal_Band,FUN=function(x){min(unlist(strsplit(x,split = '')))}))
-      
-      #------------------Finding the band for Ammonia Toxicity-------------------------------
-      Com_NOF$Ammonia_Toxicity_Band=apply(select(Com_NOF,Med_Ammoniacal_Band, Max_Ammoniacal_Band),1,max,na.rm=T)
-    }  
+    }
   }
   rm(nh4site)
   
   ######################  E.Coli #########################################
-  suppressWarnings(rm(cnEc_band,cnEc95_band,cnEcRecHealth540_Band,cnEcRecHealth260_Band,ecosite,rawEcoli))
+  suppressWarnings(rm(cnEc_Band,cnEc95_Band,cnEcRecHealth540_Band,cnEcRecHealth260_Band,ecosite,rawEcoli))
   ecosite=rightSite[rightSite$Measurement=="ECOLI",]
-  ecosite$year=lubridate::isoyear(ecosite$Date)
-  rawEcoli=ecosite%>%dplyr::select(year,Value)%>%filter(!is.na(Value)&year>=StartYear5)
-  if(dim(rawEcoli)[1]>=60){ #data requirement for band determination, footnote 1, table  NPS. 60 over 5 years is monthly
-    
-    Com_NOF$E_coli_Period[Com_NOF$Year=='Overall']=5
-    ecosite=ecosite%>%filter(lubridate::year(Date)>=StartYear5)
+  # ecosite$year=lubridate::isoyear(ecosite$Date)
+  # rawEcoli=ecosite%>%dplyr::select(year,Value)%>%filter(!is.na(Value)&year>=StartYear5)
+  annualMedian <- ecosite%>%dplyr::group_by(Year)%>%dplyr::summarise(value=quantile(Value,prob=0.5,type=5,na.rm=T))  
+  
+  if(dim(annualMedian)[1]!=0){
+    Com_NOF$EcoliMedian <- annualMedian$value[match(Com_NOF$Year,annualMedian$Year)]
+    Com_NOF$EcoliPeriod=ifelse(is.na(Com_NOF$EcoliMedian),NA,1)
+    #rolling 5yr or 6yr median
+    rollingMeds=rolling5(ecosite,0.5,extendToSix = T,nreq=60)
+    rollFails=is.na(as.numeric(rollingMeds))
+    Com_NOF$EcoliMedian[yr%in%names(rollingMeds)] = readr::parse_number(rollingMeds) #not "as.numeric", because good results include a years suffix
+    Com_NOF$EcoliPeriod[yr%in%names(rollingMeds)] = ifelse(rollFails,NA,ifelse(grepl(pattern = '_6',rollingMeds),6,5))
+    #bands
+    Com_NOF$EcoliBand <- sapply(Com_NOF$EcoliMedian,NOF_FindBand,bandColumn=NOFbandDefinitions$E..coli)
   }else{
-    #Relax the rules, try for 60 values in 6 years
-    rawEcoli=ecosite%>%dplyr::select(year,Value)%>%filter(!is.na(Value))
-    if(dim(rawEcoli)[1]>=60){ #data requirement for band determination, footnote 1, table  NPS
-      Com_NOF$E_coli_Period[Com_NOF$Year=='Overall']=6
-    }
+    Com_NOF$EcoliAnalysisNote=paste0(Com_NOF$EcoliAnalysisNote,"n = ",sum(!is.na(ecosite$Value)),
+                                     " Insufficient data to calculate annual medians")
   }
+  rm(annualMedian,rollingMeds,rollFails)
   
-  #E coli median
-  if(dim(ecosite)[1]>=60){
-    annualMedian <- tapply(ecosite$Value, format(ecosite$Date, '%Y'), na.rm=TRUE, quantile,prob=c(0.5),type=5)
-    if(length(annualMedian)!=0){
-      Com_NOF$E_coli_Median <- annualMedian[match(Com_NOF$Year,names(annualMedian))]
-      #overall median calculated on previous 5 years only, even if six years were used to calculate NOF band
-      Com_NOF$E_coli_Median[nrow(Com_NOF)] <- quantile(ecosite$Value[ecosite$year>=StartYear5],prob=c(0.5),type=5,na.rm=T)
-      #bands
-      Com_NOF$E_coli_band <- unlist(lapply(Com_NOF$E_coli_Median,NOF_FindBand,bandColumn=NOFbandDefinitions$E..coli))
-      #Median EColi can meet multiple bands
-      cnEc_band <- unlist(lapply(Com_NOF$E_coli_band,FUN=function(x){min(unlist(strsplit(x,split = '')))}))
-    }
-    #else they're left as NA
-    rm(annualMedian)
+  #Ecoli 95th percentile 
+  annual95 <- ecosite%>%dplyr::group_by(Year)%>%dplyr::summarise(value=quantile(Value,prob=0.95,type=5,na.rm=T))
+  if(length(annual95)!=0){
+    Com_NOF$Ecoli95 <- annual95$value[match(Com_NOF$Year,annual95$Year)]
+    #rolling 5yr or 6yr 95%ile
+    rolling95 = rolling5(ecosite,0.95,extendToSix = T,nreq=60)
+    rollFails=which(is.na(as.numeric(rolling95)))
+    Com_NOF$Ecoli95[yr%in%names(rolling95)] <- readr::parse_number(rolling95)#not "as.numeric", because good results include a years suffix
     
-    #Ecoli 95th percentile
-    annualMax <- tapply(ecosite$Value,format(ecosite$Date, '%Y'),na.rm=TRUE, quantile,prob=c(0.95),type=5)
-    if(length(annualMax)!=0){
-      Com_NOF$E_coli95 <- annualMax[match(Com_NOF$Year,names(annualMax))]
-      #overall 95 %ile calculated on previous 5 years only, even if six years were used to calculate NOF band
-      Com_NOF$E_coli95[nrow(Com_NOF)] <- quantile(ecosite$Value[ecosite$year>=StartYear5],prob=c(0.95),type=5,na.rm=T)
-      #bands 
-      Com_NOF$E_coli95_band <- unlist(lapply(Com_NOF$E_coli95,NOF_FindBand,bandColumn=NOFbandDefinitions$Ecoli95))
-      #Ecoli95 can meet multiple bands
-      cnEc95_band <- unlist(lapply(Com_NOF$E_coli95_band,FUN=function(x){min(unlist(strsplit(x,split = '')))}))
-    }  
-    rm(annualMax)
-    
-    # Exceedance
-    for(yy in 1:length(Com_NOF$Year)){
-      ecv=rawEcoli$Value[which(rawEcoli$year==Com_NOF$Year[yy])]
-      if(length(ecv)>0){
-        Com_NOF$E_coliRecHealth540[yy]=sum(ecv>540)/length(ecv)*100
-        Com_NOF$E_coliRecHealth260[yy]=sum(ecv>260)/length(ecv)*100
-      }
-    }
-    #Overall exceedance
-    Com_NOF$E_coliRecHealth540[nrow(Com_NOF)] <- sum(rawEcoli$Value>540)/length(rawEcoli$Value)*100
-    Com_NOF$E_coliRecHealth260[nrow(Com_NOF)] <- sum(rawEcoli$Value>260)/length(rawEcoli$Value)*100
-    #Bands
-    Com_NOF$E_coliRecHealth540_Band <- unlist(lapply(Com_NOF$E_coliRecHealth540,NOF_FindBand,bandColumn=NOFbandDefinitions$EcoliRec540))
-    cnEcRecHealth540_Band <- unlist(lapply(Com_NOF$E_coliRecHealth540_Band,FUN=function(x){min(unlist(strsplit(x,split = '')))}))
-    
-    Com_NOF$E_coliRecHealth260_Band <- unlist(lapply(Com_NOF$E_coliRecHealth260,NOF_FindBand,bandColumn=NOFbandDefinitions$EcoliRec260))
-    cnEcRecHealth260_Band <- unlist(lapply(Com_NOF$E_coliRecHealth260_Band,FUN=function(x){min(unlist(strsplit(x,split = '')))}))  
-    #else they're left as NA
-  }
-  
-  if(is.na(Com_NOF$E_coli_Period[Com_NOF$Year=='Overall'])){ #Set bands to NA, if insufficent data
-    Com_NOF$E_coli_band[Com_NOF$Year=='Overall']=NA
-    Com_NOF$E_coli95_band[Com_NOF$Year=='Overall']           =NA
-    Com_NOF$E_coliRecHealth540_Band[Com_NOF$Year=='Overall'] =NA
-    Com_NOF$E_coliRecHealth260_Band[Com_NOF$Year=='Overall']=NA
-    Com_NOF$E_coliSummaryband[Com_NOF$Year=='Overall']=NA
-    Com_NOF$E_coliAnalysisNote[Com_NOF$Year=='Overall']=paste0(Com_NOF$E_coliAnalysisNote[Com_NOF$Year=='Overall'],
-                                                               ' Need 60 values, have ',
-                                                               sum(!is.na(ecosite$Value)))
-  }
-  
-  #These contain the best case out of these scorings, the worst of which contributes.
-  if(all(exists(c("cnEc_band","cnEc95_band","cnEcRecHealth540_Band","cnEcRecHealth260_Band")))){
-    Com_NOF$E_coliSummaryband = apply(cbind(pmax(cnEc_band,cnEc95_band,cnEcRecHealth540_Band,cnEcRecHealth260_Band)),1,max)
+    #bands 
+    Com_NOF$Ecoli95_Band <- sapply(Com_NOF$Ecoli95,NOF_FindBand,bandColumn=NOFbandDefinitions$Ecoli95)
   }else{
-    Com_NOF$E_coliSummaryband = NA
+    Com_NOF$EcoliAnalysisNote=paste0(Com_NOF$EcoliAnalysisNote,"n = ",sum(!is.na(ecosite$Value)),
+                                     " Insufficient data to calculate annual max")
   }
-  rm(ecosite)
+  rm(annual95,rolling95,rollFails)
+  
+  # Exceedance percentages
+  options(warn=-1)
+  for(yy in 1:length(Com_NOF$Year)){
+    if(!is.na(as.numeric(Com_NOF$Year[yy]))){
+      ecv=ecosite$Value[which(ecosite$Year==Com_NOF$Year[yy])]
+    }else{
+      startYear = strTo(s = Com_NOF$Year[yy],c = 'to')
+      stopYear = strFrom(s= Com_NOF$Year[yy],c = 'to')
+      ecv=ecosite$Value[ecosite$Year>=startYear & ecosite$Year<=stopYear]
+    }
+    if(length(ecv)>0){
+      Com_NOF$EcoliRecHealth540[yy]=sum(ecv>540)/length(ecv)*100
+      Com_NOF$EcoliRecHealth260[yy]=sum(ecv>260)/length(ecv)*100
+    }
+  }
+  options(warn=0)
+  #Bands
+  suppressWarnings(Com_NOF$EcoliRecHealth540_Band <- sapply(Com_NOF$EcoliRecHealth540,NOF_FindBand,bandColumn=NOFbandDefinitions$EcoliRec540))
+  suppressWarnings(Com_NOF$EcoliRecHealth260_Band <- sapply(Com_NOF$EcoliRecHealth260,NOF_FindBand,bandColumn=NOFbandDefinitions$EcoliRec260))
+  
+  these=which(is.na(Com_NOF$EcoliPeriod))
+  if(length(these)>0){
+    Com_NOF$EcoliAnalysisNote[these]=paste0(Com_NOF$EcoliAnalysisNote,
+                                            ' Need ',rep(c(12,60),c(sum(!grepl('to',yr)),sum(grepl('to',yr)))),
+                                            ' values for ',rep(c('annual','5yr'),c(sum(!grepl('to',yr)),sum(grepl('to',yr)))),
+                                            ' have ',count5(ecosite,T))[these]
+  }
+  
   
   #################### Clarity ############
   clarsite=rightSite[rightSite$Measurement=="SECCHI",]
-  annualMedian <- tapply(clarsite$Value, format(clarsite$Date, '%Y'),na.rm=TRUE, quantile,prob=c(0.5),type=5)
-  
+  annualMedian <- clarsite%>%dplyr::group_by(Year)%>%dplyr::summarise(value=quantile(Value,prob=0.5,type=5,na.rm=T))
+
   if(length(annualMedian)!=0){
-    #adding annualMedians into Com_NOF table
-    Com_NOF$Median_Clarity = annualMedian[match(Com_NOF$Year,names(annualMedian))]
-    
-    #calculate the overall median
-    if(length(clarsite$Value)>=30){
-      Com_NOF$Median_Clarity[nrow(Com_NOF)] <- quantile(clarsite$Value,prob=c(0.5),type=5)
-    }else{
-      Com_NOF$ClarityAnalysisNote[nrow(Com_NOF)]=paste0(Com_NOF$ClarityAnalysisNote[nrow(Com_NOF)],
-                                                       ' Need 30 values for overall median, have ',
-                                                       sum(!is.na(clarsite$Value)))
-    }
-    
+    Com_NOF$ClarityMedian = annualMedian$value[match(Com_NOF$Year,annualMedian$Year)]
+    #Rolling 5yr median
+    rollingMeds = rolling5(siteChemSet=clarsite,quantProb=0.5)
+    rollFails=is.na(as.numeric(rollingMeds))
+    Com_NOF$ClarityMedian[yr%in%names(rollingMeds)] <- as.numeric(rollingMeds)
+    Com_NOF$ClarityAnalysisNote[rollyrs[rollFails]] <- paste0("Need 30 values for median, have",strFrom(s=rollingMeds[rollFails],c='y'))
+
     #find the band which each value belong to
-    Com_NOF$Med_Clarity_Band <- unlist(lapply(Com_NOF$Median_Clarity,NOF_FindBand,bandColumn=NOFbandDefinitions$Clarity)) 
-    Com_NOF$Med_Clarity_Band <- unlist(lapply(Com_NOF$Med_Clarity_Band,FUN=function(x){min(unlist(strsplit(x,split = '')))}))
+    Com_NOF$ClarityMedian_Band <- sapply(Com_NOF$ClarityMedian,NOF_FindBand,bandColumn=NOFbandDefinitions$Clarity)
+    Com_NOF$ClarityMedian_Band <- sapply(Com_NOF$ClarityMedian_Band,FUN=function(x){min(unlist(strsplit(x,split = '')))})
+    rm(rollingMeds,rollFails)
   }  
   rm(clarsite,annualMedian)
   
   
   #################### ChlA ############
   chlSite=rightSite[rightSite$Measurement=="CHLA",]
-  annualMedian <- tapply(chlSite$Value, format(chlSite$Date, '%Y'),na.rm=TRUE, quantile,prob=c(0.5),type=5)
-  
+  annualMedian <- chlSite%>%dplyr::group_by(Year)%>%dplyr::summarise(value=quantile(Value,prob=0.5,type=5,na.rm=T))
+
   if(length(annualMedian)!=0){
-    Com_NOF$Median_ChlA = annualMedian[match(Com_NOF$Year,names(annualMedian))]
-    
-    #calculate the overall median
-    if(length(chlSite$Value)>=30){
-      Com_NOF$Median_ChlA[nrow(Com_NOF)] <- quantile(chlSite$Value,prob=c(0.5),type=5)
-    }else{
-      Com_NOF$ChlAAnalysisNote[nrow(Com_NOF)]=paste0(Com_NOF$ChlAAnalysisNote[nrow(Com_NOF)],
-                                                     ' Need 30 values for overall median, have ',
-                                                     sum(!is.na(chlSite$Value)))
-    }
-    
+    Com_NOF$ChlAMed = annualMedian$value[match(Com_NOF$Year,annualMedian$Year)]
+    #Rolling 5 yr median
+    rollingMeds = rolling5(siteChemSet=chlSite,quantProb=0.5)
+    rollFails = is.na(as.numeric(rollingMeds))
+    Com_NOF$ChlAMed[yr%in%names(rollingMeds)] <- as.numeric(rollingMeds)
+    Com_NOF$ChlAAnalysisNote[rollyrs[rollFails]] <- paste0("Need 30 values for median, have ",strFrom(s=rollingMeds[rollFails],c='y'))
+
     #find the band which each value belong to
-    Com_NOF$Med_ChlA_Band <- unlist(lapply(Com_NOF$Median_ChlA,NOF_FindBand,bandColumn=NOFbandDefinitions$ChlAMedian)) 
-    Com_NOF$Med_ChlA_Band <- unlist(lapply(Com_NOF$Med_ChlA_Band,FUN=function(x){min(unlist(strsplit(x,split = '')))}))
+    Com_NOF$ChlAMed_Band <- sapply(Com_NOF$ChlAMed,NOF_FindBand,bandColumn=NOFbandDefinitions$ChlAMedian)
+    Com_NOF$ChlAMed_Band <- sapply(Com_NOF$ChlAMed_Band,FUN=function(x){min(unlist(strsplit(x,split = '')))})
+    rm(rollingMeds,rollFails)
   }
   rm(annualMedian)
   #ChlA max
-  annualMax <- tapply(chlSite$Value,format(chlSite$Date, '%Y'),na.rm=TRUE, max)
+  annualMax <- chlSite%>%dplyr::group_by(Year)%>%dplyr::summarise(value=max(Value,na.rm=T))
   
   if(length(annualMax)!=0){
-    Com_NOF$Max_ChlA = annualMax[match(Com_NOF$Year,names(annualMax))]
-    
-    #calculate the overall max
-    if(length(chlSite$Value)>=30){
-      Com_NOF$Max_ChlA[nrow(Com_NOF)] <- quantile(chlSite$Value,prob=c(0.95),type=5)
-    }else{
-      Com_NOF$ChlAAnalysisNote[nrow(Com_NOF)]=paste0(Com_NOF$ChlAAnalysisNote[nrow(Com_NOF)],
-                                                     ' Need 30 values for overall Max. ')
-    }
-    
+    Com_NOF$ChlAMax = annualMax$value[match(Com_NOF$Year,annualMax$Year)]
+    #Rolling max
+    rollingMax=rolling5(chlSite,quantProb=0.95)
+    rollFails=is.na(as.numeric(rollingMax))
+    Com_NOF$ChlAMax[yr%in%names(rollingMax)]=as.numeric(rollingMax)
+    Com_NOF$ChlAAnalysisNote[rollyrs[rollFails]] <- paste0("Need 30 values for max, have ",strFrom(s=rollingMax[rollFails],c='y'))
     #find the band which each value belong to
-    Com_NOF$Max_ChlA_Band <- unlist(lapply(Com_NOF$Max_ChlA,NOF_FindBand,bandColumn=NOFbandDefinitions$ChlAMax)) 
-    Com_NOF$Max_ChlA_Band <- unlist(lapply(Com_NOF$Max_ChlA_Band,FUN=function(x){min(unlist(strsplit(x,split = '')))}))
-    
-    #------------------Finding the band for ChlA Summary-------------------------------
-    Com_NOF$ChlASummaryBand=apply(select(Com_NOF,Med_ChlA_Band, Max_ChlA_Band),1,max,na.rm=T)
-    
+    Com_NOF$ChlAMax_Band <- sapply(Com_NOF$ChlAMax,NOF_FindBand,bandColumn=NOFbandDefinitions$ChlAMax)
+    Com_NOF$ChlAMax_Band <- sapply(Com_NOF$ChlAMax_Band,FUN=function(x){min(unlist(strsplit(x,split = '')))})
+    rm(rollingMax,rollFails)
   }  
+    #------------------Finding the band for ChlA Summary-------------------------------
+    Com_NOF$ChlASummaryBand=apply(select(Com_NOF,ChlAMed_Band, ChlAMax_Band),1,max,na.rm=T)
   rm(chlSite,annualMax)
-  
-  # if(!exists("NOFSummaryTable")){
-  #   NOFSummaryTable <- Com_NOF
-  # } else {
-  #   NOFSummaryTable <- rbind.data.frame(NOFSummaryTable,Com_NOF,stringsAsFactors = FALSE)
-  # }
-  if(any(Com_NOF$LawaSiteID=='hrc-00331'&Com_NOF$CouncilSiteID=='lake wairarapa alsops bay')){browser()}
   return(Com_NOF)
 }->NOFSummaryTable
 stopCluster(workers)
 rm(workers)
 
+Sys.time()-startTime
+rm(startTime)
+#July6  3.8 secs
+
+#These contain the best case out of these scorings, the worst of which contributes.
+suppressWarnings(cnEc_Band <- sapply(NOFSummaryTable$EcoliBand,FUN=function(x){min(unlist(strsplit(x,split = '')))}))
+suppressWarnings(cnEc95_Band <- sapply(NOFSummaryTable$Ecoli95_Band,FUN=function(x){min(unlist(strsplit(x,split = '')))}))
+suppressWarnings(cnEcRecHealth540_Band <- sapply(NOFSummaryTable$EcoliRecHealth540_Band,FUN=function(x){min(unlist(strsplit(x,split = '')))}))
+suppressWarnings(cnEcRecHealth260_Band <- sapply(NOFSummaryTable$EcoliRecHealth260_Band,FUN=function(x){min(unlist(strsplit(x,split = '')))}))  
+NOFSummaryTable$EcoliSummaryBand = as.character(apply(cbind(pmax(cnEc_Band,cnEc95_Band,cnEcRecHealth540_Band,cnEcRecHealth260_Band)),1,max))
+rm("cnEc_Band","cnEc95_Band","cnEcRecHealth540_Band","cnEcRecHealth260_Band")
+
 
 if(0){
-  with(NOFSummaryTable,plot(as.factor(Tot_Nitr_Band),Total_Nitrogen,log='y'))
-  with(NOFSummaryTable,plot(as.factor(Tot_Phos_Band),Total_Phosphorus,log='y'))
-  with(NOFSummaryTable,plot(as.factor(Med_Ammoniacal_Band),AmmoniacalMed,log='y'))
-  with(NOFSummaryTable,plot(as.factor(Max_Ammoniacal_Band),Max_Ammoniacal,log='y'))
-  with(NOFSummaryTable,plot(as.factor(Med_ChlA_Band),Median_ChlA,log='y'))
-  with(NOFSummaryTable,plot(as.factor(Max_ChlA_Band),Max_ChlA,log='y'))
-  with(NOFSummaryTable,plot(as.factor(Med_Clarity_Band),Median_Clarity,log='y'))
+  with(NOFSummaryTable,plot(as.factor(NitrogenMed_Band),NitrogenMed,log='y'))
+  with(NOFSummaryTable,plot(as.factor(PhosphorusMed_Band),PhosphorusMed,log='y'))
+  with(NOFSummaryTable,plot(as.factor(AmmoniacalMed_Band),AmmoniacalMed+0.01,log='y'))
+  with(NOFSummaryTable,plot(as.factor(AmmoniacalMax_Band),AmmoniacalMax,log='y'))
+  with(NOFSummaryTable,plot(as.factor(ChlAMed_Band),ChlAMed,log='y'))
+  with(NOFSummaryTable,plot(as.factor(ChlAMax_Band),ChlAMax,log='y'))
+  with(NOFSummaryTable,plot(as.factor(ClarityMedian_Band),ClarityMedian,log='y'))
   
-  table(NOFSummaryTable$Med_Ammoniacal_Band,NOFSummaryTable$Ammonia_Toxicity_Band)
-  table(NOFSummaryTable$Max_Ammoniacal_Band,NOFSummaryTable$Ammonia_Toxicity_Band)
-  table(NOFSummaryTable$Max_Ammoniacal_Band,NOFSummaryTable$Max_Ammoniacal_Band)
-  table(NOFSummaryTable$E_coli95_band,NOFSummaryTable$E_coliSummaryband)
+  table(NOFSummaryTable$AmmoniacalMed_Band,NOFSummaryTable$Ammonia_Toxicity_Band)
+  table(NOFSummaryTable$AmmoniacalMax_Band,NOFSummaryTable$Ammonia_Toxicity_Band)
+  table(NOFSummaryTable$AmmoniacalMax_Band,NOFSummaryTable$AmmoniacalMax_Band)
+  table(NOFSummaryTable$Ecoli95_Band,NOFSummaryTable$EcoliSummaryBand)
 }
 
 
@@ -455,7 +426,7 @@ NOFSummaryTable$CouncilSiteID=lakeSiteTable$CouncilSiteID[match(NOFSummaryTable$
 NOFSummaryTable$Agency=lakeSiteTable$Agency[match(NOFSummaryTable$LawaSiteID,lakeSiteTable$LawaSiteID)]
 NOFSummaryTable$Region=lakeSiteTable$Region[match(NOFSummaryTable$LawaSiteID,lakeSiteTable$LawaSiteID)]
 NOFSummaryTable$SiteID=lakeSiteTable$SiteID[match(NOFSummaryTable$LawaSiteID,lakeSiteTable$LawaSiteID)]
-NOFSummaryTable <- NOFSummaryTable%>%select(LawaSiteID:SiteID,Year:E_coliSummaryband)
+NOFSummaryTable <- NOFSummaryTable%>%select(LawaSiteID:SiteID,Year:EcoliSummaryBand)
 
 
 # Reshape Output
@@ -472,14 +443,14 @@ write.csv(NOFSummaryTable%>%dplyr::filter(Year=="Overall"),
 #Make outputs for ITE
 LakeSiteNOF <- NOFSummaryTableLong%>%
   dplyr::select(LawaSiteID,variable,Year,value)%>%
-  dplyr::filter(grepl('band',variable,ignore.case=T))%>%
+  dplyr::filter(grepl('Band',variable,ignore.case=T))%>%
   dplyr::filter(Year=="Overall")
 LakeSiteNOF$parameter=LakeSiteNOF$variable
-LakeSiteNOF$parameter[which(LakeSiteNOF$variable%in%c("E_coli95","E_coli95_Band","E_coli_Period",
-                                                     "E_coli_Median","E_coli_band",
-                                                     "E_coliRecHealth260","E_coliRecHealth260_Band",
-                                                     "E_coliRecHealth540","E_coliRecHealth540_Band",
-                                                     "Max_Ammoniacal_Band","Med_Ammoniacal_Band",
+LakeSiteNOF$parameter[which(LakeSiteNOF$variable%in%c("Ecoli95","Ecoli95_Band","EcoliPeriod",
+                                                     "EcoliMedian","EcoliBand",
+                                                     "EcoliRecHealth260","EcoliRecHealth260_Band",
+                                                     "EcoliRecHealth540","EcoliRecHealth540_Band",
+                                                     "AmmoniacalMax_Band","AmmoniacalMed_Band",
                                                      "Nitrate_Toxicity_Band"))] <- NA
 
 LakeSiteNOF$parameter <- gsub(pattern = "_*Band",replacement = "",x = LakeSiteNOF$parameter,ignore.case = T)
@@ -533,31 +504,31 @@ cat("Nuffadem ouptuts")
 # 
 # variables<-as.character(unique(NOFSummaryTableLongSubset$variable))
 # variables <- variables[order(variables)]
-# # [1] "Ammonia_Toxicity_Band"   "ChlASummaryBand"         "E_coli"                  "E_coli_band"             "E_coli95"               
-# # [6] "E_coli95_band"           "E_coliRecHealth260"      "E_coliRecHealth260_Band" "E_coliRecHealth540"      "E_coliRecHealth540_Band"
-# # [11] "E_coliSummaryband"       "Max_Ammoniacal"          "Max_Ammoniacal_Band"     "Max_ChlA"                "Max_ChlA_Band"          
-# # [16] "Med_Ammoniacal_Band"     "Med_ChlA_Band"           "Med_Clarity_Band"        "AmmoniacalMed"       "Median_ChlA"            
-# # [21] "Median_Clarity"          "Tot_Nitr_Band"           "Tot_Phos_Band"           "Total_Nitrogen"          "Total_Phosphorus" 
+# # [1] "Ammonia_Toxicity_Band"   "ChlASummaryBand"         "Ecoli"                  "EcoliBand"             "Ecoli95"               
+# # [6] "Ecoli95_Band"           "EcoliRecHealth260"      "EcoliRecHealth260_Band" "EcoliRecHealth540"      "EcoliRecHealth540_Band"
+# # [11] "EcoliSummaryBand"       "AmmoniacalMax"          "AmmoniacalMax_Band"     "ChlAMax"                "ChlAMax_Band"          
+# # [16] "AmmoniacalMed_Band"     "ChlAMed_Band"           "ClarityMedian_Band"        "AmmoniacalMed"       "ChlAMed"            
+# # [21] "ClarityMedian"          "NitrogenMed_Band"           "PhosphorusMed_Band"           "NitrogenMed"          "PhosphorusMed" 
 # 
 # # Decimal places for variables
 # dp <- rep(NA,length(variables))
-# dp[variables%in%c("E_coli", "E_coli95", "E_coliRecHealth260", "E_coliRecHealth540")] <- 0
-# dp[variables%in%c("Max_Ammoniacal", "AmmoniacalMed", "Total_Nitrogen", "Total_Phosphorus","Median_ChlA","Max_ChlA")] <- 4
-# dp[variables%in%c("Median_Clarity")] <- 2
+# dp[variables%in%c("Ecoli", "Ecoli95", "EcoliRecHealth260", "EcoliRecHealth540")] <- 0
+# dp[variables%in%c("AmmoniacalMax", "AmmoniacalMed", "NitrogenMed", "PhosphorusMed","ChlAMed","ChlAMax")] <- 4
+# dp[variables%in%c("ClarityMedian")] <- 2
 # 
 # MeasurementInvolved <- variables
 # MeasurementInvolved <- gsub(pattern = "Band",replacement = "",x = MeasurementInvolved)
-# MeasurementInvolved <- gsub(pattern = "band",replacement = "",x = MeasurementInvolved)
+# MeasurementInvolved <- gsub(pattern = "Band",replacement = "",x = MeasurementInvolved)
 # MeasurementInvolved <- gsub(pattern = "_$",replacement = "",x = MeasurementInvolved)
 # MeasurementInvolved <- gsub(pattern = "Med_",replacement = "Median_",x = MeasurementInvolved)
 # MeasurementInvolved <- gsub(pattern = "Tot_",replacement = "Total_",x = MeasurementInvolved)
-# MeasurementInvolved <- gsub(pattern = "E_coli$",replacement = "E_coliMedian",x = MeasurementInvolved)
+# MeasurementInvolved <- gsub(pattern = "Ecoli$",replacement = "EcoliMedian",x = MeasurementInvolved)
 # MeasurementInvolved <- gsub(pattern = "Phosphorus",replacement = "Phos",x = MeasurementInvolved)
 # MeasurementInvolved <- gsub(pattern = "Nitrogen",replacement = "Nitr",x = MeasurementInvolved)
 # 
 # 
 # desc = rep('value',length(variables))
-# desc[grepl(variables,pattern = 'band',ignore.case = T)] <- 'band'
+# desc[grepl(variables,pattern = 'Band',ignore.case = T)] <- 'Band'
 # desc[variables%in%c("Agency", "SWQAltitude","SWQLanduse","SiteID","CATCH_LBL","CatchID",
 #                     "CatchType","Comment","LAWA_CATCH","Region","SOE_FW_RIV",
 #                     "SWQFrequencyAll","SWQFrequencyLast5","SWQuality","TermReach")] <- 'meta'
@@ -596,17 +567,17 @@ cat("Nuffadem ouptuts")
 # 
 # # Transform (tidyr::spread) data in NOFRound to the following form to supply to IT Effect
 # # LawaSiteID,CouncilSiteID,Year,Measurement,value,Band
-# # ARC-00001,44603,Overall,Max_AmmoniacalN,NA,NA
+# # ARC-00001,44603,Overall,AmmoniacalMaxN,NA,NA
 # # ARC-00001,44603,Overall,AmmoniacalMed,NA,NA
 # # ARC-00001,44603,Overall,Median_Ecoli,28,A
-# # ARC-00001,44603,Overall,Total_Nitrogen,0.0079,A
+# # ARC-00001,44603,Overall,NitrogenMed,0.0079,A
 # 
 # NOF_value <- NOFRound%>%filter(desc=="value")%>%select("LawaSiteID","CouncilSiteID","SiteID","Agency","Year","variable","value","MeasurementInvolved")
 # names(NOF_value) <- c("LawaSiteID","CouncilSiteID","SiteID","Agency","Year","Measurement","Value",'MeasurementInvolved')
-# NOF_band  <- NOFRound%>%filter(desc=="band")%>%select("LawaSiteID","CouncilSiteID","SiteID","Agency","Year","variable","value","MeasurementInvolved")
-# names(NOF_band) <- c("LawaSiteID","CouncilSiteID","SiteID","Agency","Year","BandingRule","BandScore",'MeasurementInvolved')
+# NOF_Band  <- NOFRound%>%filter(desc=="Band")%>%select("LawaSiteID","CouncilSiteID","SiteID","Agency","Year","variable","value","MeasurementInvolved")
+# names(NOF_Band) <- c("LawaSiteID","CouncilSiteID","SiteID","Agency","Year","BandingRule","BandScore",'MeasurementInvolved')
 # 
-# NOF_wide <- dplyr::left_join(NOF_band,NOF_value,by = c("LawaSiteID","CouncilSiteID","SiteID","Agency", "Year", "MeasurementInvolved"))
+# NOF_wide <- dplyr::left_join(NOF_Band,NOF_value,by = c("LawaSiteID","CouncilSiteID","SiteID","Agency", "Year", "MeasurementInvolved"))
 # NOF_wide <- unique(NOF_wide)
 # 
 # 

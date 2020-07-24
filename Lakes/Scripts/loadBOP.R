@@ -3,6 +3,9 @@ require(dplyr)   ### dply library to manipulate table joins on dataframes
 require(XML)     ### XML library to write hilltop XML
 require(RCurl)
 
+
+work to do on parsing all dates to same format  (dmy)
+
 agency='boprc'
 setwd("H:/ericg/16666LAWA/LAWA2020/Lakes")
 
@@ -82,8 +85,9 @@ okaro <- okaro%>%select(-Uvalue)%>%filter(Measurement%in%c("CHLA","ECOLI","NH4",
 okaro$value[okaro$Measurement%in%c("NH4","TN","TP")&
               !is.na(as.numeric(okaro$Value))]=okaro$value[okaro$Measurement%in%c("NH4","TN","TP")&
                                                              !is.na(as.numeric(okaro$Value))]/1000
-
-Data=rbind(Data,okaro)
+if(any(grepl(okaro$Site[1],siteTable$CouncilSiteID,ignore.case = T))){
+  Data=rbind(Data,okaro)
+}
 rm(okaro)
 
 
@@ -94,7 +98,9 @@ bop2018=read.csv(tail(dir(path = 'h:/ericg/16666LAWA/2018/Lakes/1.Imported/',
                           recursive = T,full.names = T,ignore.case = T),1),stringsAsFactors = F)%>%
   filter(agency=='boprc')
 bop2018$SiteID=toupper(siteTable$CouncilSiteID[match(tolower(bop2018$LawaSiteID),tolower(siteTable$LawaSiteID))])
-bop2018 <- bop2018%>%transmute(Site=toupper(SiteID),
+bop2018 <- bop2018%>%
+  drop_na(SiteID)%>%
+  transmute(Site=toupper(SiteID),
             Measurement=parameter,
             time=Date,
             value=Value,
@@ -103,6 +109,8 @@ bop2018$time=format.Date(lubridate::dmy(bop2018$time),"%Y-%m-%dT00:00:00.000Z")
 
 Data=unique(rbind(Data,bop2018))
 rm(bop2018)
+
+
 
 Data$Measurement[which(Data$Measurement=="TN")] <- "N _Tot__LabResult"
 Data$Measurement[which(Data$Measurement=="TP")] <- "P _Tot__LabResult"

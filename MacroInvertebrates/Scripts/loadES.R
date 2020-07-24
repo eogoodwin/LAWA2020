@@ -15,24 +15,25 @@ Measurements <- subset(df,df$Type=="Measurement")[,1]
 siteTable=loadLatestSiteTableMacro()
 sites = unique(siteTable$CouncilSiteID[siteTable$Agency==agency])
 
-
+# sites=gsub(pattern = 'Hedgehope Confluence$',replacement = 'Hedgehope Confluence ',x = sites)
 
 con <- xmlOutputDOM("Hilltop")
 con$addTag("Agency", agency)
 
 
 for(i in 1:length(sites)){
-  cat(sites[i],i,'out of',length(sites),'\n')
+  cat('\n',sites[i],i,'out of',length(sites))
   for(j in 1:length(Measurements)){
     
     url <- paste0("http://odp.es.govt.nz/MI.hts?service=Hilltop&request=GetData",
-                 "&Site=",sites[i],
-                 "&Measurement=",Measurements[j],
-                 "&From=1990-01-01",
-                 "&To=2020-06-01")
-      url <- URLencode(url)
+                  "&Site=",sites[i],
+                  "&Measurement=",Measurements[j],
+                  "&From=1990-01-01",
+                  "&To=2020-06-01")
+    url <- URLencode(url)
     xmlfile <- ldMWQ(url,agency)
     if(!is.null(xmlfile)){
+      cat(Measurements[j],'\t')
       xmltop<-xmlRoot(xmlfile)
       
       m<-xmltop[['Measurement']]

@@ -3,7 +3,7 @@ library(tidyverse)
 source("h:/ericg/16666LAWA/LAWA2020/Scripts/LWPTrends_Dec18/LWPTrends_v1811.R")
 source("h:/ericg/16666LAWA/LAWA2020/Scripts/LAWAFunctions.R")
 source("h:/ericg/16666LAWA/LAWA2020/WaterQuality/scripts/SWQ_state_functions.R")
-try(dir.create(paste0("h:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Analysis/",format(Sys.Date(),"%Y-%m-%d")),recursive = T))
+dir.create(paste0("h:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Analysis/",format(Sys.Date(),"%Y-%m-%d")),recursive = T,showWarnings = F)
 
 Mode=function(x) {
   ux <- unique(x)
@@ -32,7 +32,8 @@ if(!exists('macroData')){
   macroData$Season=macroData$month
   macroData$Censored=F
   macroData$CenType="FALSE"
-}
+macroData$LawaSiteID=tolower(macroData$LawaSiteID)
+  }
 
 
 

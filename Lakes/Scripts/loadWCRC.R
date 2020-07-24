@@ -9,7 +9,7 @@ configsites <- subset(df,df$Type=="Site")[,1]
 configsites <- as.vector(configsites)
 Measurements <- subset(df,df$Type=="Measurement")[,1]
 
- siteTable=loadLatestSiteTableLakes(maxHistory=30)
+siteTable=loadLatestSiteTableLakes(maxHistory=30)
 sites = unique(siteTable$CouncilSiteID[siteTable$Agency==agency])
 lakeDataColumnLabels=NULL
 
@@ -19,15 +19,15 @@ con <- xmlOutputDOM("Hilltop")
 con$addTag("Agency", toupper(agency))
 
 for(i in 1:length(sites)){
-    cat(sites[i],i,"out of",length(sites),"\n")
+  cat(sites[i],i,"out of",length(sites),"\n")
   for(j in 1:length(Measurements)){
     url <- paste0("http://hilltop.wcrc.govt.nz/wq.hts?service=Hilltop&request=GetData",
-                 "&Site=",sites[i],
-                 "&Measurement=",Measurements[j],
-                 "&From=2004-01-01",
-                 "&To=2020-01-01")
-      url <- URLencode(url)
-      xmlfile <- ldLWQ(url,agency)
+                  "&Site=",sites[i],
+                  "&Measurement=",Measurements[j],
+                  "&From=2004-01-01",
+                  "&To=2020-01-01")
+    url <- URLencode(url)
+    xmlfile <- ldLWQ(url,agency)
     if(!is.null(xmlfile)){
       cat(Measurements[j],'\t')
       datAsList = XML::xmlToList(xmlfile)
@@ -68,33 +68,33 @@ for(i in 1:length(sites)){
       ansValue <- lapply(c("I1"),function(var) unlist(xpathApply(m,paste("//",var,sep=""),xmlValue)))
       if(is.null(ansValue[[1]])){
         ansValue <- lapply(c("Value"),function(var) unlist(xpathApply(m,paste("//",var,sep=""),xmlValue)))
-}
+      }
       ansValue <- unlist(ansValue)
       
-if(0){
-  #   # subset data based on site and measurement and sort on date
-    #   p <- subset(meta, meta$Site.Name==sites[i] & meta$MeasurementName==Measurements[j])
-    #  # p$pDTz <- as.POSIXct(strptime(p$Date.Time,format = "%d/%m/%Y",tz="GMT"))
-    # #  p <- p[order(p$pDTz),]
-    #   
-    #   #Concatenate a column with all metadata parameters included and create vector
-    #   if(nrow(p)!=0){
-    #     p$I2 <- paste("LAWAID", p$LAWAID, "Measurement", p$Measurement, "Depth from", p$Depth.from, "Depth to", p$Depth.to, "Sample level", p$Samplelevel,
-    #                   "Method", p$Method, "DetectionLimit", p$DetectionLimit, "QualityCode", 
-    #                   p$QualityCode, "SampleFrequency", p$SampleFrequency, "Sample type", p$Sample.type, "Laketype", p$Laketype, sep=tab)
-    #   }
-    #   # remove unnecessary variables
-    #   #p<-p[,c(1:5,14:15)]
-    #   
-    #   ## converting xml to dataframe in order to match datatimes for wq measurement parameters
-    #   mdata <- xmlToDataFrame(m[['Data']],stringsAsFactors=FALSE)
-    #   mdata$pDTz <- as.POSIXct(strptime(mdata$T,format = "%Y-%m-%dT%H:%M:%S",tz="GMT"))
-    #   
-    #   if(!is.null(p$I2)){
-    #     mdata$I2 <- p$I2
-    #   }
-    #   mdata <- mdata[complete.cases(mdata$T),]
-     } 
+      if(0){
+        #   # subset data based on site and measurement and sort on date
+        #   p <- subset(meta, meta$Site.Name==sites[i] & meta$MeasurementName==Measurements[j])
+        #  # p$pDTz <- as.POSIXct(strptime(p$Date.Time,format = "%d/%m/%Y",tz="GMT"))
+        # #  p <- p[order(p$pDTz),]
+        #   
+        #   #Concatenate a column with all metadata parameters included and create vector
+        #   if(nrow(p)!=0){
+        #     p$I2 <- paste("LAWAID", p$LAWAID, "Measurement", p$Measurement, "Depth from", p$Depth.from, "Depth to", p$Depth.to, "Sample level", p$Samplelevel,
+        #                   "Method", p$Method, "DetectionLimit", p$DetectionLimit, "QualityCode", 
+        #                   p$QualityCode, "SampleFrequency", p$SampleFrequency, "Sample type", p$Sample.type, "Laketype", p$Laketype, sep=tab)
+        #   }
+        #   # remove unnecessary variables
+        #   #p<-p[,c(1:5,14:15)]
+        #   
+        #   ## converting xml to dataframe in order to match datatimes for wq measurement parameters
+        #   mdata <- xmlToDataFrame(m[['Data']],stringsAsFactors=FALSE)
+        #   mdata$pDTz <- as.POSIXct(strptime(mdata$T,format = "%Y-%m-%dT%H:%M:%S",tz="GMT"))
+        #   
+        #   if(!is.null(p$I2)){
+        #     mdata$I2 <- p$I2
+        #   }
+        #   mdata <- mdata[complete.cases(mdata$T),]
+      } 
       # loop through TVP nodes
       for(N in 1:xmlSize(m[['Data']])){  ## Number of Time series values
         # loop through all Children - T, Value, Parameters ..    

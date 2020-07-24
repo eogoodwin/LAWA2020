@@ -7,15 +7,12 @@ source('H:/ericg/16666LAWA/LAWA2020/scripts/LAWAFunctions.R')
 setwd("H:/ericg/16666LAWA/LAWA2020/Lakes")
 agency='nrc'
 df <- read.csv(paste0("H:/ericg/16666LAWA/LAWA2020/Lakes/Metadata/",agency,"LWQ_config.csv"),sep=",",stringsAsFactors=FALSE)
-# configsites <- subset(df,df$Type=="Site")[,1]
-# configsites <- as.vector(configsites)
 Measurements <- subset(df,df$Type=="Measurement")[,1]
 
 siteTable=loadLatestSiteTableLakes(maxHistory=30)
 sites = unique(siteTable$CouncilSiteID[siteTable$Agency==agency])
 lakeDataColumnLabels=NULL
 
-tab="\t"
 
 con <- xmlOutputDOM("Hilltop")
 con$addTag("Agency", toupper(agency))
@@ -75,9 +72,9 @@ for(i in 1:length(sites)){
               metaName  <- as.character(xmlToList(p[[n]])[1])   ## Getting the name attribute
               metaValue <- as.character(xmlToList(p[[n]])[2])   ## Getting the value attribute
               if(n==2){      # Starting at '2' and '1' is the T element for time
-                item1 <- paste(metaName,metaValue,sep=tab)
+                item1 <- paste(metaName,metaValue,sep="\t")
               } else {
-                item1 <- paste(item1,metaName,metaValue,sep=tab)
+                item1 <- paste(item1,metaName,metaValue,sep="\t")
               }
             }
           }
@@ -103,17 +100,17 @@ for(i in 1:length(sites)){
           ## Hand Greater than symbol
           if(grepl(pattern = "^\\>",x =  ansValue[N],perl = TRUE)){
             ansValue[N] <- substr(ansValue[N],2,nchar(ansValue[N]))
-            item2 <- paste("$ND",tab,">",tab,sep="")
+            item2 <- paste("$ND\t>\t",sep="")
             
             # Handle Less than symbols  
           } else if(grepl(pattern = "^\\<",x =  ansValue[N],perl = TRUE)){
             ansValue[N] <- substr(ansValue[N],2,nchar(ansValue[N]))
-            item2 <- paste("$ND",tab,"<",tab,sep="")
+            item2 <- paste("$ND\t<\t",sep="")
             
             # Handle Asterixes  
           } else if(grepl(pattern = "^\\*",x =  ansValue[N],perl = TRUE)){
             ansValue[N] <- gsub(pattern = "^\\*", replacement = "", x = ansValue[N])
-            item2 <- paste("$ND",tab,"*",tab,sep="")
+            item2 <- paste("$ND\t*\t",sep="")
           } else{
             item2 <- ""
           }
@@ -123,7 +120,7 @@ for(i in 1:length(sites)){
             for(n in 3:xmlSize(m[['Data']][[N]])){      
               #Getting attributes and building string to put in Item 2
               attrs <- xmlAttrs(m[['Data']][[N]][[n]])  
-              item2 <- paste(item2,attrs[1],tab,attrs[2],tab,sep="")
+              item2 <- paste(item2,attrs[1],"\t",attrs[2],"\t",sep="")
             }
           }
           addChildren(DataNode[[xmlSize(DataNode)]], newXMLNode(name = "I2",item2))

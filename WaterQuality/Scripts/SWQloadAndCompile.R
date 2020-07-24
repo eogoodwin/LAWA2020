@@ -44,11 +44,19 @@ stopCluster(workers)
 rm(workers)
 cat("Done load\n")
 
+
+
+doneload=T
+
+
+
+##############################################################################
 #Check all the measurement names are in the transfers table
+##############################################################################
 transfers=read.table("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Metadata/transfers_plain_english_view.txt",
                      sep=',',header = T,stringsAsFactors = F)
 # transfers$CallName[which(transfers$CallName=="Clarity (Black Disc Field)"&transfers$Agency=='es')] <- "Clarity (Black Disc, Field)"
-for(agency in c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc")){
+for(agency in c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc")){
   df <- read.csv(paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/MetaData/",agency,"SWQ_config.csv"),sep=",",stringsAsFactors=FALSE)
   Measurements <- subset(df,df$Type=="Measurement")[,2]
   if(any(!Measurements%in%transfers$CallName[transfers$Agency==agency])){
@@ -61,39 +69,45 @@ for(agency in c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc",
 ##############################################################################
 #                                 XML to CSV
 ##############################################################################
+# agencies=c("ac","boprc","gdc","gwrc","hbrc")
 
-agencies=c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc")
-lawaset=c("NH4", "TURB", "BDISC",  "DRP",  "ECOLI",  "TN",  "TP",  "TON",  "PH")
+agencies=c("boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc") #"ac",
+lawaset=c("NH4", "TURB","TURBFNU", "BDISC",  "DRP",  "ECOLI",  "TN",  "TP",  "TON",  "PH")
+transfers=read.table("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Metadata/transfers_plain_english_view.txt",
+                     sep=',',header = T,stringsAsFactors = F)
+transfers$CallName[which(transfers$CallName=="Clarity (Black Disc Field)"&transfers$Agency=='es')] <- "Clarity (Black Disc, Field)"
+
 workersB <- makeCluster(7)
 registerDoParallel(workersB)
-clusterCall(workersB,function(){
+cc=clusterCall(workersB,function(){
   library(tidyverse)
   source('H:/ericg/16666LAWA/LAWA2020/scripts/LAWAFunctions.R')
-  agencies=c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc")
+  agencies=c("boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc") #"ac",  ac downloaded in csv
   lawaset=c("NH4", "TURB", "BDISC",  "DRP",  "ECOLI",  "TN",  "TP",  "TON",  "PH")
-  transfers=read.table("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Metadata/transfers_plain_english_view.txt",
-                       sep=',',header = T,stringsAsFactors = F)
-  transfers$CallName[which(transfers$CallName=="Clarity (Black Disc Field)"&transfers$Agency=='es')] <- "Clarity (Black Disc, Field)"
-})
+  })
+startTime=Sys.time()
 # for(i in 1:length(agencies)){
 foreach(i = 1:length(agencies),.errorhandling="stop")%dopar%{
-  xml2csvRiver(agency=agencies[i],quiet=T,reportCensor=F,reportVars=F,ageCheck=T,maxHistory=20)
+  xml2csvRiver(agency=agencies[i],quiet=T,reportCensor=F,reportVars=F,ageCheck=F,maxHistory=20)
   return(NULL)
   }
 stopCluster(workersB)
 rm(workersB)
+Sys.time()-startTime
+rm(startTime)
+#15 minutes
 ##############################################################################
 #                                 *****
 ##############################################################################
 cat("Done to CSV")
-
+donexmltocsv=T
 
 
 
 
 #19 June 2020
 #Check agency and region count per file
- for(agency in c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc")){
+ for(agency in c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc")){
     checkCSVageRiver(agency = agency)
  }
    #   mfl=loadLatestCSVRiver(agency,maxHistory = 3,silent=T)
@@ -103,7 +117,7 @@ cat("Done to CSV")
 
 # 
 # #This could checks whether previous downloads pulled datas missing from current download.
-# for (agency in c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc")){
+# for (agency in c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc")){
   # agencyFiles = data.frame(name=dir(path = "H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/",
   #                   pattern = paste0('^',agency,'.csv'),
   #                   full.names = T,recursive = T,ignore.case = T),
@@ -126,10 +140,11 @@ cat("Done to CSV")
   siteTable=loadLatestSiteTableRiver()
   lawaset=c("NH4", "TURB", "BDISC",  "DRP",  "ECOLI",  "TN",  "TP",  "TON",  "PH")
   rownames(siteTable)=NULL
-  suppressWarnings(rm(wqdata,"arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc"))
-  agencies= c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc")
+  suppressWarnings(rm(wqdata,"ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc"))
+  agencies= c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc")
 library(parallel)
 library(doParallel)
+  backfill=T
 workers=makeCluster(7)
 registerDoParallel(workers)
 clusterCall(workers,function(){
@@ -140,6 +155,9 @@ clusterCall(workers,function(){
 startTime=Sys.time()
 foreach(agency =1:length(agencies),.combine = rbind,.errorhandling = 'stop')%dopar%{
   mfl=loadLatestCSVRiver(agencies[agency],maxHistory = 30)
+  if('centype'%in%names(mfl)){
+    names(mfl)[names(mfl)=='centype'] <- 'CenType'
+  }
   if('CouncilSiteID.1'%in%names(mfl)){
     mfl <- mfl%>%select(-CouncilSiteID.1)
   }
@@ -154,6 +172,8 @@ foreach(agency =1:length(agencies),.combine = rbind,.errorhandling = 'stop')%dop
     currentSiteMeasCombos=unique(paste0(tolower(mfl$CouncilSiteID),tolower(mfl$Measurement)))
     missingCombos=targetCombos[!targetCombos%in%currentSiteMeasCombos]
 
+    #BACKFILL
+    if(backfill){
     if(length(missingCombos)>0){
       agencyFiles = rev(dir(path = "H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/",
                                         pattern = paste0('^',agencies[agency],'.csv'),
@@ -176,6 +196,7 @@ foreach(agency =1:length(agencies),.combine = rbind,.errorhandling = 'stop')%dop
               agencyCSV$CouncilSiteID.1 = mfl$CouncilSiteID.1[match(tolower(agencyCSV$CouncilSiteID),tolower(mfl$CouncilSiteID))]
             }
             agencyCSV$LawaSiteID=tolower(agencyCSV$LawaSiteID)
+            if("Units"%in%names(mfl))agencyCSV$Units=""
             cat(agency,dim(agencyCSV)[1],'\n')
             mfl=rbind(mfl,agencyCSV[,names(mfl)])
             rm(agencyCSV,these)
@@ -190,6 +211,7 @@ foreach(agency =1:length(agencies),.combine = rbind,.errorhandling = 'stop')%dop
       }
     }
     rm(missingCombos,targetCombos,currentSiteMeasCombos,targetSites)
+    }
     }
     if(agencies[agency]=='niwa'){
       mfl$Value[mfl$Measurement%in%c("DRP","NH4","TN","TP")]=mfl$Value[mfl$Measurement%in%c("DRP","NH4","TN","TP")]/1000
@@ -266,17 +288,36 @@ foreach(agency =1:length(agencies),.combine = rbind,.errorhandling = 'stop')%dop
     
   }
   return(mfl)
-}->wqdata   #23/6/2020    797484                                          990644 without backfill  1062994 with. 1055269 without ECAN backfill
+}->wqdata   #23/6/2020    797484
             #23/6/2020pm  856506
             #25/6/2020    999530
             #3/7/2020    1005143
+            #9/7/2020    1040614  1049189
+            #16/7/2020   1084848
+            #24/7/2020   1102252
 stopCluster(workers)
 rm(workers)
 
-Sys.time()-startTime  #6.7 s
+Sys.time()-startTime  #22.6s
 
+donecombine=T
+
+table(wqdata$Agency,wqdata$QC==0)  #QC data in GWRC, HBRC, AC
 table(wqdata$Agency)
 table(wqdata$SWQLanduse,wqdata$SWQAltitude)
+
+wqdata$Units=tolower(wqdata$Units)
+wqdata$Units = gsub(pattern = " units|_units",replacement = "",x = wqdata$Units)
+wqdata$Units = gsub(pattern = "-n|-p| n| p",replacement = "",x = wqdata$Units)
+wqdata$Units = gsub(pattern = "_",replacement = "",x = wqdata$Units)
+wqdata$Units = gsub(pattern = "^g/m.?.",replacement = "g/m3",x = wqdata$Units)
+wqdata$Units = gsub(pattern = ".*/100ml",replacement = "/100ml",x = wqdata$Units)
+
+write.csv(table(wqdata$Units,wqdata$Agency),'h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/2020-07-09/unitsagency.csv',row.names = F)
+write.csv(table(wqdata$Units,wqdata$Measurement),'h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/2020-07-09/unitsmeasurement.csv',row.names = F)
+table(wqdata$Units,wqdata$Agency)
+table(wqdata$Units,wqdata$Measurement)
+
 
 wqdata$SWQLanduse[which(is.na(wqdata$SWQLanduse))] <- siteTable$SWQLanduse[match(wqdata$LawaSiteID[which(is.na(wqdata$SWQLanduse))],
                                                                                  siteTable$LawaSiteID)]
@@ -290,7 +331,7 @@ wqdata$SWQAltitude=pseudo.titlecase(wqdata$SWQAltitude)
 
 table(wqdata$SWQLanduse,wqdata$SWQAltitude)
 
-wqdata=unique(wqdata)  #1004961
+wqdata=unique(wqdata)  #1079348
 
 wqdata$SiteID=trimws(wqdata$SiteID)
 wqdata$CouncilSiteID=trimws(wqdata$CouncilSiteID)
@@ -320,6 +361,10 @@ wqdata$CenType[wqdata$CenType%in%c("R","Right")] <- "Right"
 #856506 Jun23 pm
 #999356 Jun25 2020
 #1004961 Jul32020
+#1017914 Jul92020
+#1026489 Jul9 after units and sorting AC and HBRC a bit
+#1061942 16Jul2020
+#1079348 24Jul2020
 
 table(unique(tolower(wqdata$LawaSiteID))%in%tolower(siteTable$LawaSiteID))
 table(unique(tolower(wqdata$CouncilSiteID))%in%tolower(siteTable$CouncilSiteID))
@@ -342,7 +387,7 @@ wqdata$Symbol[wqdata$CenType=="Right"]='>'
 wqdata$RawValue=paste0(wqdata$Symbol,wqdata$Value)
 
 ##################
-suppressWarnings(try(dir.create(paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/",format(Sys.Date(),"%Y-%m-%d")))))
+dir.create(paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/",format(Sys.Date(),"%Y-%m-%d")),showWarnings = F)
 write.csv(wqdata,paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/",format(Sys.Date(),"%Y-%m-%d"),"/AllCouncils.csv"),row.names = F)
 # wqdata=read.csv(tail(dir("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data",pattern="AllCouncils.csv",recursive = T,full.names = T,ignore.case = T),1),stringsAsFactors = F)
 ##################

@@ -5,10 +5,10 @@ require(dplyr)   ### dply library to manipulate table joins on dataframes
 setwd("H:/ericg/16666LAWA/LAWA2020/WaterQuality")
 agency='hrc'
 
-df <- read.csv(paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/MetaData/",agency,"SWQ_config.csv"),sep=",",stringsAsFactors=FALSE)
-# configsites <- subset(df,df$Type=="Site")[,2]
-# configsites <- as.vector(configsites)
-Measurements <- subset(df,df$Type=="Measurement")[,2]
+Measurements <- read.table("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Metadata/Transfers_plain_english_view.txt",sep=',',header=T,stringsAsFactors = F)%>%
+  filter(Agency==agency)%>%select(CallName)%>%unname%>%unlist
+Measurements=c(Measurements,'WQ Sample')
+
 siteTable=loadLatestSiteTableRiver()
 sites = unique(siteTable$CouncilSiteID[siteTable$Agency==agency])
 suppressWarnings(rm(Data))
@@ -23,7 +23,7 @@ for(i in 1:length(sites)){
                  "&TemporalFilter=om:phenomenonTime,2005-01-01,2020-01-01")
     url <- URLencode(url)
 
-    xmlfile <- ldWQ(url,agency)
+    xmlfile <- ldWQ(url,agency,QC=F,method = 'wininet')
     if(!is.null(xmlfile)&&!grepl(pattern = "No data|^501",x = xmlValue(xmlRoot(xmlfile)),ignore.case = T)){
       #Create vector of times
       time <- sapply(getNodeSet(doc=xmlfile, "//wml2:time"), xmlValue)          #Create vector of  values

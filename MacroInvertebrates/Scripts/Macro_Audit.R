@@ -3,7 +3,7 @@ library(tidyverse)
 library(lubridate)
 
 source("H:/ericg/16666LAWA/LAWA2020/scripts/LAWAFunctions.R")
-try(shell(paste('mkdir "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Audit/"',format(Sys.Date(),"%Y-%m-%d"),sep=""), translate=TRUE),silent = TRUE)
+dir.create(paste0("h:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Audit/",format(Sys.Date(),"%Y-%m-%d")),recursive = T,showWarnings = F)
 
 macroSiteTable=loadLatestSiteTableMacro()
 # extraSites=read.csv('H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/MetaData/ExtraMacrotable.csv',stringsAsFactors = F)
@@ -16,7 +16,7 @@ macroData=loadLatestDataMacro()
 
 #Combined audit ####
 macroAudit=data.frame(agency=NULL,var=NULL,earliest=NULL,latest=NULL,nMeas=NULL,nSite=NULL,meanMeas=NULL,maxMeas=NULL,minMeas=NULL,nNA=NULL)
-for(agency in c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")){
+for(agency in c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")){
   xmlAge= checkXMLageMacro(agency)
   if(is.na(xmlAge)){next}
   forcsv=loadLatestCSVmacro(agency,maxHistory = 20)
@@ -25,7 +25,7 @@ for(agency in c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc",
   if(!siteTerm%in%names(forcsv)){
     siteTerm="CouncilSiteID"
   }
-  if(agency=='arc'){
+  if(agency=='ac'){
     forcsv$Date = format(lubridate::ymd(forcsv$Date),'%d-%b-%Y')
   }
   newRows=data.frame(agency=rep(agency,length(unique(forcsv$Measurement))),
@@ -66,14 +66,14 @@ table(unique(tolower(macroData$CouncilSiteID))%in%tolower(c(macroSiteTable$SiteI
 
 
 #Per agency audit site/measurement start, stop, n and range ####
-for(agency in c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")){
+for(agency in c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")){
   forcsv=loadLatestCSVmacro(agency,maxHistory = 20)
   if(!is.null(forcsv)){
     if('parameter'%in%names(forcsv)){
       names(forcsv)[which(names(forcsv)=='parameter')] <- 'Measurement'
     }
     
-    if(agency=='arc'){
+    if(agency=='ac'){
       forcsv$Date = format(lubridate::ymd(forcsv$Date),'%d-%b-%Y')
     }
     
@@ -106,7 +106,7 @@ macroData$Measurement[macroData$Measurement=="% EPT Richness"] <- 'pcEPTRichness
 
 #Audit plots to allow comparison between agencies - check units consistency etc  ####
 upara=unique(macroData$Measurement)
-ucounc=c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")
+ucounc=c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")
 for(up in seq_along(upara)){
   png(filename = paste0("h:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Audit/",format(Sys.Date(),"%Y-%m-%d"),"/",
                         upara[up],format(Sys.Date(),'%d%b%y'),".png"),
@@ -135,11 +135,13 @@ for(up in seq_along(upara)){
 
 startTime=Sys.time()
 urls          <- read.csv("H:/ericg/16666LAWA/LAWA2020/Metadata/CouncilWFS.csv",stringsAsFactors=FALSE)
-workers <- makeCluster(7)
-registerDoParallel(workers)
-foreach(agency = c("arc", "boprc", "ecan", "es", "gdc", "gwrc", "hbrc", "hrc", 
-                   "mdc", "ncc", "nrc", "orc", "tdc", "trc", "wcrc", "wrc"),
-        .combine=rbind,.errorhandling="stop")%dopar%{
+# workers <- makeCluster(7)
+# registerDoParallel(workers)
+# foreach(agency = c("ac", "boprc", "ecan", "es", "gdc", "gwrc", "hbrc", "hrc", 
+                   # "mdc", "ncc", "nrc", "orc", "tdc", "trc", "wcrc", "wrc"),
+        # .combine=rbind,.errorhandling="stop")%dopar%{
+for(agency in c("ac", "boprc", "ecan", "es", "gdc", "gwrc", "hbrc", "hrc", 
+                "mdc", "ncc", "nrc", "orc", "tdc", "trc", "wcrc", "wrc")){
           if(length(dir(path = paste0("H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Audit/",format(Sys.Date(),"%Y-%m-%d")),
                         pattern = paste0('^',agency,".*audit\\.csv"),
                         recursive = T,full.names = T,ignore.case = T))>0){
@@ -150,10 +152,10 @@ foreach(agency = c("arc", "boprc", "ecan", "es", "gdc", "gwrc", "hbrc", "hrc",
                               output_file = paste0(toupper(agency),"Audit",format(Sys.Date(),'%d%b%y'),".html"),
                               envir = new.env())
           }
-          return(NULL)
+          # return(NULL)
         }
-stopCluster(workers)
-remove(workers)
+# stopCluster(workers)
+# remove(workers)
 Sys.time()-startTime
 
 

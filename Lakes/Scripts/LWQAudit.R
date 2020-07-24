@@ -2,7 +2,7 @@ rm(list=ls())
 # library(XML)
 library(lubridate)
 source("H:/ericg/16666LAWA/LAWA2020/scripts/LAWAFunctions.R")
-suppressWarnings(try(dir.create(path = paste0("h:/ericg/16666LAWA/LAWA2020/Lakes/Audit/",format(Sys.Date(),"%Y-%m-%d")))))
+dir.create(path = paste0("h:/ericg/16666LAWA/LAWA2020/Lakes/Audit/",format(Sys.Date(),"%Y-%m-%d")),showWarnings = F)
 EndYear <- lubridate::isoyear(Sys.Date())-1
 StartYear10 <- EndYear-9
 StartYear5 <- EndYear-4
@@ -16,10 +16,10 @@ if(mean(LWQdata$Value[which(LWQdata$Measurement%in%c('NH4N','TN','TP'))],na.rm=T
 }
 
 #Let's can we find out, what servers were used by which councils
-urls$Agency[grep(pattern = 'SOS',x = urls$SOSwq)]  #ARC, BOPRC, HRC, WRC
+urls$Agency[grep(pattern = 'SOS',x = urls$SOSwq)]     #AC, BOPRC, HRC, WRC
 urls$Agency[grep(pattern = 'Hilltop',x = urls$SOSwq)] # "ECAN" "ES"   "GDC"  "GWRC" "HBRC" "MDC"  "NCC"  "xNRC" "NRC"  "ORC"  "TDC"  "TRC"  "WCRC"
 
-urls$SOSwq[urls$Agency%in%c("ARC","BOPRC","HRC","WRC")]
+urls$SOSwq[urls$Agency%in%c("AC","BOPRC","HRC","WRC")]
 urls$SOSwq[urls$Agency%in%c("ES","ECAN","ORC","NRC","HBRC","TRC")] #These have the column label info comign out nicely
 urls$SOSwq[urls$Agency%in%c("GDC","GWRC","MDC","NCC","WCRC")]      #These use hilltop, but dont have column labels coming out.
                                                                   #But some of them dont have data either
@@ -29,7 +29,7 @@ urls$SOSwq[urls$Agency%in%c("GDC","GWRC","MDC","NCC","WCRC")]      #These use hi
 # WRC and ARC are in the habit of using KiWIS; HRC are indeed using hilltop, and BOP is an amazon based 52North
 
 #         Hilltop  KiWIS 52N  XML  Data  ColLabs
-"arc                 X              X           ?       "   #Loaded from file
+"ac                 X              X           ?       "   #Have provided a format to get the QC codes from KiWIS Kisters
 "boprc                    X    X    X           ?       "   #Format matches same as HRC       MeasurementTVPs
 "ecan       X                  X    X        X          "
 "es         X                  X    X        X          "
@@ -62,7 +62,7 @@ lawalakenames=c("TN", "NH4N", "TP", "CHLA", "pH", "Secchi", "ECOLI")
 
 #Combined audit ####
 LWQaudit=data.frame(agency=NULL,xmlAge=NULL,var=NULL,earliest=NULL,latest=NULL,nMeas=NULL,nSite=NULL,meanMeas=NULL,maxMeas=NULL,minMeas=NULL,nNA=NULL)
-for(agency in c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")){
+for(agency in c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")){
   forcsv=loadLatestCSVLake(agency,maxHistory = 100)
   if(!is.null(forcsv)){
     newRows=data.frame(agency=rep(agency,length(unique(forcsv$Measurement))),
@@ -104,7 +104,7 @@ write.csv(LWQaudit,paste0("h:/ericg/16666LAWA/LAWA2020/Lakes/Audit/",format(Sys.
 
 if(0){
 allLabs=NULL
-for(agency in c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")){
+for(agency in c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")){
   colLab = loadLatestColumnHeadingLake(agency,maxHistory = 100)
   if(!is.null(colLab)){
     eval(parse(text=paste0('colLab',agency,'=colLab')))
@@ -115,7 +115,7 @@ for(agency in c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc",
 }
 
 #Per agency audit site/measurement start, stop, n and range ####
-for(agency in c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")){
+for(agency in c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")){
   forcsv=loadLatestCSVLake(agency,maxHistory = 6)
   if(!is.null(forcsv)){
     nvar=length(uvars <- unique(forcsv$Measurement))
@@ -179,13 +179,14 @@ ucounc=unique(LWQdata$agency)
 
 
 urls <- read.csv("H:/ericg/16666LAWA/LAWA2020/Metadata/CouncilWFS.csv",stringsAsFactors=FALSE)
-library(parallel)
-library(doParallel)
-workers <- makeCluster(7)
-registerDoParallel(workers)
-foreach(agency = c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc"),
-        .combine=rbind,.errorhandling='stop')%dopar%{
-          if(length(dir(path = paste0("H:/ericg/16666LAWA/LAWA2020/Lakes/Audit/",format(Sys.Date(),"%Y-%m-%d")),
+# library(parallel)
+# library(doParallel)
+# workers <- makeCluster(7)
+# registerDoParallel(workers)
+# foreach(agency = c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc"),
+#         .combine=rbind,.errorhandling='stop')%dopar%{
+for(agency in c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")){
+  if(length(dir(path = paste0("H:/ericg/16666LAWA/LAWA2020/Lakes/Audit/",format(Sys.Date(),"%Y-%m-%d")),
                         pattern = paste0('^',agency,".*audit\\.csv"),
                         recursive = T,full.names = T,ignore.case = T))>0){
             rmarkdown::render('H:/ericg/16666LAWA/LAWA2020/Lakes/Scripts/AuditDocument.Rmd',
@@ -195,10 +196,10 @@ foreach(agency = c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","nc
                               output_file = paste0(toupper(agency),"Audit",format(Sys.Date(),'%d%b%y'),".html"),
                               envir = new.env())
           }
-          return(NULL)
+          # return(NULL)
         }
-stopCluster(workers)
-rm(workers)
+# stopCluster(workers)
+# rm(workers)
 
 
 

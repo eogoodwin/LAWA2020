@@ -32,6 +32,9 @@ urls          <- read.csv("H:/ericg/16666LAWA/LAWA2020/Metadata/CouncilWFS.csv",
 # Config for data extract from WFS
 #The first on the list prioritises the ID to be used and match every else to it.
 vars <- c("CouncilSiteID","SiteID","LawaSiteID","NZReach","Region","Agency","SWQAltitude","SWQLanduse","Catchment")
+method=rep('curl',length(urls$URL))
+
+method[8]='wininet'
 
 if(exists('siteTable')){
   rm(siteTable)
@@ -50,7 +53,7 @@ foreach(h = 1:length(urls$URL),.combine = rbind,.errorhandling = "stop")%dopar%{
     return(NULL)
   }
   
-  xmldata<-try(ldWFS(urlIn = urls$URL[h],agency=urls$Agency[h],dataLocation = urls$Source[h],case.fix = TRUE))
+  xmldata<-try(ldWFS(urlIn = urls$URL[h],agency=urls$Agency[h],dataLocation = urls$Source[h],method=method[h],case.fix = TRUE))
   
   if('try-error'%in%attr(xmldata,'class')||grepl(pattern = '^501|error',
                                                  x = xmlValue(getNodeSet(xmldata,'/')[[1]]),
@@ -238,7 +241,7 @@ siteTable$Agency=tolower(as.character(siteTable$Agency))
 # rm(acMetaData)
 
 table(siteTable$Agency)
-siteTable$Agency[siteTable$Agency%in%c('ac','auckland council')] <- 'arc'
+siteTable$Agency[siteTable$Agency%in%c('arc','auckland council')] <- 'ac'
 siteTable$Agency[tolower(siteTable$Agency)%in%c("christchurch", "environment canterbury")] <- 'ecan'
 
 table(siteTable$Region)
@@ -341,6 +344,7 @@ rec2$Lat=latLong[,1]
 rm(latLong)
 
 siteTable$NZReach=as.numeric(siteTable$NZReach)
+siteTable$NZReach[siteTable$NZReach<min(rec$NZREACH)|siteTable$NZReach>max(rec$NZREACH)] <- NA
 siteTable$Landcover=NA #rec
 siteTable$Altitude=NA  #rec2
 siteTable$Order=NA
@@ -406,13 +410,22 @@ rm(lowland)
 
 siteTable$Agency=tolower(siteTable$Agency)
 
+if(0){  #actually if you need to pull sites in from an old WFS sesh, like if one of them doesn respond
+  oldsiteTable = read.csv("H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Data/2020-07-16/SiteTable_Macro16Jul20.csv",stringsAsFactors = F)
+  hrcs=oldsiteTable%>%filter(Agency=='hrc')
+  siteTable = rbind(siteTable,hrcs)
+  rm(oldsiteTable,hrcs)
+}
+
+# siteTable$CouncilSiteID = gsub(pattern = 'Hedgehope Confluence$',replacement = "Hedgehope Confluence ",x = siteTable$CouncilSiteID)
+
 
 write.csv(x = siteTable,file = paste0("H:/ericg/16666LAWA/LAWA2020/Macroinvertebrates/data/",
                                       format(Sys.Date(),'%Y-%m-%d'),
                                       "/SiteTable_Macro",format(Sys.Date(),'%d%b%y'),".csv"),row.names = F)
 
 #Get numbers of sites per agency ####
-AgencyRep=table(factor(tolower(siteTable$Agency),levels=c("arc", "boprc", "ecan", "es", "gdc", "gwrc", "hbrc","hrc", "mdc", 
+AgencyRep=table(factor(tolower(siteTable$Agency),levels=c("ac", "boprc", "ecan", "es", "gdc", "gwrc", "hbrc","hrc", "mdc", 
                                                           "ncc","niwa", "nrc", "orc", "tdc", "trc", "wcrc", "wrc")))
 AgencyRep=data.frame(agency=names(AgencyRep),count=as.numeric(AgencyRep))
 names(AgencyRep)[2]=format(Sys.Date(),"%d%b%y")
@@ -421,7 +434,7 @@ MacroWFSsiteFiles=dir(path = "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Dat
                       recursive = T,full.names = T)
 for(wsf in MacroWFSsiteFiles){
   stin=read.csv(wsf,stringsAsFactors=F)
-  agencyRep=table(factor(tolower(stin$Agency),levels=c("arc", "boprc", "ecan", "es", "gdc", "gwrc", "hbrc","hrc", "mdc", 
+  agencyRep=table(factor(tolower(stin$Agency),levels=c("ac", "boprc", "ecan", "es", "gdc", "gwrc", "hbrc","hrc", "mdc", 
                                                        "ncc","niwa", "nrc", "orc", "tdc", "trc", "wcrc", "wrc")))
   AgencyRep = cbind(AgencyRep,as.numeric(agencyRep))
   colnames(AgencyRep)[dim(AgencyRep)[2]] = strTo(strFrom(wsf,'_Macro'),'.csv')
@@ -432,27 +445,28 @@ AgencyRep=AgencyRep[,-2]
 rm(MacroWFSsiteFiles)
 write.csv(AgencyRep,'h:/ericg/16666LAWA/LAWA2020/Metadata/AgencyRepMacroWFS.csv',row.names=F)
 
-#     agency 23Jun20 25Jun20
-# 1     arc      61      61
-# 2   boprc     129     129
-# 3    ecan     134     134
-# 4      es      87      87
-# 5     gdc      80      80
-# 6    gwrc      53      53
-# 7    hbrc      71      71
-# 8     hrc      81      81
-# 9     mdc      31      31
-# 10    ncc      26      26
-# 11   niwa       0       0
-# 12    nrc      19      19
-# 13    orc      30      30
-# 14    tdc      25      25
-# 15    trc      60      60
-# 16   wcrc      34      34
-# 17    wrc       0      74
-
+#    agency 23Jun20 25Jun20 03Jul20 09Jul20 16Jul20 24Jul20
+# 1      ac       0       0       0       0       0      61
+# 2   boprc     129     129     129     134     134     134
+# 3    ecan     134     134     134     134     134     134
+# 4      es      87      87      87      87      87      87
+# 5     gdc      80      80      80      80      80      80
+# 6    gwrc      53      53      53      53      53      53
+# 7    hbrc      71      71      83      83      83      82
+# 8     hrc      81      81      81      81      81      81
+# 9     mdc      31      31      31      31      31      31
+# 10    ncc      26      26      26      26      26      26
+# 11   niwa       0       0       0       0       0       0
+# 12    nrc      19      19      19      19      19      19
+# 13    orc      30      30      30      30      30      30
+# 14    tdc      25      25      25      25      25      25
+# 15    trc      60      60      60      60      60      60
+# 16   wcrc      34      34      34      34      34      34
+# 17    wrc       0      74      74      74      74      74
+ 
+ 
 # agency 07Jun19 10Jun19 28Jun19 08Jul19 11Jul19 17Jul19 22Jul19 29Jul19 02Aug19 05Aug19 12Aug19 19Aug19 26Aug19
-# 1     arc       0       0       0       0      61      61      61      61      61      61      61      61      61
+# 1     ac       0       0       0       0      61      61      61      61      61      61      61      61      61
 # 2   boprc     138     138     138     138     129     129     129     129     129     129     129     129     129
 # 3    ecan     135     135     135     134     134     134     134     134     134     134     134     134     134
 # 4      es      83      83      87      87      87      87      87      87      87      87      87      87      87

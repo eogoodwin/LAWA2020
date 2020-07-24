@@ -21,7 +21,7 @@ require(reshape2)
 setwd("h:/ericg/16666LAWA/LAWA2020/WaterQuality/")
 source("h:/ericg/16666LAWA/LAWA2020/scripts/LAWAFunctions.R")
 source("h:/ericg/16666LAWA/LAWA2020/WaterQuality/scripts/SWQ_NOF_Functions.R")
-try(dir.create(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),'%Y-%m-%d'))))
+try(dir.create(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),'%Y-%m-%d'))),silent=T)
 riverSiteTable=loadLatestSiteTableRiver()
 
 ## Load NOF Bands
@@ -47,6 +47,8 @@ if(!exists('wqdata')){
   StartYear5 <- EndYear - 5 + 1
   firstYear = min(wqdYear,na.rm=T)
   yr <- c(as.character(firstYear:EndYear),paste0(as.character(firstYear:(EndYear-4)),'to',as.character((firstYear+4):EndYear)))
+  rollyrs=which(grepl('to',yr))
+  nonrollyrs=which(!grepl('to',yr))
   reps <- length(yr)
   # wqdata <- wqdata[which((wqdYear>=StartYear5 & wqdYear<=EndYear)|
   #                          (wqdYear>=(StartYear5-1) & wqdYear<=EndYear & wqdata$Measurement=='ECOLI')),]
@@ -130,7 +132,7 @@ cat(Sys.time()-startTime)
 # Saving the wqdataPerDateMedian table to be USED in NOF calculations. 
 # NOTE AFTER HAVING OUT-COMMENTED THE 51/52 LINE, WE'VE NOW GOT ALL YEARS, FOR THE ROLLING NOF 
 # Has six years available for ECOli if necessary
-try(dir.create(paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/", format(Sys.Date(),"%Y-%m-%d"))))
+try(dir.create(paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/", format(Sys.Date(),"%Y-%m-%d"))),silent=T)
 save(wqdataPerDateMedian,file=paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/",format(Sys.Date(),"%Y-%m-%d"),
                           "/wqdataPerDateMedian",StartYear5,"-",EndYear,"ec6.RData"))
 load(tail(dir(path = "h:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/",pattern='wqdataPerDateMedian',
@@ -194,7 +196,7 @@ foreach(i = 1:length(uLAWAids),.combine=rbind,.errorhandling="stop",.inorder=F)%
   Com_NOF <- data.frame (LawaSiteID               = rep(uLAWAids[i],length(yr)),
                          Year                     = yr,
                          NitrateMed               = as.numeric(rep(NA,reps)),
-                         NitrateMed_Band          = rep(as.character(NA)),#factor(rep(NA,reps),levels = c("A","B","C","D")),
+                         NitrateMed_Band          = rep(as.character(NA),reps),#factor(rep(NA,reps),levels = c("A","B","C","D")),
                          Nitrate95                = as.numeric(rep(NA,reps)),
                          Nitrate95_Band           = rep(as.character(NA)),#factor(rep(NA,reps),levels = c("A","B","C","D")),
                          Nitrate_Toxicity_Band    = rep(as.character(NA),reps),#factor(rep(NA,reps),levels = c("A","B","C","D")),
@@ -227,16 +229,15 @@ foreach(i = 1:length(uLAWAids),.combine=rbind,.errorhandling="stop",.inorder=F)%
     Com_NOF$NitrateMed <- annualMedian$value[match(Com_NOF$Year,annualMedian$Year)]
     #Rolling 5yr median
     rollingMeds=rolling5(siteChemSet = tonsite,quantProb = 0.5)
-    
+    rollFails=which(is.na(as.numeric(rollingMeds)))
     Com_NOF$NitrateMed[yr%in%names(rollingMeds)] <- as.numeric(rollingMeds)
-    Com_NOF$NitrateAnalysisNote[is.na(as.numeric(rollingMeds))] <- paste0(Com_NOF$NitrateAnalysisNote[is.na(as.numeric(rollingMeds))],
-                                                                          ' Need 30 values for 5yr median, have',
-                                                                          strFrom(s = rollingMeds[is.na(as.numeric(rollingMeds))],c = 'y'))
+    Com_NOF$NitrateAnalysisNote[rollyrs[rollFails]] <- paste0(' Need 30 values for 5yr median, have',
+                                                                          strFrom(s = rollingMeds[rollFails],c = 'y'))
     #find the band which each value belong to
     Com_NOF$NitrateMed_Band <- sapply(Com_NOF$NitrateMed,NOF_FindBand,bandColumn = NOFbandDefinitions$Median.Nitrate)
     Com_NOF$NitrateMed_Band[!is.na(Com_NOF$NitrateMed_Band)] <- 
       sapply(Com_NOF$NitrateMed_Band[!is.na(Com_NOF$NitrateMed_Band)],FUN=function(x){min(unlist(strsplit(x,split = '')))})
-    rm(annualMedian,rollingMeds)
+    rm(annualMedian,rollingMeds,rollFails)
     
     #95th percentile Nitrate
     annual95 <- tonsite%>%dplyr::group_by(Year)%>%dplyr::summarise(value=quantile(Value,prob=0.95,type=5,na.rm=T))
@@ -244,10 +245,11 @@ foreach(i = 1:length(uLAWAids),.combine=rbind,.errorhandling="stop",.inorder=F)%
     Com_NOF$Nitrate95 = annual95$value[match(Com_NOF$Year,annual95$Year)]
     #Rolling 5yr 95%ile
     rolling95=rolling5(tonsite,0.95)
+    rollFails=which(is.na(as.numeric(rolling95)))
     Com_NOF$Nitrate95[yr%in%names(rolling95)] <- as.numeric(rolling95)
-    Com_NOF$NitrateAnalysisNote[is.na(as.numeric(rolling95))] <- paste0(Com_NOF$NitrateAnalysisNote[is.na(as.numeric(rolling95))],
+    Com_NOF$NitrateAnalysisNote[rollyrs[rollFails]] <- paste0(Com_NOF$NitrateAnalysisNote[is.na(as.numeric(rolling95))],
                                                                           ' Need 30 values for 5yr 95%ile, have',
-                                                                          strFrom(s = rolling95[is.na(as.numeric(rolling95))],c = 'y'))
+                                                                          strFrom(s = rolling95[rollFails],c = 'y'))
     #find the band which each value belong to
     Com_NOF$Nitrate95_Band <- sapply(Com_NOF$Nitrate95,NOF_FindBand,bandColumn = NOFbandDefinitions$X95th.Percentile.Nitrate)
     Com_NOF$Nitrate95_Band[!is.na(Com_NOF$Nitrate95_Band)] <- 
@@ -256,18 +258,16 @@ foreach(i = 1:length(uLAWAids),.combine=rbind,.errorhandling="stop",.inorder=F)%
     #Nitrate Toxicity
     #The worse of the two nitrate bands
     Com_NOF$Nitrate_Toxicity_Band = apply(Com_NOF%>%select(NitrateMed_Band, Nitrate95_Band),1,max,na.rm=T)
-    rm(annual95,rolling95)
+    rm(annual95,rolling95,rollFails)
   }else{
-    Com_NOF$NitrateAnalysisNote = paste0(Com_NOF$NitrateAnalysisNote,'n = ',sum(!is.na(tonsite$Value)),
-                                         ' Insufficient  to calculate annual medians ')
+    Com_NOF$NitrateAnalysisNote = paste0('n = ',sum(!is.na(tonsite$Value)),' Insufficient to calculate annual medians ')
   }
   rm(tonsite)
   
   ###################### Ammonia  ############################
   nh4site=rightSite%>%dplyr::filter(Measurement=="NH4adj")
   if(all(nh4site$Value==-99)){
-    Com_NOF$AmmoniaAnalysisNote=paste0(Com_NOF$AmmoniaAnalysisNote,'n = ',sum(!is.na(nh4site$Value)),
-                                       ' No pH data available for NH4 adjustment, so NH4 cannot be judged against NOF standards. ')
+    Com_NOF$AmmoniaAnalysisNote=paste0('No pH data available for NH4 adjustment, so NH4 cannot be judged against NOF standards. ')
   }else{
     nh4site=nh4site[!(nh4site$Value==(-99)),]
     #Median Ammoniacal Nitrogen
@@ -276,14 +276,14 @@ foreach(i = 1:length(uLAWAids),.combine=rbind,.errorhandling="stop",.inorder=F)%
       Com_NOF$AmmoniacalMed = annualMedian$value[match(Com_NOF$Year,annualMedian$Year)]
       #Rolling 5yr median
       rollingMeds=rolling5(nh4site,0.5)
+      rollFails=which(is.na(as.numeric(rollingMeds)))
       Com_NOF$AmmoniacalMed[yr%in%names(rollingMeds)] <- as.numeric(rollingMeds)
-      Com_NOF$AmmoniaAnalysisNote[is.na(as.numeric(rollingMeds))] <- paste0(Com_NOF$AmmoniaAnalysisNote[is.na(as.numeric(rollingMeds))],
-                                                                            ' Need 30 values for 5yr median, have',
-                                                                            strFrom(s = rollingMeds[is.na(as.numeric(rollingMeds))],c = 'y'))      
+      Com_NOF$AmmoniaAnalysisNote[rollyrs[rollFails]] <- paste0(' Need 30 values for 5yr median, have',
+                                                                            strFrom(s = rollingMeds[rollFails],c = 'y'))      
       Com_NOF$AmmoniacalMed_Band <- sapply(Com_NOF$AmmoniacalMed,NOF_FindBand,bandColumn=NOFbandDefinitions$Median.Ammoniacal.N) 
       Com_NOF$AmmoniacalMed_Band[!is.na(Com_NOF$AmmoniacalMed_Band)] <- 
         sapply(Com_NOF$AmmoniacalMed_Band[!is.na(Com_NOF$AmmoniacalMed_Band)],FUN=function(x){min(unlist(strsplit(x,split = '')))})
-      rm(annualMedian,rollingMeds)
+      rm(annualMedian,rollingMeds,rollFails)
       
       #95th percentile Ammoniacal Nitrogen
       annual95 <- nh4site%>%dplyr::group_by(Year)%>%dplyr::summarise(value=quantile(Value,prob=0.95,type=5,na.rm=T))
@@ -291,10 +291,11 @@ foreach(i = 1:length(uLAWAids),.combine=rbind,.errorhandling="stop",.inorder=F)%
  
       #Rolling 5yr 95%ile
       rolling95=rolling5(nh4site,0.95)
+      rollFails=which(is.na(as.numeric(rolling95)))
       Com_NOF$Ammoniacal95[yr%in%names(rolling95)] <- as.numeric(rolling95)
-      Com_NOF$AmmoniaAnalysisNote[is.na(as.numeric(rolling95))] <- paste0(Com_NOF$AmmoniaAnalysisNote[is.na(as.numeric(rolling95))],
+      Com_NOF$AmmoniaAnalysisNote[rollyrs[rollFails]] <- paste0(Com_NOF$AmmoniaAnalysisNote[rollFails],
                                                                             ' Need 30 values for 5yr 95%ile, have',
-                                                                            strFrom(s = rolling95[is.na(as.numeric(rolling95))],c = 'y'))
+                                                                            strFrom(s = rolling95[rollFails],c = 'y'))
       Com_NOF$Ammoniacal95_Band <-sapply(Com_NOF$Ammoniacal95,NOF_FindBand,bandColumn=NOFbandDefinitions$Max.Ammoniacal.N)
       Com_NOF$Ammoniacal95_Band <- sapply(Com_NOF$Ammoniacal95_Band,FUN=function(x){min(unlist(strsplit(x,split = '')))})
       
@@ -318,38 +319,34 @@ foreach(i = 1:length(uLAWAids),.combine=rbind,.errorhandling="stop",.inorder=F)%
     Com_NOF$EcoliPeriod=ifelse(is.na(Com_NOF$EcoliMed),NA,1)
     #rolling 5yr or 6yr median
     rollingMeds=rolling5(ecosite,0.5,extendToSix = T,nreq=60)
-    Com_NOF$EcoliMed[yr%in%names(rollingMeds)] = readr::parse_number(rollingMeds)
-    options(warn=-1) #if I'm testing to see if somethign's NA when I caast it to numeric, I dont want a warning that some of them are NA
-    Com_NOF$EcoliPeriod[yr%in%names(rollingMeds)] = ifelse(is.na(as.numeric(rollingMeds)),NA,ifelse(grepl(pattern = '_6',rollingMeds),6,5))
-    options(warn=0)
+    rollFails=is.na(as.numeric(rollingMeds))
+    Com_NOF$EcoliMed[yr%in%names(rollingMeds)] = readr::parse_number(rollingMeds) #not "as.numeric", because good results include a years suffix
+    Com_NOF$EcoliPeriod[yr%in%names(rollingMeds)] = ifelse(rollFails,NA,ifelse(grepl(pattern = '_6',rollingMeds),6,5))
     #bands
     Com_NOF$EcoliMed_Band <- sapply(Com_NOF$EcoliMed,NOF_FindBand,bandColumn=NOFbandDefinitions$E..coli)
-    #Median EColi can meet multiple bands. cnec finds the lowest
-    # suppressWarnings(cnEc_Band <- sapply(Com_NOF$EcoliMed_Band,FUN=function(x){min(unlist(strsplit(x,split = '')))}))
   }else{
     Com_NOF$EcoliAnalysisNote=paste0(Com_NOF$EcoliAnalysisNote,"n = ",sum(!is.na(ecosite$Value)),
                                      " Insufficient data to calculate annual medians")
   }
-  rm(annualMedian,rollingMeds)
+  rm(annualMedian,rollingMeds,rollFails)
   
   #Ecoli 95th percentile 
   annual95 <- ecosite%>%dplyr::group_by(Year)%>%dplyr::summarise(value=quantile(Value,prob=0.95,type=5,na.rm=T))
-  # annual95 <- tapply(ecosite$Value,format(ecosite$Date, '%Y'),na.rm=TRUE, quantile,prob=c(0.95),type=5)
   if(length(annual95)!=0){
     Com_NOF$Ecoli95 <- annual95$value[match(Com_NOF$Year,annual95$Year)]
     #rolling 5yr or 6yr 95%ile
     rolling95 = rolling5(ecosite,0.95,extendToSix = T,nreq=60)
-    Com_NOF$Ecoli95[yr%in%names(rolling95)] <- readr::parse_number(rolling95)
+    rollFails=which(is.na(as.numeric(rolling95)))
+    Com_NOF$Ecoli95[yr%in%names(rolling95)] <- readr::parse_number(rolling95)#not "as.numeric", because good results include a years suffix
+    
     
     #bands 
     Com_NOF$Ecoli95_Band <- sapply(Com_NOF$Ecoli95,NOF_FindBand,bandColumn=NOFbandDefinitions$Ecoli95)
-    #Ecoli95 can meet multiple bands
-    # suppressWarnings(cnEc95_Band <- sapply(Com_NOF$Ecoli95_Band,FUN=function(x){min(unlist(strsplit(x,split = '')))}))
   }else{
     Com_NOF$EcoliAnalysisNote=paste0(Com_NOF$EcoliAnalysisNote,"n = ",sum(!is.na(ecosite$Value)),
                                       " Insufficient data to calculate annual max")
   }
-  rm(annual95,rolling95)
+  rm(annual95,rolling95,rollFails)
   
   #Exceedance percentages
   options(warn=-1)
@@ -371,7 +368,6 @@ foreach(i = 1:length(uLAWAids),.combine=rbind,.errorhandling="stop",.inorder=F)%
    suppressWarnings(Com_NOF$EcoliRecHealth540_Band <- sapply(Com_NOF$EcoliRecHealth540,NOF_FindBand,bandColumn=NOFbandDefinitions$EcoliRec540))
    suppressWarnings(Com_NOF$EcoliRecHealth260_Band <- sapply(Com_NOF$EcoliRecHealth260,NOF_FindBand,bandColumn=NOFbandDefinitions$EcoliRec260))
 
-  #These contain the best case out of these scorings, the worst of which contributes.
    these=which(is.na(Com_NOF$EcoliPeriod))
    if(length(these)>0)  { #Set bands to NA, if insufficent data
      Com_NOF$EcoliAnalysisNote[these]=paste0(Com_NOF$EcoliAnalysisNote,
@@ -389,14 +385,13 @@ rm(workers)
 cat(Sys.time()-startTime)  
 #6.5 seconds 23June
 #23.4s 2 July rolling medians
+
+#These contain the best case out of these scorings, the worst of which contributes.
 suppressWarnings(cnEc_Band <- sapply(NOFSummaryTable$EcoliMed_Band,FUN=function(x){min(unlist(strsplit(x,split = '')))}))
 suppressWarnings(cnEc95_Band <- sapply(NOFSummaryTable$Ecoli95_Band,FUN=function(x){min(unlist(strsplit(x,split = '')))}))
 suppressWarnings(cnEcRecHealth540_Band <- sapply(NOFSummaryTable$EcoliRecHealth540_Band,FUN=function(x){min(unlist(strsplit(x,split = '')))}))
 suppressWarnings(cnEcRecHealth260_Band <- sapply(NOFSummaryTable$EcoliRecHealth260_Band,FUN=function(x){min(unlist(strsplit(x,split = '')))}))  
-
-if(all(sapply(c("cnEc_Band","cnEc95_Band","cnEcRecHealth540_Band","cnEcRecHealth260_Band"),exists))){
-  NOFSummaryTable$EcoliSummaryband = as.character(apply(cbind(pmax(cnEc_Band,cnEc95_Band,cnEcRecHealth540_Band,cnEcRecHealth260_Band)),1,max))
-}
+NOFSummaryTable$EcoliSummaryband = as.character(apply(cbind(pmax(cnEc_Band,cnEc95_Band,cnEcRecHealth540_Band,cnEcRecHealth260_Band)),1,max))
 rm("cnEc_Band","cnEc95_Band","cnEcRecHealth540_Band","cnEcRecHealth260_Band")
 
 if(0){

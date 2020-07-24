@@ -1,10 +1,8 @@
 "Region","Agency","CouncilSiteID","SiteID","LawaSiteID","NZReach","Lat","Long","SWQAltitude","AltitudeCl","Altitude"
-"waikato","wrc","14393","awakino river at gribbon rd","ew-00001",1.54299369150709e-317,-38.5631084931943,174.837116995288,"lowland","Upland",153
-"waikato","wrc","14395","awakino river at sh3 awakau rd junction","ew-00002",1.54728069911605e-317,-38.67060886189,174.709357790682,"lowland","Upland",183
-"waikato","wrc","37993","mangaonua stm at te miro rd (a.k.a waitakaruru stm)","ew-00027",1.51454637975084e-317,-37.8169010623013,175.512785406882,"lowland","Upland",154
-"waikato","wrc","38431","mangawhero stm (kaihere) at mangawara rd","ew-00037",1.50759635831079e-317,-37.4012841953149,175.423432744403,"lowland","Upland",156.49331665
-"waikato","wrc","41011","ohinemuri river at sh25 br","ew-00050",1.50732412813993e-317,-37.3734378909694,175.866745259212,"lowland","Upland",179
-"waikato","wrc","41667","piakonui stm at piakonui rd","ew-00059",1.51481515146218e-317,-37.8250965106721,175.628118270777,"upland","Lowland",133
-"waikato","wrc","43361","waikato river at waipapa tailrace","ew-00085",1.53157138784088e-317,-38.285510362379,175.685227433566,"lowland","Upland",221
+"waikato","wrc","14393","awakino river at gribbon rd","ew-00001",3039482,-38.5631084931943,174.837116995288,"lowland","Upland",195
+"waikato","wrc","36768","kauaeranga river at smiths cableway/recorder","ew-00009",3004702,-37.1573656960264,175.590522392679,"lowland","Upland",153
+"waikato","wrc","37993","mangaonua stm at te miro rd (a.k.a waitakaruru stm)","ew-00027",3018527,-37.8169010623013,175.512785406882,"lowland","Upland",176
+"waikato","wrc","38431","mangawhero stm (kaihere) at mangawara rd","ew-00037",3010073,-37.4012841953149,175.423432744403,"lowland","Upland",156.49331665
+"waikato","wrc","41667","piakonui stm at piakonui rd","ew-00059",3018773,-37.8250965106721,175.628118270777,"upland","Lowland",133
+"waikato","wrc","43361","waikato river at waipapa tailrace","ew-00085",3030179,-38.285510362379,175.685227433566,"lowland","Upland",221
 "waikato","niwa","HM1","Waipa at Otewa (NRWQN) (HM1)","nrwqn-00040",3029287,-38.2687072753906,175.348266601563,"lowland","Upland",215
-"waikato","niwa","HM3","Waikato at Hamilton Traffic Br. (NRWQN) (HM3)","ew-00124",3017804,-37.7922019958496,175.289093017578,"unstated","Lowland",40

@@ -5,12 +5,10 @@ require(RCurl)
 setwd("H:/ericg/16666LAWA/LAWA2020/WaterQuality")
 tab="\t"
 agency='wcrc'
-fname <- paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/MetaData/",agency,"SWQ_config.csv")
-df <- read.csv(fname,sep=",",stringsAsFactors=FALSE)
-configsites <- subset(df,df$Type=="Site")[,2]
-configsites <- as.vector(configsites)
-Measurements <- subset(df,df$Type=="Measurement")[,2]
-Measurements <- as.vector(Measurements)
+
+Measurements <- read.table("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Metadata/Transfers_plain_english_view.txt",sep=',',header=T,stringsAsFactors = F)%>%
+  filter(Agency==agency)%>%select(CallName)%>%unname%>%unlist
+Measurements=c(Measurements,'WQ Sample')
 
 siteTable=loadLatestSiteTableRiver()
 sites = unique(siteTable$CouncilSiteID[siteTable$Agency==agency])
@@ -27,7 +25,7 @@ for(i in 1:length(sites)){
                    "&To=2020-01-01")
       url <- URLencode(url)
       # url <- gsub(" ", "%20", url)
-      xmlfile <- ldWQ(url,agency) 
+      xmlfile <- ldWQ(url,agency,QC=T) 
       if(!is.null(xmlfile)){
         time <- sapply(getNodeSet(doc=xmlfile, "//T"), xmlValue)
         time <- time[! time %in% rectime]
@@ -61,7 +59,7 @@ for(i in 1:length(sites)){
                    "&From=2005-01-01",
                    "&To=2020-01-01")
       url <- URLencode(url)
-      xmlfile <- ldWQ(url,agency)
+      xmlfile <- ldWQ(url,agency,QC=T)
       if(!is.null(xmlfile)){
         #Create vector of times
         time <- sapply(getNodeSet(doc=xmlfile, "//T"), xmlValue)

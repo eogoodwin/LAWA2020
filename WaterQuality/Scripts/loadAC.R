@@ -5,17 +5,16 @@ require(XML)     ### XML library to write hilltop XML
 setwd("H:/ericg/16666LAWA/LAWA2020/WaterQuality")
 
 
-agency='arc'
-df <- read.csv(paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/MetaData/",agency,"SWQ_config.csv"),sep=",",stringsAsFactors=FALSE)
-Measurements <- subset(df,df$Type=="Measurement")[,2]
-# Measurements <- as.vector(Measurements)
-# configsites <- subset(df,df$Type=="Site")[,2]
-# configsites <- as.vector(configsites)
+agency='ac'
+Measurements <- read.table("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Metadata/Transfers_plain_english_view.txt",sep=',',header=T,stringsAsFactors = F)%>%
+  filter(Agency==agency)%>%select(CallName)%>%unname%>%unlist
+Measurements=c(Measurements,'WQ Sample')
 
 siteTable=loadLatestSiteTableRiver()
 sites = unique(siteTable$CouncilSiteID[siteTable$Agency==agency])
-# sites=configsites
 
+# http://aklc.hydrotel.co.nz:8080/KiWIS/KiWIS?datasource=3&service=kisters&type=queryServices&request=getrequestinfo 
+# http://aklc.hydrotel.co.nz:8080/KiWIS/KiWIS?service=kisters&type=queryServices&request=getParameterList&datasource=0&format=html&station_no=1043837
 #http://aklc.hydrotel.co.nz:8080/KiWIS/KiWIS?datasource=3
 #&Procedure=Sample.Results.LAWA
 #&Service=SOS&version=2.0.0
@@ -32,13 +31,71 @@ sites = unique(siteTable$CouncilSiteID[siteTable$Agency==agency])
 # &featureOfInterest=6604
 # &temporalfilter=om:phenomenonTime,P25Y/2020-06-30
 
+setwd("H:/ericg/16666LAWA/LAWA2020/WaterQuality")
+if(exists('Data'))rm(Data)
+
+
+for(i in 1:length(sites)){
+  cat('\n',sites[i],i,'out of',length(sites),'\n')
+  for(j in 1:length(Measurements)){
+    url <- paste0("http://aklc.hydrotel.co.nz:8080/KiWIS/KiWIS?datasource=3&service=Kisters&type=queryServices&request=getWqmSampleValues&format=csv",
+                  "&station_no=",sites[i],
+                  "&parametertype_name=",Measurements[j],
+                  "&period=P25Y&returnfields=station_no,station_name,timestamp,sample_depth,parametertype_name,value_sign,value,unit_name,value_quality")
+    url <- URLencode(url)
+    url <- gsub(pattern = '\\+',replacement = '%2B',x = url)
+    dl=try(download.file(url,destfile="D:/LAWA/2020/tmpWQac.csv",method='curl',quiet=T),silent = T)
+    csvfile <- read.csv("D:/LAWA/2020/tmpWQac.csv",stringsAsFactors = F,sep=';')
+    if(dim(csvfile)[1]>0){
+      cat('got some',Measurements[j],'\t')
+      if(!exists("Data")){
+        Data <- csvfile
+      } else{
+        Data <- rbind.data.frame(Data, csvfile)
+      }
+    }
+  }
+}
+write.csv(Data,file = paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/",format(Sys.Date(),"%Y-%m-%d"),"/",agency,"RawWQ.csv"),row.names = F)
+
+  
+  Data <- Data%>%transmute(CouncilSiteID = station_no,
+                           Date = format(as_date(timestamp,tz='Pacific/Auckland'),'%d-%b-%y'),
+                           Value = value,
+                           # Method='',
+                           Measurement = parametertype_name,
+                           Units = unit_name,
+                           Censored = grepl('<|>',value_sign),
+                           centype = as.character(factor(value_sign,levels = c('<','---','>'),labels=c('Left','F','Right'))),
+                           QC = value_quality)
+  lawaset=c("NH4", "TURB", "BDISC",  "DRP",  "ECOLI",  "TN",  "TP",  "TON",  "PH")
+  
+  Data$Measurement[Data$Measurement == 'NH3+NH4 as N (mg/l)'] <- "NH4"
+  Data$Measurement[Data$Measurement == 'Turb'] <- "TURB"
+  Data$Measurement[Data$Measurement == 'Black Disk (m)'] <- "BDISC"
+  Data$Measurement[Data$Measurement == 'Dis Rx P (mg/l)'] <- "DRP"
+  Data$Measurement[Data$Measurement == 'E. coli (CFU/100ml)'] <- "ECOLI"
+  Data$Measurement[Data$Measurement == 'Tot N (mg/l)'] <- "TN" 
+  Data$Measurement[Data$Measurement == 'Tot P (mg/l)'] <- "TP"
+  Data$Measurement[Data$Measurement == 'NO3+NO2 (mg/l)'] <- "TON"
+  Data$Measurement[Data$Measurement == 'pH (pH units)'] <- "PH"
+  
+  Data=merge(Data,siteTable,by='CouncilSiteID')  
+  
+  # c("PH", "TP", "TN", "NH4", "TON", "BDISC", "TURB", "ECOLI", "DRP")  
+
+  write.csv(Data,file = paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/",format(Sys.Date(),"%Y-%m-%d"),"/",agency,".csv"),row.names = F)
+
+# Data=read.csv(paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/",format(Sys.Date(),"%Y-%m-%d"),"/",agency,".csv"),stringsAsFactors = F)
+
+if(0){
 suppressWarnings(rm(Data))
 for(i in 1:length(sites)){
   cat(sites[i],i,'out of',length(sites),'\n')
   for(j in 1:length(Measurements)){
     url <- paste0("http://aklc.hydrotel.co.nz:8080/KiWIS/KiWIS?",
                   "datasource=3",
-                  "&Procedure=Sample.Results.LAWA",#raw
+                  "&Procedure=Sample.Results.LAWA",
                   "&service=SOS",
                   "&version=2.0.0",
                   "&request=GetObservation",
@@ -119,3 +176,4 @@ while(i<=max){
 saveXML(con$value(), paste0("D:/LAWA/2020/",agency,"SWQ.xml"))
 file.copy(from=paste0("D:/LAWA/2020/",agency,"SWQ.xml"),
           to=paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/",format(Sys.Date(),"%Y-%m-%d"),"/",agency,"SWQ.xml"))
+}

@@ -1,9 +1,9 @@
 rm(list=ls())
 library(tidyverse)
-startYear15 <- lubridate::isoyear(Sys.Date())-15  #2004  #This convention requires >=
-startYear10 <- lubridate::isoyear(Sys.Date())-10  #2009
-startYear5 <-  lubridate::isoyear(Sys.Date())-5  #2014
-EndYear <- lubridate::isoyear(Sys.Date())-1    #2018     #This convention requires <=
+startYear15 <- lubridate::isoyear(Sys.Date())-15  #2005  #This convention requires >=
+startYear10 <- lubridate::isoyear(Sys.Date())-10  #2010
+startYear5 <-  lubridate::isoyear(Sys.Date())-5  #2015
+EndYear <- lubridate::isoyear(Sys.Date())-1    #2019     #This convention requires <=
 source("h:/ericg/16666LAWA/LAWA2020/scripts/lawa_state_functions.R")
 source("h:/ericg/16666LAWA/LAWA2020/scripts/LAWAFunctions.R")
 
@@ -20,6 +20,7 @@ if(!exists('macroData')){
   rm(macroDataFileName)
   # macroData$Date[macroData$Date=="(blank)"]=paste0("01-Jan-",macroData$Year[macroData$Date=="(blank)"])
   macroData$Date=format(dmy(macroData$Date),'%d-%b-%Y')
+  macroData$LawaSiteID=tolower(macroData$LawaSiteID)
 }
 
 #Bay of Plenty 2017 squeeze it in

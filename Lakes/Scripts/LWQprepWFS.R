@@ -215,7 +215,7 @@ siteTable$Agency=as.character(siteTable$Agency)
 # acMetaData=read.csv("H:/ericg/16666LAWA/LAWA2020/Lakes/Metadata/ACLakesMetaData.csv",stringsAsFactors = F)[1:5,]
 # names(acMetaData)=c("CouncilSiteID","SiteID","NZTME","NZMTN","SWQAltitude","Depth","SWQLanduse","SWQFrequencyLast5","SWQFrequencyAll")
 # acMetaData$Region='auckland'
-# acMetaData$Agency='arc'
+# acMetaData$Agency='ac'
 # acMetaData$accessDate=format(file.info("H:/ericg/16666LAWA/LAWA2020/Lakes/Metadata/ACLakesMetaData.csv")$mtime,"%d-%b-%Y")
 # source("k:/R_functions/nztm2wgs.r")
 # latlon=nztm2wgs(ce = acMetaData$NZTME,cn = acMetaData$NZMTN)
@@ -282,8 +282,8 @@ table(siteTable$Region)
 
 
 siteTable$Agency=tolower(siteTable$Agency)
-siteTable$Agency[siteTable$Agency=='ac'] <- 'arc'
-siteTable$Agency[siteTable$Agency=='auckland council'] <- 'arc'
+siteTable$Agency[siteTable$Agency=='arc'] <- 'ac'
+siteTable$Agency[siteTable$Agency=='auckland council'] <- 'ac'
 siteTable$Agency[siteTable$Agency=='christchurch'] <- 'ecan'
 siteTable$Agency[siteTable$Agency=='environment canterbury'] <- 'ecan'
 table(siteTable$Agency)
@@ -360,19 +360,26 @@ siteTable$GeomorphicLType=pseudo.titlecase(tolower(siteTable$GeomorphicLType))
 table(siteTable$Agency,siteTable$LType)
 table(siteTable$Agency,siteTable$GeomorphicLType)
 
+if(0){  #actually if you need to pull sites in from an old WFS sesh, like if one of them doesn respond
+  oldsiteTable = read.csv("H:/ericg/16666LAWA/LAWA2020/Lakes/Data/2020-07-16/SiteTable_Lakes16Jul20.csv",stringsAsFactors = F)
+  hrcs=oldsiteTable%>%filter(Agency=='hrc')
+  siteTable = rbind(siteTable,hrcs)
+}
+
+
 ## Output for next script
 write.csv(x = siteTable,file = paste0("h:/ericg/16666LAWA/LAWA2020/Lakes/Data/",
                                       format(Sys.Date(),'%Y-%m-%d'),
                                       "/SiteTable_Lakes",format(Sys.Date(),'%d%b%y'),".csv"),row.names=F)
 
-AgencyRep=table(factor(tolower(siteTable$Agency),levels=c("arc", "boprc", "ecan", "es", "gdc", "gwrc", "hbrc","hrc", "mdc", 
+AgencyRep=table(factor(tolower(siteTable$Agency),levels=c("ac", "boprc", "ecan", "es", "gdc", "gwrc", "hbrc","hrc", "mdc", 
                                                           "ncc", "nrc", "orc", "tdc", "trc", "wcrc", "wrc")))
 LakeWFSsiteFiles=dir(path = "H:/ericg/16666LAWA/LAWA2020/Lakes/Data/",
                      pattern = 'SiteTable_Lakes',
                      recursive = T,full.names = T)
 for(wsf in LakeWFSsiteFiles){
   stin=read.csv(wsf,stringsAsFactors=F)
-  agencyRep=table(factor(tolower(stin$Agency),levels=c("arc", "boprc", "ecan", "es", "gdc", "gwrc", "hbrc","hrc", "mdc", 
+  agencyRep=table(factor(tolower(stin$Agency),levels=c("ac", "boprc", "ecan", "es", "gdc", "gwrc", "hbrc","hrc", "mdc", 
                                                        "ncc", "nrc", "orc", "tdc", "trc", "wcrc", "wrc")))
   AgencyRep = cbind(AgencyRep,as.numeric(agencyRep))
   colnames(AgencyRep)[dim(AgencyRep)[2]] = strTo(strFrom(wsf,'_Lakes'),'.csv')
@@ -383,26 +390,20 @@ AgencyRep=AgencyRep[,-1]
 rm(LakeWFSsiteFiles)
 write.csv(AgencyRep,'h:/ericg/16666LAWA/LAWA2020/Metadata/AgencyRepLakeWFS.csv')
 
-#           arc boprc ecan es gdc gwrc hbrc hrc mdc ncc nrc orc tdc trc wcrc wrc
-
-#       14Apr20 23Jun20 25Jun20 03Jul20
-# arc         4       5       5      5
-# boprc      14      14      14     14
-# ecan       43      43      43     43
-# es         18      18      18     18
-# gdc         0       0       0      0
-# gwrc        5       5       5      5
-# hbrc        7       7       7      7
-# hrc        10      10      10     10
-# mdc         0       0       0      0
-# ncc         0       0       0      0
-# nrc        26      26      26     26
-# orc         9       9       9     14
-# tdc         0       0       0      0
-# trc         9       9       9      9
-# wcrc        3       3       3      3
-# wrc        12       0      12     12
-# 
-# 
-# 
-# 
+#        X X14Apr20 X23Jun20 X25Jun20 X03Jul20 X09Jul20 X16Jul20 X24Jul20
+# 1     ac        0        0        0        0        0        0        5
+# 2  boprc       14       14       14       14       12       12       12
+# 3   ecan       43       43       43       43       43       43       43
+# 4     es       18       18       18       18       18       18       18
+# 5    gdc        0        0        0        0        0        0        0
+# 6   gwrc        5        5        5        5        5        5        5
+# 7   hbrc        7        7        7        7        7        7        7
+# 8    hrc       10       10       10       10       10       10        0
+# 9    mdc        0        0        0        0        0        0        0
+# 10   ncc        0        0        0        0        0        0        0
+# 11   nrc       26       26       26       26       26       26       26
+# 12   orc        9        9        9       14       14       14       14
+# 13   tdc        0        0        0        0        0        0        0
+# 14   trc        9        9        9        9        9        9        9
+# 15  wcrc        3        3        3        3        3        3        3
+# 16   wrc       12        0       12       12       12       12       12

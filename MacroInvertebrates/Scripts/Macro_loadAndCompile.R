@@ -18,13 +18,14 @@ scriptsToRun = c("H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadAC.
   "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadHRC.R",
   "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadMDC.R",
   "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadNCC.R",
+  "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadNIWA.R",
   "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadNRC.R",
   "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadORC.R",
   "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadTDC.R",
   "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadTRC.R",
   "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadWCRC.R",
   "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadWRC.R")
-agencies = c('arc','boprc','ecan','es','gdc','gwrc','hbrc','hrc','mdc','ncc','nrc','orc','tdc','trc','wcrc','wrc')
+agencies = c('ac','boprc','ecan','es','gdc','gwrc','hbrc','hrc','mdc','ncc','nrc','orc','tdc','trc','wcrc','wrc')
 workers <- makeCluster(7)
 registerDoParallel(workers)
 clusterCall(workers,function(){
@@ -42,7 +43,9 @@ cat("Done load\n")
 
 #XML 2 CSV for MACROS ####
 lawaset=c("TaxaRichness","MCI","PercentageEPTTaxa")
-for(agency in c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")){
+agencies=c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")
+for(agency in c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")){
+# foreach(agency = 1:length(agencies))
   forcsv=xml2csvMacro(agency,maxHistory = 30,quiet=T)
   if(is.null(forcsv))next
   cat(agency,'\t',paste0(unique(forcsv$Measurement),collapse=', '),'\n')
@@ -74,11 +77,12 @@ browser()
 #                                 *****
 ##############################################################################
 #Build the combo ####
+if(exists('macroData')){rm(macroData)}
 siteTable=loadLatestSiteTableMacro()
 rownames(siteTable)=NULL
 lawaset=c("TaxaRichness","MCI","PercentageEPTTaxa")
-suppressWarnings(rm(macrodata,"arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc"))
-agencies= c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc")
+suppressWarnings(rm(macrodata,"ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc"))
+agencies= c("boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","trc","wcrc","wrc")#"tdc",
 library(parallel)
 library(doParallel)
 workers=makeCluster(7)
@@ -123,7 +127,7 @@ foreach(agency =1:length(agencies),.combine = rbind,.errorhandling = 'stop')%dop
     rm(missingCombos,targetCombos,currentSiteMeasCombos,targetSites)
     
         mfl$Agency=agencies[agency]
-        if(agencies[agency]=='arc'){
+        if(agencies[agency]=='ac'){
           #Auckland
           mfl$CouncilSiteID=trimws(mfl$CouncilSiteID)
           sort(unique(tolower(mfl$CouncilSiteID))[unique(tolower(mfl$CouncilSiteID))%in%tolower(siteTable$CouncilSiteID)])
@@ -155,17 +159,27 @@ rm(workers)
 #23 Jun 31646
 #25Jun 34775
 #3July 35560
+#9July 35575
+# 70693
+#24 July 74644
+macroData$LawaSiteID = siteTable$LawaSiteID[match(tolower(macroData$CouncilSiteID),tolower(siteTable$CouncilSiteID))]
+macroData$LawaSiteID[which(is.na(macroData$LawaSiteID))] = siteTable$LawaSiteID[match(tolower(macroData$CouncilSiteID[which(is.na(macroData$LawaSiteID))]),
+                                                                                      tolower(siteTable$SiteID))]
+#Add CSV-delivered datasets
+acmac=loadLatestCSVmacro(agency = 'ac')%>%select(-QC)
+macroData=rbind(macroData[,names(acmac)],acmac) #72571
+niwamac = loadLatestCSVmacro(agency='niwa')
+macroData=rbind(macroData,niwamac)
+#76013
 
-
+rm(acmac,niwamac)
 
 #This one with rounding is a good way to assign samples to a sampling season.  November/December etc gets rounded forward to the following year 
 # macroData$Year[is.na(macroData$Year)] = lubridate::isoyear(lubridate::round_date(lubridate::dmy(macroData$Date[is.na(macroData$Year)]),unit = 'year'))
 
 macroData$Year = lubridate::isoyear(lubridate::dmy(macroData$Date))
 
-macroData$LawaSiteID = siteTable$LawaSiteID[match(tolower(macroData$CouncilSiteID),tolower(siteTable$CouncilSiteID))]
-macroData$LawaSiteID[which(is.na(macroData$LawaSiteID))] = siteTable$LawaSiteID[match(tolower(macroData$CouncilSiteID[which(is.na(macroData$LawaSiteID))]),
-                                                                               tolower(siteTable$SiteID))]
+
 
 
 write.csv(macroData,paste0('h:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Data/',format(Sys.Date(),"%Y-%m-%d"),'/MacrosCombined.csv'),row.names = F)
@@ -195,12 +209,15 @@ macroData=merge(macroData,siteTable,by=c("LawaSiteID","Agency"),all.x=T,all.y=F)
 macroData$Agency=tolower(macroData$Agency)
 macroData$Region=tolower(macroData$Region)
 
-table(macroData$Agency)
+agencies= c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc")
+table(factor(macroData$Agency,levels=agencies))
 table(macroData$Region)
-#       ecan   es  gdc gwrc hbrc  hrc  ncc  nrc  orc  trc wcrc wrc
-#23Jun  8553 2742 1042 1568 2385 2307  976  905 1057 7616 2463 
-#25 Jun 8553 2742 1042 1568 2385 2307  976  905 1057 7616 2463 3129
-
+#        ac  boprc  ecan   es  gdc gwrc hbrc  hrc  mdc  ncc  niwa nrc  orc tdc   trc wcrc wrc
+#23Jun              8553 2742 1042 1568 2385 2307       976       905 1057      7616 2463 
+#25 Jun             8553 2742 1042 1568 2385 2307       976       905 1057      7616 2463 3129
+#9July              8949 2994 1042 1568 2537 2307       976       905 1057      7616 2463 3129
+#22July 1878 3697   8949 2994 1042 1568 2537 2307    0  976       905 1057   0  7616 2463 3129         
+#24July 1878  4039  8949 2997 1042 1568 2537 2307   186 976  3439 905 1057   0  7622 2463 3378 
 write.csv(macroData,paste0('h:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Data/',format(Sys.Date(),"%Y-%m-%d"),
                        '/MacrosWithMetadata.csv'),row.names = F)
 

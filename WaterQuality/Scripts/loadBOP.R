@@ -6,15 +6,12 @@ require(RCurl)
 agency='boprc'
 setwd("H:/ericg/16666LAWA/LAWA2020/WaterQuality")
 
-df <- read.csv(paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/MetaData/",agency,"SWQ_config.csv"),sep=",",stringsAsFactors=FALSE)
-Measurements <- subset(df,df$Type=="Measurement")[,2]
-Measurements <- as.vector(Measurements)
 
-df <- read.csv("H:/ericg/16666LAWA/LAWA2020/WaterQuality/MetaData/Transfers_plain_english_view.txt",sep=",",stringsAsFactors=FALSE)
-df <- df%>%filter(Agency=='boprc')%>%select(CallName)
+Measurements <- read.table("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Metadata/Transfers_plain_english_view.txt",sep=',',header=T,stringsAsFactors = F)%>%
+  filter(Agency==agency)%>%select(CallName)%>%unname%>%unlist
+Measurements=c(Measurements,'WQ Sample')
 
-# configsites <- subset(df,df$Type=="Site")[,2]
-# configsites <- as.vector(configsites)
+
 #WFS  http://geospatial.boprc.govt.nz/arcgis/services/emar/MonitoringSiteReferenceData/MapServer/WFSServer?request=getfeature&service=WFS&VERSION=1.1.0&typename=MonitoringSiteReferenceData&srsName=EPSG:4326
 # http://ec2-52-6-196-14.compute-1.amazonaws.com/sos-bop/service?service=SOS&version=2.0.0&request=GetCapabilities
 
@@ -38,9 +35,6 @@ df <- df%>%filter(Agency=='boprc')%>%select(CallName)
   
 siteTable=loadLatestSiteTableRiver()
 sites = unique(siteTable$CouncilSiteID[siteTable$Agency==agency])
-# Qualifier    <- subset(df,df$Type=="Qualifier")[,2]
-# Qualifier    <- as.data.frame(t(as.data.frame(strsplit(Qualifier,split="|",fixed=TRUE))),row.names=FALSE)
-# colnames(Qualifier) <- c("Value","Description")
 
 
 suppressWarnings(rm(Data))
@@ -52,7 +46,7 @@ for(i in 1:length(sites)){
                   "&featureOfInterest=",sites[i],
                   "&temporalfilter=om:phenomenonTime,P15Y/2020-01-01")
     url <- URLencode(url)
-    xmlfile <- ldWQ(url,agency=agency)
+    xmlfile <- ldWQ(url,agency,QC=T)
     if(!is.null(xmlfile) && 
        grepl(pattern = sites[i],x = xmlValue(xmlRoot(xmlfile)),ignore.case = T) &&
        !grepl(pattern = 'invalid',x = xmlValue(xmlRoot(xmlfile)),ignore.case = T)){

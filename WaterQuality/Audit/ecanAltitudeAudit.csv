@@ -1,9 +1,5 @@
 "Region","Agency","CouncilSiteID","SiteID","LawaSiteID","NZReach","Lat","Long","SWQAltitude","AltitudeCl","Altitude"
-"canterbury","niwa","CH1","Hurunui at Mandamus (NRWQN) (CH1)","ecan-00240",13020391,-42.7904052734375,172.541549682617,"unstated","Upland",340
-"canterbury","niwa","CH2","Hurunui at SH1 Br. (NRWQN) (CH2)","nrwqn-00059",13023994,-42.8984451293945,173.096618652344,"unstated","Upland",215
-"canterbury","niwa","CH4","Waimakariri above old HW Br. (NRWQN) (CH4)","ecan-10028",13042296,-43.4172859191895,172.641754150391,"unstated","Lowland",6
-"canterbury","ecan","SQ34418","dry stream above hurunui confl.","ecan-00173",21729,-42.8336805864753,172.860187248303,"lowland","Upland",149
-"canterbury","ecan","SQ34866","st leonards drain at recorder","ecan-00138",21717,-42.8325038265467,172.903096631837,"lowland","Upland",283
-"canterbury","ecan","SQ35172","kahutara river at dairy farm rd","ecan-00160",9520,-42.4081575233949,173.541717802496,"lowland","Upland",180
-"canterbury","ecan","SQ35173","blue duck creek above sh1","ecan-00161",6067,-42.2791582986772,173.768140444263,"lowland","Upland",192
-"canterbury","niwa","TK2","Opihi at Rockwood (NRWQN) (TK2)","ecan-00262",13063543,-44.1682624816895,170.941696166992,"unstated","Upland",186
+"canterbury","ecan","SQ10160","maerewhenua river sh83","ecan-00118",13522997,-44.8564982075111,170.689990017747,"lowland","Upland",162.5
+"canterbury","ecan","SQ10174","penticotico stream sh83","ecan-00121",13522181,-44.8159015795211,170.636526011416,"lowland","Upland",153
+"canterbury","ecan","SQ33899","okarahia stream u/s sh1","ecan-00154",13013190,-42.5420066479243,173.450541729351,"lowland","Upland",184
+"canterbury","ecan","SQ35173","blue duck creek above sh1","ecan-00161",13006067,-42.2791582986772,173.768140444263,"lowland","Upland",192

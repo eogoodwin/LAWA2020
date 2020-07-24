@@ -2,22 +2,46 @@ require(XML)     ### XML library to write hilltop XML
 require(dplyr)   ### dply library to manipulate table joins on dataframes
 require(RCurl)
 
-
-
+# Hi Eric,
+# I’ve had this email forwarded from Michael as you can see.  It didn’t come to Mark or I 
+# (via the WRC lawa@waikatoregion.govt.nz address) which runs the risk that if the Waikato
+# recipient is not the correct person for response, they may not act on it.  Fortunately Mark
+# happened to have a conversation with Michael and this email came up in passing. 
+# This email is most appropriately answered by my team and I recall previously sending an
+# explanation of how our quality codes are encoded in previous years.  I’m not in the office
+# at the moment so can’t readily retrieve that email for you.
+# 
+# However, our approach to decoding the Quality Code as delivered in the SOS feeds has matured,
+# and so this may be an easier approach than the previous look-up table we provided.
+# 
+# An explanation based on the example you provided:
+#   
+#   
+# 1.	The quality code is given with other system flags (e.g to signify < qualifier) encoded in it. 
+# 2.	A quality code in the <wml2:qualifier> tag is provided initially in the <DefaultTVPMeasurementMetadata> 
+#     (5th row of example above with encoded value of 1034) and is only re-stated in <point> stanzas if 
+#     it differs (as in your highlighted example above with value of 17418).
+# 3.	To get the raw quality code a logical bitwise “&” of the value with 255 provides the code.
+# 4.	The modifiers can be determined by logical bitwise “&” of flags 1024 and higher – but I need to 
+#     refer to internal system to be certain about what the modifier encoding refers to.
+# 
+# For the two example qualifier codes given in the snip above the raw quality codes are both 10.  That is:
+#   1034 & 255 = 10
+# 17418 & 255 = 10
+# 
+# Happy to discuss further.
+# Cheers,
+# PK
+bitAnd(1034,255)
+                                                                                         
 setwd("H:/ericg/16666LAWA/LAWA2020/WaterQuality")
 agency='wrc'
-df <- read.csv(paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/MetaData/",agency,"SWQ_config.csv"),sep=",",stringsAsFactors=FALSE)
-# configsites <- subset(df,df$Type=="Site")[,2]
-# configsites <- as.vector(configsites)
-Measurements <- subset(df,df$Type=="Measurement")[,2]
-# Measurements <- as.vector(Measurements)
-# Qualifier    <- subset(df,df$Type=="Qualifier")[,2]
-# Qualifier    <- as.data.frame(t(as.data.frame(strsplit(Qualifier,split="|",fixed=TRUE))),row.names=FALSE)
-# colnames(Qualifier) <- c("Value","Description")
+Measurements <- read.table("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Metadata/Transfers_plain_english_view.txt",sep=',',header=T,stringsAsFactors = F)%>%
+  filter(Agency==agency)%>%select(CallName)%>%unname%>%unlist
+Measurements=c(Measurements,'WQ Sample')
 
 siteTable=loadLatestSiteTableRiver()
 sites = unique(siteTable$CouncilSiteID[siteTable$Agency=='wrc'])
-
 
 cat("SiteID\tMeasurementName\tSitesPct\tMeasuresPct\tRERIMP\tWARIMP\n")
 for(i in 1:length(sites)){
@@ -32,7 +56,7 @@ for(i in 1:length(sites)){
                   "&observedProperty=", Measurements[j],
                   "&temporalfilter=om:phenomenonTime,2005-01-01/2020-01-01")
     url <- URLencode(url)
-    xmlfile <- ldWQ(url,agency)
+    xmlfile <- ldWQ(url,agency,QC=T)
     
     ## Test returns from URL call
     #  Establish if <om:result> exists, and if so, whether, there is at least 1 <wml2:point>
@@ -48,7 +72,7 @@ for(i in 1:length(sites)){
                    "&observedProperty=", Measurements[j],
                    "&temporalfilter=om:phenomenonTime,2005-01-01/2020-01-01")
       url <- URLencode(url)
-      xmlfile <- ldWQ(url,agency)
+      xmlfile <- ldWQ(url,agency,QC=T)
 
       ## Test returns from URL call
       #  Establish if <om:result> exists, and if so, whether, there is at least 1 <wml2:point>

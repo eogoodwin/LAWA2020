@@ -5,28 +5,33 @@ require(RCurl)
 setwd("H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/")
 
 
-agency='arc'
+agency='ac'
 
 
-df <- read.csv(paste0("H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Metadata/",agency,"Macro_config.csv"),sep=",",stringsAsFactors=FALSE)
-Measurements <- subset(df,df$Type=="Measurement")[,1]
-Measurements <- as.vector(Measurements)
-#configsites <- subset(df,df$Type=="Site")[,1]
-#configsites <- as.vector(configsites)
-
-siteTable=loadLatestSiteTableMacro()
+# df <- read.csv(paste0("H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Metadata/",agency,"Macro_config.csv"),sep=",",stringsAsFactors=FALSE)
+# Measurements <- subset(df,df$Type=="Measurement")[,1]
+# Measurements <- as.vector(Measurements)
+# 
+# siteTable=loadLatestSiteTableMacro()
 
 # acmacros = readxl::read_xlsx("H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Data/ARC_LAWA_MCI_2020.xlsx",sheet='Sheet2',skip=1)
-acmacros = readxl::read_xlsx("H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Data/190703_LAWA_MCI_2020.xlsx",sheet='Sheet2',skip=1)
-arcMacros <- acmacros%>%
-  dplyr::select(SiteID,Date,"MCI","Total Richness","% EPT Richness")%>%
-  rename(CouncilSiteID=SiteID)%>%
+acmacros = readxl::read_xlsx("H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Data/20200625_LAWA_MCI_AC edit2.xlsx",sheet='Sheet2',skip=3)
+                             # 190703_LAWA_MCI_2020.xlsx",sheet='Sheet2',skip=1)
+acMacros <- acmacros%>%
+  dplyr::select(LAWASiteID,SiteID,Date,"Selected MCI score","Taxonomic Richness","% EPT Richness","QualityCode")%>%
+  dplyr::rename(LawaSiteID=LAWASiteID,
+         CouncilSiteID=SiteID,
+         MCI=`Selected MCI score`,
+         `Total Richness`=`Taxonomic Richness`,
+         QC=`QualityCode`)%>%
     tidyr::gather(key="Measurement",value="Value",c("MCI","Total Richness","% EPT Richness"))
-write.csv(arcMacros,
+acMacros$Agency='ac'
+acMacros$Date=format(acMacros$Date,'%d-%b-%y')
+write.csv(acMacros,
           file=paste0( 'H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Data/',format(Sys.Date(),"%Y-%m-%d"),'/',agency,'.csv'),
           row.names=F)
 
- cat("ARC MACROS DELIVERED BY SPREADSHEET")
+ cat("AC MACROS DELIVERED BY SPREADSHEET")
 # 
 # sites = unique(siteTable$CouncilSiteID[siteTable$Agency==agency])
 # 
@@ -94,7 +99,7 @@ write.csv(arcMacros,
 # 
 # 
 # con <- xmlOutputDOM("Hilltop")
-# con$addTag("Agency", "ARC")
+# con$addTag("Agency", "AC")
 # 
 # #-------
 # if(length(t)==0){

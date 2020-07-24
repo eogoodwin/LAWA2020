@@ -13,15 +13,23 @@ Measurements <- subset(df,df$Type=="Measurement")[,1]
 #WFS  http://geospatial.boprc.govt.nz/arcgis/services/emar/MonitoringSiteReferenceData/MapServer/WFSServer?request=getfeature&service=WFS&VERSION=1.1.0&typename=MonitoringSiteReferenceData&srsName=EPSG:4326
 # http://ec2-52-6-196-14.compute-1.amazonaws.com/sos-bop/service?service=SOS&version=2.0.0&request=GetCapabilities
 
- siteTable=loadLatestSiteTableMacro()
- sites = unique(siteTable$CouncilSiteID[siteTable$Agency==agency])
+siteTable=loadLatestSiteTableMacro()
+sites = unique(siteTable$CouncilSiteID[siteTable$Agency==agency])
 
-
+library(parallel)
+library(doParallel)
+workers <- makeCluster(7)
+registerDoParallel(workers)
+clusterCall(workers,function(){
+  source('H:/ericg/16666LAWA/LAWA2020/scripts/LAWAFunctions.R')
+})
 suppressWarnings(rm(Data))
-for(i in 1:length(sites)){
+# for(i in 1:length(sites)){
+foreach(i = 1:length(sites),.errorhandling = 'stop',.combine = rbind)%dopar%{
   cat('\n',sites[i],i,'out of',length(sites),'\t')
   for(j in 1:length(Measurements)){
-    url <- paste0("http://ec2-52-6-196-14.compute-1.amazonaws.com/sos-bop/service?service=SOS&version=2.0.0&request=GetObservation&",
+    url <- paste0("http://ec2-52-6-196-14.compute-1.amazonaws.com/sos-bop/service?",
+                  "service=SOS&version=2.0.0&request=GetObservation&",
                   "observedProperty=",Measurements[j],
                   "&featureOfInterest=",sites[i],
                   "&temporalfilter=om:phenomenonTime,P15Y/2020-06-01")
@@ -43,11 +51,16 @@ for(i in 1:length(sites)){
         } else{
           Data <- rbind.data.frame(Data, df)
         }
-      }  
+      }
     }
   }
-}
+  return(Data)
+}->Data
+stopCluster(workers)
+rm(workers)
 
+
+library(tidyverse)
 year2017=read_csv("H:/ericg/16666Lawa/LAWA2020/MacroInvertebrates/Data/BOPRC_Data_for_LAWA_2017_2018.csv")%>%
   drop_na(Aquarius)%>%
   tidyr::gather(key="Measurement",value="Value",c("MCI_Actual","Richness","P_EPT1_r"))%>%

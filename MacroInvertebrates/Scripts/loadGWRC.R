@@ -4,7 +4,7 @@ require(dplyr)   ### dply library to manipulate table joins on dataframes
 require(RCurl)
 
 setwd("H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates")
-
+source('H:/ericg/16666LAWA/LAWA2020/scripts/LAWAFunctions.R')
 agency='gwrc'
 tab="\t"
 
@@ -25,7 +25,8 @@ for(i in 1:length(sites)){
     url <- paste0("http://hilltop.gw.govt.nz/Data.hts?service=Hilltop&request=GetData",
                  "&Site=",sites[i],
                  "&Measurement=",Measurements[j],
-                  "&From=2005-01-01&To=2020-06-01")
+                  "&From=2005-01-01&To=2020-06-01")#,
+                 # "&tstype=stdqualseries")
     url <- URLencode(url)
     
     xmlfile <- ldMWQ(url,agency,method='wininet')

@@ -13,7 +13,7 @@ editor_options:
 
 ```{r setup, include=FALSE,echo=FALSE}
 library(tidyverse)
-library(DT)
+library(DT) #All the data table cleverness
 require(Hmisc)#For hiding TOC
 source('H:/ericg/16666LAWA/LAWA2020/Scripts/LAWAFunctions.R')
 siteTable=loadLatestSiteTableLakes(maxHistory = 400)
@@ -130,7 +130,7 @@ agencyCSV$LawaSiteID=siteTable$LawaSiteID[match(tolower(agencyCSV$CouncilSiteID)
 agencyCSV$LawaSiteID[is.na(agencyCSV$LawaSiteID)]=siteTable$LawaSiteID[match(tolower(agencyCSV$CouncilSiteID[is.na(agencyCSV$LawaSiteID)]),tolower(siteTable$SiteID))]
 
 siteTableLIDs=unique(siteTable$LawaSiteID[which(siteTable$Agency==agency)])
-agencyCSVLIDs = unique(agencyCSV$LawaSiteID)
+agencyCSVLIDs = unique(tolower(agencyCSV$LawaSiteID))
 lwqLIDs = unique(LWQdata$LawaSiteID[which(LWQdata$Agency==agency)])
 
 df <- read.csv(paste0("H:/ericg/16666LAWA/LAWA2020/Lakes/Metadata/",agency,"LWQ_config.csv"),sep=",",stringsAsFactors=FALSE)
@@ -178,7 +178,7 @@ if(dim(lwqtrend)[1]>0){
   lwqtrend$TrendScore[!is.na(lwqtrend$ConfCat)] = paste0(lwqtrend$TrendScore,' (',lwqtrend$note,')')[!is.na(lwqtrend$ConfCat)]
   lwqtrend$Catchment = siteTable$Catchment[match(lwqtrend$LawaSiteID,siteTable$LawaSiteID)]
   lwqtrend=lwqtrend%>%
-    select(-LawaSiteID,-frequency,-nMeasures,-note,-nReq)%>%
+    select(-ConfCat,-LawaSiteID,-frequency,-nMeasures,-note,-nReq)%>%
     tidyr::spread(key = c('Measurement'),value="TrendScore")
 }
 ```
@@ -202,17 +202,29 @@ DT::datatable(agencyRep[,c(1,max(2,dim(agencyRep)[2]-6):(dim(agencyRep)[2]))],op
 ```
 
 ```{r echo=F,results='asis'}
-missingCSIDs=siteTableLIDs[!siteTableLIDs%in%agencyCSVLIDs]
-if(length(missingCSIDs)>0){
-  cat('  \n## Missing data\n\n')
-  cat(length(missingCSIDs),
-      " of the sites announced on the WFS are missing from the timeseries server.\nThese are:\n",
-      paste(missingCSIDs,collapse=', '),
+missingLIDs=siteTableLIDs[!siteTableLIDs%in%agencyCSVLIDs]
+if(length(missingLIDs)>0){
+  cat('  \n## Missing data this week\n\n')
+  cat(length(missingLIDs),
+      " of the sites announced on the WFS are missing from the timeseries server this week.\nThese are:\n",
+      paste(missingLIDs,collapse=', '),
       '.\nThey may well simply be named differently between WFS and time series server')
   DT::datatable(siteTable%>%
-                  filter(CouncilSiteID%in%missingCSIDs|tolower(SiteID)%in%missingCSIDs)%>%
+                  filter(tolower(CouncilSiteID)%in%missingLIDs|tolower(SiteID)%in%missingLIDs|tolower(LawaSiteID)%in%missingLIDs)%>%
                   select(SiteID,CouncilSiteID,LawaSiteID,Catchment)%>%
-                  arrange(LawaSiteID),rownames=F)  }
+                  arrange(LawaSiteID),rownames=F)  
+  }
+missingLIDs=siteTableLIDs[!siteTableLIDs%in%lwqLIDs]
+if((length(missingLIDs))>0){
+  cat('  \n## Missing data ever\n\n')
+  cat(length(missingLIDs),
+      " of the CouncilSiteIDs announced on the WFS have not yet been seen on the timeseries server.\nThese are:\n",
+paste(missingLIDs,collapse=', '),'.\nThey may well simply be named differently between WFS and time series server, but that\'s enough to thoroughly confuse me!\n',sep='')
+  DT::datatable(siteTable%>%
+                  filter(tolower(CouncilSiteID)%in%missingLIDs|tolower(SiteID)%in%missingLIDs|tolower(LawaSiteID)%in%missingLIDs)%>%
+                  select(SiteID,CouncilSiteID,LawaSiteID,Catchment)%>%
+                  arrange(LawaSiteID),rownames=F)
+}
 ```
 
 ```{r echo=F,results='asis'}
@@ -254,8 +266,8 @@ DT::datatable(LWQaudit%>%
                                       latestDate=max(dmy(latest),na.rm=T),
                                       nMeasTypes=length(unique(var))))
 cat('  \n')
-if(any(!c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")%in%unique(LWQaudit$agency))){
-  cat(c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")[!c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")%in%unique(LWQaudit$agency)]," currently no data available.")
+if(any(!c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")%in%unique(LWQaudit$agency))){
+  cat(c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")[!c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")%in%unique(LWQaudit$agency)]," currently no data available.")
 }
 ```
 
@@ -286,31 +298,31 @@ thesePH= which(apply(PHrep,1,FUN=function(x)var(x,na.rm=T)!=0|is.na(tail(x,1))))
 theseCHLA= which(apply(CHLArep,1,FUN=function(x)var(x,na.rm=T)!=0|is.na(tail(x,1))))
 options(warn=0)
 if(length(theseTN)>0){
-  cat('  \n### TN\n')
+  cat('  \n\n### TN\n')
 DT::datatable(TNrep[theseTN,])
   }
 if(length(theseNH4)>0){
-  cat('  \n### NH4\n')
+  cat('  \n\n### NH4\n')
 DT::datatable(NH4rep[theseNH4,])
 }
 if(length(theseTP)>0){
-  cat('  \n### TP\n')
+  cat('  \n\n### TP\n')
 DT::datatable(TPrep[theseTP,])
 }
 if(length(theseCHLA)>0){
-  cat('  \n### CHLA\n')
+  cat('  \n\n### CHLA\n')
 DT::datatable(CHLArep[theseCHLA,])
 }
 if(length(thesePH)>0){
-  cat('  \n### PH\n')
+  cat('  \n\n### PH\n')
 DT::datatable(PHrep[thesePH,])
 }
 if(length(theseSECCHI)>0){
-  cat('  \n### SECCHI\n')
+  cat('  \n\n### SECCHI\n')
 DT::datatable(SECCHIrep[theseSECCHI,])
 }
 if(length(theseECOLI)>0){
-  cat('  \n### ECOLI\n')
+  cat('  \n\n### ECOLI\n')
 DT::datatable(ECOLIrep[theseECOLI,])
 }
 ```
@@ -319,12 +331,13 @@ DT::datatable(ECOLIrep[theseECOLI,])
 Calculating state and trend values requires measurements representative of multiple time periods.  Sometimes there may be multiple measurements avialable for a single time period, especially if quarterly trends are being calculated.  The most extreme case of this is where replicate samples have been taken on the same day, or multiple measurements may have been made of the same sample.  If this is present in your data, replicates will be listed here.  This may be valid, if there are multiple sampling programs, or it may suggest that by mistake some sort of replication of single measurements has occurred.
 
 ```{r echo=F, results='asis'}
-agencyCSVn = agencyCSV%>%group_by(Date,CouncilSiteID,Measurement)%>%transmute(n=n())%>%ungroup
+agencyCSVn = agencyCSV%>%group_by(Date,CouncilSiteID,Measurement)%>%
+  transmute(n=n(),min=min(Value),max=max(Value),range=max-min,mean=signif(mean(Value),2),median=median(Value))%>%ungroup
 if(any(agencyCSVn$n>1)){
-  cat("Yep, you've got remplicates alright, in your data.\n\n")
+  cat("There are replicate sites in your data.\n\n")
 
   reps = agencyCSVn%>%filter(n>1)%>%distinct%>%dplyr::arrange(desc(n))
-  DT::datatable(reps)
+  DT::datatable(reps,extensions='Buttons',options=list(dom='Bf',buttons=c('copy','csv','excel')),rownames=F)
   }
 ```
 
@@ -334,7 +347,7 @@ if(any(agencyCSVn$n>1)){
 The following plots show data relative to other councils from whom data has been collected.  Great for checking whether measurement units are consistent council to council, allowing for fair and level inter-region comparisons.
 
 ```{r echo=F,results='asis'}
-cat('  \n### TN  \n  ')
+cat('  \n\n### TN  \n  ')
 knitr::include_graphics(tail(dir(path="H:/ericg/16666LAWA/LAWA2020/Lakes/Audit",
                                  pattern='TN.*png',recursive=T,full.names = T,ignore.case = T),1))
 cat('  \n  \n### NH4N  \n  ')
@@ -382,7 +395,7 @@ for(msm in unique(agencyLWQdata$Measurement)){
   yrng=range(bpDat$Value[bpDat$Value>0],na.rm=T)
   xrng=range(bpDat$Date,na.rm=T)
   par(mfrow=c(3,3),mar=c(3,4,2,1))
-  for(csi in sort(unique(agencyLWQdata$CouncilSiteID))){
+  for(csi in sort(unique(bpDat$CouncilSiteID))){
     tsDat=bpDat%>%filter(CouncilSiteID==csi)
     if(dim(tsDat)[1]>0){
       plot(data=tsDat,Value~Date,log=yLog,ylab=msm,xlab='',main=csi,type='p',ylim=yrng,xlim=xrng)
@@ -398,13 +411,14 @@ for(msm in unique(agencyLWQdata$Measurement)){
 # State, NOF and Trend Results
 ## 5-year median values per site
 
-These require 30 data points in five years before they'll be calculated, otherwise reported as NA.
+These require 30 data points in five years before they'll be calculated, otherwise reported as NA and they wont appear in this table.
 
 ```{r echo=F,results='asis'}
 if(dim(ss)[1]>0){
-  DT::datatable(spread(data=ss%>%
-                              dplyr::select(CouncilSiteID,SiteID,LAWAID,Catchment,Parameter,Median)%>%
-                              dplyr::mutate(Median=signif(Median,4)),Parameter,Median))
+DT::datatable(ss%>%
+                dplyr::select(CouncilSiteID,Catchment,Parameter,Median)%>%
+                dplyr::mutate(Median=signif(Median,4))%>%spread(Parameter,Median),
+              rownames = F,extensions='Buttons',options=list(dom='Bf',buttons=c('copy','csv','excel')))
 }else{
   cat("No state results for ",agency,'\n')
 }
@@ -416,7 +430,10 @@ DT::datatable(TLI%>%drop_na(Value)%>%
                 transmute(CouncilSiteID=factor(SiteID),
                           LawaSiteID=factor(LawaSiteID),
                           LFENZID=factor(LFENZID),Year,TLI=signif(Value,3),TLI=signif(TLI,3)),
-              extensions='RowGroup',options=list(rowGroup=list(dataSrc=2),pageLength=12),filter='top',rownames = F)
+              extensions=c('RowGroup','Buttons'),options=list(rowGroup=list(dataSrc=2),
+                                                              pageLength=12,
+                                                              dom='Bf',
+                                                              buttons=c('copy','csv','excel')),filter='top',rownames = F)
 ```
 
 ## NOF scores per site, overall
@@ -427,41 +444,47 @@ Missing grades should be more fully explained in subsequent tables (below).
 
 ```{r echo=F,results='asis'}
 DT::datatable(nfts%>%dplyr::select(CouncilSiteID,contains('band'))%>%
-                     rename_all(.funs = ~gsub(x=.,pattern = '_band|band',replacement = '',ignore.case = T)))
+                     rename_all(.funs = ~gsub(x=.,pattern = '_band|band',replacement = '',ignore.case = T)),
+                extensions='Buttons',options=list(dom='Bf',buttons=c('copy','csv','excel')))
 cat('  \n')
 
 if(any(nfts$NitrateAnalysisNote!="")){
   cat('  \n### Nitrogen\n')
   DT::datatable(nfts%>%dplyr::select(CouncilSiteID,Total_Nitrogen:NitrateAnalysisNote)%>%
-                       rename_all(.funs = ~gsub(x=.,pattern = 'Nitrate|Nitrate_',replacement = '',ignore.case=T)))
+                       rename_all(.funs = ~gsub(x=.,pattern = 'Nitrate|Nitrate_',replacement = '',ignore.case=T)),
+                extensions='Buttons',options=list(dom='Bf',buttons=c('copy','csv','excel')))
   cat('  \n')
 }
 
 if(any(nfts$PhosphorusAnalysisNote!="")){
   cat('  \n### Phosphorus\n')
 DT::datatable(nfts%>%dplyr::select(CouncilSiteID,Total_Phosphorus:PhosphorusAnalysisNote)%>%
-                       rename_all(.funs = ~gsub(x=.,pattern = 'Phosphorus|Phosphorus_',replacement = '',ignore.case=T)))
+                       rename_all(.funs = ~gsub(x=.,pattern = 'Phosphorus|Phosphorus_',replacement = '',ignore.case=T)),
+                extensions='Buttons',options=list(dom='Bf',buttons=c('copy','csv','excel')))
     cat('  \n')
 }
 
 if(any(nfts$AmmoniaAnalysisNote!="")){
   cat('  \n### Ammonia\n')
   DT::datatable(nfts%>%dplyr::select(CouncilSiteID,AmmoniacalMed:AmmoniaAnalysisNote)%>%
-                       rename_all(.funs = ~gsub(x=.,pattern = 'Ammoniacal|Ammonia_',replacement = '',ignore.case=T)))
+                       rename_all(.funs = ~gsub(x=.,pattern = 'Ammoniacal|Ammonia_',replacement = '',ignore.case=T)),
+                extensions='Buttons',options=list(dom='Bf',buttons=c('copy','csv','excel')))
   cat('  \n')
 }
 
 if(any(nfts$ClarityAnalysisNote!="")){
   cat('  \n### Clarity\n')
   DT::datatable(nfts%>%dplyr::select(CouncilSiteID,Median_Clarity:ClarityAnalysisNote)%>%
-                       rename_all(.funs = ~gsub(x=.,pattern = 'Clarity|Clarity_',replacement = '',ignore.case=T)))
+                       rename_all(.funs = ~gsub(x=.,pattern = 'Clarity|Clarity_',replacement = '',ignore.case=T)),
+                extensions='Buttons',options=list(dom='Bf',buttons=c('copy','csv','excel')))
   cat('  \n')
 }
 
 if(any(nfts$ChlAAnalysisNote!="")){
   cat('  \n### ChlA\n')
 DT::datatable(nfts%>%dplyr::select(CouncilSiteID,Median_ChlA:ChlAAnalysisNote)%>%
-                       rename_all(.funs = ~gsub(x=.,pattern = 'ChlA|ChlA_',replacement = '',ignore.case=T)))
+                       rename_all(.funs = ~gsub(x=.,pattern = 'ChlA|ChlA_',replacement = '',ignore.case=T)),
+                extensions='Buttons',options=list(dom='Bf',buttons=c('copy','csv','excel')))
     cat('  \n')
 }
 
@@ -469,21 +492,25 @@ if(any(!is.na(nfts$E_coliAnalysisNote)&nfts$E_coliAnalysisNote!="")){
   cat('  \n### Escherischia coli\n')
   names(nfts)[which(names(nfts)=="E_coli_band")] <- "MedianBand"
 DT::datatable(nfts%>%dplyr::select(CouncilSiteID,E_coli_Period,E_coliSummaryband,E_coliAnalysisNote)%>%
-                       rename_all(.funs = ~gsub(x=.,pattern = 'E_coli_|E_coli',replacement = '',ignore.case=F)))
+                       rename_all(.funs = ~gsub(x=.,pattern = 'E_coli_|E_coli',replacement = '',ignore.case=F)),
+                extensions='Buttons',options=list(dom='Bf',buttons=c('copy','csv','excel')))
     cat('  \n')
 DT::datatable(nfts%>%dplyr::select(CouncilSiteID,E_coli_Median:E_coliRecHealth260_Band)%>%
-                       rename_all(.funs = ~gsub(x=.,pattern = 'E_coli_|E_coli',replacement = '',ignore.case=F)))
+                       rename_all(.funs = ~gsub(x=.,pattern = 'E_coli_|E_coli',replacement = '',ignore.case=F)),
+                extensions='Buttons',options=list(dom='Bf',buttons=c('copy','csv','excel')))
     cat('  \n')
 }
 ```
 
 ## Trend scores per site
 
-Trends are in 5 categories, with -2 meaning a likely degrading trend, and 2 meaning a likely improving trend. 0 is indeterminate, and NA when there is insufficient data to calculate a trend. For 5 year trends we need 54 measures, for 10 year trends we need 108 measures, and for 15 year trends we need 162 measures.  There is a fallback for ten and fifteen year trends, which can be calculated with quarterly rather than monthly data, if  54 quarterly measures (for 15 year) or 36 quarterly (for 10 year) measures are available.  In all cases, 90% of years need representation in that measurement set.  That is, missing measures can not all be missing from the same year.
+Trends are in 5 categories, with -2 meaning a very likely degrading trend, and 2 meaning a very likely improving trend. 0 is indeterminate, and NA when there is insufficient data to calculate a trend. For 5 year trends we need 54 measures, for 10 year trends we need 108 measures, and for 15 year trends we need 162 measures.  There is a fallback for ten and fifteen year trends, which can be calculated with quarterly rather than monthly data, if  54 quarterly measures (for 15 year) or 36 quarterly (for 10 year) measures are available.  In all cases, 90% of years need representation in that measurement set.  That is, missing measures can not all be missing from the same year.
 There are other requirements: no long series of the same value, a decent variety of values, a decent number of non-censored values.  So, if your n requirements appear to be met, check the timeseries plots in the section above (Measurement ranges, sites within council) and look out for low variety of measures.
 
 ```{r echo=F,results='asis'}
-DT::datatable(lwqtrend,extensions=c('Buttons','ColReorder','FixedColumns'),
-              options=list(dom='Bfrtip',colReorder=T,buttons=c('colvis','csv'),scrollX=TRUE,fixedColumns=list(leftColumns=5)),
+DT::datatable(lwqtrend,
+extensions=c('Buttons','ColReorder','FixedColumns'),
+              options=list(dom='Bfrtip',colReorder=T,buttons=c('colvis','copy','csv','excel'),
+                           scrollX=TRUE,fixedColumns=list(leftColumns=5)),
               filter='top',rownames=F)
 ```

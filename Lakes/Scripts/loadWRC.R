@@ -16,6 +16,14 @@ siteTable=loadLatestSiteTableLakes(maxHistory=30)
 sites = unique(siteTable$CouncilSiteID[siteTable$Agency==agency])
 lakeDataColumnLabels=NULL
 
+setwd("H:/ericg/16666LAWA/LAWA2020/Lakes")
+if(exists('Data'))rm(Data)
+
+#7July2020 tried using the ARC format to get QC codes, but this appears to be a different installation of Kisters.
+# http://envdata.waikatoregion.govt.nz:8080/KiWIS/KiWIS?datasource=0&service=Kisters&type=queryServices&request=getTimeseriesList&station_id=37270
+#Got some way toward naviating the database
+#Kisters Kiwis help http://kiwis.kisters.de/KiWIS/KiWIS?datasource=0&service=kisters&type=queryServices&request=getrequestinfo 
+
 for(i in 1:length(sites)){
   cat('\n',i,'out of',length(sites),'\n')
   for(j in 1:length(Measurements)){

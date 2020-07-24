@@ -3,7 +3,7 @@ library(tidyverse)
 source("h:/ericg/16666LAWA/LAWA2020/Scripts/LWPTrends_Dec18/LWPTrends_v1811.R")
 source("h:/ericg/16666LAWA/LAWA2020/Scripts/LAWAFunctions.R")
 #source("h:/ericg/16666LAWA/LAWA2020/WaterQuality/scripts/SWQ_state_functions.R")
-try(dir.create(paste0("h:/ericg/16666LAWA/LAWA2020/Lakes/Analysis/",format(Sys.Date(),"%Y-%m-%d"))))
+try(dir.create(paste0("h:/ericg/16666LAWA/LAWA2020/Lakes/Analysis/",format(Sys.Date(),"%Y-%m-%d")),showWarnings = F))
 
 Mode=function(x) {
   ux <- unique(x)
@@ -24,7 +24,7 @@ if(!exists('lakeData')){
   lakeData=read.csv(lakeDataFileName,stringsAsFactors = F)
   rm(lakeDataFileName)
   lakeData$myDate <- as.Date(as.character(lakeData$Date),"%d-%b-%y")
-  lakeData$myDate[which(lakeData$Agency=='arc')] <- as.Date(lubridate::dmy(lakeData$Date[which(lakeData$Agency=='arc')]))
+  lakeData$myDate[which(lakeData$Agency=='ac')] <- as.Date(lubridate::dmy(lakeData$Date[which(lakeData$Agency=='ac')]))
   lakeData <- GetMoreDateInfo(lakeData)
   lakeData$monYear = format(lakeData$myDate,"%b-%Y")
   

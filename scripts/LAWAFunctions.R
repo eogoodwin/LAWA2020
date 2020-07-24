@@ -1,7 +1,7 @@
 library(lubridate)
 library(XML)
 
-#Is the core of the funcgorithm
+#Is the core of the trend funcgorithm
 source('h:/ericg/16666LAWA/LAWA2020/scripts/LWPTrends_Dec18/LWPTrends_v1811.R')
 trendCore <- function(subDat,periodYrs,proportionNeeded=0.5){
   siteTrendTable=data.frame(LawaSiteID=unique(subDat$LawaSiteID),Measurement=unique(subDat$Measurement),
@@ -84,8 +84,8 @@ trendCore <- function(subDat,periodYrs,proportionNeeded=0.5){
     }
     rm(st)
   }#else{
-    #siteTrendTable$frequency=paste0('too few, n=',dim(SSD_med)[1],'Q/',proportionNeeded*4*periodYrs)
-#  }
+  #siteTrendTable$frequency=paste0('too few, n=',dim(SSD_med)[1],'Q/',proportionNeeded*4*periodYrs)
+  #  }
   rm(SSD_med)
   return(siteTrendTable)
 }
@@ -195,7 +195,7 @@ strFrom=function(s,c=":"){
   require(stringr)
   cpos=str_locate(string = s,pattern = c)[1]
   if(!all(is.na(cpos))){
-    substr(s,cpos+nchar(c),nchar(s))
+    substr(s,cpos+nchar(str_extract(string = s,pattern = c)),nchar(s))
   }else{
     s
   }
@@ -214,47 +214,86 @@ ldWFS <- function(urlIn,dataLocation,agency,case.fix=TRUE,method='curl'){
       return(NULL)
     }
     if(case.fix)  cc(paste0("WFS",agency))
-    xmlfile <- try(xmlParse(file = paste0("WFS",agency)),silent=T)
+    wfsxml <- try(xmlParse(file = paste0("WFS",agency)),silent=T)
     unlink(paste0("WFS",agency))
-    if('try-error'%in%attr(xmlfile,'class')){return(NULL)}
+    if('try-error'%in%attr(wfsxml,'class')){return(NULL)}
   } else if(dataLocation=="file"){
     cc(urlIn)
     message("trying file",urlIn,"\nContent type  'text/xml'\n")
     if(grepl("xml$",urlIn)){
-      xmlfile <- xmlParse(urlIn)
+      wfsxml <- xmlParse(urlIn)
     } else {
-      xmlfile=FALSE
+      wfsxml=FALSE
     }
   }
-  return(xmlfile)
+  return(wfsxml)
 }
 
-ldWQ <- function(url,agency,method='curl',module='',...){
-  tempFileName=paste0("D:/LAWA/2020/tmp",module,agency,".xml")
+ldWQ <- function(url,agency,method='curl',module='',QC=F,...){
+  require(XML)
+  tempFileName=tempfile(tmpdir="D:/LAWA/2020",pattern=paste0(module,agency),fileext=".xml")
+  #Try both methods of downloading, return a NULL if neither works
+  # dl=download.file(url,destfile=tempFileName,method=method,quiet=T)
   dl=try(download.file(url,destfile=tempFileName,method=method,quiet=T,...),silent = T)
-  xmlfile <- try(xmlParse(file = tempFileName),silent=T)
-  error<-try(as.character(sapply(getNodeSet(doc=xmlfile, path="//Error"), xmlValue)),silent=T)
-  if('try-error'%in%attr(dl,'class')||is.null(xmlfile)||'try-error'%in%attr(xmlfile,'class')||length(error)>0){
+  if('try-error'%in%attr(dl,'class')){
     method=ifelse(method=='curl',yes = 'wininet',no = 'curl')
     dl=try(download.file(url,destfile=tempFileName,method=method,quiet=T,...),silent = T)
-    xmlfile <- try(xmlParse(file = tempFileName),silent=T)
-    error<-as.character(sapply(getNodeSet(doc=xmlfile, path="//Error"), xmlValue))
+    if('try-error'%in%attr(dl,'class')){
+      return(NULL)
+    }
   }
-  if('try-error'%in%attr(dl,'class')|is.null(xmlfile)|'try-error'%in%attr(xmlfile,'class')||length(error)>0){
+  #If we havent returned NULL by here, we've got a file.  Try parsing it, return NULL on failure
+  dataxml <- try(xmlParse(file = tempFileName),silent=T)
+  if(is.null(dataxml)|'try-error'%in%attr(dataxml,'class')){
+    unlink(tempFileName) #delete the faulty file
     return(NULL)
   }
-  # xmlfile <- try(xmlParse(file = tempFileName),silent=T)
+  #If we havent returned NULL by here we've parsed it.  Look for reported errrors, return NULL on error
+  error<-try(as.character(sapply(getNodeSet(doc=dataxml, path="//Error"), xmlValue)),silent=T)
+  if(length(error)>0){
+    unlink(tempFileName) #delete the error report file
+    return(NULL)
+  }
   unlink(tempFileName)
-  # if(is.null(xmlfile)|('try-error'%in%attr(xmlfile,'class'))){
-  # return(NULL)
-  # }else{
-  # error<-as.character(sapply(getNodeSet(doc=xmlfile, path="//Error"), xmlValue))
-  # if(length(error)==0){
-  return(xmlfile)   # if no error, return the data
-  # } else {
-  # return(NULL)
-  # }
-  # }
+  
+  #Check whether there's QC data held separately.
+  #Now, for GWRC, GDC, MDC and HBRC  there are QC codes in the I2 field where teh censoring info is held.
+  if(QC){
+    if(grepl('hilltop',url)){
+      url=paste0(url,"&tstype=stdqualseries")
+      tempFileName=paste0("D:/LAWA/2020/tmpQC",module,agency,".xml")
+      dl=try(download.file(url,destfile=tempFileName,method=method,quiet=T,...),silent = T)
+      if('try-error'%in%attr(dl,'class')){
+        method=ifelse(method=='curl',yes = 'wininet',no = 'curl')
+        dl=try(download.file(url,destfile=tempFileName,method=method,quiet=T,...),silent = T)
+        if('try-error'%in%attr(dl,'class')){
+          QC=F
+        }
+      }
+      if(QC){
+        qcxml <- try(xmlParse(file = tempFileName),silent=T)
+        if(is.null(qcxml)|'try-error'%in%attr(qcxml,'class')){
+          unlink(tempFileName) #delete the faulty file
+          rm(qcxml)
+          QC=F
+        }
+      }
+      if(QC){
+        nodataerror<-try(as.character(sapply(getNodeSet(doc=qcxml, path="//Error"), xmlValue)),silent=T)
+        if(length(nodataerror)>0){
+          unlink(tempFileName) #delete the error report file
+          rm(qcxml)
+          QC=F
+        }
+      }
+      unlink(tempFileName)
+      if(exists('qcxml')){
+        # browser()
+        return(list(dataxml,qcxml))
+      }
+    }
+  }
+  return(dataxml)   # if no error and no qc, return the data to the loadAgency scripts
 }
 
 ldLWQ <- function(...){
@@ -265,57 +304,6 @@ ldMWQ <- function(...){
   ldWQ(...,module='M')
 }
 
-# 
-# ldLWQ <- function(url,agency,method='curl',...){
-#   tempFileName=paste0("D:/LAWA/2020/tmpL",agency,".xml")
-#   dl=try(download.file(url,destfile=tempFileName,method=method,quiet=T,...),silent = T)
-#   xmlfile <- try(xmlParse(file = tempFileName),silent=T)
-#   error<-try(as.character(sapply(getNodeSet(doc=xmlfile, path="//Error"), xmlValue)),silent=T)
-#   if('try-error'%in%attr(dl,'class')||is.null(xmlfile)||'try-error'%in%attr(xmlfile,'class')||length(error)>0){
-#     method=ifelse(method=='curl',yes = 'wininet',no = 'curl')
-#     dl=try(download.file(url,destfile=tempFileName,method=method,quiet=T,...),silent = T)
-#     xmlfile <- try(xmlParse(file = tempFileName),silent=T)
-#     error<-as.character(sapply(getNodeSet(doc=xmlfile, path="//Error"), xmlValue))
-#   }
-#   if('try-error'%in%attr(dl,'class')|is.null(xmlfile)|'try-error'%in%attr(xmlfile,'class')||length(error)>0){
-#     return(NULL)
-#   }
-#   # xmlfile <- try(xmlParse(file = tempFileName),silent=T)
-#   unlink(tempFileName)
-#   # if(is.null(xmlfile)|('try-error'%in%attr(xmlfile,'class'))){
-#     # return(NULL)
-#   # }else{
-#     # error<-as.character(sapply(getNodeSet(doc=xmlfile, path="//Error"), xmlValue))
-#     # if(length(error)==0){
-#       return(xmlfile)   # if no error, return the data
-#     # } else {
-#       # return(NULL)
-#     # }
-#   # }
-# }
-# 
-# ldMWQ <- function(url,agency,method='curl',...){
-#   dl=try(download.file(url,destfile=paste0("D:/LAWA/2020/tmpM",agency,".xml"),method=method,quiet=T,...),silent = T)
-#   if('try-error'%in%attr(dl,'class')){
-#     method=ifelse(method=='curl',yes = 'wininet',no = 'curl')
-#     dl=try(download.file(url,destfile=paste0("D:/LAWA/2020/tmpM",agency,".xml"),method=method,quiet=T,...),silent = T)
-#   }
-#   if('try-error'%in%attr(dl,'class')){
-#     return(NULL)
-#   }
-#   xmlfile <- try(xmlParse(file = paste0("D:/LAWA/2020/tmpM",agency,".xml")),silent=T)
-#   unlink(paste0("tmpM",agency,".xml"))
-#   if(is.null(xmlfile)|('try-error'%in%attr(xmlfile,'class'))){
-#     return(NULL)
-#   }else{
-#     error<-as.character(sapply(getNodeSet(doc=xmlfile, path="//Error"), xmlValue))
-#     if(length(error)==0){
-#       return(xmlfile)   # if no error, return the data
-#     } else {
-#       return(NULL)
-#     }
-#   }
-# }
 checkCSVageRiver <- function(agency,maxHistory=100){
   stepBack=0
   while(stepBack<maxHistory){
@@ -358,7 +346,11 @@ checkXMLageRiver <- function(agency,maxHistory=100){
 }
 
 xml2csvRiver <- function(maxHistory=365,quiet=F,reportCensor=F,agency,reportVars=F,ageCheck=T,saves=T){
-  if(!exists('transfers')){stop("Need to load the transfers table first")}
+  if(!exists('transfers')){
+    transfers=read.table("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Metadata/transfers_plain_english_view.txt",
+                         sep=',',header = T,stringsAsFactors = F)
+    transfers$CallName[which(transfers$CallName=="Clarity (Black Disc Field)"&transfers$Agency=='es')] <- "Clarity (Black Disc, Field)"
+  }
   suppressWarnings(try(dir.create(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/",format(Sys.Date(),'%Y-%m-%d'),"/"))))
   suppressWarnings(rm(forcsv,xmlIn))
   if(ageCheck){
@@ -416,7 +408,8 @@ xml2csvRiver <- function(maxHistory=365,quiet=F,reportCensor=F,agency,reportVars
       
       cat(length(CouncilSiteIDs),"\n")
       newRN=1
-      for(sn in 1:length(CouncilSiteIDs)){
+      sn=1
+      for(sn in sn:length(CouncilSiteIDs)){
         siteDeets = grep(pattern = CouncilSiteIDslc[sn],x = siteTable$CouncilSiteID,ignore.case=T)
         if(length(siteDeets)==0){
           cat("A")
@@ -440,40 +433,95 @@ xml2csvRiver <- function(maxHistory=365,quiet=F,reportCensor=F,agency,reportVars
         }
         
         for(vn in 1:length(varNames)){
+          measurementName=varNames[vn]
           dt=sapply(getNodeSet(doc=xmlIn, 
                                path=paste0("//Measurement[@",
                                            siteTerm," = '",CouncilSiteIDs[sn],
-                                           "']/DataSource[@Name='",varNames[vn],"']/..//T")), xmlValue)
-          vv=as.character(
-            sapply(getNodeSet(doc=xmlIn, 
-                              path=paste0("//Measurement[@",
-                                          siteTerm," = '",CouncilSiteIDs[sn],
-                                          "']/DataSource[@Name='",varNames[vn],"']/..//I1")), xmlValue))
-          cens=sapply(getNodeSet(doc=xmlIn, 
-                                 path=paste0("//Measurement[@",
-                                             siteTerm," = '",CouncilSiteIDs[sn],
-                                             "']/DataSource[@Name='",varNames[vn],"']/..//I2")),xmlValue)
-          cenL=grepl(x = cens,pattern = "ND.<")
-          cenR=grepl(x = cens,"ND.>")
-          if(reportCensor){
-            if(any(cenL)){cat(varNames[vn],"left censored\n")}
-            if(any(cenR)){cat(varNames[vn],"right censored\n")}
-          }
-          if(length(dt)!=length(vv)){
-            browser()
-          }
+                                           "']/DataSource[@Name='",measurementName,"']/..//T")), xmlValue)
           if(length(dt)>0){
+            vv=as.character(
+              sapply(getNodeSet(doc=xmlIn, 
+                                path=paste0("//Measurement[@",
+                                            siteTerm," = '",CouncilSiteIDs[sn],
+                                            "']/DataSource[@Name='",measurementName,"']/..//I1")), xmlValue))
+            if(all(vv=="")){next}
+            units=rep("",length(dt))
+            QC=rep("0",length(dt))
+            cenL=rep(F,length(dt))            
+            cenR=rep(F,length(dt))            
+            if(measurementName=="WQ Sample"){
+              tagsPerRecord = (unname(sapply(vv,FUN=function(s){
+                str_count(string = s,pattern = '\t')
+              }))+1)/2
+              tagValuePairs = sapply(vv,FUN=function(s){
+                str_split(string = s,pattern='\t')
+              })
+              tagValuePairs = lapply(tagValuePairs,FUN=function(le){
+                data.frame(tag=le[seq(1,length(le),by=2)],
+                           value=le[seq(2,length(le),by=2)],
+                           stringsAsFactors = F)
+              })
+              tagValuePairs = do.call(rbind,tagValuePairs)
+              rownames(tagValuePairs) <- NULL
+              tagValuePairs$dt=rep(dt,tagsPerRecord)
+              tocut = which(tagValuePairs$value=="NA"&grepl("....-..-..T..:..:..",tagValuePairs$tag))
+              if(length(tocut)>0){
+                tagValuePairs=tagValuePairs[-tocut,]
+              }
+              rm(tocut)
+              measurementName=tagValuePairs$tag
+              vv=tagValuePairs$value
+              dt=tagValuePairs$dt
+              QC=rep("0",length(dt))
+              cenL=rep(F,length(dt))            
+              cenR=rep(F,length(dt))            
+              rm(tagsPerRecord,tagValuePairs)
+            }else{
+              units=sapply(getNodeSet(xmlIn,paste0("//Measurement[@",
+                                                   siteTerm," = '",CouncilSiteIDs[sn],
+                                                   "']/DataSource[@Name='",measurementName,"']//Units")),xmlValue)
+              if(length(units)==0){units=""}
+              if(length(unique(units))>1){browser()}
+              #Non WQ Sample records may have I2 metadata of censoring and QC info
+              metadata=sapply(getNodeSet(doc=xmlIn, 
+                                         path=paste0("//Measurement[@",
+                                                     siteTerm," = '",CouncilSiteIDs[sn],
+                                                     "']/DataSource[@Name='",measurementName,"']/..//I2")),xmlValue)
+              if(length(metadata)>0){
+                cenL=grepl(x = metadata,pattern = "ND.<")
+                cenR=grepl(x = metadata,"ND.>")
+                if(reportCensor){
+                  if(any(cenL)){cat(measurementName,"left censored\n")}
+                  if(any(cenR)){cat(measurementName,"right censored\n")}
+                }
+                
+                QCl=grepl('QC\t',metadata)
+                if(any(QCl)){
+                  QC[QCl] <- unname(sapply(metadata[QCl],
+                                           FUN = function(mds) {
+                                             strTo(strFrom(s = mds, c = 'QC\t'), '\t') 
+                                             #We dont want to pick the "2" out of <Parameter Name="Quality Assurance Method" Value="QC2"/>
+                                             #We want to get the "600" out of	    $QC	600	</I2>
+                                           }))
+                }
+                rm(QCl)
+              }
+            }
+            
             formattedDate=format.Date(strptime(dt,format="%Y-%m-%dT%H:%M:%S"),'%d-%b-%y')
             if(all(is.na(formattedDate))){
               formattedDate=format.Date(strptime(dt,format="%d/%m/%Y %H:%M"),'%d-%b-%y')
             }
+            
             dtvv=data.frame(CouncilSiteID=rep(CouncilSiteIDslc[sn],length(dt)),
                             Date=formattedDate,
                             Value = vv,
                             # Method="",
-                            Measurement=varNames[vn],
+                            Measurement=measurementName,
+                            Units=units,
                             Censored=F,
                             CenType=F,
+                            QC=QC,
                             stringsAsFactors = F)
             rm(formattedDate)
             if(any(cenL)|any(cenR)){
@@ -482,9 +530,12 @@ xml2csvRiver <- function(maxHistory=365,quiet=F,reportCensor=F,agency,reportVars
               dtvv$CenType[which(cenR)]="Right"
             }
             if(length(siteDeets)==1){
-              suppressWarnings({dtvv=cbind(dtvv,siteTable[siteDeets,-1])})  
+              suppressWarnings({dtvv=cbind(dtvv,siteTable[siteDeets,]%>%select(-CouncilSiteID))})  
             }else{
-              stToBind=siteTable[1:dim(dtvv)[1],]
+              #Make up an empty siteTable entry to bind on
+              #I dont think this is ever used, thankfujlly
+              cat("Oh yes it is")
+              stToBind=siteTable[1:dim(dtvv)[1],-"CouncilSiteID"]
               for(cc in 1:dim(stToBind)[2]){
                 stToBind[,cc]=NA
               }
@@ -494,11 +545,7 @@ xml2csvRiver <- function(maxHistory=365,quiet=F,reportCensor=F,agency,reportVars
             }
             eval(parse(text=paste0("dtvv",newRN,"=dtvv")))
             newRN=newRN+1
-            # if(!exists("forcsv")){
-            #   forcsv=dtvv
-            # }else{
-            #   forcsv=merge(forcsv,dtvv,all=T)
-            # }
+            rm(dtvv)
           }
         }
         if(!quiet){
@@ -512,6 +559,7 @@ xml2csvRiver <- function(maxHistory=365,quiet=F,reportCensor=F,agency,reportVars
       rm(listToCombine)
       
       #Can we deal here with the situation that we've got lab as well as field measures for things.
+      #Is this just HBRC?!
       labMeasureNames=unique(grep(pattern = 'lab',x = forcsv$Measurement,ignore.case=T,value = T))
       fieldMeasureNames=unique(grep(pattern = 'field',x = forcsv$Measurement,ignore.case=T,value = T))
       if(length(labMeasureNames)>0 & length(fieldMeasureNames)>0){
@@ -522,7 +570,9 @@ xml2csvRiver <- function(maxHistory=365,quiet=F,reportCensor=F,agency,reportVars
           matchy=gsub(pattern = "[[:punct:]]|[[:space:]]",replacement='',x = matchy)
           cat(agency,'\t',matchy,'\n')
           for(mm in seq_along(matchy)){
-            forsub=forcsv[grep(pattern = matchy[mm],x = forcsv$Measurement,ignore.case = T),]
+            LAWAName=unique(transfers$LAWAName[transfers$CallName==matchy])
+            transfers=rbind(transfers,c(agency,matchy[mm],LAWAName))
+            forsub=forcsv[grep(pattern = paste0(matchy[mm],' *\\('),x = forcsv$Measurement,ignore.case = T),]
             teppo = forsub%>%group_by(CouncilSiteID,Date,Measurement)%>%
               dplyr::summarise(Value=mean(as.numeric(Value),na.rm=T),
                                Censored=any(Censored),
@@ -531,23 +581,27 @@ xml2csvRiver <- function(maxHistory=365,quiet=F,reportCensor=F,agency,reportVars
                                               ifelse(any(tolower(CenType)=='left'),
                                                      'Left',
                                                      ifelse(any(tolower(CenType)=='right'),
-                                                            'Right',NA))))%>%
+                                                            'Right',NA))),
+                               QC=paste0(unique(QC),collapse='&'),
+                               Units=paste0(unique(Units),collapse='&'))%>%
               spread(key = Measurement,value = Value)
-            LabCol=grep('lab',names(teppo),ignore.case=T)
-            FieldCol=grep('field',names(teppo),ignore.case=T)
+            LabCol=grep(paste0(matchy[mm]," *\\(Lab\\)"),names(teppo),ignore.case=T)
+            FieldCol=grep(paste0(matchy[mm]," *\\(Field\\)"),names(teppo),ignore.case=T)
             teppo$Value=unlist(teppo[,LabCol])
             teppo$Value[is.na(teppo$Value)]=unlist(teppo[is.na(teppo$Value),FieldCol])
             teppo=teppo[,-c(LabCol,FieldCol)]
             teppo$Measurement=matchy[mm]
-            teppo <- left_join(teppo,unique(forcsv[,c(1,7:20)]),by="CouncilSiteID")%>%as.data.frame
-            forcsv=rbind(forcsv[-grep(pattern = matchy[mm],x = forcsv$Measurement,ignore.case = T),],teppo)
-            rm(teppo)
+            teppo <- left_join(teppo,unique(forcsv[,c(1,9:22)]),by="CouncilSiteID")%>%as.data.frame
+            without=forcsv[-grep(pattern = paste0(matchy[mm],' *\\('),
+                                 x = forcsv$Measurement,ignore.case = T),]
+            forcsv=rbind(without,teppo)
+            rm(without,teppo)
           }
         }
       }      
       
       
-      #Rename the measurements that are in this council's transfers table held at this end
+      #Rename the measurements that are in this transfers table held at this end
       thisAgencysCallNames=tolower(transfers$CallName[tolower(transfers$Agency) %in% tolower(agency)])
       thisAgencysLAWANames=transfers$LAWAName[tolower(transfers$Agency) %in% tolower(agency)]
       matchingMeasures=tolower(forcsv$Measurement) %in% thisAgencysCallNames
@@ -560,9 +614,9 @@ xml2csvRiver <- function(maxHistory=365,quiet=F,reportCensor=F,agency,reportVars
       }
       rm(excess)
       if(saves==T){
-      write.csv(forcsv,
-                file =paste0( "h:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/",
-                              format(Sys.Date(),'%Y-%m-%d'),"/",agency,".csv"),row.names=F)
+        write.csv(forcsv,
+                  file =paste0( "h:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/",
+                                format(Sys.Date(),'%Y-%m-%d'),"/",agency,".csv"),row.names=F)
       }
     }
   }else{
@@ -785,11 +839,14 @@ xml2csvMacro <- function(agency,maxHistory=365,quiet=F){
                          format(Sys.Date()-stepBack,'%Y-%m-%d'),"/"))){
       if(file.exists(paste0("h:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Data/",
                             format(Sys.Date()-stepBack,'%Y-%m-%d'),"/",agency,"Macro.xml"))){
-        cat("loading",agency,"from",stepBack,"days ago,",format(Sys.Date()-stepBack,'%Y-%m-%d'),"\n")
+        if(file.info(paste0("h:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Data/"
+                            ,format(Sys.Date()-stepBack,'%Y-%m-%d'),"/",agency,"Macro.xml"))$size>1000){
+          cat("loading",agency,"from",stepBack,"days ago,",format(Sys.Date()-stepBack,'%Y-%m-%d'),"\n")
         xmlIn <- xmlParse(paste0("h:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Data/",
                                  format(Sys.Date()-stepBack,'%Y-%m-%d'),"/",agency,"Macro.xml"))
         break
-      }
+        }
+        }
     }
     stepBack=stepBack+1
   }
@@ -799,6 +856,10 @@ xml2csvMacro <- function(agency,maxHistory=365,quiet=F){
   }else{
     
     varNames = unique(sapply(getNodeSet(doc=xmlIn,path="//Measurement/DataSource"),xmlGetAttr,name="Name"))
+    if(varNames=="WQ Sample"){
+      cat("No data, only metadata\n")
+      return(NULL)
+    }
     if(varNames[1]=="WQ Sample"){
       varNames=c(varNames[-1],"WQ Sample")
     }
@@ -963,6 +1024,7 @@ loadLatestCSVLake <- function(agency,maxHistory=365,quiet=F){
   cat("\n************",agency,"not found*************\n\n")
   return(NULL)
 }
+
 loadLatestColumnHeadingLake <- function(agency,maxHistory=365,quiet=F){
   stepBack=0
   while(stepBack<maxHistory){
@@ -983,6 +1045,7 @@ loadLatestColumnHeadingLake <- function(agency,maxHistory=365,quiet=F){
   cat("\n************",agency,"not found*************\n\n")
   return(NULL)
 }
+
 xml2csvLake <- function(agency,quiet=F,maxHistory=100){
   suppressWarnings(try(dir.create(paste0("h:/ericg/16666LAWA/LAWA2020/Lakes/Data/",format(Sys.Date(),'%Y-%m-%d'),"/"))))
   suppressWarnings(rm(forcsv,xmlIn))
@@ -992,10 +1055,13 @@ xml2csvLake <- function(agency,quiet=F,maxHistory=100){
                          format(Sys.Date()-stepBack,'%Y-%m-%d'),"/"))){
       if(file.exists(paste0("h:/ericg/16666LAWA/LAWA2020/Lakes/Data/",
                             format(Sys.Date()-stepBack,'%Y-%m-%d'),"/",agency,"lwq.xml"))){
-        cat("\nloading",agency,"from",stepBack,"days ago,",format(Sys.Date()-stepBack,'%Y-%m-%d'),"\n")
-        xmlIn <- xmlParse(paste0("h:/ericg/16666LAWA/LAWA2020/Lakes/Data/",
-                                 format(Sys.Date()-stepBack,'%Y-%m-%d'),"/",agency,"lwq.xml"))
-        break
+        if(file.info(paste0("h:/ericg/16666LAWA/LAWA2020/Lakes/Data/",
+                            format(Sys.Date()-stepBack,'%Y-%m-%d'),"/",agency,"lwq.xml"))$size>100){
+          cat("\nloading",agency,"from",stepBack,"days ago,",format(Sys.Date()-stepBack,'%Y-%m-%d'),"\n")
+          xmlIn <- xmlParse(paste0("h:/ericg/16666LAWA/LAWA2020/Lakes/Data/",
+                                   format(Sys.Date()-stepBack,'%Y-%m-%d'),"/",agency,"lwq.xml"))
+          break
+        }
       }
     }
     stepBack=stepBack+1
@@ -1010,7 +1076,7 @@ xml2csvLake <- function(agency,quiet=F,maxHistory=100){
     }
     siteTerm='CouncilSiteID'
     CouncilSiteIDs = unique(sapply(getNodeSet(doc=xmlIn,path=paste0("//Measurement")),xmlGetAttr,name="CouncilSiteID"))
-    if(is.null(CouncilSiteIDs[[1]])){
+    if(is.null(CouncilSiteIDs)|(!is.null(CouncilSiteIDs)&&is.null(CouncilSiteIDs[[1]]))){
       CouncilSiteIDs = unique(sapply(getNodeSet(doc=xmlIn,path=paste0("//Measurement")),xmlGetAttr,name="SiteName"))
       siteTerm='SiteName'
     }
@@ -1048,12 +1114,9 @@ xml2csvLake <- function(agency,quiet=F,maxHistory=100){
             #If censoring is coded on the value
             cenL = cenL|grepl(x=vv,pattern="&lt|<",ignore.case = T)
             cenR = cenR|grepl(x=vv,pattern="&gt|>",ignore.case = T)
-            # centype = rep(F,length(vv))
-            # centype[which(cenL)]="Left"       #Changes made here because hrc had I2 tags but not for coding censoring
-            # centype[which(cenR)]="Right"
-            # isCensored=cenL|cenR
             isCensored=cenL|cenR
             if(any(grepl(x=vv,pattern="<|>",ignore.case = T))){
+              #This could be done with gsub more concisely
               vv[grepl(x=vv,pattern="<|>",ignore.case = T)]=substr(vv[grepl(x=vv,pattern="<|>",ignore.case = T)],
                                                                    2,nchar(vv[grepl(x=vv,pattern="<|>",ignore.case = T)]))
             }
@@ -1072,6 +1135,7 @@ xml2csvLake <- function(agency,quiet=F,maxHistory=100){
                             Measurement=varNames[vn],
                             Censored=isCensored,
                             centype=centype,
+                            QC="",
                             stringsAsFactors = F)
             
             if(!exists("forcsv",inherits = F)){
@@ -1081,7 +1145,7 @@ xml2csvLake <- function(agency,quiet=F,maxHistory=100){
             }
           }
         }else{
-          next
+          next  #so we never actually process the WQSample stuff below
           # browser()
           #Add WQ Sample deets to existing table
           dtv=sapply(getNodeSet(doc=xmlIn, paste0("//Measurement[@",siteTerm," = '",CouncilSiteIDs[sn],

@@ -125,7 +125,7 @@ foreach(h = 1:length(urls$URL),.combine = rbind,.errorhandling = "stop")%dopar%{
             if(any(newb=="")){cat("#");newb=newb[-which(newb=="")]}
             if(length(newb)==0){cat("$");newb=NA}
             if(length(newb)>1){
-              cat(paste(newb,collapse='\t\t'),'\n')
+              cat(theseSites[thisSite],paste('\t',newb,collapse='\t\t'),'\n')
               #If you get multiple responses for a given CouncilSiteID,
               #Check if there's multiple of this CouncilSiteID in the list.
               #If there is, figure which one you're up to, and apply that ones newb to this.
@@ -155,6 +155,8 @@ foreach(h = 1:length(urls$URL),.combine = rbind,.errorhandling = "stop")%dopar%{
           rm(wn,b)
         }
       }
+      
+      
       a <- as.data.frame(a,stringsAsFactors=FALSE)
       #Do lat longs separately from other WQParams because they are value pairs and need separating
       b=matrix(data = 0,nrow=0,ncol=3)
@@ -189,7 +191,7 @@ foreach(h = 1:length(urls$URL),.combine = rbind,.errorhandling = "stop")%dopar%{
 stopCluster(workers)
 rm(workers)
 
-Sys.time()-startTime  #58 seconds
+Sys.time()-startTime  #46 seconds
 
 siteTable$SiteID=as.character(siteTable$SiteID)
 siteTable$LawaSiteID=as.character(siteTable$LawaSiteID)
@@ -333,12 +335,12 @@ table(siteTable$Region)
 
 
 table(siteTable$Agency)
-siteTable$Agency[siteTable$Agency%in%c('ac','auckland','auckland council')] <- 'arc'
+siteTable$Agency[siteTable$Agency%in%c('arc','auckland','auckland council')] <- 'ac'
 siteTable$Agency[siteTable$Agency=='christchurch'] <- 'ecan'
 siteTable$Agency[siteTable$Agency=='environment canterbury'] <- 'ecan'
 table(siteTable$Agency)
 
-agencies= c("arc","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc")
+agencies= c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc")
 agencies[!agencies%in%siteTable$Agency]
 
 
@@ -398,6 +400,7 @@ rec2$Lat=latLong[,1]
 rm(latLong)
 
 siteTable$NZReach=as.numeric(siteTable$NZReach)
+siteTable$NZReach[siteTable$NZReach<min(rec$NZREACH)|siteTable$NZReach>max(rec$NZREACH)] <- NA
 siteTable$Landcover=NA #rec
 siteTable$Altitude=NA  #rec2
 siteTable$Order=NA       #rec
@@ -496,7 +499,7 @@ siteTable$SWQLanduse[is.na(siteTable$SWQLanduse)]=siteTable$Landcover[is.na(site
 
 # siteTable$CouncilSiteID = gsub(pattern = 'Wairaki River at',replacement = "Wairaki River ds",x = siteTable$CouncilSiteID)
 # siteTable$CouncilSiteID = gsub(pattern = 'Dipton Rd',replacement = "Dipton Road",x = siteTable$CouncilSiteID)
-siteTable$CouncilSiteID = gsub(pattern = 'Makarewa Confl',replacement = "Makarewa Confluence",x = siteTable$CouncilSiteID)
+# siteTable$CouncilSiteID = gsub(pattern = 'Makarewa Confl$',replacement = "Makarewa Confluence",x = siteTable$CouncilSiteID)
 
 write.csv(x = siteTable%>%select(-StreamOrder,-Order),
           file = paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/",
@@ -510,7 +513,7 @@ write.csv(x = siteTable%>%select(-StreamOrder,-Order),
 
 
 #Get numbers of sites per agency ####
-AgencyRep=table(factor(tolower(siteTable$Agency),levels=c("arc", "boprc", "ecan", "es", "gdc", "gwrc", "hbrc","hrc", "mdc", 
+AgencyRep=table(factor(tolower(siteTable$Agency),levels=c("ac", "boprc", "ecan", "es", "gdc", "gwrc", "hbrc","hrc", "mdc", 
                                                           "ncc","niwa", "nrc", "orc", "tdc", "trc", "wcrc", "wrc")))
 AgencyRep=data.frame(agency=names(AgencyRep),count=as.numeric(AgencyRep))
 names(AgencyRep)[2]=format(Sys.Date(),"%d%b%y")
@@ -520,7 +523,7 @@ WQWFSsiteFiles=dir(path = "H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/",
                    recursive = T,full.names = T)
 for(wsf in WQWFSsiteFiles){
   stin=read.csv(wsf,stringsAsFactors=F)
-  agencyRep=table(factor(stin$Agency,levels=c("arc", "boprc", "ecan", "es", "gdc", "gwrc", "hbrc","hrc", "mdc", 
+  agencyRep=table(factor(stin$Agency,levels=c("ac", "boprc", "ecan", "es", "gdc", "gwrc", "hbrc","hrc", "mdc", 
                                               "ncc","niwa", "nrc", "orc", "tdc", "trc", "wcrc", "wrc")))
   AgencyRep = cbind(AgencyRep,as.numeric(agencyRep))
   names(AgencyRep)[dim(AgencyRep)[2]] = strTo(strFrom(wsf,'River'),'.csv')
@@ -530,25 +533,29 @@ AgencyRep=AgencyRep[,-2]
 rm(WQWFSsiteFiles)
 
 write.csv(AgencyRep,'h:/ericg/16666LAWA/LAWA2020/Metadata/AgencyRepWFS.csv',row.names=F)
-#  agency 26Aug19  23Jun20 25Jun20
-#     arc    41         41     41
-#   boprc    47         47     47
-#    ecan   183        183    183
-#      es    60         60     60
-#     gdc    39         39     39
-#    gwrc    43         43     43
-#    hbrc    71         71     71
-#     hrc   137        138    138
-#     mdc    32         32     32
-#     ncc    25         25     25
-#    niwa    77         77     77
-#     nrc    32         32     32
-#     orc    50         50     50
-#     tdc    26         26     26
-#     trc    20         22     22
-#    wcrc    38         38     38
-#     wrc   108          0    108
-
+#    agency 23Jun20 25Jun20 03Jul20 09Jul20 16Jul20 24Jul20
+# 1      ac                      41      41      41      41
+# 2   boprc      47      47      47      47      47      47
+# 3    ecan     183     183     184     184     184     184
+# 4      es      60      60      60      60      60      60
+# 5     gdc      39      39      39      39      39      39
+# 6    gwrc      43      43      43      43      43      43
+# 7    hbrc      71      71      85      85      85      85
+# 8     hrc     138     138     138     138     138     138
+# 9     mdc      32      32      32      32      32      32
+# 10    ncc      25      25      25      25      25      25
+# 11   niwa      77      77      77      77      77      77
+# 12    nrc      32      32      32      32      32      32
+# 13    orc      50      50      50      50      50      50
+# 14    tdc      26      26      26      26      26      26
+# 15    trc      22      22      22      22      22      22
+# 16   wcrc      38      38      38      38      38      38
+# 17    wrc       0     108     108     108     108     108
+if(0){  #actually if you need to pull sites in from an old WFS sesh, like if one of them doesn respond
+oldsiteTable = read.csv("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/2020-07-16/SiteTable_River16Jul20.csv",stringsAsFactors = F)
+hrcs=oldsiteTable%>%filter(Agency=='hrc')
+siteTable = rbind(siteTable,hrcs)
+}
 plot(x=as.numeric(AgencyRep[1,-1]),type='l',ylim=c(10,200))
 apply(AgencyRep[,-1],1,function(x)lines(x))
 text(rep(par('usr')[2]*0.95,dim(AgencyRep)[1]),AgencyRep[,dim(AgencyRep)[2]],AgencyRep[,1])

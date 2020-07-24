@@ -37,7 +37,7 @@ if(!exists('wqdata')){
   wqdYear=lubridate::isoyear(dmy(wqdata$Date))
   wqdata <- wqdata[which((wqdYear>=(StartYear5) & wqdYear<=EndYear)),]
   rm(wqdYear)
-  #797385 to 408860
+  #1061942 
 }
 
 
@@ -113,7 +113,7 @@ foreach(i = 1:length(wqparam),.combine = rbind,.errorhandling = "stop")%dopar%{
 }->sa
 stopCluster(workers)
 rm(workers)
-cat(Sys.time()-startTime)  #8.7 seconds 23June
+cat(Sys.time()-startTime)  #12.2 seconds 16July
 
 # State Analysis output contains quantiles for each Measurement by site.
 names(sa) <-   c("LawaSiteID", "Measurement", "Q0", "Q25", "Q50","Q75", "Q100",

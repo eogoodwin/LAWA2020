@@ -40,7 +40,7 @@ for(i in 1:length(sites)){
                   "&TemporalFilter=om:phenomenonTime,2005-01-01/2020-01-01")
     url <- URLencode(url)
     
-    xmlfile <- ldWQ(url,agency)
+    xmlfile <- ldWQ(url,agency,QC=T)
     if(!is.null(xmlfile)){
       xmltop<-xmlRoot(xmlfile)
       
