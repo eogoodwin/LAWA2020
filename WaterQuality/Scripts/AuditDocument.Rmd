@@ -22,8 +22,8 @@ agency=params$agency
 urls          <- read.csv("H:/ericg/16666LAWA/LAWA2020/Metadata/CouncilWFS.csv",stringsAsFactors=FALSE)
 
 agencyFiles = data.frame(name=tail(dir(path = "H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/",
-                                  pattern = paste0('^',agency,'.csv'),
-                                  full.names = T,recursive = T,ignore.case = T),6),
+                                       pattern = paste0('^',agency,'.csv'),
+                                       full.names = T,recursive = T,ignore.case = T),6),
                          nCol = 0,nRow=0,nsite=0,stringsAsFactors = F)
 
 NH4rep=data.frame(LawaSiteID=unique(tolower(siteTable$LawaSiteID[siteTable$Agency==agency])))
@@ -59,7 +59,7 @@ for(af in seq_along(agencyFiles$name)){
   
   agencyCSV$LawaSiteID=tolower(agencyCSV$LawaSiteID)
   thisNH4 = agencyCSV%>%filter(Measurement=="NH4")%>%
-			group_by(LawaSiteID)%>%transmute(n=n())%>%ungroup%>%distinct
+    group_by(LawaSiteID)%>%transmute(n=n())%>%ungroup%>%distinct
   names(thisNH4)[2]= paste0("pull",strTo(strFrom(agencyFiles$name[af],'//'),'/'))
   NH4rep=merge(NH4rep,thisNH4,all.y = T)
   
@@ -116,7 +116,7 @@ TPrep = TPrep[,!apply(TPrep,2,function(x)all(is.na(x)))]
 TONrep = TONrep[,!apply(TONrep,2,function(x)all(is.na(x)))]
 PHrep = PHrep[,!apply(PHrep,2,function(x)all(is.na(x)))]
 
-wqdata=loadLatestDataRiver()
+wqdata=get("wqdata",pos=1)#parent.frame()$wqdata#loadLatestDataRiver()
 wqAudit = read.csv(tail(dir(path="H:/ericg/16666LAWA/LAWA2020/WaterQuality/Audit",
                             pattern = "WQAudit.*csv",
                             recursive = T,full.names = T,ignore.case = T),1),
@@ -133,15 +133,15 @@ wqDataCSIDs = unique(tolower(wqdata$CouncilSiteID[which(wqdata$Agency==agency)])
 
 agencyLIDs=unique(c(siteTableLIDs,agencyCSVLIDs,wqDataLIDs))
 
-df <- read.csv(paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Metadata/",agency,"SWQ_config.csv"),sep=",",stringsAsFactors=FALSE)
-Measurements <- subset(df,df$Type=="Measurement")[,2]
+Measurements <- read.table("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Metadata/Transfers_plain_english_view.txt",sep=',',header=T,stringsAsFactors = F)%>%
+  filter(Agency==agency)%>%select(CallName)%>%unname%>%unlist
 
 agencyRep=read.csv('h:/ericg/16666LAWA/LAWA2020/Metadata/AgencyRepWFS.csv',check.names = F)
 
 #RiverState Summary
 ss <- read.csv(tail(dir(path = "h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis",
                         pattern = 'AuditRiverSTATE',
-						full.names = T,recursive=T,ignore.case=T),1),stringsAsFactors = F)
+                        full.names = T,recursive=T,ignore.case=T),1),stringsAsFactors = F)
 ss=ss[which(ss$LawaID%in%agencyLIDs),]
 ss=ss%>%filter(Altitude=='All'&Landuse=='All')
 
@@ -149,21 +149,21 @@ ss=ss%>%filter(Altitude=='All'&Landuse=='All')
 if(any(ss$Agency=='niwa')){
   ss$CouncilSiteID[which(ss$Agency=='niwa')] <- 
     tolower(siteTable$CouncilSiteID[siteTable$Agency!='niwa'][match(ss$LawaID[which(ss$Agency=='niwa')],
-                                                            siteTable$LawaSiteID[siteTable$Agency!='niwa'])])
+                                                                    siteTable$LawaSiteID[siteTable$Agency!='niwa'])])
 }
 ss$Catchment = siteTable$Catchment[match(ss$LawaID,siteTable$LawaSiteID)]
 
 #River NOFTableSummary
 nfts <- read.csv(tail(dir(path = "h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis",
-                        pattern = 'NOFSummaryTable_Rolling.csv',  #Was ~_Overall until 2 July2020
-                      full.names=T,recursive=T,ignore.case=T),1),stringsAsFactors=F)
+                          pattern = 'NOFSummaryTable_Rolling.csv',  #Was ~_Overall until 2 July2020
+                          full.names=T,recursive=T,ignore.case=T),1),stringsAsFactors=F)
 nfts <- nfts[which(nfts$LawaSiteID%in%agencyLIDs),]
 
 #Replace the NIWA siteID names with the council siteID names, getting them from the siteTable after excluding NIWA
 if(any(nfts$Agency=='niwa')){
   nfts$CouncilSiteID[which(nfts$Agency=='niwa')] <- 
     tolower(siteTable$CouncilSiteID[siteTable$Agency!='niwa'][match(nfts$LawaSiteID[which(nfts$Agency=='niwa')],
-                                                            siteTable$LawaSiteID[siteTable$Agency!='niwa'])])
+                                                                    siteTable$LawaSiteID[siteTable$Agency!='niwa'])])
 }
 nfts$Catchment = siteTable$Catchment[match(nfts$LawaSiteID,siteTable$LawaSiteID)]
 
@@ -180,9 +180,9 @@ wqtrend$SiteID <- siteTable$SiteID[siteTable$Agency!='niwa'][match(wqtrend$LawaS
 if(any(wqtrend$Agency=='niwa')){
   wqtrend$CouncilSiteID[which(wqtrend$Agency=='niwa')] <- 
     tolower(siteTable$CouncilSiteID[siteTable$Agency!='niwa'][match(wqtrend$LawaSiteID[which(wqtrend$Agency=='niwa')],
-                                                            siteTable$LawaSiteID[siteTable$Agency!='niwa'])])
+                                                                    siteTable$LawaSiteID[siteTable$Agency!='niwa'])])
 }
-wqtrend <- wqtrend%>%select(CouncilSiteID,SiteID,LawaSiteID,Measurement,nMeasures,frequency,period,TrendScore,ConfCat)
+wqtrend <- wqtrend%>%select(CouncilSiteID,SiteID,LawaSiteID,Measurement,nMeasures,frequency,period,numMonths,TrendScore,ConfCat)
 wqtrend$frequency[is.na(wqtrend$frequency)] <- 'unassessed'
 
 wqtrend$nReq = wqtrend$period*12*0.9
@@ -222,7 +222,7 @@ if((length(missingCSIDs))>0){
   cat('  \n## Missing data this week\n\n')
   cat(length(missingCSIDs),
       " of the CouncilSiteIDs announced on the WFS are missing from the timeseries server this week.\nThese are:\n",
-paste(missingCSIDs,collapse=', '),'.\nThey may well simply be named differently between WFS and time series server, but that\'s enough to thoroughly confuse me!\n',sep='')
+      paste(missingCSIDs,collapse=', '),'.\nThey may well simply be named differently between WFS and time series server, but that\'s enough to thoroughly confuse me!\n',sep='')
   DT::datatable(siteTable%>%
                   filter(tolower(CouncilSiteID)%in%missingCSIDs|tolower(SiteID)%in%missingCSIDs|tolower(LawaSiteID)%in%missingCSIDs)%>%
                   select(SiteID,CouncilSiteID,LawaSiteID,Catchment)%>%
@@ -230,10 +230,10 @@ paste(missingCSIDs,collapse=', '),'.\nThey may well simply be named differently 
 }
 missingCSIDs=siteTableCSIDs[!siteTableCSIDs%in%wqDataCSIDs]
 if((length(missingCSIDs))>0){
-  cat('  \n## Missing data ever\n\n')
+  cat('  \n\n## Missing data ever\n\n')
   cat(length(missingCSIDs),
       " of the CouncilSiteIDs announced on the WFS have not yet been seen on the timeseries server.\nThese are:\n",
-paste(missingCSIDs,collapse=', '),'.\nThey may well simply be named differently between WFS and time series server, but that\'s enough to thoroughly confuse me!\n',sep='')
+      paste(missingCSIDs,collapse=', '),'.\nThey may well simply be named differently between WFS and time series server, but that\'s enough to thoroughly confuse me!\n',sep='')
   DT::datatable(siteTable%>%
                   filter(tolower(CouncilSiteID)%in%missingCSIDs|tolower(SiteID)%in%missingCSIDs|tolower(LawaSiteID)%in%missingCSIDs)%>%
                   select(SiteID,CouncilSiteID,LawaSiteID,Catchment)%>%
@@ -247,9 +247,9 @@ if(any(as.numeric(names(table(table(siteTable$LawaSiteID[siteTable$Agency==agenc
   cat("There appear to be some double-ups in LawaSiteIDs.  That is, multiple different sitenames with the same LawaSiteID.  But if you dont see any here, you don't have any!")
   Thesens=names(which(table(siteTable$LawaSiteID[siteTable$Agency==agency])>1))
   DT::datatable(siteTable%>%
-                       dplyr::filter(LawaSiteID%in%Thesens)%>%
-                       dplyr::select(LawaSiteID,CouncilSiteID,SiteID,Catchment)%>%
-                       dplyr::arrange(LawaSiteID),rownames=F)
+                  dplyr::filter(LawaSiteID%in%Thesens)%>%
+                  dplyr::select(LawaSiteID,CouncilSiteID,SiteID,Catchment)%>%
+                  dplyr::arrange(LawaSiteID),rownames=F)
   rm(Thesens)
 }
 ```
@@ -261,10 +261,10 @@ print(paste("From the timeseries/SOS server ",params$sos,"data is pulled for ",l
 
 if(sum(wqdata$Agency==agency,na.rm=T)==0){
   print("If data is available from an old CSV file, the remainder of this audit will be based on that data, but they will not be compared against other councils.")
-  }
+}
 if(sum(wqdata$Agency==agency,na.rm=T)>sum(siteTable$Agency==agency)){
   print("Additional sites may be sourced separately from NIWA as part of the NRWQN program.")
-  }
+}
 print(paste("Data was last harvested from the timeseries server",checkXMLageRiver(agency),"days before",as.character(Sys.Date())))
 ```
 
@@ -274,12 +274,12 @@ The 16 different councils have different numbers of sites present in the combine
 
 ```{r councilRep, echo=F, results='asis'}
 DT::datatable(wqAudit%>%dplyr::group_by(agency)%>%
-                     dplyr::summarise(totalSites=max(nSite,na.rm=T),
-                                                    latestDate=max(dmy(latest),na.rm=T),
-                                                    nMeasTypes=length(unique(var))),rownames = F)
+                dplyr::summarise(totalSites=max(nSite,na.rm=T),
+                                 latestDate=max(dmy(latest),na.rm=T),
+                                 nMeasTypes=length(unique(var))),rownames = F)
 cat('  \n')
 if(any(!c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")%in%unique(wqAudit$agency))){
-cat(c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")[!c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")%in%unique(wqAudit$agency)]," currently no data available.")
+  cat(c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")[!c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")%in%unique(wqAudit$agency)]," currently no data available.")
 }
 ```
 
@@ -307,12 +307,15 @@ names(tab2)=c('Unit','Measurement','count')
 tab2=tab2%>%pivot_wider(names_from = c('Measurement'),values_from='count')
 DT::datatable(tab2,rownames=F)
 rm(tab2)
-cat("\nUnits used by this council for different measurements\n")
-tab3=as.matrix(table(wqdata$Units[wqdata$Agency==agency],wqdata$Measurement[wqdata$Agency==agency]))
-tab3=as.data.frame(tab3)
-names(tab3)=c('Unit','Measurement','count')
-tab3=tab3%>%pivot_wider(names_from = c('Measurement'),values_from='count')
-DT::datatable(tab3,rownames=F)
+if(!is.na(unique(wqdata$Units[wqdata$Agency==agency]))){
+  cat("\nUnits used by this council for different measurements\n")
+  tab3=as.matrix(table(wqdata$Units[wqdata$Agency==agency],wqdata$Measurement[wqdata$Agency==agency]))
+  tab3=as.data.frame(tab3)
+  names(tab3)=c('Unit','Measurement','count')
+  tab3=tab3%>%pivot_wider(names_from = c('Measurement'),values_from='count')
+  DT::datatable(tab3,rownames=F)
+  rm(tab3)
+}
 ```
 
 # Per site measurement representation
@@ -376,11 +379,11 @@ Calculating state and trend values requires measurements representative of multi
 ```{r echo=F, results='asis'}
 agencyCSVn = agencyCSV%>%group_by(Date,CouncilSiteID,Measurement)%>%transmute(n=n())%>%ungroup
 if(any(agencyCSVn$n>1)){
-  cat("There are replicate sites in your data.\n\n")
-
+  cat("There are",sum(1/agencyCSVn$n[agencyCSVn$n>1]),"replicates in your data.\n\n")
+  
   reps = agencyCSVn%>%filter(n>1)%>%distinct%>%dplyr::arrange(desc(n))
-  DT::datatable(reps,extensions='Buttons',options=list(dom='Bf',buttons=c('copy','csv','excel')),rownames=F)
-  }
+  DT::datatable(reps,extensions='Buttons',options=list(dom='Bfpl',pagelength=10,buttons=c('copy','csv','excel')),rownames=F)
+}
 ```
 
 # Measurement ranges for unit checking
@@ -475,7 +478,7 @@ if(all(c("BDISC","TURB")%in%unique(agencyWQdata$Measurement))){
     summarise_all(mean)%>%
     spread(Measurement,Value)%>%
     drop_na(BDISC,TURB)
-
+  
   cbd = agencyWQdata%>%dplyr::select(CouncilSiteID,Measurement,Value,Date)%>%
     dplyr::filter(Measurement%in%c("BDISC","TURB"))%>%
     group_by(CouncilSiteID,Measurement,Date)%>%
@@ -508,7 +511,7 @@ if(all(c("BDISC","TURB")%in%unique(agencyWQdata$Measurement))){
 DT::datatable(ss%>%
                 dplyr::select(CouncilSiteID,Catchment,Parameter,Median)%>%
                 dplyr::mutate(Median=signif(Median,4))%>%spread(Parameter,Median),
-              rownames = F,extensions='Buttons',options=list(dom='Bf',buttons=c('copy','csv','excel')))
+              rownames = F,extensions='Buttons',options=list(dom='Bfpl',pagelength=10,buttons=c('copy','csv','excel')))
 ```
 
 ## Scores per site, relative all other sites
@@ -522,44 +525,50 @@ DT::datatable(ss%>%dplyr::select(CouncilSiteID,Catchment,Parameter,StateScore)%>
 
 Sites can meet criteria for multiple bands, so can receive multiple grades.  Missing grades should be more fully explained in subsequent tables (below).
 
+This year there are many more results shown here, as we're now looking at historical five-year periods as well.
+
 ### Bands summary
 
 ```{r echo=F,results='asis'}
-DT::datatable(nfts%>%dplyr::select(CouncilSiteID,Catchment,contains('band'))%>%
-                     rename_all(.funs = ~gsub(x=.,pattern = '_band|band',replacement = '',ignore.case = T)),
-              rownames = F,extensions='Buttons',options=list(dom='Bf',buttons=c('copy','csv','excel')))
+DT::datatable(nfts%>%dplyr::select(CouncilSiteID,Catchment,Year,contains('band'))%>%
+                rename_all(.funs = ~gsub(x=.,pattern = '_band|band',replacement = '',ignore.case = T)),
+              rownames = F,extensions='Buttons',options=list(dom='Bfpl',buttons=c('copy','csv','excel')))
 cat('  \n')
-
+```
+```{r echo=F,results='asis'}
 if(any(nfts$NitrateAnalysisNote!="")){
-  cat('  \n### Nitrate\n')
-  DT::datatable(nfts%>%filter(NitrateAnalysisNote!='')%>%
-                       dplyr::select(CouncilSiteID,Catchment,NitrateMed:NitrateAnalysisNote)%>%
-                       rename_all(.funs = ~gsub(x=.,pattern = 'Nitrate|Nitrate_',replacement = '',ignore.case=T)),
-                rownames=F,extensions='Buttons',options=list(dom='Bf',buttons=c('copy','csv','excel')))
+  cat('  \n### Nitrate\n\n')
+  print(knitr::kable(nfts%>%dplyr::filter(NitrateAnalysisNote!=''&Year=="2015to2019")%>%
+                       dplyr::select(CouncilSiteID,Catchment,Year,NitrateMed:NitrateAnalysisNote)%>%
+                       rename_all(.funs = ~gsub(x=.,pattern = 'Nitrate|Nitrate_',replacement = '',ignore.case=T))))
+  # rownames=F,extensions='Buttons',options=list(dom='Bfpl',buttons=c('copy','csv','excel')))
   cat('  \n')
 }
+```
+```{r echo=F,results='asis'}
 
 if(any(nfts$AmmoniaAnalysisNote!="")){
-    cat('  \n### Ammonia\n')
-DT::datatable(nfts%>%filter(NitrateAnalysisNote!='')%>%
-                       dplyr::select(CouncilSiteID,Catchment,NitrateMed:NitrateAnalysisNote)%>%
-                       rename_all(.funs = ~gsub(x=.,pattern = 'Nitrate|Nitrate_',replacement = '',ignore.case=T)),
-              rownames=F,extensions='Buttons',options=list(dom='Bf',buttons=c('copy','csv','excel')))
+  cat('  \n### Ammonia\n\n')
+  print(knitr::kable(nfts%>%filter(NitrateAnalysisNote!=''&Year=="2015to2019")%>%
+                       dplyr::select(CouncilSiteID,Catchment,Year,NitrateMed:NitrateAnalysisNote)%>%
+                       rename_all(.funs = ~gsub(x=.,pattern = 'Nitrate|Nitrate_',replacement = '',ignore.case=T))))
+  # rownames=F,extensions='Buttons',options=list(dom='Bf',buttons=c('copy','csv','excel')))
   cat('  \n')
 }
-
+```
+```{r echo=F,results='asis'}
 if(any(!is.na(nfts$E_coliAnalysisNote)&nfts$E_coliAnalysisNote!="")){
   cat('  \n### Escherischia coli\n')
   names(nfts)[which(names(nfts)=="E_coli_band")] <- "MedianBand"
-DT::datatable(nfts%>%filter(E_coliAnalysisNote!='')%>%
-                       dplyr::select(CouncilSiteID,Catchment,E_coli_Period,E_coliSummaryband,E_coliAnalysisNote)%>%
-                       rename_all(.funs = ~gsub(x=.,pattern = 'E_coli_|E_coli',replacement = '',ignore.case=F)),
-              rownames=F,extensions='Buttons',options=list(dom='Bf',buttons=c('copy','csv','excel')))
-    cat('  \n')
-  DT::datatable(nfts%>%filter(E_coliAnalysisNote!='')%>%
-                       dplyr::select(CouncilSiteID,Catchment,E_coli_Median:E_coliRecHealth260_Band)%>%
-                       rename_all(.funs = ~gsub(x=.,pattern = 'E_coli_|E_coli',replacement = '',ignore.case=F)),
-                rownames=F,extensions='Buttons',options=list(dom='Bf',buttons=c('copy','csv','excel')))
+  print(knitr::kable(nfts%>%filter(E_coliAnalysisNote!=''&Year=="2015to2019")%>%
+                       dplyr::select(CouncilSiteID,Catchment,Year,E_coli_Period,E_coliSummaryband,E_coliAnalysisNote)%>%
+                       rename_all(.funs = ~gsub(x=.,pattern = 'E_coli_|E_coli',replacement = '',ignore.case=F))))
+  # rownames=F,extensions='Buttons',options=list(dom='Bfpl',pagelength=10,buttons=c('copy','csv','excel')))
+  cat('  \n')
+  print(knitr::kable(nfts%>%filter(E_coliAnalysisNote!=''&Year=="2015to2019")%>%
+                       dplyr::select(CouncilSiteID,Catchment,Year,E_coli_Median:E_coliRecHealth260_Band)%>%
+                       rename_all(.funs = ~gsub(x=.,pattern = 'E_coli_|E_coli',replacement = '',ignore.case=F))))
+  # rownames=F,extensions='Buttons',options=list(dom='Bfpl',pagelength=10,buttons=c('copy','csv','excel')))
   cat('  \n')
 }
 
@@ -573,8 +582,8 @@ Note that you can turn columns on and off, as well as re-order them (drag column
 
 ```{r echo=F,results='asis'}
 cat(tail(dir(path = "h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis",
-                          pattern="RiverWQ_Trend*.*",
-                          full.names=F,recursive=T,ignore.case=T),1),' \n\n')
+             pattern="RiverWQ_Trend*.*",
+             full.names=F,recursive=T,ignore.case=T),1),' \n\n')
 DT::datatable(wqtrend,extensions=c('Buttons','ColReorder','FixedColumns'),
               options=list(dom='Bfrtip',colReorder=T,buttons=c('colvis','copy','csv','excel'),scrollX=TRUE,fixedColumns=list(leftColumns=5)),
               filter='top',rownames=F)

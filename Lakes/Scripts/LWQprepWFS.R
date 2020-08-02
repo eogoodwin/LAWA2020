@@ -22,6 +22,7 @@ if(exists('siteTable')){
 
 workers <- makeCluster(7)
 registerDoParallel(workers)
+startTime=Sys.time()
 clusterCall(workers,function(){
   library(XML)
   library(dplyr)
@@ -204,12 +205,15 @@ foreach(h = 1:length(urls$URL),.combine = rbind,.errorhandling = "stop")%dopar%{
 }->siteTable
 stopCluster(workers)
 rm(workers)
+
+startTime-Sys.time()
+
 siteTable$SiteID=as.character(siteTable$SiteID)
 siteTable$LawaSiteID=as.character(siteTable$LawaSiteID)
 siteTable$Region=as.character(siteTable$Region)
 siteTable$Agency=as.character(siteTable$Agency)
 
-# 
+# appears to be not needed as of 29/7/2020
 # ################################################################################################
 # #Load Auckland metadata separately.  
 # acMetaData=read.csv("H:/ericg/16666LAWA/LAWA2020/Lakes/Metadata/ACLakesMetaData.csv",stringsAsFactors = F)[1:5,]
@@ -267,7 +271,7 @@ siteTable$Region[siteTable$Region=='havelock nth'] <- 'hawkes bay'
 siteTable$Region[siteTable$Region=='hbrc'] <- 'hawkes bay'
 siteTable$Region[siteTable$Region=='ncc'] <- 'nelson'
 siteTable$Region[siteTable$Region=='rotorua'] <- 'bay of plenty'
-siteTable$Region[siteTable$Region=='wanganui'] <- 'horizons'
+siteTable$Region[siteTable$Region%in%c('wanganui','horizons','HRC')] <- 'manawatu-whanganui'
 siteTable$Region[siteTable$Region=='gwrc'] <- 'wellington'
 siteTable$Region[siteTable$Region=='whangarei'] <- 'northland'
 siteTable$Region[siteTable$Region=='nrc'] <- 'northland'
@@ -315,32 +319,40 @@ tolower(urls$Agency)[!tolower(urls$Agency)%in%tolower(siteTable$Agency)]
 # Lake Tarawera                   54732
 # Lake Tikitapu                   15312
 
-siteTable$LFENZID[grep('okareka',siteTable$SiteID,ignore.case = T)] <- 15325
-siteTable$LFENZID[grep('Okaro',siteTable$SiteID,ignore.case = T)] <- 14290
-siteTable$LFENZID[grep('Okataina',siteTable$SiteID,ignore.case = T)] <- 54731
-siteTable$LFENZID[grep('Rerewhakaaitu',siteTable$SiteID,ignore.case = T)] <- 40071
-siteTable$LFENZID[grep('Rotoehu',siteTable$SiteID,ignore.case = T)] <- 40188
-siteTable$LFENZID[which(grepl('Rotoiti',siteTable$SiteID,ignore.case = T)&tolower(siteTable$Agency)=='boprc')] <- 54730
+# siteTable$LFENZID[grep('okareka',siteTable$SiteID,ignore.case = T)] <- 15325
+# siteTable$LFENZID[grep('Okaro',siteTable$SiteID,ignore.case = T)] <- 14290
+# siteTable$LFENZID[grep('Okataina',siteTable$SiteID,ignore.case = T)] <- 54731
+# siteTable$LFENZID[grep('Rerewhakaaitu',siteTable$SiteID,ignore.case = T)] <- 40071
+# siteTable$LFENZID[grep('Rotoehu',siteTable$SiteID,ignore.case = T)] <- 40188
+# siteTable$LFENZID[which(grepl('Rotoiti',siteTable$SiteID,ignore.case = T)&tolower(siteTable$Agency)=='boprc')] <- 54730
 siteTable$LFENZID[grep('Rotokakahi',siteTable$SiteID,ignore.case = T)] <- 15621
 siteTable$LFENZID[grep('Rotoma site',siteTable$SiteID,ignore.case = T)] <- 40102
-siteTable$LFENZID[grep('Rotomahana',siteTable$SiteID,ignore.case = T)] <- 54733
+# siteTable$LFENZID[grep('Rotomahana',siteTable$SiteID,ignore.case = T)] <- 54733
 siteTable$LFENZID[grep('Rotorua site',siteTable$SiteID,ignore.case = T)] <- 11133
 siteTable$LFENZID[grep('Tarawera',siteTable$SiteID,ignore.case = T)] <- 54732
-siteTable$LFENZID[grep('Tikitapu',siteTable$SiteID,ignore.case = T)] <- 15312
+# siteTable$LFENZID[grep('Tikitapu',siteTable$SiteID,ignore.case = T)] <- 15312
+siteTable$LFENZID[grep('Whakaki',siteTable$SiteID,ignore.case = T)] <- 34665
 
 siteTable$LFENZID[grep(x = siteTable$CouncilSiteID,pattern = "Wainamu",ignore.case = T)] <- "45819"
 siteTable$LFENZID[grep(x = siteTable$CouncilSiteID,pattern = "Ototoa",ignore.case = T)] <- "50270"
 siteTable$LFENZID[grep(x = siteTable$CouncilSiteID,pattern = "Tomarata",ignore.case = T)] <- "21871"
 siteTable$LFENZID[grep(x = siteTable$CouncilSiteID,pattern = "Pupuke",ignore.case = T)] <- "50151"
 
+# siteTable$LFENZID[grep(x = siteTable$CouncilSiteID,pattern = "Kohata",ignore.case = T)] <- "17214"
+# siteTable$LFENZID[grep(x = siteTable$CouncilSiteID,pattern = "Koitiata",ignore.case = T)] <- "16901"
+siteTable$LFENZID[grep(x = siteTable$CouncilSiteID,pattern = "Waipu",ignore.case = T)] <- "16939"
+# siteTable$LFENZID[grep(x = siteTable$CouncilSiteID,pattern = "Pukepuke",ignore.case = T)] <- "5042"
+
+
 siteTable$LFENZID[which(siteTable$CouncilSiteID=="SQ36148")] <- (-16)
 siteTable$LFENZID[grepl('brunner',siteTable$CouncilSiteID,ignore.case=T)&siteTable$Agency=='wcrc'] <- 38974
 siteTable$LFENZID[grepl('haupiri',siteTable$CouncilSiteID,ignore.case=T)&siteTable$Agency=='wcrc'] <- 39225
 
+#These next two are now taken care of by the general solution below 29/7/2020
 # siteTable$GeomorphicLType[grepl('brunner',siteTable$CouncilSiteID,ignore.case = T)&siteTable$Agency=='wcrc'] <- 'Glacial'
 # siteTable$GeomorphicLType[grepl('haupiri',siteTable$CouncilSiteID,ignore.case = T)&siteTable$Agency=='wcrc'] <- 'Riverine'
 
-siteTable$GeomorphicLType[grepl('opouahi',siteTable$CouncilSiteID,ignore.case=T)] <- 'Landslide'
+# siteTable$GeomorphicLType[grepl('opouahi',siteTable$CouncilSiteID,ignore.case=T)] <- 'Landslide'  Now get tihs from the WFS all good 29/7/2020
 
 FENZlake = read.csv("D:/RiverData/FENZLake.txt",stringsAsFactors = F)[,c(2,3,13,14,15,17,26,27,32,33,34,35,36,38)]
 cbind(siteTable$Agency[siteTable$GeomorphicLType==""],
@@ -350,7 +362,8 @@ cbind(siteTable$Agency[siteTable$GeomorphicLType==""],
 siteTable$GeomorphicLType[siteTable$GeomorphicLType==""] <- 
   FENZlake$GeomorphicType[match(siteTable$LFENZID[siteTable$GeomorphicLType==""],FENZlake$LID)]
 
-siteTable$GeomorphicLType[siteTable$Agency=='boprc'] <- "volcanic"  #email Lisa Naysmith 2/8/twentynineteen
+# siteTable$GeomorphicLType[siteTable$Agency=='boprc'] <- "volcanic"  #email Lisa Naysmith 2/8/twentynineteen
+# Now done from the WFS all good 29/7/2020
 
 siteTable$LType[which(siteTable$LType%in%c("polymictc","artificall"))] <- "polymictic"
 siteTable$LType[which(siteTable$LType%in%c("monomictic"))] <- "stratified"
@@ -360,8 +373,8 @@ siteTable$GeomorphicLType=pseudo.titlecase(tolower(siteTable$GeomorphicLType))
 table(siteTable$Agency,siteTable$LType)
 table(siteTable$Agency,siteTable$GeomorphicLType)
 
-if(0){  #actually if you need to pull sites in from an old WFS sesh, like if one of them doesn respond
-  oldsiteTable = read.csv("H:/ericg/16666LAWA/LAWA2020/Lakes/Data/2020-07-16/SiteTable_Lakes16Jul20.csv",stringsAsFactors = F)
+if(!'hrc'%in%unique(siteTable$Agency)){  #actually if you need to pull sites in from an old WFS sesh, like if one of them doesn respond
+  oldsiteTable = read.csv("H:/ericg/16666LAWA/LAWA2020/Lakes/Data/2020-07-29/SiteTable_Lakes29Jul20.csv",stringsAsFactors = F)
   hrcs=oldsiteTable%>%filter(Agency=='hrc')
   siteTable = rbind(siteTable,hrcs)
 }
@@ -390,20 +403,20 @@ AgencyRep=AgencyRep[,-1]
 rm(LakeWFSsiteFiles)
 write.csv(AgencyRep,'h:/ericg/16666LAWA/LAWA2020/Metadata/AgencyRepLakeWFS.csv')
 
-#        X X14Apr20 X23Jun20 X25Jun20 X03Jul20 X09Jul20 X16Jul20 X24Jul20
-# 1     ac        0        0        0        0        0        0        5
-# 2  boprc       14       14       14       14       12       12       12
-# 3   ecan       43       43       43       43       43       43       43
-# 4     es       18       18       18       18       18       18       18
-# 5    gdc        0        0        0        0        0        0        0
-# 6   gwrc        5        5        5        5        5        5        5
-# 7   hbrc        7        7        7        7        7        7        7
-# 8    hrc       10       10       10       10       10       10        0
-# 9    mdc        0        0        0        0        0        0        0
-# 10   ncc        0        0        0        0        0        0        0
-# 11   nrc       26       26       26       26       26       26       26
-# 12   orc        9        9        9       14       14       14       14
-# 13   tdc        0        0        0        0        0        0        0
-# 14   trc        9        9        9        9        9        9        9
-# 15  wcrc        3        3        3        3        3        3        3
-# 16   wrc       12        0       12       12       12       12       12
+#        14Apr20 23Jun20 25Jun20 03Jul20 09Jul20 16Jul20 24Jul20 29Jul20 31Jul20
+# ac          0       0       0       0       0       0       5       4       4
+# boprc      14      14      14      14      12      12      12      12      12
+# ecan       43      43      43      43      43      43      43      43      43
+# es         18      18      18      18      18      18      18      18      18
+# gdc         0       0       0       0       0       0       0       0       0
+# gwrc        5       5       5       5       5       5       5       5       5
+# hbrc        7       7       7       7       7       7       7       3       3
+# hrc        10      10      10      10      10      10      10      15       0
+# mdc         0       0       0       0       0       0       0       0       0
+# ncc         0       0       0       0       0       0       0       0       0
+# nrc        26      26      26      26      26      26      26      26      26
+# orc         9       9       9      14      14      14      14      13      14
+# tdc         0       0       0       0       0       0       0       0       0
+# trc         9       9       9       9       9       9       9       9       9
+# wcrc        3       3       3       3       3       3       3       3       3
+# wrc        12       0      12      12      12      12      12      12      12

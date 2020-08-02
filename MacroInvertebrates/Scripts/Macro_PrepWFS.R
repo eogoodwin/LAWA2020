@@ -11,7 +11,7 @@ try(shell(paste('mkdir "H:/ericg/16666LAWA/LAWA2020/Macroinvertebrates/Data/"',f
 
 
 urls          <- read.csv("H:/ericg/16666LAWA/LAWA2020/Metadata/CouncilWFS.csv",stringsAsFactors=FALSE)
-"https://mapspublictest.aklc.govt.nz/arcgis3/services/NonCouncil/LAWA/MapServer/WFSServer?VERSION=1.1.0&request=GetFeature&service=WFS&typename=MonitoringSiteReferenceData&srsName=EPSG:4326"                                    
+"https://mapspublic.aklc.govt.nz/arcgis3/services/NonCouncil/LAWA/MapServer/WFSServer?VERSION=1.1.0&request=GetFeature&service=WFS&typename=MonitoringSiteReferenceData&srsName=EPSG:4326"                                    
 "http://geospatial.boprc.govt.nz/arcgis/services/emar/MonitoringSiteReferenceData/MapServer/WFSServer?request=getfeature&service=WFS&VERSION=1.1.0&typename=MonitoringSiteReferenceData&srsName=EPSG:4326"                        
 "https://gis.ecan.govt.nz/arcgis/services/emar/MapServer/WFSServer?version=1.1.0&request=GetFeature&service=WFS&typename=emar:MonitoringSiteReferenceData&srsName=EPSG:4326"                                                      
 "http://gis.es.govt.nz/arcgis/services/emar/MonitoringSiteReferenceData/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=getfeature&typename=MonitoringSiteReferenceData&srsName=urn:ogc:def:crs:EPSG:6.9:4326"              
@@ -45,6 +45,7 @@ clusterCall(workers,function(){
   library(XML)
   library(dplyr)
 })
+startTime=Sys.time()
 foreach(h = 1:length(urls$URL),.combine = rbind,.errorhandling = "stop")%dopar%{
   if(grepl("^x", urls$Agency[h])){ #allow agency switch-off by 'x' prefix
     return(NULL)
@@ -55,7 +56,7 @@ foreach(h = 1:length(urls$URL),.combine = rbind,.errorhandling = "stop")%dopar%{
   
   xmldata<-try(ldWFS(urlIn = urls$URL[h],agency=urls$Agency[h],dataLocation = urls$Source[h],method=method[h],case.fix = TRUE))
   
-  if('try-error'%in%attr(xmldata,'class')||grepl(pattern = '^501|error',
+  if(is.null(xmldata)||'try-error'%in%attr(xmldata,'class')||grepl(pattern = '^501|error',
                                                  x = xmlValue(getNodeSet(xmldata,'/')[[1]]),
                                                  ignore.case=T)){
     cat('Failed for ',urls$Agency[h],'\n')
@@ -79,7 +80,7 @@ foreach(h = 1:length(urls$URL),.combine = rbind,.errorhandling = "stop")%dopar%{
   } else {
     ### Determine the values used in the [emar:Macro] element
     emarSTR="emar:"
-    macroData<-unique((sapply(getNodeSet(doc=xmldata, path=paste0("//",emarSTR,"MonitoringSiteReferenceData/emar:Macro")), xmlValue)))
+    macroData<-unique(sapply(getNodeSet(doc=xmldata, path=paste0("//",emarSTR,"MonitoringSiteReferenceData/emar:Macro")), xmlValue))
     ## if emar namespace does not occur before TypeName in element,then try without namespace
     ## Hilltop Server v1.80 excludes name space from element with TypeName tag
     if(any(macroData=="")){
@@ -211,6 +212,7 @@ foreach(h = 1:length(urls$URL),.combine = rbind,.errorhandling = "stop")%dopar%{
 }->siteTable
 stopCluster(workers)
 rm(workers)
+Sys.time()-startTime  #1.3 mins
 
 siteTable$SiteID=as.character(siteTable$SiteID)
 siteTable$LawaSiteID=as.character(siteTable$LawaSiteID)
@@ -241,10 +243,12 @@ siteTable$Agency=tolower(as.character(siteTable$Agency))
 # rm(acMetaData)
 
 table(siteTable$Agency)
-siteTable$Agency[siteTable$Agency%in%c('arc','auckland council')] <- 'ac'
+siteTable$Agency[siteTable$Agency%in%c('arc','auckland council','auckland')] <- 'ac'
 siteTable$Agency[tolower(siteTable$Agency)%in%c("christchurch", "environment canterbury")] <- 'ecan'
+table(siteTable$Agency)
 
 table(siteTable$Region)
+siteTable$Region[siteTable$Region=='horizons'] <- 'manawatu-whanganui'
 siteTable$Region[siteTable$Region=='gdc'] <- 'gisborne'
 siteTable$Region[siteTable$Region=='gwrc'] <- 'wellington'
 siteTable$Region[siteTable$Region=='mdc'] <- 'marlborough'
@@ -254,6 +258,7 @@ siteTable$Region[siteTable$Region=='orc'] <- 'otago'
 siteTable$Region[siteTable$Region=='tdc'] <- 'tasman'
 siteTable$Region[siteTable$Region=='trc'] <- 'taranaki'
 siteTable$Region[siteTable$Region=='wcrc'] <- 'west coast'
+table(siteTable$Region)
 
 ## Swapping coordinate values where necessary
 plot(siteTable$Long,siteTable$Lat,col=as.numeric(factor(siteTable$Agency)))
@@ -411,7 +416,7 @@ rm(lowland)
 siteTable$Agency=tolower(siteTable$Agency)
 
 if(0){  #actually if you need to pull sites in from an old WFS sesh, like if one of them doesn respond
-  oldsiteTable = read.csv("H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Data/2020-07-16/SiteTable_Macro16Jul20.csv",stringsAsFactors = F)
+  oldsiteTable = read.csv("H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Data/2020-07-29/SiteTable_Macro29Jul20.csv",stringsAsFactors = F)
   hrcs=oldsiteTable%>%filter(Agency=='hrc')
   siteTable = rbind(siteTable,hrcs)
   rm(oldsiteTable,hrcs)
@@ -445,24 +450,24 @@ AgencyRep=AgencyRep[,-2]
 rm(MacroWFSsiteFiles)
 write.csv(AgencyRep,'h:/ericg/16666LAWA/LAWA2020/Metadata/AgencyRepMacroWFS.csv',row.names=F)
 
-#    agency 23Jun20 25Jun20 03Jul20 09Jul20 16Jul20 24Jul20
-# 1      ac       0       0       0       0       0      61
-# 2   boprc     129     129     129     134     134     134
-# 3    ecan     134     134     134     134     134     134
-# 4      es      87      87      87      87      87      87
-# 5     gdc      80      80      80      80      80      80
-# 6    gwrc      53      53      53      53      53      53
-# 7    hbrc      71      71      83      83      83      82
-# 8     hrc      81      81      81      81      81      81
-# 9     mdc      31      31      31      31      31      31
-# 10    ncc      26      26      26      26      26      26
-# 11   niwa       0       0       0       0       0       0
-# 12    nrc      19      19      19      19      19      19
-# 13    orc      30      30      30      30      30      30
-# 14    tdc      25      25      25      25      25      25
-# 15    trc      60      60      60      60      60      60
-# 16   wcrc      34      34      34      34      34      34
-# 17    wrc       0      74      74      74      74      74
+#    agency 23Jun20 25Jun20 03Jul20 09Jul20 16Jul20 24Jul20 29Jul20
+# 1      ac       0       0       0       0       0      61      59
+# 2   boprc     129     129     129     134     134     134     134
+# 3    ecan     134     134     134     134     134     134     134
+# 4      es      87      87      87      87      87      87      87
+# 5     gdc      80      80      80      80      80      80      80
+# 6    gwrc      53      53      53      53      53      53      53
+# 7    hbrc      71      71      83      83      83      82      80
+# 8     hrc      81      81      81      81      81      81      89
+# 9     mdc      31      31      31      31      31      31      31
+# 10    ncc      26      26      26      26      26      26      26
+# 11   niwa       0       0       0       0       0       0       0
+# 12    nrc      19      19      19      19      19      19      19
+# 13    orc      30      30      30      30      30      30      30
+# 14    tdc      25      25      25      25      25      25      25
+# 15    trc      60      60      60      60      60      60      60
+# 16   wcrc      34      34      34      34      34      34      34
+# 17    wrc       0      74      74      74      74      74      74
  
  
 # agency 07Jun19 10Jun19 28Jun19 08Jul19 11Jul19 17Jul19 22Jul19 29Jul19 02Aug19 05Aug19 12Aug19 19Aug19 26Aug19

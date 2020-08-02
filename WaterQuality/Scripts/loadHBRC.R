@@ -1,6 +1,13 @@
 require(XML)     ### XML library to write hilltop XML
 require(dplyr)   ### dply library to manipulate table joins on dataframes
 
+# Quality coding to NEMS is a work in progress here (except for Surface Water Quantity who have been doing it for some time).
+#  Currently, River Water Quality is quality coded using a different process based on an early draft of NEMS, 
+#  but we are aiming to have all our datasets quality coded to NEMS in the near future!
+#   
+#   Information on quality codes is available from our Hilltop server:
+  
+#Also "method" available same place
 
 agency='hbrc'
 tab="\t"

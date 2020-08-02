@@ -154,7 +154,7 @@ paste(siteTableLIDs[!siteTableLIDs%in%agencyCSVLIDs],collapse=', '),
 }
 missingLIDs=siteTableLIDs[!siteTableLIDs%in%macroLIDs]
 if((length(missingLIDs))>0){
-  cat('  \n## Missing data ever\n\n')
+  cat('  \n\n## Missing data ever\n\n')
   cat(length(missingLIDs),
       " of the CouncilSiteIDs announced on the WFS have not yet been seen on the timeseries server.\nThese are:\n",
 paste(missingLIDs,collapse=', '),'.\nThey may well simply be named differently between WFS and time series server, but that\'s enough to thoroughly confuse me!\n',sep='')
@@ -251,7 +251,7 @@ if(any(agencyCSVn$n>1)){
   cat("There are replicate sites in your data.\n\n")
 
   reps = agencyCSVn%>%filter(n>1)%>%distinct%>%dplyr::arrange(desc(n))
-  DT::datatable(reps,extensions='Buttons',options=list(dom='Bf',buttons=c('copy','csv','excel')),rownames=F)
+  DT::datatable(reps,extensions='Buttons',options=list(dom='Bfpl',buttons=c('copy','csv','excel')),rownames=F)
   }
 ```
 
@@ -319,7 +319,7 @@ for(msm in unique(agencymacroData$Measurement)){
 DT::datatable(ss%>%
                             dplyr::select(CouncilSiteID,Catchment,Parameter,Median)%>%
                             dplyr::mutate(Median=signif(Median,4))%>%spread(Parameter,Median),
-rownames = F,extensions='Buttons',options=list(dom='Bf',buttons=c('copy','csv','excel')))
+rownames = F,extensions='Buttons',options=list(dom='Bfpl',buttons=c('copy','csv','excel')))
 ```
 
 ## Trend scores per site
@@ -330,7 +330,7 @@ Other requirements are around diversity of values.  If n requirements appear to 
 ```{r echo=F,results='asis'}
 DT::datatable(macroTrend,
 extensions=c('Buttons','ColReorder','FixedColumns'),
-              options=list(dom='Bfrtip',colReorder=T,buttons=c('colvis','copy','csv','excel'),
+              options=list(dom='Bfrtipl',colReorder=T,buttons=c('colvis','copy','csv','excel'),
 				scrollX=TRUE,fixedColumns=list(leftColumns=5)),
               filter='top',rownames=F)
 ```

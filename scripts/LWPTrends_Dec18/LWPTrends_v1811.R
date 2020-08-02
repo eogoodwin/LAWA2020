@@ -805,7 +805,7 @@ PlotTrend<-function(x,x1,mymain=NULL,Intercept=NA,ValuesToUse = "RawValue",Annua
                                                 paste("Probability decreasing = ",round(Probability,3))), 
            text.col = "black",  pch = c(NA, NA), bg = 'transparent', inset = .05,cex=0.8)
     
-    legend(paste0(legend.pos,"right"),  legend=c("Trend","90% C.I.", "Non-censored","Censored","Raw Observations"), 
+    legend(paste0(legend.pos,"right"),  legend=c("Trend","90% C.I.", "Seas. Non-censored","Censored","Raw Observations"), 
            col = c("blue","dodgerblue","black","red","gray68"),  text.col = "black",  
            lty = c(1,2, -1,-1,-1), pch = c(-1, -1,16, 16,21), bg = 'transparent', inset = .05,cex=0.8) 
   }

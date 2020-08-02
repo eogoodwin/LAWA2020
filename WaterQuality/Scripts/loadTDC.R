@@ -7,7 +7,7 @@ require(curl)
 
 setwd("H:/ericg/16666LAWA/LAWA2020/WaterQuality")
 agency='tdc'
-tab='\t'
+
 Measurements <- read.table("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Metadata/Transfers_plain_english_view.txt",sep=',',header=T,stringsAsFactors = F)%>%
   filter(Agency==agency)%>%select(CallName)%>%unname%>%unlist
 Measurements=c(Measurements,'WQ Sample')
@@ -52,9 +52,9 @@ for(i in 1:length(sites)){
               metaName  <- as.character(xmlToList(p[[n]])[1])   ## Getting the name attribute
               metaValue <- as.character(xmlToList(p[[n]])[2])   ## Getting the value attribute
               if(n==2){      # Starting at '2' and '1' is the T element for time
-                item1 <- paste(metaName,metaValue,sep="\t")     ## Concatenating all pairs separated by tabs. Ack.
+                item1 <- paste0(metaName,"\t",metaValue)     ## Concatenating all pairs separated by tabs. Ack.
               } else {
-                item1 <- paste(item1,metaName,metaValue,sep="\t")
+                item1 <- paste0(item1,"\t",metaName,"\t",metaValue)
               }
             }
             # Adding the Item1 node
@@ -77,17 +77,17 @@ for(i in 1:length(sites)){
           ## Hand Greater than symbol
           if(grepl(pattern = "^\\>",x =  ansValue[N],perl = TRUE)){
             ansValue[N] <- substr(ansValue[N],2,nchar(ansValue[N]))
-            item2 <- paste("$ND",tab,">",tab,sep="")
+            item2 <- paste0("$ND\t>\t")
             
             # Handle Less than symbols  
           } else if(grepl(pattern = "^\\<",x =  ansValue[N],perl = TRUE)){
             ansValue[N] <- substr(ansValue[N],2,nchar(ansValue[N]))
-            item2 <- paste("$ND",tab,"<",tab,sep="")
+            item2 <- paste0("$ND\t<\t")
             
             # Handle Asterixes  
           } else if(grepl(pattern = "^\\*",x =  ansValue[N],perl = TRUE)){
             ansValue[N] <- gsub(pattern = "^\\*", replacement = "", x = ansValue[N])
-            item2 <- paste("$ND",tab,"*",tab,sep="")
+            item2 <- paste0("$ND\t*\t")
           } else{
             item2 <- ""
           }
@@ -98,7 +98,7 @@ for(i in 1:length(sites)){
               #Getting attributes and building string to put in Item 2
               attrs <- xmlAttrs(m[['Data']][[N]][[n]])  
               
-              item2 <- paste(item2,attrs[1],tab,attrs[2],tab,sep="")
+              item2 <- paste0(item2,attrs[1],'\t',attrs[2],'\t')
               
             }
           }

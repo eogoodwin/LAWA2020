@@ -63,8 +63,8 @@ NIWAMCI=readxl::read_xlsx('h:/ericg/16666LAWA/2018/MacroInvertebrates/1.Imported
 NIWAMCI$lawaid=gsub(x = NIWAMCI$lawaid,pattern = '-ND',replacement = '-DN')
 NIWAMCI$LawaSiteID = NIWAmacroSites$LawaSiteID[match(NIWAMCI$lawaid,NIWAmacroSites$lawaid)]
 
-NIWAMCI$SiteName = extraMacroTable$CouncilSiteID[match(NIWAMCI$LawaSiteID,extraMacroTable$LawaSiteID)]
-# NIWAMCI$SiteName = lawaIDs$SiteName[match(NIWAMCI$LawaSiteID,lawaIDs$LawaID)]
+# NIWAMCI$SiteName = extraMacroTable$CouncilSiteID[match(NIWAMCI$LawaSiteID,extraMacroTable$LawaSiteID)]
+ NIWAMCI$SiteName = lawaIDs$SiteName[match(NIWAMCI$LawaSiteID,lawaIDs$LawaID)]
 NIWAMCI=NIWAMCI%>%select(-'QMCI',-'ntotal',-'Site.code')
 NIWAMCI$agency='niwa'
 NIWAMCIl=NIWAMCI%>%gather(key = 'parameter',value = 'Value',c("MCI","ntaxa"))
@@ -76,7 +76,7 @@ NIWAMCIl$SiteNamelc=tolower(NIWAMCIl$SiteName)
 NIWAMCIl$Method=NA
 
 rm(lawaIDs)
-NIWAMCIl$Measurement="MCI"
+NIWAMCIl$Measurement=NIWAMCIl$parameter
 write.csv(NIWAMCIl%>%select(LawaSiteID,CouncilSiteID=lawaid,Date,Measurement,Value,Agency=agency),
           file=paste0( 'H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Data/',format(Sys.Date(),"%Y-%m-%d"),'/','NIWA.csv'),
           row.names=F)

@@ -4,7 +4,6 @@ require(XML)     ### XML library to write hilltop XML
 require(RCurl)
 
 
-work to do on parsing all dates to same format  (dmy)
 
 agency='boprc'
 setwd("H:/ericg/16666LAWA/LAWA2020/Lakes")
@@ -69,6 +68,7 @@ for(i in 1:length(sites)){
     }
   }
 }
+#XML date format ymd e.g. 2015-11-17
 
 #Delivered separately by Lisa Naysmith, email 2/8/twentynineteen
 okaro=readxl::read_xlsx("H:/ericg/16666LAWA/LAWA2020/Lakes/Data/BOPRCLake Okaro 2004_2018.xlsx",sheet=1,na = "<NA>")
@@ -78,7 +78,7 @@ okaro=okaro%>%transmute(Site="FI680541_INT",
                         Uvalue=`Uncencored value`,
                         value=Value,
                         Units='ns')%>%as.data.frame
-okaro$time=as.character(okaro$time)
+okaro$time=as.character(format.Date(okaro$time,"%Y-%m-%dT00:00:00.000Z"))
 okaro$value[!is.na(okaro$`Uncencored value`)]=okaro$`Uncencored value`[!is.na(okaro$`Uncencored value`)]
 okaro <- okaro%>%select(-Uvalue)%>%filter(Measurement%in%c("CHLA","ECOLI","NH4","pH","Secchi","TN","TP"))
 

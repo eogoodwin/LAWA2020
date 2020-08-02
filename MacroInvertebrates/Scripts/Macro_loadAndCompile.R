@@ -162,15 +162,23 @@ rm(workers)
 #9July 35575
 # 70693
 #24 July 74644
+#31 7 2020 75065
+
 macroData$LawaSiteID = siteTable$LawaSiteID[match(tolower(macroData$CouncilSiteID),tolower(siteTable$CouncilSiteID))]
 macroData$LawaSiteID[which(is.na(macroData$LawaSiteID))] = siteTable$LawaSiteID[match(tolower(macroData$CouncilSiteID[which(is.na(macroData$LawaSiteID))]),
                                                                                       tolower(siteTable$SiteID))]
+
 #Add CSV-delivered datasets
 acmac=loadLatestCSVmacro(agency = 'ac')%>%select(-QC)
+acmac$Measurement[acmac$Measurement=="% EPT Richness"] <- "PercentageEPTTaxa"
+acmac$Measurement[acmac$Measurement=="Total Richness"] <- "TaxaRichness"
+acmac$Value[acmac$Measurement=="PercentageEPTTaxa"]=acmac$Value[acmac$Measurement=="PercentageEPTTaxa"]*100
 macroData=rbind(macroData[,names(acmac)],acmac) #72571
+
 niwamac = loadLatestCSVmacro(agency='niwa')
+niwamac$Measurement[niwamac$Measurement=="ntaxa"] <- "TaxaRichness"
 macroData=rbind(macroData,niwamac)
-#76013
+#80385
 
 rm(acmac,niwamac)
 
@@ -180,7 +188,15 @@ rm(acmac,niwamac)
 macroData$Year = lubridate::isoyear(lubridate::dmy(macroData$Date))
 
 
-
+macroData%>%group_by(tolower(LawaSiteID))%>%
+  dplyr::summarise(agCount=length(unique(Agency)),
+                   ags=paste(unique(Agency),collapse=' '),
+                   cid=paste(unique(CouncilSiteID),collapse=', '))%>%
+  ungroup%>%
+  filter(agCount>1)%>%dplyr::select(-agCount)
+#Let's check this.
+ebop223=macroData%>%filter(grepl("ebop-00223",LawaSiteID,T))
+plot(dmy(ebop223$Date),ebop223$Value,pch=as.numeric(factor(ebop223$Measurement)),col=as.numeric(factor(ebop223$Agency)))
 
 write.csv(macroData,paste0('h:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Data/',format(Sys.Date(),"%Y-%m-%d"),'/MacrosCombined.csv'),row.names = F)
 # macroData=read.csv(tail(dir(path='h:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Data/',pattern='MacrosCombined.csv',recursive = T,full.names = T),1),stringsAsFactors = F)
@@ -209,6 +225,8 @@ macroData=merge(macroData,siteTable,by=c("LawaSiteID","Agency"),all.x=T,all.y=F)
 macroData$Agency=tolower(macroData$Agency)
 macroData$Region=tolower(macroData$Region)
 
+
+
 agencies= c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc")
 table(factor(macroData$Agency,levels=agencies))
 table(macroData$Region)
@@ -218,6 +236,7 @@ table(macroData$Region)
 #9July              8949 2994 1042 1568 2537 2307       976       905 1057      7616 2463 3129
 #22July 1878 3697   8949 2994 1042 1568 2537 2307    0  976       905 1057   0  7616 2463 3129         
 #24July 1878  4039  8949 2997 1042 1568 2537 2307   186 976  3439 905 1057   0  7622 2463 3378 
+#31July 1878  4039  8949 2997 1042  568 2531  646   186 1028 3439 905 1057   0  7622 2463 3378 
 write.csv(macroData,paste0('h:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Data/',format(Sys.Date(),"%Y-%m-%d"),
                        '/MacrosWithMetadata.csv'),row.names = F)
 

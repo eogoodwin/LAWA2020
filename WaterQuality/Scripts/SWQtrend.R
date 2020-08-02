@@ -410,13 +410,13 @@ table(trendTable15$Agency)/table(riverSiteTable$Agency)[match(names(table(trendT
 table(trendTable10$Agency)/table(riverSiteTable$Agency)[match(names(table(trendTable10$Agency)),names(table(riverSiteTable$Agency)))]
 table(trendTable5$Agency)/table(riverSiteTable$Agency)[match(names(table(trendTable5$Agency)),names(table(riverSiteTable$Agency)))]
 
-trendTable5%>%group_by(Agency)%>%select(frequency)%>%table
-trendTable10%>%group_by(Agency)%>%select(frequency)%>%table
-trendTable15%>%group_by(Agency)%>%select(frequency)%>%table
+trendTable5%>%group_by(Agency)%>%dplyr::select(Agency,frequency)%>%table
+trendTable10%>%group_by(Agency)%>%dplyr::select(Agency,frequency)%>%table
+trendTable15%>%group_by(Agency)%>%dplyr::select(Agency,frequency)%>%table
 
 MCItrend=read.csv(tail(dir(path="h:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Analysis",
                            pattern='MacroMCI_Trend',full.names = T,recursive = T,ignore.case = T),1),stringsAsFactors = F)
-MCItrend%>%group_by(Agency)%>%select(Agency,frequency)%>%table
+MCItrend%>%group_by(Agency)%>%dplyr::select(Agency,frequency)%>%table
 
 # #Remove MDC DRP and ECOLI
 # #See email Steffi Henkel 14/9/2018 to Kati Doehring, Eric Goodwin, Abi Loughnan and Peter Hamill

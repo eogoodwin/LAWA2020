@@ -25,7 +25,7 @@ for(i in 1:length(sites)){
     # url <- gsub(" ", "%20", url)
     url <- URLencode(url)
     
-    xmlfile <- ldMWQ(url,agency)
+    xmlfile <- ldMWQ(url,agency,method='wininet')
     
     if(!is.null(xmlfile)&&!grepl(pattern = "No data|^501",x = xmlValue(xmlRoot(xmlfile)),ignore.case = T)){
       anstime <- sapply(getNodeSet(doc=xmlfile, "//wml2:time"), xmlValue)          #Create vector of  values

@@ -40,12 +40,12 @@ for(i in 1:length(sites)){
                   "&From=2005-01-01&To=2020-01-01")
     url <- URLencode(url)
 
-    xmlback <- ldWQ(url,agency,method='wininet',QC=T)
+    xmlback <- ldWQ(url,agency,method='wininet',QC=T) #adds &tstype=stdqualseries
     if(!is.null(xmlback)){
       if(is.list(xmlback)){
         dataxml=xmlback$dataxml
         qcxml=xmlback$qcxml
-        browser()
+        # browser()
       }else{
         dataxml=xmlback
       }
@@ -149,7 +149,7 @@ for(i in 1:length(sites)){
         m_df <- data.frame(ansTime=c(ansTime),ansValue=c(ansValue), stringsAsFactors=FALSE)
         
         # Get Time and values for nodes with Quality Codes
-        ansTimeQ <- xpathSApply(m,"//QualityCode/../T",xmlValue)
+        ansTimeQ <- xpathSApply(m,"//QualityCode/../T",xmlValue) 
         qualValue <- as.numeric(xpathSApply(m,"//QualityCode",xmlValue))
         # build temporary dataframe to hold result
         q_df <- data.frame(ansTimeQ=c(ansTimeQ),qualValue=c(qualValue), stringsAsFactors=FALSE)

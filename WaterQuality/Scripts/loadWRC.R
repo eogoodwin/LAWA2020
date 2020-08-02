@@ -33,7 +33,8 @@ require(RCurl)
 # Cheers,
 # PK
 bitAnd(1034,255)
-                                                                                         
+bitAnd(9426,255)
+
 setwd("H:/ericg/16666LAWA/LAWA2020/WaterQuality")
 agency='wrc'
 Measurements <- read.table("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Metadata/Transfers_plain_english_view.txt",sep=',',header=T,stringsAsFactors = F)%>%

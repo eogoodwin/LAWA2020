@@ -1,37 +1,10 @@
 Value,Type
-100425,Site
-100438,Site
-100442,Site
-100448,Site
-100501,Site
-100593,Site
-101031,Site
-101032,Site
-101033,Site
-101034,Site
-101367,Site
-101369,Site
-101373,Site
-101375,Site
-101377,Site
-101379,Site
-101908,Site
-101909,Site
-101913,Site
-101930,Site
-106734,Site
-107776,Site
-108232,Site
-108240,Site
-108242,Site
-108346,Site
-108347,Site
 Total Phosphorus,Measurement
 Ammoniacal Nitrogen,Measurement
 Total Nitrogen,Measurement
 Secchi Depth,Measurement
 Secchi Depth - with viewer,Measurement
+Chlorophyll a (Fluorimetry),Measurement
 Chlorophyll a,Measurement
-Chlorophyll a (low level),Measurement
-pH (Lab),Measurement
+pH [pH (Discrete)],Measurement
 Escherichia coli,Measurement

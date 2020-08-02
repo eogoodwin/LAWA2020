@@ -61,6 +61,11 @@ for(agency in sort(unique(siteTable$Agency))){
   forcsv=xml2csvLake(agency=agency,maxHistory = 40,quiet=F)
   cat(length(unique(forcsv$Measurement)),paste(unique(forcsv$Measurement),collapse=', '),'\n')
   if(is.null(forcsv)){next}
+  
+  if(agency=='nrc'){
+    forcsv$Value[forcsv$Measurement=="Chlorophyll a"] = as.numeric(forcsv$Value[forcsv$Measurement=="Chlorophyll a"])*1000 #g/m3 to mg/m3
+  }
+  
   #In SWQ this is done by the transfers table file
   forcsv$Measurement[grepl(pattern = 'Transparency|Secchi|Clarity',x = forcsv$Measurement,ignore.case = T)] <- "Secchi"
   forcsv$Measurement[grepl(pattern = 'loroph|CHL|hloro',x = forcsv$Measurement,ignore.case = T)] <- "CHLA"
@@ -69,10 +74,10 @@ for(agency in sort(unique(siteTable$Agency))){
   forcsv$Measurement[grepl(pattern = 'Ammonia|NH4',x = forcsv$Measurement,ignore.case = T)] <- "NH4N"
   forcsv$Measurement[grepl(pattern = 'TN..HRC.|total nitrogen|totalnitrogen|Nitrogen..Total.|N _Tot|Tot N',
                             x = forcsv$Measurement,ignore.case = T)] <- "TN" #Note, might be nitrate nitrogen
-  forcsv$Measurement[grepl(pattern = 'ph \\(field\\)|ph \\(lab\\)|pH_Lab|pH \\(pH',x = forcsv$Measurement,ignore.case = T)] <- "pH"
+  forcsv$Measurement[grepl(pattern = 'ph \\(field\\)|ph \\(lab\\)|pH_Lab|pH \\(pH|pH \\(Disc',x = forcsv$Measurement,ignore.case = T)] <- "pH"
 
   cat(length(unique(forcsv$Measurement)),paste(unique(forcsv$Measurement),collapse='\t'),'\n')
-  cat(agency,'\t\t',lawaset[!lawaset%in%unique(forcsv$Measurement)],'\n') #Missing Measurements
+  cat(agency,'\tmissing\t',lawaset[!lawaset%in%unique(forcsv$Measurement)],'\n') #Missing Measurements
   excess=unique(forcsv$Measurement)[!unique(forcsv$Measurement)%in%lawaset] #Surplus Measurements
   if(length(excess)>0){
     browser()
@@ -114,7 +119,8 @@ foreach(agency =1:length(agencies),.combine = rbind,.errorhandling = 'remove')%d
       cat('\t',sum(!unique(tolower(mfl$LawaSiteID))%in%tolower(siteTable$LawaSiteID)),'LawaSiteIDs not in site table\n')
     }
     mfl$agency=agencies[agency]
-    if(agencies[agency] %in% c('ac','es','wrc','nrc')){ #es mg/L  arc mg/L g/m3             wanted in mg/m3
+    # ,'nrc'    because NRC has two CHLA measureents, and only one of them needs converting, I'll have to do it prriot to transfering names
+    if(agencies[agency] %in% c('ac','es','wrc')){ #es mg/L  arc mg/L  nrc g/m3             wanted in mg/m3
       mfl$Value[mfl$Measurement=="CHLA"]=mfl$Value[mfl$Measurement=="CHLA"]*1000
     }
     
@@ -172,30 +178,11 @@ rm(workers)
 #9July 79582
 #24/7/2020 80692
 
-# 
-# #Combine and add metadata ####
-# combo=data.frame(agency=NA,CouncilSiteID=NA,Date=NA,Value=NA,Method=NA,Measurement=NA,Censored=NA,centype=NA)
-# siteTable <- loadLatestSiteTableLakes(maxHistory = 60)
-# for(agency in sort(unique(siteTable$Agency))){
-#   checkXMLageLakes(agency)
-#   forcsv=loadLatestCSVLake(agency,quiet=T,maxHistory = 100)
-#   if(!is.null(forcsv)){
-#     # cat(agency,'\n',paste(names(forcsv),collapse='\t'),'\n')
-#     forcsv$agency=agency
-#      if(agency %in% c('ac','es','wrc')){ #es mg/L  arc mg/L g/m3             wanted in mg/m3
-#         forcsv$Value[forcsv$Measurement=="CHLA"]=forcsv$Value[forcsv$Measurement=="CHLA"]*1000
-#      }
-#     b4u=dim(forcsv)[1]
-#     forcsv=unique(forcsv)
-#     au=dim(forcsv)[1]
-#     if(b4u!=au){cat(agency,'shortened by UNIQUE line 129\n')}
-#     rm(b4u,au)
-#     combo=merge(combo,forcsv[,names(forcsv)%in%names(combo)],all=T)
-#   }  
-# }
-# combo=combo[-(dim(combo)[1]),]
-# #55752
-# # combo=unique(combo)
+
+
+
+
+
   
  
 write.csv(lakedata,paste0('h:/ericg/16666LAWA/LAWA2020/Lakes/Data/',format(Sys.Date(),"%Y-%m-%d"),'/LakesCombined.csv'),row.names = F)
@@ -203,6 +190,13 @@ write.csv(lakedata,paste0('h:/ericg/16666LAWA/LAWA2020/Lakes/Data/',format(Sys.D
 lakedata$LawaSiteID = siteTable$LawaSiteID[match(tolower(lakedata$CouncilSiteID),tolower(siteTable$CouncilSiteID))]
 lakedata$LawaSiteID[which(is.na(lakedata$LawaSiteID))]=siteTable$LawaSiteID[match(tolower(lakedata$CouncilSiteID[is.na(lakedata$LawaSiteID)]),
                                                                      tolower(siteTable$SiteID))]
+
+lakedata%>%group_by(LawaSiteID)%>%
+  dplyr::summarise(agCount=length(unique(agency)),
+                   ags=paste(unique(agency),collapse=' '),
+                   cid=paste(unique(CouncilSiteID),collapse=', '))%>%
+  ungroup%>%
+  filter(agCount>1)%>%dplyr::select(-agCount)
 
 # lakedata$LawaSiteID[tolower(lakedata$CouncilSiteID) =="omanuka lagoon (composite)"] = siteTable$LawaSiteID[tolower(siteTable$CouncilSiteID) =="omanuka lagoon (composite)"]
 

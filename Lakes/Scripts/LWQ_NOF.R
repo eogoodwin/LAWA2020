@@ -436,7 +436,7 @@ NOFSummaryTableLong <- melt(data=NOFSummaryTable,
 
 #############################Save output tables ############################
 #Audit wants NOFLakesOverall.
-write.csv(NOFSummaryTable%>%dplyr::filter(Year=="Overall"),
+write.csv(NOFSummaryTable%>%dplyr::filter(grepl('to',Year)),
           file = paste0("h:/ericg/16666LAWA/LAWA2020/Lakes/Analysis/",format(Sys.Date(),'%Y-%m-%d'),
                         "/NOFLakesOverall",format(Sys.time(),"%d%b%Y"),".csv"),row.names=F)
 
@@ -444,7 +444,7 @@ write.csv(NOFSummaryTable%>%dplyr::filter(Year=="Overall"),
 LakeSiteNOF <- NOFSummaryTableLong%>%
   dplyr::select(LawaSiteID,variable,Year,value)%>%
   dplyr::filter(grepl('Band',variable,ignore.case=T))%>%
-  dplyr::filter(Year=="Overall")
+  dplyr::filter(grepl('to',Year))
 LakeSiteNOF$parameter=LakeSiteNOF$variable
 LakeSiteNOF$parameter[which(LakeSiteNOF$variable%in%c("Ecoli95","Ecoli95_Band","EcoliPeriod",
                                                      "EcoliMedian","EcoliBand",
@@ -492,14 +492,14 @@ cat("Nuffadem ouptuts")
 #           file = paste0("h:/ericg/16666LAWA/LAWA2020/Lakes/Analysis/",format(Sys.Date(),'%Y-%m-%d'),
 #                         "/NOFSummaryTableLong.csv"),row.names=F)
 # 
-# write.csv(NOFSummaryTableLong%>%dplyr::filter(Year=="Overall")%>%drop_na(LawaSiteID),
+# write.csv(NOFSummaryTableLong%>%dplyr::filter(grepl('to',Year))%>%drop_na(LawaSiteID),
 #           file = paste0("h:/ericg/16666LAWA/LAWA2020/Lakes/Analysis/",format(Sys.Date(),'%Y-%m-%d'),
 #                         "/NOF_STATE_2018.csv"),row.names=F)
 # 
 # 
 # 
 # #Round them off.  For web display?
-# NOFRound <- NOFSummaryTableLong%>%dplyr::filter(Year=="Overall")%>%drop_na(LawaSiteID)
+# NOFRound <- NOFSummaryTableLong%>%dplyr::filter(grepl('to',Year))%>%drop_na(LawaSiteID)
 # NOFRound$variable <- as.character(NOFRound$variable)
 # 
 # variables<-as.character(unique(NOFSummaryTableLongSubset$variable))

@@ -83,7 +83,7 @@ foreach(i = 1:length(wqparam),.combine = rbind,.errorhandling = "stop")%dopar%{
     options(warn=0)
     wqdata_A$lcenrep=as.numeric(lcenreps[match(wqdata_A$CouncilSiteID,names(lcenreps))])
     wqdata_A$Value[wqdata_A$CenType=='Left'] <- wqdata_A$lcenrep[wqdata_A$CenType=='Left']
-    wqdata_A <- wqdata_A%>%select(-lcenrep)
+    wqdata_A <- wqdata_A%>%dplyr::select(-lcenrep)
     rm(lcenreps)
   }
   if(any(wqdata_A$CenType=='Right')){
@@ -93,7 +93,7 @@ foreach(i = 1:length(wqparam),.combine = rbind,.errorhandling = "stop")%dopar%{
     options(warn=0)
     wqdata_A$rcenrep=as.numeric(rcenreps[match(wqdata_A$CouncilSiteID,names(rcenreps))])
     wqdata_A$Value[wqdata_A$CenType=='Right'] <- wqdata_A$rcenrep[wqdata_A$CenType=='Right']
-    wqdata_A <- wqdata_A%>%select(-rcenrep)
+    wqdata_A <- wqdata_A%>%dplyr::select(-rcenrep)
     rm(rcenreps)
   }
   wqdata_A <- as.data.frame(wqdata_A)  
@@ -257,7 +257,7 @@ foreach(i = 1:length(uLAWAids),.combine=rbind,.errorhandling="stop",.inorder=F)%
     
     #Nitrate Toxicity
     #The worse of the two nitrate bands
-    Com_NOF$Nitrate_Toxicity_Band = apply(Com_NOF%>%select(NitrateMed_Band, Nitrate95_Band),1,max,na.rm=T)
+    Com_NOF$Nitrate_Toxicity_Band = apply(Com_NOF%>%dplyr::select(NitrateMed_Band, Nitrate95_Band),1,max,na.rm=T)
     rm(annual95,rolling95,rollFails)
   }else{
     Com_NOF$NitrateAnalysisNote = paste0('n = ',sum(!is.na(tonsite$Value)),' Insufficient to calculate annual medians ')
@@ -300,7 +300,7 @@ foreach(i = 1:length(uLAWAids),.combine=rbind,.errorhandling="stop",.inorder=F)%
       Com_NOF$Ammoniacal95_Band <- sapply(Com_NOF$Ammoniacal95_Band,FUN=function(x){min(unlist(strsplit(x,split = '')))})
       
       #Ammonia Toxicity
-      Com_NOF$Ammonia_Toxicity_Band=apply(Com_NOF%>%select(AmmoniacalMed_Band, Ammoniacal95_Band),1,max,na.rm=T)
+      Com_NOF$Ammonia_Toxicity_Band=apply(Com_NOF%>%dplyr::select(AmmoniacalMed_Band, Ammoniacal95_Band),1,max,na.rm=T)
     }else{
       Com_NOF$AmmoniaAnalysisNote=paste0(Com_NOF$AmmoniaAnalysisNote,'n = ',sum(!is.na(nh4site$Value)),
                                          ' Insufficient to calculate annual medians. ')
@@ -409,7 +409,7 @@ cat('\n')
 
 NOFSummaryTable$CouncilSiteID=riverSiteTable$CouncilSiteID[match(NOFSummaryTable$LawaSiteID,riverSiteTable$LawaSiteID)]
 NOFSummaryTable$SiteID=riverSiteTable$SiteID[match(NOFSummaryTable$LawaSiteID,riverSiteTable$LawaSiteID)]
-NOFSummaryTable <- NOFSummaryTable%>%select(LawaSiteID,CouncilSiteID,SiteID,Year:EcoliAnalysisNote)
+NOFSummaryTable <- NOFSummaryTable%>%dplyr::select(LawaSiteID,CouncilSiteID,SiteID,Year:EcoliAnalysisNote)
 NOFSummaryTable <- merge(NOFSummaryTable, riverSiteTable) 
 
 #############################Save the output table ############################

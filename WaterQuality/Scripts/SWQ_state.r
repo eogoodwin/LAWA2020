@@ -33,7 +33,7 @@ if(!exists('wqdata')){
             file=paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),'%Y-%m-%d'),
                         "/ITERiversRawData",format(Sys.time(),"%d%b%Y"),".csv"),row.names=F,na="NULL")
   options(scipen=storeSci);rm(storeSci)
-  wqdata <- wqdata%>%select(-DetectionLimit)
+  wqdata <- wqdata%>%dplyr::select(-DetectionLimit)
   wqdYear=lubridate::isoyear(dmy(wqdata$Date))
   wqdata <- wqdata[which((wqdYear>=(StartYear5) & wqdYear<=EndYear)),]
   rm(wqdYear)
@@ -73,7 +73,7 @@ foreach(i = 1:length(wqparam),.combine = rbind,.errorhandling = "stop")%dopar%{
      options(warn=0)
     wqdata_A$lcenrep=unlist(unname(lcenreps[match(wqdata_A$CouncilSiteID,names(lcenreps))]))
     wqdata_A$Value[wqdata_A$CenType=='Left'] <- wqdata_A$lcenrep[wqdata_A$CenType=='Left']
-    wqdata_A <- wqdata_A%>%select(-lcenrep)
+    wqdata_A <- wqdata_A%>%dplyr::select(-lcenrep)
     rm(lcenreps)
   }
   if(any(wqdata_A$CenType=='Right')){
@@ -84,7 +84,7 @@ foreach(i = 1:length(wqparam),.combine = rbind,.errorhandling = "stop")%dopar%{
     options(warn=0)
     wqdata_A$rcenrep=as.numeric(rcenreps[match(wqdata_A$CouncilSiteID,names(rcenreps))])
     wqdata_A$Value[wqdata_A$CenType=='Right'] <- wqdata_A$rcenrep[wqdata_A$CenType=='Right']
-    wqdata_A <- wqdata_A%>%select(-rcenrep)
+    wqdata_A <- wqdata_A%>%dplyr::select(-rcenrep)
     rm(rcenreps)
   }
   wqdata_A <- as.data.frame(wqdata_A)  
@@ -119,7 +119,7 @@ cat(Sys.time()-startTime)  #12.2 seconds 16July
 names(sa) <-   c("LawaSiteID", "Measurement", "Q0", "Q25", "Q50","Q75", "Q100",
                  "SWQAltitude", "SWQLanduse", "Region","Agency", "CouncilSiteID", "SiteID", "N", "Scope")
 
-sa <- sa%>%select(LawaSiteID,CouncilSiteID,SiteID,Region,Agency,SWQAltitude,SWQLanduse,Measurement,Scope,Q0,Q25,Q50,Q75,Q100,N)
+sa <- sa%>%dplyr::select(LawaSiteID,CouncilSiteID,SiteID,Region,Agency,SWQAltitude,SWQLanduse,Measurement,Scope,Q0,Q25,Q50,Q75,Q100,N)
 # filter sa to remove any LawaSiteIDS that are NA
 sa <- sa[!is.na(sa$LawaSiteID),]
 write.csv(sa,file=paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d"),
@@ -217,7 +217,7 @@ write.csv(ss,
                       "/AuditRiverState",format(Sys.time(),"%d%b%Y"),".csv"),row.names = F)
 
 
-write.csv(ss%>%select(LawaID,Parameter,Altitude,Landuse,Median,StateScore),
+write.csv(ss%>%dplyr::select(LawaID,Parameter,Altitude,Landuse,Median,StateScore),
           file=paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d"),
                          "/ITERiverState",format(Sys.time(),"%d%b%Y"),".csv"),row.names = F)
 

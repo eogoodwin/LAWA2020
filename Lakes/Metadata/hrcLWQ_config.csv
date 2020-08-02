@@ -1,15 +1,13 @@
 Value,Type
-Lake Kohata (Composite),Site
-Lake Dudding (Composite),Site
-Lake Horowhenua Composite,Site
-Lake Koputara (Composite),Site
-Lake Pauri Composite,Site
-Lake Wiritoa Composite,Site
 Ammoniacal-N (HRC),Measurement
 TN (HRC),Measurement
 TP (HRC),Measurement
 E. coli by MPN (HRC),Measurement
 Chlorophyll A (HRC),Measurement
+Field pH (HRC),Measurement
+pH (-500 mm),Measurement
+pH (-2000 mm),Measurement
+Black Disc (HRC),Measurement
 DRP,MeasurementB
 Dissolved Reactive Phosphate,MeasurementB
 Nitrate Nitrogen,MeasurementB
@@ -18,6 +16,5 @@ Secchi Depth,MeasurementB
 TON,MeasurementB
 Total Oxidised Nitrogen,MeasurementB
 WQ Sample,MeasurementB
-Field pH (HRC),Measurement
 Cyanotox,measurementB
 Cyanoall,measurementB

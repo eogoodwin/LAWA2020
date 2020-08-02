@@ -8,6 +8,7 @@ ac,NO3+NO2 (mg/l),TON
 ac,Tot P (mg/l),TP
 ac,Black Disk (m),BDISC
 ac,Turb,TURB
+ac,Field Turb,TURBFNU
 ,,
 boprc,Ammoniacal N_LabResult,NH4
 boprc,DRP_LabResult,DRP
@@ -25,7 +26,6 @@ ecan,Dissolved Reactive Phosphorus,DRP
 ecan,E. coli,ECOLI
 ecan,Nitrate-N Nitrite-N,TON
 ecan,pH,PH
-ecan,pH (Field),PH
 ecan,Total Nitrogen,TN
 ecan,Total Phosphorus,TP
 ecan,Turbidity,TURB
@@ -140,6 +140,7 @@ orc,Turbidity (X),TURB
 ,,
 tdc,Dissolved Reactive Phosphorus,DRP
 tdc,E.coli,ECOLI
+tdc,E.coli (APHA 9223B),ECOLI
 tdc,Nitrate-N + Nitrite-N (Lachat),TON
 tdc,pH,PH
 tdc,Total Ammonia,NH4
@@ -157,7 +158,7 @@ trc,TON,TON
 trc,PH,PH
 trc,TN,TN
 trc,TP,TP
-trc,TURBY,TURB
+trc,TURBY,TURBFNU
 trc,TURB,TURB
 ,,
 wcrc,Ammonia Total,NH4
@@ -180,3 +181,6 @@ wrc,pH,PH
 wrc,Total Phosphorus,TP
 wrc,TotalNitrogen,TN
 wrc,Turb_Misc,TURB
+WRC,10|Good data,Qualifier
+WRC,8202|Above quanitification level,Qualifier
+WRC,16394|Below quanitification level,Qualifier

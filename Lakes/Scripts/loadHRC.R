@@ -30,7 +30,7 @@ for(i in 1:length(sites)){
                  "&TemporalFilter=om:phenomenonTime,2004-01-01,2020-01-01")
     url <- URLencode(url)
     
-    xmlfile <- ldLWQ(url,agency)
+    xmlfile <- ldLWQ(url,agency,method='wininet')
     if(!is.null(xmlfile)&&((!grepl(pattern = "No data|^501",x = xmlValue(xmlRoot(xmlfile)),ignore.case = T)))){
       # browser()
       datAsList = XML::xmlToList(xmlfile)

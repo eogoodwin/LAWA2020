@@ -21,7 +21,7 @@ con$addTag("Agency", toupper(agency))
 for(i in 1:length(sites)){
   cat(sites[i],i,'out of',length(sites),'\n')
   for(j in 1:length(Measurements)){
-    url <- paste0("http://hydro.marlborough.govt.nz/LAWA_SoEWQ.hts?service=Hilltop&request=GetData",
+    url <- paste0("http://hydro.marlborough.govt.nz/LAWA_WQ.hts?service=Hilltop&request=GetData",  #LAWA_WQ.hts calls lAWA_SoEWQ.hts
                  "&Site=",sites[i],
                  "&Measurement=",Measurements[j],
                  "&From=2005-01-01&To=2020-01-01")

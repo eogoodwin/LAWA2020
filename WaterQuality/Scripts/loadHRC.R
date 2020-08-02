@@ -59,15 +59,27 @@ for(i in 1:length(sites)){
   } #j
 } #i
 
-# write.csv(Data,paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/",format(Sys.Date(),"%Y-%m-%d"),file="/",agency,"SWQ.csv"),row.names = F)
-# save(Data, file=paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/",format(Sys.Date(),"%Y-%m-%d"),file="/hrcout.rData"))
+save(Data, file=paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/",format(Sys.Date(),"%Y-%m-%d"),file="/hrcout.rData"))
+
+hrc <- Data%>%transmute(CouncilSiteID=Site,Date=format(as.Date(time),'%d-%b-%y'),Value=value,Measurement,Units)
+hrc = merge(hrc,siteTable,by="CouncilSiteID")                         
+                         
+hrc$Censored = grepl('<|>',hrc$Value)
+hrc$CenType = FALSE
+hrc$CenType[grepl('<',hrc$Value)] <- "Left"
+hrc$CenType[grepl('>',hrc$Value)] <- "Right"
+hrc$Symbol=""
+hrc$Symbol[grepl('<',hrc$Value)] <- "<"
+hrc$Symbol[grepl('>',hrc$Value)] <- ">"
+hrc$RawValue = hrc$Value 
+hrc$Value = as.numeric(gsub(pattern = '<|>',replacement = '',x = hrc$Value))
+hrc$QC = 0
+
+write.csv(Data,paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/",format(Sys.Date(),"%Y-%m-%d"),file="/",agency,"SWQ.csv"),row.names = F)
 
 
 con <- xmlOutputDOM("Hilltop")
 con$addTag("Agency", "HRC")
-
-
-
 
 max<-nrow(Data)
 

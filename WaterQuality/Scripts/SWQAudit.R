@@ -114,27 +114,21 @@ for(param in 1:length(params)){
 
 
 #And the ubercool html summary audit report doncuments per council!
+wqdata=loadLatestDataRiver()
 startTime=Sys.time()
-# workers <- makeCluster(7)
-# registerDoParallel(workers)
-# foreach(agency = c("ac","boprc","ecan","es","hbrc","hrc","orc","wcrc","wrc","gdc","gwrc","mdc","ncc","nrc","tdc","trc"),
-#         .combine=rbind,.errorhandling="stop")%dopar%{
- for(agency in c("hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")){#"ac","boprc","ecan","es","gdc","gwrc",
-          urls          <- read.csv("H:/ericg/16666LAWA/LAWA2020/Metadata/CouncilWFS.csv",stringsAsFactors=FALSE)
-          if(length(dir(path = paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Audit/",format(Sys.Date(),"%Y-%m-%d")),
-                pattern = paste0('^',agency,".*audit\\.csv"),
-                recursive = T,full.names = T,ignore.case = T))>0){
+urls          <- read.csv("H:/ericg/16666LAWA/LAWA2020/Metadata/CouncilWFS.csv",stringsAsFactors=FALSE)
+ for(agency in c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")){#
+          # if(length(dir(path = paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Audit/",format(Sys.Date(),"%Y-%m-%d")),
+          #       pattern = paste0('^',agency,".*audit\\.csv"),
+          #       recursive = T,full.names = T,ignore.case = T))>0){
             rmarkdown::render('H:/ericg/16666LAWA/LAWA2020/WaterQuality/Scripts/AuditDocument.Rmd',
                               params=list(agency=agency,
                                           sos=urls$SOSwq[which(tolower(urls$Agency)==agency)]),
                               output_dir = paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Audit/",format(Sys.Date(),"%Y-%m-%d")),
                               output_file = paste0(toupper(agency),"Audit",format(Sys.Date(),'%d%b%y'),".html"),
                               envir = new.env())
-          }
-  # return(NULL)
+          # }
 }
-# stopCluster(workers)
-# remove(workers)
 Sys.time()-startTime
 
 

@@ -229,15 +229,15 @@ ldWFS <- function(urlIn,dataLocation,agency,case.fix=TRUE,method='curl'){
   return(wfsxml)
 }
 
-ldWQ <- function(url,agency,method='curl',module='',QC=F,...){
+ldWQ <- function(urlIn,agency,method='curl',module='',QC=F,...){
   require(XML)
   tempFileName=tempfile(tmpdir="D:/LAWA/2020",pattern=paste0(module,agency),fileext=".xml")
   #Try both methods of downloading, return a NULL if neither works
-  # dl=download.file(url,destfile=tempFileName,method=method,quiet=T)
-  dl=try(download.file(url,destfile=tempFileName,method=method,quiet=T,...),silent = T)
+  # dl=download.file(urlIn,destfile=tempFileName,method=method,quiet=T)
+  dl=try(download.file(urlIn,destfile=tempFileName,method=method,quiet=T,...),silent = T)
   if('try-error'%in%attr(dl,'class')){
     method=ifelse(method=='curl',yes = 'wininet',no = 'curl')
-    dl=try(download.file(url,destfile=tempFileName,method=method,quiet=T,...),silent = T)
+    dl=try(download.file(urlIn,destfile=tempFileName,method=method,quiet=T,...),silent = T)
     if('try-error'%in%attr(dl,'class')){
       return(NULL)
     }
@@ -259,13 +259,13 @@ ldWQ <- function(url,agency,method='curl',module='',QC=F,...){
   #Check whether there's QC data held separately.
   #Now, for GWRC, GDC, MDC and HBRC  there are QC codes in the I2 field where teh censoring info is held.
   if(QC){
-    if(grepl('hilltop',url)){
-      url=paste0(url,"&tstype=stdqualseries")
+    if(grepl('hilltop',urlIn)){
+      urlIn=paste0(urlIn,"&tstype=stdqualseries")
       tempFileName=paste0("D:/LAWA/2020/tmpQC",module,agency,".xml")
-      dl=try(download.file(url,destfile=tempFileName,method=method,quiet=T,...),silent = T)
+      dl=try(download.file(urlIn,destfile=tempFileName,method=method,quiet=T,...),silent = T)
       if('try-error'%in%attr(dl,'class')){
         method=ifelse(method=='curl',yes = 'wininet',no = 'curl')
-        dl=try(download.file(url,destfile=tempFileName,method=method,quiet=T,...),silent = T)
+        dl=try(download.file(urlIn,destfile=tempFileName,method=method,quiet=T,...),silent = T)
         if('try-error'%in%attr(dl,'class')){
           QC=F
         }
@@ -530,7 +530,7 @@ xml2csvRiver <- function(maxHistory=365,quiet=F,reportCensor=F,agency,reportVars
               dtvv$CenType[which(cenR)]="Right"
             }
             if(length(siteDeets)==1){
-              suppressWarnings({dtvv=cbind(dtvv,siteTable[siteDeets,]%>%select(-CouncilSiteID))})  
+              suppressWarnings({dtvv=cbind(dtvv,siteTable[siteDeets,]%>%dplyr::select(-CouncilSiteID))})  
             }else{
               #Make up an empty siteTable entry to bind on
               #I dont think this is ever used, thankfujlly
@@ -1049,7 +1049,7 @@ loadLatestColumnHeadingLake <- function(agency,maxHistory=365,quiet=F){
 xml2csvLake <- function(agency,quiet=F,maxHistory=100){
   suppressWarnings(try(dir.create(paste0("h:/ericg/16666LAWA/LAWA2020/Lakes/Data/",format(Sys.Date(),'%Y-%m-%d'),"/"))))
   suppressWarnings(rm(forcsv,xmlIn))
-  stepBack=0;rm(xmlIn)
+  stepBack=0
   while(stepBack<maxHistory){
     if(dir.exists(paste0("h:/ericg/16666LAWA/LAWA2020/Lakes/Data/",
                          format(Sys.Date()-stepBack,'%Y-%m-%d'),"/"))){

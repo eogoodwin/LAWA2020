@@ -23,15 +23,12 @@ metaMeasurements <- unique(meta$Measurement)
 
 ## Manually matching order of measurement names in the measurement vector to the metaMeasurement vector
 # metaMeasurements <- metaMeasurements[c(12,9,7,1,13,2)]
-metaMeasurements <- metaMeasurements[c(1,13,12,7,2,9)]
+metaMeasurements <- c(metaMeasurements[c(1,13,13,12,7,2,9)],"Secchi depth (m)")
 
 meas <- cbind.data.frame(metaMeasurements,Measurements, stringsAsFactors=FALSE)
 names(meas) <- c("Measurement","MeasurementName")
 #join meas to meta
 meta <- merge(meta,meas,by="Measurement",all = TRUE)
-
-tab="\t"
-
 
 con <- xmlOutputDOM("Hilltop")
 con$addTag("Agency", toupper(agency))
@@ -91,7 +88,7 @@ for(i in 1:length(sites)){
                       "Depthto", p$Depthto, "SampleLevel", p$Samplelevel,
                       "Method", p$Method, "DetectionLimit", p$DetectionLimit, "QualityCode",
                       p$QualityCode, "SampleFrequency", p$SampleFrequency, "LakeType",
-                      p$Laketype, sep=tab)
+                      p$Laketype, sep="\t")
         
         # remove unnecessary variables. Measurement, LAWAID, ORC, Site.Name, Date.Time and the last two pDTz and I2 (
         # all other columns contianed the info noiw in I2
@@ -118,17 +115,17 @@ for(i in 1:length(sites)){
         ## Handle Greater than symbol
         if(grepl(pattern = "^\\>",x =  ansValue[N],perl = TRUE)){
           ansValue[N] <- substr(ansValue[N],2,nchar(ansValue[N]))
-          item2 <- paste("$ND",tab,">",tab,sep="")
+          item2 <- "$ND\t>\t"
           
           # Handle Less than symbols  
         } else if(grepl(pattern = "^\\<",x =  ansValue[N],perl = TRUE)){
           ansValue[N] <- substr(ansValue[N],2,nchar(ansValue[N]))
-          item2 <- paste("$ND",tab,"<",tab,sep="")
+          item2 <- "$ND\t<\t"
           
           # Handle Asterixes  
         } else if(grepl(pattern = "^\\*",x =  ansValue[N],perl = TRUE)){
           ansValue[N] <- gsub(pattern = "^\\*", replacement = "", x = ansValue[N])
-          item2 <- paste("$ND",tab,"*",tab,sep="")
+          item2 <- "$ND\t*\t"
         } else{
           item2 <- ""
         }
@@ -139,7 +136,7 @@ for(i in 1:length(sites)){
           for(n in 3:xmlSize(m[['Data']][[N]])){      
             #Getting attributes and building string to put in Item 2
             attrs <- xmlAttrs(m[['Data']][[N]][[n]])
-            item2 <- paste(item2,attrs[1],tab,attrs[2],tab,sep="")
+            item2 <- paste0(item2,attrs[1],"\t",attrs[2],"\t")
           }
         }
         addChildren(DataNode[[xmlSize(DataNode)]], newXMLNode(name = "I2",item2))

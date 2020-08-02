@@ -337,7 +337,7 @@ if(any(agencyCSVn$n>1)){
   cat("There are replicate sites in your data.\n\n")
 
   reps = agencyCSVn%>%filter(n>1)%>%distinct%>%dplyr::arrange(desc(n))
-  DT::datatable(reps,extensions='Buttons',options=list(dom='Bf',buttons=c('copy','csv','excel')),rownames=F)
+  DT::datatable(reps,extensions='Buttons',options=list(dom='Bfpl',buttons=c('copy','csv','excel')),rownames=F)
   }
 ```
 
@@ -418,7 +418,7 @@ if(dim(ss)[1]>0){
 DT::datatable(ss%>%
                 dplyr::select(CouncilSiteID,Catchment,Parameter,Median)%>%
                 dplyr::mutate(Median=signif(Median,4))%>%spread(Parameter,Median),
-              rownames = F,extensions='Buttons',options=list(dom='Bf',buttons=c('copy','csv','excel')))
+              rownames = F,extensions='Buttons',options=list(dom='Bfpl',buttons=c('copy','csv','excel')))
 }else{
   cat("No state results for ",agency,'\n')
 }
@@ -432,72 +432,73 @@ DT::datatable(TLI%>%drop_na(Value)%>%
                           LFENZID=factor(LFENZID),Year,TLI=signif(Value,3),TLI=signif(TLI,3)),
               extensions=c('RowGroup','Buttons'),options=list(rowGroup=list(dataSrc=2),
                                                               pageLength=12,
-                                                              dom='Bf',
+                                                              dom='Bfpl',
                                                               buttons=c('copy','csv','excel')),filter='top',rownames = F)
 ```
 
 ## NOF scores per site, overall
 
 Missing grades should be more fully explained in subsequent tables (below).
+This year there are many more results shown, because we're also looking at historical five-year spans.
 
 ### Bands summary
 
 ```{r echo=F,results='asis'}
-DT::datatable(nfts%>%dplyr::select(CouncilSiteID,contains('band'))%>%
+DT::datatable(nfts%>%dplyr::select(CouncilSiteID,Year,contains('band'))%>%
                      rename_all(.funs = ~gsub(x=.,pattern = '_band|band',replacement = '',ignore.case = T)),
-                extensions='Buttons',options=list(dom='Bf',buttons=c('copy','csv','excel')))
+                extensions='Buttons',options=list(dom='Bfpl',buttons=c('copy','csv','excel')))
 cat('  \n')
 
 if(any(nfts$NitrateAnalysisNote!="")){
   cat('  \n### Nitrogen\n')
-  DT::datatable(nfts%>%dplyr::select(CouncilSiteID,Total_Nitrogen:NitrateAnalysisNote)%>%
-                       rename_all(.funs = ~gsub(x=.,pattern = 'Nitrate|Nitrate_',replacement = '',ignore.case=T)),
-                extensions='Buttons',options=list(dom='Bf',buttons=c('copy','csv','excel')))
+  print(knitr::kable(nfts%>%dplyr::select(CouncilSiteID,Year,NitrogenMed:NitrateAnalysisNote)%>%
+                       rename_all(.funs = ~gsub(x=.,pattern = 'Nitrate|Nitrate_',replacement = '',ignore.case=T))))
+                # extensions='Buttons',options=list(dom='Bfpl',buttons=c('copy','csv','excel')))
   cat('  \n')
 }
 
 if(any(nfts$PhosphorusAnalysisNote!="")){
   cat('  \n### Phosphorus\n')
-DT::datatable(nfts%>%dplyr::select(CouncilSiteID,Total_Phosphorus:PhosphorusAnalysisNote)%>%
-                       rename_all(.funs = ~gsub(x=.,pattern = 'Phosphorus|Phosphorus_',replacement = '',ignore.case=T)),
-                extensions='Buttons',options=list(dom='Bf',buttons=c('copy','csv','excel')))
+print(knitr::kable(nfts%>%dplyr::select(CouncilSiteID,Year,PhosphorusMed:PhosphorusAnalysisNote)%>%
+                       rename_all(.funs = ~gsub(x=.,pattern = 'Phosphorus|Phosphorus_',replacement = '',ignore.case=T))))
+                # extensions='Buttons',options=list(dom='Bfpl',buttons=c('copy','csv','excel')))
     cat('  \n')
 }
 
 if(any(nfts$AmmoniaAnalysisNote!="")){
   cat('  \n### Ammonia\n')
-  DT::datatable(nfts%>%dplyr::select(CouncilSiteID,AmmoniacalMed:AmmoniaAnalysisNote)%>%
-                       rename_all(.funs = ~gsub(x=.,pattern = 'Ammoniacal|Ammonia_',replacement = '',ignore.case=T)),
-                extensions='Buttons',options=list(dom='Bf',buttons=c('copy','csv','excel')))
+  print(knitr::kable(nfts%>%dplyr::select(CouncilSiteID,Year,AmmoniacalMed:AmmoniaAnalysisNote)%>%
+                       rename_all(.funs = ~gsub(x=.,pattern = 'Ammoniacal|Ammonia_',replacement = '',ignore.case=T))))
+                # extensions='Buttons',options=list(dom='Bfpl',buttons=c('copy','csv','excel')))
   cat('  \n')
 }
 
 if(any(nfts$ClarityAnalysisNote!="")){
   cat('  \n### Clarity\n')
-  DT::datatable(nfts%>%dplyr::select(CouncilSiteID,Median_Clarity:ClarityAnalysisNote)%>%
-                       rename_all(.funs = ~gsub(x=.,pattern = 'Clarity|Clarity_',replacement = '',ignore.case=T)),
-                extensions='Buttons',options=list(dom='Bf',buttons=c('copy','csv','excel')))
+  print(knitr::kable(nfts%>%dplyr::select(CouncilSiteID,Year,ClarityMedian:ClarityAnalysisNote)%>%
+                       rename_all(.funs = ~gsub(x=.,pattern = 'Clarity|Clarity_',replacement = '',ignore.case=T))))
+                # extensions='Buttons',options=list(dom='Bfpl',buttons=c('copy','csv','excel')))
   cat('  \n')
 }
 
 if(any(nfts$ChlAAnalysisNote!="")){
   cat('  \n### ChlA\n')
-DT::datatable(nfts%>%dplyr::select(CouncilSiteID,Median_ChlA:ChlAAnalysisNote)%>%
-                       rename_all(.funs = ~gsub(x=.,pattern = 'ChlA|ChlA_',replacement = '',ignore.case=T)),
-                extensions='Buttons',options=list(dom='Bf',buttons=c('copy','csv','excel')))
+print(knitr::kable(nfts%>%dplyr::select(CouncilSiteID,Year,ChlAMed:ChlAAnalysisNote)%>%
+                       rename_all(.funs = ~gsub(x=.,pattern = 'ChlA|ChlA_',replacement = '',ignore.case=T))))
+                # extensions='Buttons',options=list(dom='Bfpl',buttons=c('copy','csv','excel')))
     cat('  \n')
 }
 
 if(any(!is.na(nfts$E_coliAnalysisNote)&nfts$E_coliAnalysisNote!="")){
   cat('  \n### Escherischia coli\n')
   names(nfts)[which(names(nfts)=="E_coli_band")] <- "MedianBand"
-DT::datatable(nfts%>%dplyr::select(CouncilSiteID,E_coli_Period,E_coliSummaryband,E_coliAnalysisNote)%>%
-                       rename_all(.funs = ~gsub(x=.,pattern = 'E_coli_|E_coli',replacement = '',ignore.case=F)),
-                extensions='Buttons',options=list(dom='Bf',buttons=c('copy','csv','excel')))
+print(knitr::kable(nfts%>%dplyr::select(CouncilSiteID,Year,E_coli_Period,E_coliSummaryband,E_coliAnalysisNote)%>%
+                       rename_all(.funs = ~gsub(x=.,pattern = 'E_coli_|E_coli',replacement = '',ignore.case=F))))
+                # extensions='Buttons',options=list(dom='Bfpl',buttons=c('copy','csv','excel')))
     cat('  \n')
-DT::datatable(nfts%>%dplyr::select(CouncilSiteID,E_coli_Median:E_coliRecHealth260_Band)%>%
-                       rename_all(.funs = ~gsub(x=.,pattern = 'E_coli_|E_coli',replacement = '',ignore.case=F)),
-                extensions='Buttons',options=list(dom='Bf',buttons=c('copy','csv','excel')))
+print(knitr::kable(nfts%>%dplyr::select(CouncilSiteID,Year,E_coli_Median:E_coliRecHealth260_Band)%>%
+                       rename_all(.funs = ~gsub(x=.,pattern = 'E_coli_|E_coli',replacement = '',ignore.case=F))))
+                # extensions='Buttons',options=list(dom='Bfpl',buttons=c('copy','csv','excel')))
     cat('  \n')
 }
 ```
@@ -510,7 +511,7 @@ There are other requirements: no long series of the same value, a decent variety
 ```{r echo=F,results='asis'}
 DT::datatable(lwqtrend,
 extensions=c('Buttons','ColReorder','FixedColumns'),
-              options=list(dom='Bfrtip',colReorder=T,buttons=c('colvis','copy','csv','excel'),
+              options=list(dom='Bfrtipl',colReorder=T,buttons=c('colvis','copy','csv','excel'),
                            scrollX=TRUE,fixedColumns=list(leftColumns=5)),
               filter='top',rownames=F)
 ```
