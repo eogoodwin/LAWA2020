@@ -16,9 +16,9 @@ macroData=loadLatestDataMacro()
 
 #Combined audit ####
 macroAudit=data.frame(agency=NULL,var=NULL,earliest=NULL,latest=NULL,nMeas=NULL,nSite=NULL,meanMeas=NULL,maxMeas=NULL,minMeas=NULL,nNA=NULL)
-for(agency in c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")){
+for(agency in c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc")){
   xmlAge= checkXMLageMacro(agency)
-  if(is.na(xmlAge)){next}
+  # if(is.na(xmlAge)){next}
   forcsv=loadLatestCSVmacro(agency,maxHistory = 20)
   if(length(forcsv)==0){next}
   siteTerm='SiteName'
@@ -42,8 +42,8 @@ for(agency in c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","
                      stringsAsFactors = F)
   if(!is.null(forcsv)){
     for(v in 1:dim(newRows)[1]){
-      newRows$earliest[v]=format(min(dmy(forcsv$Date[which(forcsv$Measurement==newRows$var[v])])),"%d-%b-%Y")
-      newRows$latest[v]=format(max(dmy(forcsv$Date[which(forcsv$Measurement==newRows$var[v])])),"%d-%b-%Y")
+      newRows$earliest[v]=format(min(dmy(forcsv$Date[which(forcsv$Measurement==newRows$var[v])]),na.rm=T),"%d-%b-%Y")
+      newRows$latest[v]=format(max(dmy(forcsv$Date[which(forcsv$Measurement==newRows$var[v])]),na.rm=T),"%d-%b-%Y")
       newRows$nMeas[v]=sum(forcsv$Measurement==newRows$var[v])
       newRows$nSite[v]=length(unique(forcsv[,siteTerm][which(forcsv$Measurement==newRows$var[v] & !is.na(forcsv$Value))]))
       newRows$meanMeas[v]=round(mean(forcsv$Value[forcsv$Measurement==newRows$var[v]],na.rm=T),1)
@@ -66,7 +66,7 @@ table(unique(tolower(macroData$CouncilSiteID))%in%tolower(c(macroSiteTable$SiteI
 
 
 #Per agency audit site/measurement start, stop, n and range ####
-for(agency in c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")){
+for(agency in c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc")){
   forcsv=loadLatestCSVmacro(agency,maxHistory = 20)
   if(!is.null(forcsv)){
     if('parameter'%in%names(forcsv)){
@@ -91,8 +91,8 @@ for(agency in c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","
       for(nv in 1:nvar){
         these=which(forcsv[,siteTerm]==usites[ns]&forcsv$Measurement==uvars[nv])
         agencyDeets[r,]=c(usites[ns],uvars[nv],
-                          as.character(min(dmy(forcsv$Date[these]))),
-                          as.character(max(dmy(forcsv$Date[these]))),
+                          as.character(min(dmy(forcsv$Date[these]),na.rm=T)),
+                          as.character(max(dmy(forcsv$Date[these]),na.rm=T)),
                           length(these),
                           min(forcsv$Value[these],na.rm=T),max(forcsv$Value[these],na.rm=T))
         r=r+1
@@ -102,11 +102,10 @@ for(agency in c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","
   }
 }
 
-macroData$Measurement[macroData$Measurement=="% EPT Richness"] <- 'pcEPTRichness'
 
 #Audit plots to allow comparison between agencies - check units consistency etc  ####
 upara=unique(macroData$Measurement)
-ucounc=c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","nrc","orc","tdc","trc","wcrc","wrc")
+ucounc=c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc")
 for(up in seq_along(upara)){
   png(filename = paste0("h:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Audit/",format(Sys.Date(),"%Y-%m-%d"),"/",
                         upara[up],format(Sys.Date(),'%d%b%y'),".png"),
@@ -118,7 +117,7 @@ for(up in seq_along(upara)){
   p95=quantile(pvals$Value,p=0.95,na.rm=T)
   p999=quantile(pvals$Value,p=0.999,na.rm=T)
   pvals=pvals[pvals$Value<p999,]
-  par(mfrow=c(4,4),mar=c(3,1,2,1))
+  par(mfrow=c(5,4),mar=c(3,1,2,1))
   for(cc in seq_along(ucounc)){
     cvals=pvals$Value[pvals$Agency==ucounc[cc]]
     if(length(cvals[!is.na(cvals)])>2){
@@ -141,7 +140,7 @@ urls          <- read.csv("H:/ericg/16666LAWA/LAWA2020/Metadata/CouncilWFS.csv",
                    # "mdc", "ncc", "nrc", "orc", "tdc", "trc", "wcrc", "wrc"),
         # .combine=rbind,.errorhandling="stop")%dopar%{
 for(agency in c("ac", "boprc", "ecan", "es", "gdc", "gwrc", "hbrc", "hrc", 
-                "mdc", "ncc", "nrc", "orc", "tdc", "trc", "wcrc", "wrc")){
+                "mdc", "ncc","niwa", "nrc", "orc", "tdc", "trc", "wcrc", "wrc")){
           if(length(dir(path = paste0("H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Audit/",format(Sys.Date(),"%Y-%m-%d")),
                         pattern = paste0('^',agency,".*audit\\.csv"),
                         recursive = T,full.names = T,ignore.case = T))>0){

@@ -69,46 +69,46 @@ for(i in 1:length(sites)){
   }
 }
 #XML date format ymd e.g. 2015-11-17
+# 
+# #Delivered separately by Lisa Naysmith, email 2/8/twentynineteen
+# okaro=readxl::read_xlsx("H:/ericg/16666LAWA/LAWA2020/Lakes/Data/BOPRCLake Okaro 2004_2018.xlsx",sheet=1,na = "<NA>")
+# okaro=okaro%>%transmute(Site="FI680541_INT",
+#                         Measurement=parameter,
+#                         time=sdate,
+#                         Uvalue=`Uncencored value`,
+#                         value=Value,
+#                         Units='ns')%>%as.data.frame
+# okaro$time=as.character(format.Date(okaro$time,"%Y-%m-%dT00:00:00.000Z"))
+# okaro$value[!is.na(okaro$`Uncencored value`)]=okaro$`Uncencored value`[!is.na(okaro$`Uncencored value`)]
+# okaro <- okaro%>%select(-Uvalue)%>%filter(Measurement%in%c("CHLA","ECOLI","NH4","pH","Secchi","TN","TP"))
+# 
+# okaro$value[okaro$Measurement%in%c("NH4","TN","TP")&
+#               !is.na(as.numeric(okaro$Value))]=okaro$value[okaro$Measurement%in%c("NH4","TN","TP")&
+#                                                              !is.na(as.numeric(okaro$Value))]/1000
+# if(any(grepl(okaro$Site[1],lakeSiteTable$CouncilSiteID,ignore.case = T))){
+#   Data=rbind(Data,okaro)
+# }
+# rm(okaro)
 
-#Delivered separately by Lisa Naysmith, email 2/8/twentynineteen
-okaro=readxl::read_xlsx("H:/ericg/16666LAWA/LAWA2020/Lakes/Data/BOPRCLake Okaro 2004_2018.xlsx",sheet=1,na = "<NA>")
-okaro=okaro%>%transmute(Site="FI680541_INT",
-                        Measurement=parameter,
-                        time=sdate,
-                        Uvalue=`Uncencored value`,
-                        value=Value,
-                        Units='ns')%>%as.data.frame
-okaro$time=as.character(format.Date(okaro$time,"%Y-%m-%dT00:00:00.000Z"))
-okaro$value[!is.na(okaro$`Uncencored value`)]=okaro$`Uncencored value`[!is.na(okaro$`Uncencored value`)]
-okaro <- okaro%>%select(-Uvalue)%>%filter(Measurement%in%c("CHLA","ECOLI","NH4","pH","Secchi","TN","TP"))
-
-okaro$value[okaro$Measurement%in%c("NH4","TN","TP")&
-              !is.na(as.numeric(okaro$Value))]=okaro$value[okaro$Measurement%in%c("NH4","TN","TP")&
-                                                             !is.na(as.numeric(okaro$Value))]/1000
-if(any(grepl(okaro$Site[1],siteTable$CouncilSiteID,ignore.case = T))){
-  Data=rbind(Data,okaro)
-}
-rm(okaro)
 
 
-
-#Lisa Naysmith points out we can get historic lake data from last year's pull.  Cunning.
-bop2018=read.csv(tail(dir(path = 'h:/ericg/16666LAWA/2018/Lakes/1.Imported/',
-                          pattern='LakesWithMetadata.csv',
-                          recursive = T,full.names = T,ignore.case = T),1),stringsAsFactors = F)%>%
-  filter(agency=='boprc')
-bop2018$SiteID=toupper(siteTable$CouncilSiteID[match(tolower(bop2018$LawaSiteID),tolower(siteTable$LawaSiteID))])
-bop2018 <- bop2018%>%
-  drop_na(SiteID)%>%
-  transmute(Site=toupper(SiteID),
-            Measurement=parameter,
-            time=Date,
-            value=Value,
-            Units='ns')%>%as.data.frame
-bop2018$time=format.Date(lubridate::dmy(bop2018$time),"%Y-%m-%dT00:00:00.000Z")
-
-Data=unique(rbind(Data,bop2018))
-rm(bop2018)
+# #Lisa Naysmith points out we can get historic lake data from last year's pull.  Cunning.
+# bop2018=read.csv(tail(dir(path = 'h:/ericg/16666LAWA/2018/Lakes/1.Imported/',
+#                           pattern='LakesWithMetadata.csv',
+#                           recursive = T,full.names = T,ignore.case = T),1),stringsAsFactors = F)%>%
+#   filter(agency=='boprc')
+# bop2018$SiteID=toupper(lakeSiteTable$CouncilSiteID[match(tolower(bop2018$LawaSiteID),tolower(lakeSiteTable$LawaSiteID))])
+# bop2018 <- bop2018%>%
+#   drop_na(SiteID)%>%
+#   transmute(Site=toupper(SiteID),
+#             Measurement=parameter,
+#             time=Date,
+#             value=Value,
+#             Units='ns')%>%as.data.frame
+# bop2018$time=format.Date(lubridate::dmy(bop2018$time),"%Y-%m-%dT00:00:00.000Z")
+# 
+# Data=unique(rbind(Data,bop2018))
+# rm(bop2018)
 
 
 

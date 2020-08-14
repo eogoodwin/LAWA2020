@@ -11,7 +11,7 @@ Measurements <- read.table("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Metadata/Tr
   filter(Agency==agency)%>%dplyr::select(CallName)%>%unname%>%unlist
 Measurements=c(Measurements,'WQ Sample')
 
-Measurements[Measurements=="Clarity (Black Disc Field)"] <- "Clarity (Black Disc, Field)"
+Measurements[Measurements=="Clarity (Black Disc Field)"] <- "Black%20Disc%20(Field)%20[Clarity%20(Black%20Disc,%20Field)]"#"Clarity (Black Disc, Field)"
 
 siteTable=loadLatestSiteTableRiver()
 sites = unique(siteTable$CouncilSiteID[siteTable$Agency==agency])
@@ -68,7 +68,7 @@ for(i in 1:length(sites)){
                     "&From=2006-01-01",
                     "&To=2020-01-01")
       url <- URLencode(url)
-      xmlfile <- ldWQ(url,agency)
+      xmlfile <- ldWQ(url,agency,method='wininet')
       if(!is.null(xmlfile)){
         DataType <- sapply(getNodeSet(doc=xmlfile, "//DataType"), xmlValue)
         # print(DataType)
@@ -94,7 +94,7 @@ for(i in 1:length(sites)){
 }
 
 
-
+Data$Measurement[Data$Measurement=="Black%20Disc%20(Field)%20[Clarity%20(Black%20Disc,%20Field)]"] <- "Clarity (Black Disc Field)"
 
 con <- xmlOutputDOM("Hilltop")
 con$addTag("Agency", "ES")

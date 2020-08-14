@@ -48,7 +48,8 @@ gdc,pH (Field),PH
 gdc,Nitrogen Total,TN
 gdc,Total Oxidised Nitrogen,TON
 gdc,Total Phosphorus,TP
-gdc,Turbidity (Lab),TURB
+gdc,Turbidity (Lab - NTU),TURB
+gdc,Turbidity (Lab - FNU),TURBFNU
 ,,
 gwrc,Ammoniacal Nitrogen,NH4
 gwrc,Black Disc,BDISC
@@ -68,7 +69,6 @@ hbrc,Nitrate + Nitrite Nitrogen,TON
 hbrc,pH (Field),PH
 hbrc,Total Nitrogen,TN
 hbrc,Total Phosphorus,TP
-hbrc,Total Phosphorus[Total Phosphorus],TP
 hbrc,Turbidity (Field),TURB
 hbrc,Turbidity (Lab),TURB
 hbrc,Turbidity FNU (Lab),TURBFNU

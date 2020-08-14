@@ -4,7 +4,7 @@ library(tidyverse)
 library(parallel)
 library(doParallel)
 source('H:/ericg/16666LAWA/LAWA2020/Scripts/LAWAFunctions.R')
-suppressWarnings(try(dir.create(paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Audit/",format(Sys.Date(),"%Y-%m-%d")))))
+dir.create(paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Audit/", format(Sys.Date(),"%Y-%m-%d")),showWarnings = F)
 StartYear5 <- lubridate::isoyear(Sys.Date())-5  #2014
 EndYear <- lubridate::isoyear(Sys.Date())-1    #2018
 

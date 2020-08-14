@@ -1,52 +1,31 @@
 #Groudnwater state analysis
 rm(list=ls())
 library(tidyverse)
-source('H:/ericg/16666LAWA/LAWA2019/Scripts/LAWAFunctions.R')
-EndYear <- 2018#year(Sys.Date())-1
+source('H:/ericg/16666LAWA/LAWA2020/Scripts/LAWAFunctions.R')
+EndYear <- 2019#year(Sys.Date())-1
 startYear5 <- EndYear - 5+1
 startYear10 <- EndYear - 10+1
 startYear15 <- EndYear - 15+1
 plotto=F
 applyDataAbundanceFilters=F
-# GWdata = read.csv('h:/ericg/16666LAWA/LAWA2019/GW/Data/2019-09-10/MfEExport_20190902.csv',stringsAsFactors = F)
-# GWdata = readxl::read_xlsx("H:/ericg/16666LAWA/LAWA2019/GW/Data/2019-09-10/GWQImport_20190902.xlsx",sheet="TS Readings")%>%as.data.frame
-# GWdata = readxl::read_xlsx("H:/ericg/16666LAWA/LAWA2019/GW/Data/2019-10-18/MfEExport_20191016.xlsx",
-#                            sheet="Groundwater Details",guess_max = 50000)%>%as.data.frame
-# GWdata = readxl::read_xlsx("H:/ericg/16666LAWA/LAWA2019/GW/Data/2019-10-24/MfEExport_20191024.xlsx",
-#                            sheet="Groundwater Details",guess_max = 50000)%>%as.data.frame
-# GWdataold = readxl::read_xlsx("H:/ericg/16666LAWA/LAWA2019/GW/Data/2019-10-31/MfEExport_20191031.xlsx",
-#                               sheet="Groundwater Details",guess_max = 50000)%>%as.data.frame  #248011
-# GWdata = readxl::read_xlsx("H:/ericg/16666LAWA/LAWA2019/GW/Data/2019-11-07/MfEExport_20191106.xlsx",
-#                            sheet="Groundwater Details",guess_max = 50000)%>%as.data.frame
-#215061 of 26
-# GWdata = readxl::read_xlsx("H:/ericg/16666LAWA/LAWA2019/GW/Data/2019-11-14/MfEExport_20191113.xlsx",
-#                            sheet="Groundwater Details",guess_max = 50000)%>%as.data.frame
-#212607
-# GWdata = readxl::read_xlsx("H:/ericg/16666LAWA/LAWA2019/GW/Data/2019-11-22/GWExport-22-11-2019.xlsx",
-#                            sheet="Sheet1",guess_max = 50000)%>%as.data.frame
-#226406 of 17
-# GWdata = readxl::read_xlsx("H:/ericg/16666LAWA/LAWA2019/GW/Data/2019-11-25/GWExport-25-11-2019.xlsx",
-#                            sheet="Sheet1",guess_max = 50000)%>%as.data.frame
-#226379 of 17
-# GWdata = readxl::read_xlsx("H:/ericg/16666LAWA/LAWA2019/GW/Data/2020-03-06/GWExport-06-03-2020.xlsx",
-#                            sheet="Sheet1",guess_max = 50000)%>%as.data.frame
-#229001 of 17
-# GWdata = readxl::read_xlsx("H:/ericg/16666LAWA/LAWA2019/GW/Data/2020-03-13/GWExport-13-03-2020.xlsx",
+
+dir.create(paste0("H:/ericg/16666LAWA/LAWA2020/Groundwater/Data/", format(Sys.Date(),"%Y-%m-%d")),showWarnings = F)
+
+# GWdata = readxl::read_xlsx("H:/ericg/16666LAWA/LAWA2019/GW/Data/2020-03-27/GWExport-27-03-2020.xlsx",
 #                            sheet=1,guess_max = 50000)%>%as.data.frame
-#229262 of 17
-# GWdata = readxl::read_xlsx("H:/ericg/16666LAWA/LAWA2019/GW/Data/2020-03-20/GWExport-19-03-2020.xlsx",
-#                            sheet=1,guess_max = 50000)%>%as.data.frame
-#229114 of 17
-GWdata = readxl::read_xlsx("H:/ericg/16666LAWA/LAWA2019/GW/Data/2020-03-27/GWExport-27-03-2020.xlsx",
-                           sheet=1,guess_max = 50000)%>%as.data.frame
 #229086 of 17
+GWdata = readxl::read_xlsx(paste0("C:/Users/ericg/Otago Regional Council/Abi Loughnan - LAWA Annual Water Refresh 2020/",
+                                  "Groundwater Quality/GWExport-14-08-2020.xlsx"),
+                           sheet=1,guess_max = 50000)%>%as.data.frame
+#206482 of 17 4-8-20
+#234751 of 17 10-8-20
+#254451  14-8-20
 
-
-#
 #6/3/20
 #CHeck BOPRC for censored ecoli
 GWdata%>%filter(Source=="Bay of Plenty")%>%grepl(pattern = '<',x = .$`Result-prefix`)%>%sum
 #BOP censoring indicated in the result-prefix column
+
 #Check WEstCoast ecolie censoring
 GWdata%>%filter(Source=="West Coast",Variable_aggregated=="E.coli")%>%
   filter(grepl(pattern = '<',x = .$`Result-prefix`))%>%head
@@ -60,7 +39,9 @@ GWdata <- GWdata%>%mutate(LawaSiteID=`LAWA_ID`,
                           # Date = `Date`,
                           Value=`Result-edited`,
                           siteMeas=paste0(LAWA_ID,'.',Variable_aggregated))
-#229086 of 22
+#206482 of 22 4-8-20
+#234751 of 22 10-8-20
+#254451        14-8-20
 
 #Some LawaSiteIDs went by two different names.  Often they were similarity.
 #This finds the commonality and uses that
@@ -73,6 +54,11 @@ GWdata <- GWdata%>%mutate(LawaSiteID=`LAWA_ID`,
 
 # GWdata <- GWdata%>%select(-`Site Id`,-`Monitoring Site Id`)%>%distinct
 
+noActualData = which(is.na(GWdata$Site_ID)&is.na(GWdata$`Result-raw`)&is.na(GWdata$Date))
+if(length(noActualData)>0){
+  GWdata <- GWdata[-noActualData,]
+}
+rm(noActualData) #254431
 GWdata <- GWdata%>%distinct
 #214254 of 31 11-7
 #212401 of 31 11-14
@@ -81,6 +67,9 @@ GWdata <- GWdata%>%distinct
 #228933 of 22 13-3-2020
 #229104 of 22 20-3-20
 #229050 of 22 27-3-20
+#206382 of 22 04/08/20
+#234621 of 22 10-8-20
+#254315     14-8-20
 
 GWdata$Value[which(GWdata$`Result-prefix`=='<')] <- GWdata$`Result-edited`[which(GWdata$`Result-prefix`=='<')]*0.5
 GWdata$Value[which(GWdata$`Result-prefix`=='>')] <- GWdata$`Result-edited`[which(GWdata$`Result-prefix`=='>')]*1.1
@@ -103,19 +92,6 @@ if(plotto){
   table(GWdata$Region,GWdata$Measurement)
 }
 
-noData = which(is.na(GWdata$Date)&is.na(GWdata$`Result-raw`))
-if(length(noData)>0){
-  GWdata <- GWdata[-noData,]
-}
-rm(noData)
-#208767 of 33 11-7
-#206960 of 33 11-14
-#220201 of 24 11-22
-#220465 of 24 11-25
-#223521 of 24 6-3-2020
-#223836 of 24 13-3-20
-#224021 of 24 20-3-20
-#224046 of 24 27-3-20
 
 #Conductivity is in different units ####
 table(GWdata$Variable_units[GWdata$Variable_aggregated=="Electrical conductivity/salinity"])
@@ -136,7 +112,7 @@ these = which(GWdata$Variable_units=='mS/m')
 GWdata$Variable_units[these] <- 'µS/cm'
 GWdata$Value[these] = GWdata$Value[these]*1000/100
 
-these = which(GWdata$Variable_units%in%c('mS/m @25 deg C','mS/m @25°C','mS/m@20C'))
+these = which(GWdata$Variable_units%in%c('mS/m @25 deg C','mS/m @25°C','ms/m@25C','mS/m@20C'))
 GWdata$Variable_units[these] <- 'µS/cm'
 GWdata$Value[these] = GWdata$Value[these]*1000/100
 
@@ -144,14 +120,16 @@ with(GWdata[GWdata$Variable_aggregated=="Electrical conductivity/salinity"&GWdat
      plot(as.factor(Variable_units),Value,log='y',las=2))
 mtext(side = 1,text='µS/cm')
 
+
+
 #FreqCheck expects a one called "Date" ####
 GWdata$myDate <- as.Date(as.character(GWdata$Date))
 GWdata <- GetMoreDateInfo(GWdata)
 GWdata$monYear = format(GWdata$myDate,"%b-%Y")
 GWdata$quYear = paste0(quarters(GWdata$myDate),'-',format(GWdata$myDate,'%Y'))
 
-write.csv(GWdata,'h:/ericg/16666LAWA/LAWA2019/GW/Data/GWdata.csv',row.names=F)
-# GWdata = read.csv('h:/ericg/16666LAWA/LAWA2019/GW/Data/GWdata.csv',stringsAsFactors=F,check.names = F)
+write.csv(GWdata,paste0('h:/ericg/16666LAWA/LAWA2020/Groundwater/Data/',format(Sys.Date(),'%Y-%m-%d'),'GWdata.csv'),row.names=F)
+# GWdata = read.csv('h:/ericg/16666LAWA/LAWA2020/Groundwater/Data/GWdata.csv',stringsAsFactors=F,check.names = F)
 
 
 
@@ -185,6 +163,10 @@ table(freqs)
 #        32       180       3917   03-20-2020
 #        35        180      3994   03-27-2020
 #        35        180      3993   04-23-2020
+#        38       130       4151   04/08/2020
+#        43       130       4880    10/8/20
+#        43       134       5229    14-8-20
+
 GWdataRelevantVariables$Frequency=freqs[GWdataRelevantVariables$siteMeas]  
 rm(freqs)
 
@@ -225,11 +207,11 @@ GWmedians$censMedian[GWmedians$censoredPropn>=0.5 & GWmedians$CenType=='>'] <-
 GWmedians$EcoliDetect=NA
 GWmedians$EcoliDetect[which(GWmedians$Measurement=="E.coli")] <- "1"  #Detect
 GWmedians$EcoliDetect[which(GWmedians$Measurement=="E.coli"&(GWmedians$censoredPropn>0.5|GWmedians$median==0|is.na(GWmedians$median)))] <- "2"  #Non-detect
-table(GWmedians$EcoliDetect)   #81 545
+table(GWmedians$EcoliDetect)   #104 667
 GWmedians$EcoliDetectAtAll=NA
 GWmedians$EcoliDetectAtAll[which(GWmedians$Measurement=="E.coli")] <- "1"  #Detect
 GWmedians$EcoliDetectAtAll[which(GWmedians$Measurement=="E.coli"&(GWmedians$censoredPropn==1|GWmedians$median==0|is.na(GWmedians$median)))] <- "2"  #Non-detect
-table(GWmedians$EcoliDetectAtAll) #357 269
+table(GWmedians$EcoliDetectAtAll) #376 395
 
 table(GWmedians$EcoliDetect,GWmedians$EcoliDetectAtAll)
 
@@ -243,6 +225,10 @@ table(GWmedians$EcoliDetect,GWmedians$EcoliDetectAtAll)
 #4208 of 13 03-20-20  Added ecoliDetect
 #4209 of 15 03-27-20
 #4208 of 16 04-23-2020 added ecoliDetectAtAll
+#4319 of 16 04/08/2020
+#5053 of 16 10/8/20
+#5473       14/8/20
+
 
 GWmedians$meas = factor(GWmedians$Measurement,labels=c("NH4","Cl","DRP","ECOLI","NaCl","NO3"))
 
@@ -427,6 +413,9 @@ GWmedians <- GWmedians%>%filter(!Exclude)
 #4208          03-20-20
 #4209          03-27-20
 #4208          04-23-20
+#4319          04/08/2020
+#5053         10/8/20
+#5476
 
 if(plotto){
   table(GWmedians$count)
@@ -475,19 +464,21 @@ if(plotto){
   GWmedians$Source = GWdata$Source[match(GWmedians$LawaSiteID,GWdata$LawaSiteID)]
 #Westy coast couldnt get us censor limits, so dont publish their state
 # if(Sys.Date()=="2020-03-20"){
-  WCEc=which(GWmedians$Source=="West Coast" & GWmedians$Measurement=="E.coli")
-  GWmedians$median[WCEc]=NA
-  GWmedians$EcoliDetect[WCEc]=NA
-  GWmedians$EcoliDetectAtAll[WCEc]=NA
-  GWmedians$censoredPropn[WCEc]=NA
-  GWmedians$censoredCount[WCEc]=NA
-  rm(WCEc)
+  # WCEc=which(GWmedians$Source=="West Coast" & GWmedians$Measurement=="E.coli")
+  # GWmedians$median[WCEc]=NA
+  # GWmedians$EcoliDetect[WCEc]=NA
+  # GWmedians$EcoliDetectAtAll[WCEc]=NA
+  # GWmedians$censoredPropn[WCEc]=NA
+  # GWmedians$censoredCount[WCEc]=NA
+  # rm(WCEc)
 # }
 
 
 #Export Median values
-dir.create(paste0("h:/ericg/16666LAWA/LAWA2019/GW/Analysis/",format(Sys.Date(),"%Y-%m-%d")))
-write.csv(GWmedians,file = paste0('h:/ericg/16666LAWA/LAWA2019/GW/Analysis/',format(Sys.Date(),"%Y-%m-%d"),
+dir.create(paste0("h:/ericg/16666LAWA/LAWA2020/Groundwater/Analysis/",format(Sys.Date(),"%Y-%m-%d")))
+write.csv(GWmedians,file = paste0('h:/ericg/16666LAWA/LAWA2020/Groundwater/Analysis/',format(Sys.Date(),"%Y-%m-%d"),
+                                  '/ITEGWState',format(Sys.time(),"%d%b%Y"),'.csv'),row.names = F)
+write.csv(GWmedians,file = paste0("c:/Users/ericg/Otago Regional Council/Abi Loughnan - LAWA Annual Water Refresh 2020/Groundwater Quality/EffectDelivery/",
                                   '/ITEGWState',format(Sys.time(),"%d%b%Y"),'.csv'),row.names = F)
 rm(GWdataRelevantVariables)
 if(exists('GWdataReducedTemporalResolution')){rm(GWdataReducedTemporalResolution)}
@@ -504,6 +495,7 @@ library(doParallel)
 
 workers <- makeCluster(2)
 registerDoParallel(workers)
+startTime=Sys.time()
 clusterCall(workers,function(){
   library(magrittr)
   library(plyr)
@@ -525,23 +517,26 @@ foreach(py = c(10,15),.combine=rbind,.errorhandling="stop")%dopar%{
 }->GWtrends
 stopCluster(workers)
 rm(workers)
-
+Sys.time()-startTime           #2.1 mins
 #8592 of 39  11-11
 #8382 of 39  14-11
 #8478 of 39  22-11
 #8836 of 39  25-11
 #8886 of 39  13-03-2020
 #8888 of 39  27-03-2020
+#9070       04/08/20
+#10542      10/8/20
+#11436   14-8-20
 
 GWtrends$Source = GWdata$Source[match(GWtrends$LawaSiteID,GWdata$LawaSiteID)]
 #Westy coast couldnt get us censor limits, so dont publish their state
 # if(Sys.Date()=="2020-03-20"){
-WCEc=which(GWtrends$Source=="West Coast" & GWtrends$Measurement=="E.coli")
-GWtrends[WCEc,match(c("KWstat","pvalue",
-"nObs","S","VarS","D","tau","Z","p","MKProbability","AnalysisNote","prop.censored",
-"prop.unique","no.censorlevels","Median","Sen_VarS","AnnualSenSlope","Intercept","Lci","Uci","Sen_Probability",
-"Probabilitymax","Probabilitymin","Percent.annual.change","standard","ConfCat"),names(GWtrends))]=NA
-rm(WCEc)
+# WCEc=which(GWtrends$Source=="West Coast" & GWtrends$Measurement=="E.coli")
+# GWtrends[WCEc,match(c("KWstat","pvalue",
+# "nObs","S","VarS","D","tau","Z","p","MKProbability","AnalysisNote","prop.censored",
+# "prop.unique","no.censorlevels","Median","Sen_VarS","AnnualSenSlope","Intercept","Lci","Uci","Sen_Probability",
+# "Probabilitymax","Probabilitymin","Percent.annual.change","standard","ConfCat"),names(GWtrends))]=NA
+# rm(WCEc)
 # }
 
 
@@ -559,6 +554,10 @@ fGWt = GWtrends%>%filter(!grepl('^unassess',GWtrends$frequency)&!grepl('^Insuffi
 # 2572 of 41  11-25
 # 2585 of 31  03-13-2020
 # 2560 of 31  03-27-2020
+# 1537 of 41  04/08/2020
+# 1615 of 41  10/8/20
+# 1815
+
 
 #    nitrate nitrogen, chloride, DRP, electrical conductivity and E. coli.
 # fGWt = fGWt%>%filter(Measurement %in% c("Nitrate nitrogen","Chloride","Dissolved reactive phosphorus",
@@ -589,11 +588,15 @@ if(plotto){
 }
 
 #Export Trend values
-write.csv(GWtrends,file = paste0('h:/ericg/16666LAWA/LAWA2019/GW/Analysis/',format(Sys.Date(),"%Y-%m-%d"),
+write.csv(GWtrends,file = paste0('h:/ericg/16666LAWA/LAWA2020/Groundwater/Analysis/',format(Sys.Date(),"%Y-%m-%d"),
                                  '/ITEGWTrend',format(Sys.time(),"%d%b%Y"),'.csv'),row.names = F)
-write.csv(fGWt,file = paste0('h:/ericg/16666LAWA/LAWA2019/GW/Analysis/',format(Sys.Date(),"%Y-%m-%d"),
+write.csv(fGWt,file = paste0('h:/ericg/16666LAWA/LAWA2020/Groundwater/Analysis/',format(Sys.Date(),"%Y-%m-%d"),
                              '/ITEGWTrendSuccess',format(Sys.time(),"%d%b%Y"),'.csv'),row.names = F)
 
+write.csv(GWtrends,file=paste0("c:/Users/ericg/Otago Regional Council/Abi Loughnan - LAWA Annual Water Refresh 2020/Groundwater Quality/EffectDelivery/",
+                               "ITEGWTrend",format(Sys.time(),"%d%b%Y"),'.csv'),row.names = F)
+write.csv(fGWt,file = paste0("c:/Users/ericg/Otago Regional Council/Abi Loughnan - LAWA Annual Water Refresh 2020/Groundwater Quality/EffectDelivery/",
+                             '/ITEGWTrendSuccess',format(Sys.time(),"%d%b%Y"),'.csv'),row.names = F)
 
 # 
 # #Put the state on the trend?

@@ -212,7 +212,7 @@ foreach(h = 1:length(urls$URL),.combine = rbind,.errorhandling = "stop")%dopar%{
 }->siteTable
 stopCluster(workers)
 rm(workers)
-Sys.time()-startTime  #1.3 mins
+Sys.time()-startTime  #11s
 
 siteTable$SiteID=as.character(siteTable$SiteID)
 siteTable$LawaSiteID=as.character(siteTable$LawaSiteID)
@@ -415,14 +415,20 @@ rm(lowland)
 
 siteTable$Agency=tolower(siteTable$Agency)
 
-if(0){  #actually if you need to pull sites in from an old WFS sesh, like if one of them doesn respond
+agencies=c('ac','boprc','ecan','es','gdc','gwrc','hbrc','hrc','mdc','ncc','nrc','orc','tdc','trc','wcrc','wrc')
+if(!all(agencies%in%unique(siteTable$Agency))){  #actually if you need to pull sites in from an old WFS sesh, like if one of them doesn respond
   oldsiteTable = read.csv("H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Data/2020-07-29/SiteTable_Macro29Jul20.csv",stringsAsFactors = F)
-  hrcs=oldsiteTable%>%filter(Agency=='hrc')
-  siteTable = rbind(siteTable,hrcs)
-  rm(oldsiteTable,hrcs)
+  missingCouncils = agencies[!agencies%in%unique(siteTable$Agency)]
+  oldsiteTable=oldsiteTable%>%filter(Agency%in%missingCouncils)
+  if(dim(oldsiteTable)[1]>0){
+    siteTable = rbind(siteTable,oldsiteTable)
+  }
+  rm(oldsiteTable)
 }
 
 # siteTable$CouncilSiteID = gsub(pattern = 'Hedgehope Confluence$',replacement = "Hedgehope Confluence ",x = siteTable$CouncilSiteID)
+
+siteTable$LawaSiteID <- gsub(pattern = ' *- *',replacement = '-',x = siteTable$LawaSiteID)
 
 
 write.csv(x = siteTable,file = paste0("H:/ericg/16666LAWA/LAWA2020/Macroinvertebrates/data/",
@@ -449,26 +455,25 @@ AgencyRep=AgencyRep[,-2]
 
 rm(MacroWFSsiteFiles)
 write.csv(AgencyRep,'h:/ericg/16666LAWA/LAWA2020/Metadata/AgencyRepMacroWFS.csv',row.names=F)
+#    agency 23Jun20 25Jun20 03Jul20 09Jul20 16Jul20 24Jul20 29Jul20 31Jul20 07Aug20 14Aug20
+# 1      ac       0       0       0       0       0      61      59      57      64      60
+# 2   boprc     129     129     129     134     134     134     134     134     134     134
+# 3    ecan     134     134     134     134     134     134     134     134     134     134
+# 4      es      87      87      87      87      87      87      87      87      87      87
+# 5     gdc      80      80      80      80      80      80      80      80      80      80
+# 6    gwrc      53      53      53      53      53      53      53      53      53      53
+# 7    hbrc      71      71      83      83      83      82      80      80      80      81
+# 8     hrc      81      81      81      81      81      81      89      89      89      89
+# 9     mdc      31      31      31      31      31      31      31      31      31      31
+# 10    ncc      26      26      26      26      26      26      26      26      26      26
+# 11   niwa       0       0       0       0       0       0       0       0       0       0
+# 12    nrc      19      19      19      19      19      19      19      19      32      32
+# 13    orc      30      30      30      30      30      30      30      30      30      30
+# 14    tdc      25      25      25      25      25      25      25      25      25      25
+# 15    trc      60      60      60      60      60      60      60      60      60      60
+# 16   wcrc      34      34      34      34      34      34      34      34      34      34
+# 17    wrc       0      74      74      74      74      74      74      74      74      74
 
-#    agency 23Jun20 25Jun20 03Jul20 09Jul20 16Jul20 24Jul20 29Jul20
-# 1      ac       0       0       0       0       0      61      59
-# 2   boprc     129     129     129     134     134     134     134
-# 3    ecan     134     134     134     134     134     134     134
-# 4      es      87      87      87      87      87      87      87
-# 5     gdc      80      80      80      80      80      80      80
-# 6    gwrc      53      53      53      53      53      53      53
-# 7    hbrc      71      71      83      83      83      82      80
-# 8     hrc      81      81      81      81      81      81      89
-# 9     mdc      31      31      31      31      31      31      31
-# 10    ncc      26      26      26      26      26      26      26
-# 11   niwa       0       0       0       0       0       0       0
-# 12    nrc      19      19      19      19      19      19      19
-# 13    orc      30      30      30      30      30      30      30
-# 14    tdc      25      25      25      25      25      25      25
-# 15    trc      60      60      60      60      60      60      60
-# 16   wcrc      34      34      34      34      34      34      34
-# 17    wrc       0      74      74      74      74      74      74
- 
  
 # agency 07Jun19 10Jun19 28Jun19 08Jul19 11Jul19 17Jul19 22Jul19 29Jul19 02Aug19 05Aug19 12Aug19 19Aug19 26Aug19
 # 1     ac       0       0       0       0      61      61      61      61      61      61      61      61      61

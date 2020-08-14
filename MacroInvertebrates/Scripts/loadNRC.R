@@ -9,19 +9,19 @@ agency='nrc'
 
 
 df <- read.csv(paste0("H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Metadata/",agency,"Macro_config.csv"),sep=",",stringsAsFactors=FALSE)
-configsites <- subset(df,df$Type=="Site")[,2]
-configsites <- as.vector(configsites)
+# configsites <- subset(df,df$Type=="Site")[,2]
+# configsites <- as.vector(configsites)
 Measurements <- subset(df,df$Type=="Measurement")[,1]
 siteTable=loadLatestSiteTableMacro()
 sites = unique(siteTable$CouncilSiteID[siteTable$Agency==agency])
 
-
+# http://hilltop.nrc.govt.nz/SOEMacroinvertebrates.hts?Service=WFS&Request=GetFeature&TypeName=MeasurementList
 
 con <- xmlOutputDOM("Hilltop")
 con$addTag("Agency", agency)
 
 for(i in 1:length(sites)){
-  cat(sites[i],i,'out of',length(sites),'\n')
+  cat('\n',sites[i],i,'out of',length(sites))
   for(j in 1:length(Measurements)){
     url <- paste0("http://hilltop.nrc.govt.nz/SOEMacroinvertebrates.hts?service=Hilltop&request=GetData",
                  "&Site=",sites[i],
@@ -31,6 +31,7 @@ for(i in 1:length(sites)){
     url <- URLencode(url)
     xmlfile <- ldMWQ(url,agency)
     if(!is.null(xmlfile)){
+      cat('.')
       xmltop<-xmlRoot(xmlfile)
       m<-xmltop[['Measurement']]
       # Create new node to replace existing <Data /> node in m
@@ -57,9 +58,9 @@ for(i in 1:length(sites)){
               metaName  <- as.character(xmlToList(p[[n]])[1])   ## Getting the name attribute
               metaValue <- as.character(xmlToList(p[[n]])[2])   ## Getting the value attribute
               if(n==2){      # Starting at '2' and '1' is the T element for time
-                item1 <- paste(metaName,metaValue,sep=tab)
+                item1 <- paste(metaName,metaValue,sep='\t')
               } else {
-                item1 <- paste(item1,metaName,metaValue,sep=tab)
+                item1 <- paste(item1,metaName,metaValue,sep='\t')
               }
             }
           }
@@ -85,17 +86,17 @@ for(i in 1:length(sites)){
           ## Hand Greater than symbol
           if(grepl(pattern = "^\\>",x =  ansValue[N],perl = TRUE)){
             ansValue[N] <- substr(ansValue[N],2,nchar(ansValue[N]))
-            item2 <- paste("$ND",tab,">",tab,sep="")
+            item2 <- paste0("$ND\t>\t")
             
             # Handle Less than symbols  
           } else if(grepl(pattern = "^\\<",x =  ansValue[N],perl = TRUE)){
             ansValue[N] <- substr(ansValue[N],2,nchar(ansValue[N]))
-            item2 <- paste("$ND",tab,"<",tab,sep="")
+            item2 <- paste0("$ND\t<\t")
             
             # Handle Asterixes  
           } else if(grepl(pattern = "^\\*",x =  ansValue[N],perl = TRUE)){
             ansValue[N] <- gsub(pattern = "^\\*", replacement = "", x = ansValue[N])
-            item2 <- paste("$ND",tab,"*",tab,sep="")
+            item2 <- paste0("$ND\t*\t")
           } else{
             item2 <- ""
           }
@@ -105,7 +106,7 @@ for(i in 1:length(sites)){
             for(n in 3:xmlSize(m[['Data']][[N]])){      
               #Getting attributes and building string to put in Item 2
               attrs <- xmlAttrs(m[['Data']][[N]][[n]])  
-              item2 <- paste(item2,attrs[1],tab,attrs[2],tab,sep="")
+              item2 <- paste(item2,attrs[1],'\t',attrs[2],'\t',sep="")
             }
           }
           addChildren(DataNode[[xmlSize(DataNode)]], newXMLNode(name = "I2",item2))
@@ -121,5 +122,5 @@ for(i in 1:length(sites)){
 #saveXML(con$value(), file=paste0("H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Data/",format(Sys.Date(),"%Y-%m-%d"),"/",agency,"Macro.xml"))
 saveXML(con$value(), paste0("D:/LAWA/2020/",agency,"Macro.xml"))
 file.copy(from=paste0("D:/LAWA/2020/",agency,"Macro.xml"),
-          to=paste0("H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Data/",format(Sys.Date(),"%Y-%m-%d"),"/",agency,"Macro.xml"))
+          to=paste0("H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Data/",format(Sys.Date(),"%Y-%m-%d"),"/",agency,"Macro.xml"),overwrite = T)
 
