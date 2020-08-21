@@ -18,6 +18,7 @@ library(tidyr)
 library(parallel)
 library(doParallel)
 require(reshape2)
+library(areaplot)
 setwd("h:/ericg/16666LAWA/LAWA2020/WaterQuality/")
 source("h:/ericg/16666LAWA/LAWA2020/scripts/LAWAFunctions.R")
 source("h:/ericg/16666LAWA/LAWA2020/WaterQuality/scripts/SWQ_NOF_Functions.R")
@@ -26,6 +27,7 @@ riverSiteTable=loadLatestSiteTableRiver()
 
 ## Load NOF Bands
 NOFbandDefinitions <- read.csv("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Metadata/NOFbandDefinitions3.csv", header = TRUE, stringsAsFactors=FALSE)
+NOFbandDefinitions <- NOFbandDefinitions[,1:9]
 # Band Median.Nitrate X95th.Percentile.Nitrate Median.Ammoniacal.N Max.Ammoniacal.N E..coli Ecoli95 EcoliRec540 EcoliRec260
 # 1    A         x<=1.0                   x<=1.5             x<=0.03          x<=0.05  x<=130   <=540         x<5        x<20
 # 2    B     x<1&x<=2.4             x>1.5&x<=3.5      x>0.03&x<=0.24    x>0.05&x<=0.4  x<=130 x<=1000  x>=5&x<=10 x>=20&x<=30
@@ -46,12 +48,13 @@ if(!exists('wqdata')){
   EndYear <- lubridate::isoyear(Sys.Date())-1
   StartYear5 <- EndYear - 5 + 1
   firstYear = min(wqdYear,na.rm=T)
+  firstYear=2005
+  wqdata <- wqdata[which(wqdYear>=firstYear & wqdYear<=EndYear),]
+  # |(wqdYear>=(StartYear5-1) & wqdYear<=EndYear & wqdata$Measurement=='ECOLI')),]
   yr <- c(as.character(firstYear:EndYear),paste0(as.character(firstYear:(EndYear-4)),'to',as.character((firstYear+4):EndYear)))
   rollyrs=which(grepl('to',yr))
   nonrollyrs=which(!grepl('to',yr))
   reps <- length(yr)
-  # wqdata <- wqdata[which((wqdYear>=StartYear5 & wqdYear<=EndYear)|
-  #                          (wqdYear>=(StartYear5-1) & wqdYear<=EndYear & wqdata$Measurement=='ECOLI')),]
   rm(wqdYear)
 }
 
@@ -127,39 +130,41 @@ rm(workers)
 cat(Sys.time()-startTime)  
 #14.4 seconds June23
 #36.2 s june30, now keeping all years
-
+#44.5 aug21 all years
+#44.8 aug21 from 2005 onward
 
 # Saving the wqdataPerDateMedian table to be USED in NOF calculations. 
 # NOTE AFTER HAVING OUT-COMMENTED THE 51/52 LINE, WE'VE NOW GOT ALL YEARS, FOR THE ROLLING NOF 
 # Has six years available for ECOli if necessary
-try(dir.create(paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/", format(Sys.Date(),"%Y-%m-%d"))),silent=T)
+
 save(wqdataPerDateMedian,file=paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/",format(Sys.Date(),"%Y-%m-%d"),
                           "/wqdataPerDateMedian",StartYear5,"-",EndYear,"ec6.RData"))
-load(tail(dir(path = "h:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/",pattern='wqdataPerDateMedian',
-                                  recursive = T,full.names=T,ignore.case=T),1),verbose = T)
+# load(tail(dir(path = "h:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/",pattern='wqdataPerDateMedian',
+#                                   recursive = T,full.names=T,ignore.case=T),1),verbose = T)
+
 # Subset to just have the variables that are tested against NOF standards
 sub_swq <- wqdataPerDateMedian%>%dplyr::select(c("LawaSiteID","CouncilSiteID","Date","Measurement","Value"))%>%
   dplyr::filter(tolower(Measurement)%in%tolower(c("NH4","TON","ECOLI","PH")))%>%
-  dplyr::filter(lubridate::isoyear(Date)<2020)
-#993860 - 463433
+  dplyr::filter(lubridate::isoyear(Date)<=EndYear)
+#1097095 - 514222
 
 table(lubridate::isoyear(sub_swq$Date),sub_swq$Measurement)
 #       ECOLI   NH4    PH   TON
-# 2005  4785  4916  4277  3782
-# 2006  5331  5848  5219  4653
-# 2007  6012  6365  5802  5175
-# 2008  6654  6994  6234  5843
-# 2009  7181  7474  6993  6357
-# 2010  7113  7435  6863  6346
-# 2011  7553  7741  7403  6690
-# 2012  7807  7974  7794  7079
-# 2013  9645  8717  8841  8077
-# 2014 10184  9182  9199  8560
-# 2015 10626  9586  9692  9217
-# 2016 10921  9790  9733  9603
-# 2017 11139 10037  9786  9823
-# 2018 11108  9897  9521  9989
-# 2019  7738  6359  6338  6432
+# 2005  4841  5195  4297  3796
+# 2006  5386  6130  5241  4667
+# 2007  6272  6848  6277  5386
+# 2008  7031  7616  6859  6153
+# 2009  7654  8187  7848  6734
+# 2010  7620  8207  7737  6752
+# 2011  8067  8570  8232  7125
+# 2012  8336  9012  8759  7566
+# 2013 10157  9965  9749  8501
+# 2014 10745 10414 10171  8993
+# 2015 11205 10903 10719  9687
+# 2016 11473 11147 10770 10118
+# 2017 11755 11498 10885 10406
+# 2018 11548 11442 10431 10440
+# 2019 11430 11322  9792 10155
 
 #+++++++++++++++++++++++++++++ Ammonia adjustment for pH++++++++++++++++++++++++++++++++++++
 adjnh4="H:/ericg/16666LAWA/LAWA2020/WaterQuality/metadata/NOFAmmoniaAdjustment.csv"
@@ -385,6 +390,7 @@ rm(workers)
 cat(Sys.time()-startTime)  
 #6.5 seconds 23June
 #23.4s 2 July rolling medians
+#25s aug21
 
 #These contain the best case out of these scorings, the worst of which contributes.
 suppressWarnings(cnEc_Band <- sapply(NOFSummaryTable$EcoliMed_Band,FUN=function(x){min(unlist(strsplit(x,split = '')))}))
@@ -417,7 +423,11 @@ NOFSummaryTable <- merge(NOFSummaryTable, riverSiteTable)
 write.csv(NOFSummaryTable%>%filter(grepl(pattern = 'to',x = Year)),
           file = paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d"),
                         "/NOFSummaryTable_Rolling.csv"),row.names=F)
+# ************
+# Note this is not the full summary table - only rolling years
 # NOFSummaryTable <- read.csv(tail(dir(path="h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",pattern="NOFSummaryTable",recursive = T,full.names = T,ignore.case = T),1),stringsAsFactors = F)
+# ************
+
 NOFSummaryTable$SWQAltitude=pseudo.titlecase(NOFSummaryTable$SWQAltitude)
 NOFSummaryTable$SWQLanduse=pseudo.titlecase(NOFSummaryTable$SWQLanduse)
 
@@ -428,7 +438,7 @@ RiverNOF <-
   NOFSummaryTable%>%
   dplyr::filter(grepl(pattern = 'to',x = Year))%>%
   #And now we're not doing the nitrate ones!  Because, toxicity!
-  dplyr::select(-NitrateMed,-NitrateMed_Band,-Nitrate95,-Nitrate95_Band,-Nitrate_Toxicity_Band,-NitrateAnalysisNote)%>%
+  # dplyr::select(-NitrateMed,-NitrateMed_Band,-Nitrate95,-Nitrate95_Band,-Nitrate_Toxicity_Band,-NitrateAnalysisNote)%>%
   dplyr::rename(LAWAID=LawaSiteID,
                 SiteName=CouncilSiteID,
                 Year=Year)%>%
@@ -448,103 +458,528 @@ write.csv(RiverNOF,
                       "/ITERiverNOF",format(Sys.time(),"%d%b%Y"),".csv"),row.names=F)
 rm(RiverNOF)
 
+NOFSummaryTable <- NOFSummaryTable%>%filter(grepl('to',Year,ignore.case=T))
 
 
-# 
-# 
-# write.csv(NOFSummaryTableOverall, file = paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",
-#                                                format(Sys.Date(),"%Y-%m-%d"),"/NOFSummaryTable_Overall.csv"),row.names=F)
-# rm(NOFSummaryTableOverall)
-# 
-# write.csv(NOFSummaryTableLong, file = paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",
-#                                              format(Sys.Date(),"%Y-%m-%d"),"/NOFSummaryTableLong.csv"),row.names=F)
-# 
-# write.csv(NOFSummaryTableLongOverall, file = paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",
-#                                                    format(Sys.Date(),"%Y-%m-%d"),"/NOF_STATE_",EndYear,".csv"),row.names=F)
-# 
-# #Round them off.  For web display?
-# NOFRound <- NOFSummaryTableLongOverall
-# NOFRound$variable <- as.character(NOFRound$variable)
-# 
-# variables<-as.character(unique(NOFSummaryTableLongOverall$variable))
-# variables <- variables[order(variables)]
-# # [1] "Ammonia_Toxicity_Band"   "AmmoniaAnalysisNote"     "E_coli_Median_Band"             "E_coli_Median"           "E_coli_Period"          
-# # [6] "E_coli95"                "E_coli95_Band"           "E_coliAnalysisNote"      "E_coliRecHealth260"      "E_coliRecHealth260_Band"
-# # [11] "E_coliRecHealth540"      "E_coliRecHealth540_Band" "E_coliSummaryband"       "Ammoniacal95"          "Ammoniacal95_Band"    
-# # [16] "AmmoniacalMed_Band"     "NitrateMed_Band"        "AmmoniacalMed"       "NitrateMed"          "Nitrate_Toxicity_Band"  
-# # [21] "NitrateAnalysisNote"     "Nitrate95"             "Nitrate95_Band"   
-# 
-# # Decimal places for variables
-# dp <- rep(NA,length(variables))
-# dp[variables%in%c("E_coli_Median", "E_coli95", "E_coliRecHealth260", "E_coliRecHealth540")] <- 0
-# dp[variables%in%c("Ammoniacal95", "AmmoniacalMed", "NitrateMed", "Nitrate95")] <- 4
-# 
-# MeasurementInvolved <- variables
-# MeasurementInvolved <- gsub(pattern = "Band",replacement = "",x = MeasurementInvolved)
-# MeasurementInvolved <- gsub(pattern = "band",replacement = "",x = MeasurementInvolved)
-# MeasurementInvolved <- gsub(pattern = "AnalysisNote",replacement = "",x = MeasurementInvolved)
-# MeasurementInvolved <- gsub(pattern = "_Period",replacement = "",x = MeasurementInvolved)
-# MeasurementInvolved <- gsub(pattern = "_$",replacement = "",x = MeasurementInvolved)
-# MeasurementInvolved <- gsub(pattern = "Med_",replacement = "Median_",x = MeasurementInvolved)
-# MeasurementInvolved <- gsub(pattern = "E_coli_Median$",replacement = "E_coliMedian",x = MeasurementInvolved)
-# 
-# desc = rep('value',length(variables))
-# desc[grepl(variables,pattern = 'band',ignore.case = T)] <- 'band'
-# desc[grepl(variables,pattern = 'Note',ignore.case = T)] <- 'note'
-# desc[grepl(variables,pattern = 'Period',ignore.case = T)] <- 'yearsUsed'
-# # desc[variables%in%c("Agency", "SWQAltitude","Landcover","SiteID","CATCH_LBL","CatchID",
-# #                     "CatchType","Comment","LAWA_CATCH","Region","SOE_FW_RIV",
-# #                     "SWQFrequencyAll","SWQFrequencyLast5","SWQuality","TermReach")] <- 'meta'
-# 
-# dfp <- data.frame(variables,MeasurementInvolved,desc,dp,stringsAsFactors=FALSE,row.names=NULL)
-# NOFRound <- merge(NOFRound,dfp,by.x="variable",by.y="variables",all=TRUE)
-# 
-# rm(variables,MeasurementInvolved,desc,dp)
-# # POST PROCESSING NOF RESULTS
-# # Round values to appropriate DP's
-# 
-# # Note that for rounding off a 5, the IEC 60559 standard is expected to be used, ‘go to the even digit’. Therefore round(0.5) is 0 and round(-1.5) is -2
-# # This is not the desired behaviour here. It is expected that 0.5 rounds to 1, 2.5 rounds, to 3 and so on.
-# # Therefore for all even values followed by exactly .5 needs to have a small number added (like 0.00001) to get them rounding in the right direction (unless there is 
-# # a flag in the function that provides for this behaviour), or to redefine the round function. 
-# # (see http://theobligatescientist.blogspot.co.nz/2010/02/r-i-still-love-you-but-i-hate-your.html)
-# 
-# # As all values are positive, we'll add a small number, related to the degree of rounding required.
-# # If I was smarter, I would redefine the round function
-# 
-# 
-# for(i in 1:length(dfp$variables)){
-#   if(!is.na(dfp$dp[i])){
-#     NOFRound$value[NOFRound$variable==dfp$variables[i]] <- as.character(as.numeric(NOFRound$value[NOFRound$variable==dfp$variables[i]]) + 0.000001)
-#     NOFRound$value[NOFRound$variable==dfp$variables[i]] <- as.character(round(as.numeric(NOFRound$value[NOFRound$variable==dfp$variables[i]]),digits = dfp$dp[i]))
-#   }
-# }
-# 
-# 
-# NOFRound$value[is.na(NOFRound$value)] <- "NA"
-# NOFRound <- NOFRound[order(NOFRound$LawaSiteID,NOFRound$MeasurementInvolved,NOFRound$desc),]
-# write.csv(NOFRound, file = paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",
-#                                   format(Sys.Date(),"%Y-%m-%d"),"/NOF_STATE_",EndYear,"_Rounded_NAs.csv"),row.names=F)
-# 
-# 
-# 
-# # Transform (tidyr::spread) data in NOFRound to the following form to supply to IT Effect
-# # LawaSiteID,CouncilSiteID,Year,Measurement,value,Band
-# # ARC-00001,44603,Overall,Ammoniacal95N,NA,NA
-# # ARC-00001,44603,Overall,AmmoniacalMed,NA,NA
-# # ARC-00001,44603,Overall,Median_Ecoli,28,A
-# # ARC-00001,44603,Overall,NitrateMed,0.0079,A
-# 
-# NOF_value <- NOFRound%>%filter(desc=="value")%>%select("LawaSiteID","CouncilSiteID","SiteID","Agency","Year","variable","value","MeasurementInvolved")
-# names(NOF_value) <- c("LawaSiteID","CouncilSiteID","SiteID","Agency","Year","Measurement","Value",'MeasurementInvolved')
-# NOF_Band  <- NOFRound%>%filter(desc=="band")%>%select("LawaSiteID","CouncilSiteID","SiteID","Agency","Year","variable","value","MeasurementInvolved")
-# names(NOF_Band) <- c("LawaSiteID","CouncilSiteID","SiteID","Agency","Year","BandingRule","BandScore",'MeasurementInvolved')
-# 
-# NOF_wide <- dplyr::left_join(NOF_Band,NOF_value,by = c("LawaSiteID","CouncilSiteID","SiteID","Agency", "Year", "MeasurementInvolved"))
-# NOF_wide <- unique(NOF_wide)
-# 
-# write.csv(NOF_wide, file = paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",
-#                                   format(Sys.Date(),"%Y-%m-%d"),"/RiverWQ_NOF_forITE_",
-#                                   format(Sys.time(),"%d%b%Y"),".csv"),row.names = F)
-# 
-# # NOF_wide=read.csv(tail(dir(path="h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis",pattern="RiverWQ_NOF_forITE_",recursive = T,full.names = T),1),stringsAsFactors = F)
+
+tiff(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d"),"/NOFTrendNitrateMed.tif"),
+     width = 8,height=12,units='in',res=300,compression='lzw',type='cairo')
+NitroSitesPerYear = wqdata%>%filter(Measurement=="TON")%>%filter(LawaSiteID%in%NOFSummaryTable$LawaSiteID)%>%
+  group_by(lubridate::isoyear(dmy(Date)))%>%dplyr::summarise(nsites=length(unique(LawaSiteID)))%>%ungroup
+names(NitroSitesPerYear)=c("Year","nSites")
+NOFSummaryTable$NitrateMed_BandF=factor(as.character(NOFSummaryTable$NitrateMed_Band),levels=rev(c("A","B","C","D","NA")),labels=rev(c("A","B","C","D","NA")))
+NOFSummaryTable$NitrateMed_BandF[is.na(NOFSummaryTable$NitrateMed_Band)] <- "NA"
+
+par(mfrow=c(3,1))
+NitrateEvolutionF <- NOFSummaryTable%>%
+  dplyr::select(Year,NitrateMed_BandF)%>%
+  # drop_na(NitrateMed_Band)%>%
+  mutate(Year=strFrom(Year,'to'))%>%
+  group_by(Year,NitrateMed_BandF,.drop = F)%>%
+  dplyr::summarise(count=n())%>%
+  ungroup%>%
+  pivot_wider(names_from = c("Year"),values_from = 'count')%>%arrange(desc(NitrateMed_BandF))%>%t%>%data.frame
+rnames=rownames(NitrateEvolutionF)
+names(NitrateEvolutionF)=sapply(NitrateEvolutionF[1,],as.character)
+NitrateEvolutionF=NitrateEvolutionF[-1,]%>%apply(2,as.numeric)
+rownames(NitrateEvolutionF) <- rnames[-1]
+areaplot(NitrateEvolutionF,xlab='Year',
+         col=rev(c("#aaaaaaFF","#dd1111FF","#cc7766FF","#55bb66FF","#008800FF")),
+         legend=T,args.legend=list(x='bottomleft',inset=0.05),main='Median Nitrate',ylab='Count of sites')
+lines(NitroSitesPerYear$Year[-c(1:4)],NitroSitesPerYear$nSites[-c(1:4)],lwd=2)
+text(NitroSitesPerYear$Year[5],NitroSitesPerYear$nSites[5]*0.9,"total sites available",cex=1,pos = 4)
+
+NitrateEvolution <- NOFSummaryTable%>%
+  dplyr::select(Year,NitrateMed_Band)%>%
+  drop_na(NitrateMed_Band)%>%
+  mutate(Year=strFrom(Year,'to'))%>%
+  group_by(Year,NitrateMed_Band,.drop=F)%>%
+  dplyr::summarise(count=n())%>%
+  ungroup%>%
+  group_by(Year,.drop=F)%>%
+  dplyr::mutate(tot=sum(count),prop=count/tot)%>%
+  select(-count,-tot)%>%
+  pivot_wider(names_from = c("Year"),values_from = 'prop',values_fill = list(prop=0))%>%
+  arrange((NitrateMed_Band))%>%t%>%data.frame
+rnames=rownames(NitrateEvolution)
+names(NitrateEvolution)=sapply(NitrateEvolution[1,],as.character)
+NitrateEvolution=NitrateEvolution[-1,]%>%apply(2,as.numeric)
+rownames(NitrateEvolution) <- rnames[-1]
+areaplot(NitrateEvolution,col=rev(c("#dd1111FF","#cc7766FF","#55bb66FF","#008800FF")),
+         legend=T,args.legend=list(x='bottomleft',inset=0.05),ylim=c(0,1.1),main='Median Nitrate',ylab='Proportion of sites')
+text(NitroSitesPerYear$Year[-c(1:4)],1.05,NitroSitesPerYear$nSites[-c(1:4)],lwd=2)
+
+bp=barplot(t(NitrateEvolution),col=rev(c("#dd1111FF","#cc7766FF","#55bb66FF","#008800FF")),
+           legend=T,args.legend=list(x='bottomleft',inset=0.04),ylim=c(0,1.1),main='Median Nitrate',ylab='Proportion of sites')
+text(bp,1.05,NitroSitesPerYear$nSites[-c(1:4)],lwd=2)
+if(names(dev.cur())=='tiff'){dev.off()}
+
+
+tiff(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d"),"/NOFTrendNitrate95.tif"),
+     width = 8,height=12,units='in',res=300,compression='lzw',type='cairo')
+NitroSitesPerYear = wqdata%>%filter(Measurement=="TON")%>%filter(LawaSiteID%in%NOFSummaryTable$LawaSiteID)%>%
+  group_by(lubridate::isoyear(dmy(Date)))%>%dplyr::summarise(nsites=length(unique(LawaSiteID)))%>%ungroup
+names(NitroSitesPerYear)=c("Year","nSites")
+NOFSummaryTable$Nitrate95_BandF=factor(as.character(NOFSummaryTable$Nitrate95_Band),levels=rev(c("A","B","C","D","NA")),labels=rev(c("A","B","C","D","NA")))
+NOFSummaryTable$Nitrate95_BandF[is.na(NOFSummaryTable$Nitrate95_Band)] <- "NA"
+
+par(mfrow=c(3,1))
+NitrateEvolutionF <- NOFSummaryTable%>%
+  dplyr::select(Year,Nitrate95_BandF)%>%
+  # drop_na(Nitrate95_Band)%>%
+  mutate(Year=strFrom(Year,'to'))%>%
+  group_by(Year,Nitrate95_BandF,.drop = F)%>%
+  dplyr::summarise(count=n())%>%
+  ungroup%>%
+  pivot_wider(names_from = c("Year"),values_from = 'count')%>%arrange(desc(Nitrate95_BandF))%>%t%>%data.frame
+rnames=rownames(NitrateEvolutionF)
+names(NitrateEvolutionF)=sapply(NitrateEvolutionF[1,],as.character)
+NitrateEvolutionF=NitrateEvolutionF[-1,]%>%apply(2,as.numeric)
+rownames(NitrateEvolutionF) <- rnames[-1]
+areaplot(NitrateEvolutionF,xlab='Year',
+         col=rev(c("#aaaaaaFF","#dd1111FF","#cc7766FF","#55bb66FF","#008800FF")),
+         legend=T,args.legend=list(x='bottomleft',inset=0.05),main='95th %ile Nitrate',ylab='Count of sites')
+lines(NitroSitesPerYear$Year[-c(1:4)],NitroSitesPerYear$nSites[-c(1:4)],lwd=2)
+text(NitroSitesPerYear$Year[5],NitroSitesPerYear$nSites[5]*0.9,"total sites available",cex=1,pos = 4)
+
+NitrateEvolution <- NOFSummaryTable%>%
+  dplyr::select(Year,Nitrate95_Band)%>%
+  drop_na(Nitrate95_Band)%>%
+  mutate(Year=strFrom(Year,'to'))%>%
+  group_by(Year,Nitrate95_Band,.drop=F)%>%
+  dplyr::summarise(count=n())%>%
+  ungroup%>%
+  group_by(Year,.drop=F)%>%
+  dplyr::mutate(tot=sum(count),prop=count/tot)%>%
+  select(-count,-tot)%>%
+  pivot_wider(names_from = c("Year"),values_from = 'prop',values_fill = list(prop=0))%>%
+  arrange((Nitrate95_Band))%>%t%>%data.frame
+rnames=rownames(NitrateEvolution)
+names(NitrateEvolution)=sapply(NitrateEvolution[1,],as.character)
+NitrateEvolution=NitrateEvolution[-1,]%>%apply(2,as.numeric)
+rownames(NitrateEvolution) <- rnames[-1]
+areaplot(NitrateEvolution,col=rev(c("#dd1111FF","#cc7766FF","#55bb66FF","#008800FF")),
+         legend=T,args.legend=list(x='bottomleft',inset=0.05),ylim=c(0,1.1),main='95th %ile Nitrate',ylab='Proportion of sites')
+text(NitroSitesPerYear$Year[-c(1:4)],1.05,NitroSitesPerYear$nSites[-c(1:4)],lwd=2)
+
+bp=barplot(t(NitrateEvolution),col=rev(c("#dd1111FF","#cc7766FF","#55bb66FF","#008800FF")),
+           legend=T,args.legend=list(x='bottomleft',inset=0.04),ylim=c(0,1.1),main='95th %ile Nitrate',ylab='Proportion of sites')
+text(bp,1.05,NitroSitesPerYear$nSites[-c(1:4)],lwd=2)
+if(names(dev.cur())=='tiff'){dev.off()}
+
+tiff(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d"),"/NOFTrendNitrateTox.tif"),
+     width = 8,height=12,units='in',res=300,compression='lzw',type='cairo')
+NitroSitesPerYear = wqdata%>%filter(Measurement=="TON")%>%filter(LawaSiteID%in%NOFSummaryTable$LawaSiteID)%>%
+  group_by(lubridate::isoyear(dmy(Date)))%>%dplyr::summarise(nsites=length(unique(LawaSiteID)))%>%ungroup
+names(NitroSitesPerYear)=c("Year","nSites")
+NOFSummaryTable$Nitrate_Toxicity_BandF=factor(as.character(NOFSummaryTable$Nitrate_Toxicity_Band),levels=rev(c("A","B","C","D","NA")),labels=rev(c("A","B","C","D","NA")))
+NOFSummaryTable$Nitrate_Toxicity_BandF[is.na(NOFSummaryTable$Nitrate_Toxicity_Band)] <- "NA"
+
+par(mfrow=c(3,1))
+NitrateEvolutionF <- NOFSummaryTable%>%
+  dplyr::select(Year,Nitrate_Toxicity_BandF)%>%
+  # drop_na(Nitrate_Toxicity_Band)%>%
+  mutate(Year=strFrom(Year,'to'))%>%
+  group_by(Year,Nitrate_Toxicity_BandF,.drop = F)%>%
+  dplyr::summarise(count=n())%>%
+  ungroup%>%
+  pivot_wider(names_from = c("Year"),values_from = 'count')%>%arrange(desc(Nitrate_Toxicity_BandF))%>%t%>%data.frame
+rnames=rownames(NitrateEvolutionF)
+names(NitrateEvolutionF)=sapply(NitrateEvolutionF[1,],as.character)
+NitrateEvolutionF=NitrateEvolutionF[-1,]%>%apply(2,as.numeric)
+rownames(NitrateEvolutionF) <- rnames[-1]
+areaplot(NitrateEvolutionF,xlab='Year',
+         col=rev(c("#aaaaaaFF","#dd1111FF","#cc7766FF","#55bb66FF","#008800FF")),
+         legend=T,args.legend=list(x='bottomleft',inset=0.05),main='Nitrate toxicity',ylab='Count of sites')
+lines(NitroSitesPerYear$Year[-c(1:4)],NitroSitesPerYear$nSites[-c(1:4)],lwd=2)
+text(NitroSitesPerYear$Year[5],NitroSitesPerYear$nSites[5]*0.9,"total sites available",cex=1,pos = 4)
+
+NitrateEvolution <- NOFSummaryTable%>%
+  dplyr::select(Year,Nitrate_Toxicity_Band)%>%
+  drop_na(Nitrate_Toxicity_Band)%>%
+  mutate(Year=strFrom(Year,'to'))%>%
+  group_by(Year,Nitrate_Toxicity_Band,.drop=F)%>%
+  dplyr::summarise(count=n())%>%
+  ungroup%>%
+  group_by(Year,.drop=F)%>%
+  dplyr::mutate(tot=sum(count),prop=count/tot)%>%
+  select(-count,-tot)%>%
+  pivot_wider(names_from = c("Year"),values_from = 'prop',values_fill = list(prop=0))%>%
+  arrange((Nitrate_Toxicity_Band))%>%t%>%data.frame
+rnames=rownames(NitrateEvolution)
+names(NitrateEvolution)=sapply(NitrateEvolution[1,],as.character)
+NitrateEvolution=NitrateEvolution[-1,]%>%apply(2,as.numeric)
+rownames(NitrateEvolution) <- rnames[-1]
+areaplot(NitrateEvolution,col=rev(c("#dd1111FF","#cc7766FF","#55bb66FF","#008800FF")),
+         legend=T,args.legend=list(x='bottomleft',inset=0.05),ylim=c(0,1.1),main='Nitrate toxicity',ylab='Proportion of sites')
+text(NitroSitesPerYear$Year[-c(1:4)],1.05,NitroSitesPerYear$nSites[-c(1:4)],lwd=2)
+
+bp=barplot(t(NitrateEvolution),col=rev(c("#dd1111FF","#cc7766FF","#55bb66FF","#008800FF")),
+           legend=T,args.legend=list(x='bottomleft',inset=0.04),ylim=c(0,1.1),main='Nitrate toxicity',ylab='Proportion of sites')
+text(bp,1.05,NitroSitesPerYear$nSites[-c(1:4)],lwd=2)
+if(names(dev.cur())=='tiff'){dev.off()}
+rm(NitroSitesPerYear,NitrateEvolution,NitrateEvolutionF)
+
+
+tiff(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d"),"/NOFTrendAmmoniacalMed.tif"),
+     width = 8,height=12,units='in',res=300,compression='lzw',type='cairo')
+AmmonSitesPerYear = wqdata%>%filter(Measurement=="NH4")%>%filter(LawaSiteID%in%NOFSummaryTable$LawaSiteID)%>%
+  group_by(lubridate::isoyear(dmy(Date)))%>%dplyr::summarise(nsites=length(unique(LawaSiteID)))%>%ungroup
+names(AmmonSitesPerYear)=c("Year","nSites")
+NOFSummaryTable$AmmoniacalMed_BandF=factor(as.character(NOFSummaryTable$AmmoniacalMed_Band),levels=rev(c("A","B","C","D","NA")),labels=rev(c("A","B","C","D","NA")))
+NOFSummaryTable$AmmoniacalMed_BandF[is.na(NOFSummaryTable$AmmoniacalMed_Band)] <- "NA"
+
+par(mfrow=c(3,1))
+AmmoniacalEvolutionF <- NOFSummaryTable%>%
+  dplyr::select(Year,AmmoniacalMed_BandF)%>%
+  # drop_na(AmmoniacalMed_Band)%>%
+  mutate(Year=strFrom(Year,'to'))%>%
+  group_by(Year,AmmoniacalMed_BandF,.drop = F)%>%
+  dplyr::summarise(count=n())%>%
+  ungroup%>%
+  pivot_wider(names_from = c("Year"),values_from = 'count')%>%arrange(desc(AmmoniacalMed_BandF))%>%t%>%data.frame
+rnames=rownames(AmmoniacalEvolutionF)
+names(AmmoniacalEvolutionF)=sapply(AmmoniacalEvolutionF[1,],as.character)
+AmmoniacalEvolutionF=AmmoniacalEvolutionF[-1,]%>%apply(2,as.numeric)
+rownames(AmmoniacalEvolutionF) <- rnames[-1]
+areaplot(AmmoniacalEvolutionF,xlab='Year',
+         col=rev(c("#aaaaaaFF","#dd1111FF","#cc7766FF","#55bb66FF","#008800FF")),
+         legend=T,args.legend=list(x='bottomleft',inset=0.05),main='Median Ammonia',ylab='Count of sites')
+lines(AmmonSitesPerYear$Year[-c(1:4)],AmmonSitesPerYear$nSites[-c(1:4)],lwd=2)
+text(AmmonSitesPerYear$Year[5],AmmonSitesPerYear$nSites[5]*0.9,"total sites available",cex=1,pos = 4)
+
+AmmoniacalEvolution <- NOFSummaryTable%>%
+  dplyr::select(Year,AmmoniacalMed_Band)%>%
+  drop_na(AmmoniacalMed_Band)%>%
+  mutate(Year=strFrom(Year,'to'))%>%
+  group_by(Year,AmmoniacalMed_Band,.drop=F)%>%
+  dplyr::summarise(count=n())%>%
+  ungroup%>%
+  group_by(Year,.drop=F)%>%
+  dplyr::mutate(tot=sum(count),prop=count/tot)%>%
+  select(-count,-tot)%>%
+  pivot_wider(names_from = c("Year"),values_from = 'prop',values_fill = list(prop=0))%>%
+  arrange((AmmoniacalMed_Band))%>%t%>%data.frame
+rnames=rownames(AmmoniacalEvolution)
+names(AmmoniacalEvolution)=sapply(AmmoniacalEvolution[1,],as.character)
+AmmoniacalEvolution=AmmoniacalEvolution[-1,]%>%apply(2,as.numeric)
+rownames(AmmoniacalEvolution) <- rnames[-1]
+areaplot(AmmoniacalEvolution,col=rev(c("#dd1111FF","#cc7766FF","#55bb66FF","#008800FF")),
+         legend=T,args.legend=list(x='bottomleft',inset=0.05),ylim=c(0,1.1),main='Median Ammonia',ylab='Proportion of sites')
+text(AmmonSitesPerYear$Year[-c(1:4)],1.05,AmmonSitesPerYear$nSites[-c(1:4)],lwd=2)
+
+bp=barplot(t(AmmoniacalEvolution),col=rev(c("#dd1111FF","#cc7766FF","#55bb66FF","#008800FF")),
+           legend=T,args.legend=list(x='bottomleft',inset=0.04),ylim=c(0,1.1),main='Median Ammonia',ylab='Proportion of sites')
+text(bp,1.05,AmmonSitesPerYear$nSites[-c(1:4)],lwd=2)
+if(names(dev.cur())=='tiff'){dev.off()}
+
+
+
+
+tiff(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d"),"/NOFTrendAmmoniacal95.tif"),
+     width = 8,height=12,units='in',res=300,compression='lzw',type='cairo')
+AmmonSitesPerYear = wqdata%>%filter(Measurement=="NH4")%>%filter(LawaSiteID%in%NOFSummaryTable$LawaSiteID)%>%
+  group_by(lubridate::isoyear(dmy(Date)))%>%dplyr::summarise(nsites=length(unique(LawaSiteID)))%>%ungroup
+names(AmmonSitesPerYear)=c("Year","nSites")
+NOFSummaryTable$Ammoniacal95_BandF=factor(as.character(NOFSummaryTable$Ammoniacal95_Band),levels=rev(c("A","B","C","D","NA")),labels=rev(c("A","B","C","D","NA")))
+NOFSummaryTable$Ammoniacal95_BandF[is.na(NOFSummaryTable$Ammoniacal95_Band)] <- "NA"
+
+par(mfrow=c(3,1))
+AmmoniacalEvolutionF <- NOFSummaryTable%>%
+  dplyr::select(Year,Ammoniacal95_BandF)%>%
+  # drop_na(Ammoniacal95_Band)%>%
+  mutate(Year=strFrom(Year,'to'))%>%
+  group_by(Year,Ammoniacal95_BandF,.drop = F)%>%
+  dplyr::summarise(count=n())%>%
+  ungroup%>%
+  pivot_wider(names_from = c("Year"),values_from = 'count')%>%arrange(desc(Ammoniacal95_BandF))%>%t%>%data.frame
+rnames=rownames(AmmoniacalEvolutionF)
+names(AmmoniacalEvolutionF)=sapply(AmmoniacalEvolutionF[1,],as.character)
+AmmoniacalEvolutionF=AmmoniacalEvolutionF[-1,]%>%apply(2,as.numeric)
+rownames(AmmoniacalEvolutionF) <- rnames[-1]
+areaplot(AmmoniacalEvolutionF,xlab='Year',
+         col=rev(c("#aaaaaaFF","#dd1111FF","#cc7766FF","#55bb66FF","#008800FF")),
+         legend=T,args.legend=list(x='bottomleft',inset=0.05),main='95th %ile Ammonia',ylab='Count of sites')
+lines(AmmonSitesPerYear$Year[-c(1:4)],AmmonSitesPerYear$nSites[-c(1:4)],lwd=2)
+text(AmmonSitesPerYear$Year[5],AmmonSitesPerYear$nSites[5]*0.9,"total sites available",cex=1,pos = 4)
+
+AmmoniacalEvolution <- NOFSummaryTable%>%
+  dplyr::select(Year,Ammoniacal95_Band)%>%
+  drop_na(Ammoniacal95_Band)%>%
+  mutate(Year=strFrom(Year,'to'))%>%
+  group_by(Year,Ammoniacal95_Band,.drop=F)%>%
+  dplyr::summarise(count=n())%>%
+  ungroup%>%
+  group_by(Year,.drop=F)%>%
+  dplyr::mutate(tot=sum(count),prop=count/tot)%>%
+  select(-count,-tot)%>%
+  pivot_wider(names_from = c("Year"),values_from = 'prop',values_fill = list(prop=0))%>%
+  arrange((Ammoniacal95_Band))%>%t%>%data.frame
+rnames=rownames(AmmoniacalEvolution)
+names(AmmoniacalEvolution)=sapply(AmmoniacalEvolution[1,],as.character)
+AmmoniacalEvolution=AmmoniacalEvolution[-1,]%>%apply(2,as.numeric)
+rownames(AmmoniacalEvolution) <- rnames[-1]
+areaplot(AmmoniacalEvolution,col=rev(c("#dd1111FF","#cc7766FF","#55bb66FF","#008800FF")),
+         legend=T,args.legend=list(x='bottomleft',inset=0.05),ylim=c(0,1.1),main='95th %ile Ammonia',ylab='Proportion of sites')
+text(AmmonSitesPerYear$Year[-c(1:4)],1.05,AmmonSitesPerYear$nSites[-c(1:4)],lwd=2)
+
+bp=barplot(t(AmmoniacalEvolution),col=rev(c("#dd1111FF","#cc7766FF","#55bb66FF","#008800FF")),
+           legend=T,args.legend=list(x='bottomleft',inset=0.04),ylim=c(0,1.1),main='95th %ile Ammonia',ylab='Proportion of sites')
+text(bp,1.05,AmmonSitesPerYear$nSites[-c(1:4)],lwd=2)
+if(names(dev.cur())=='tiff'){dev.off()}
+
+tiff(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d"),"/NOFTrendAmmoniacalTox.tif"),
+     width = 8,height=12,units='in',res=300,compression='lzw',type='cairo')
+AmmonSitesPerYear = wqdata%>%filter(Measurement=="NH4")%>%filter(LawaSiteID%in%NOFSummaryTable$LawaSiteID)%>%
+  group_by(lubridate::isoyear(dmy(Date)))%>%dplyr::summarise(nsites=length(unique(LawaSiteID)))%>%ungroup
+names(AmmonSitesPerYear)=c("Year","nSites")
+NOFSummaryTable$Ammonia_Toxicity_BandF=factor(as.character(NOFSummaryTable$Ammonia_Toxicity_Band),levels=rev(c("A","B","C","D","NA")),labels=rev(c("A","B","C","D","NA")))
+NOFSummaryTable$Ammonia_Toxicity_BandF[is.na(NOFSummaryTable$Ammonia_Toxicity_Band)] <- "NA"
+
+par(mfrow=c(3,1))
+AmmoniacalEvolutionF <- NOFSummaryTable%>%
+  dplyr::select(Year,Ammonia_Toxicity_BandF)%>%
+  # drop_na(Ammonia_Toxicity_Band)%>%
+  mutate(Year=strFrom(Year,'to'))%>%
+  group_by(Year,Ammonia_Toxicity_BandF,.drop = F)%>%
+  dplyr::summarise(count=n())%>%
+  ungroup%>%
+  pivot_wider(names_from = c("Year"),values_from = 'count')%>%arrange(desc(Ammonia_Toxicity_BandF))%>%t%>%data.frame
+rnames=rownames(AmmoniacalEvolutionF)
+names(AmmoniacalEvolutionF)=sapply(AmmoniacalEvolutionF[1,],as.character)
+AmmoniacalEvolutionF=AmmoniacalEvolutionF[-1,]%>%apply(2,as.numeric)
+rownames(AmmoniacalEvolutionF) <- rnames[-1]
+areaplot(AmmoniacalEvolutionF,xlab='Year',
+         col=rev(c("#aaaaaaFF","#dd1111FF","#cc7766FF","#55bb66FF","#008800FF")),
+         legend=T,args.legend=list(x='bottomleft',inset=0.05),main='Ammonia toxicity',ylab='Count of sites')
+lines(AmmonSitesPerYear$Year[-c(1:4)],AmmonSitesPerYear$nSites[-c(1:4)],lwd=2)
+text(AmmonSitesPerYear$Year[5],AmmonSitesPerYear$nSites[5]*0.9,"total sites available",cex=1,pos = 4)
+
+AmmoniacalEvolution <- NOFSummaryTable%>%
+  dplyr::select(Year,Ammonia_Toxicity_Band)%>%
+  drop_na(Ammonia_Toxicity_Band)%>%
+  mutate(Year=strFrom(Year,'to'))%>%
+  group_by(Year,Ammonia_Toxicity_Band,.drop=F)%>%
+  dplyr::summarise(count=n())%>%
+  ungroup%>%
+  group_by(Year,.drop=F)%>%
+  dplyr::mutate(tot=sum(count),prop=count/tot)%>%
+  select(-count,-tot)%>%
+  pivot_wider(names_from = c("Year"),values_from = 'prop',values_fill = list(prop=0))%>%
+  arrange((Ammonia_Toxicity_Band))%>%t%>%data.frame
+rnames=rownames(AmmoniacalEvolution)
+names(AmmoniacalEvolution)=sapply(AmmoniacalEvolution[1,],as.character)
+AmmoniacalEvolution=AmmoniacalEvolution[-1,]%>%apply(2,as.numeric)
+rownames(AmmoniacalEvolution) <- rnames[-1]
+areaplot(AmmoniacalEvolution,col=rev(c("#dd1111FF","#cc7766FF","#55bb66FF","#008800FF")),
+         legend=T,args.legend=list(x='bottomleft',inset=0.05),ylim=c(0,1.1),main='Ammonia toxicity',ylab='Proportion of sites')
+text(AmmonSitesPerYear$Year[-c(1:4)],1.05,AmmonSitesPerYear$nSites[-c(1:4)],lwd=2)
+
+bp=barplot(t(AmmoniacalEvolution),col=rev(c("#dd1111FF","#cc7766FF","#55bb66FF","#008800FF")),
+           legend=T,args.legend=list(x='bottomleft',inset=0.04),ylim=c(0,1.1),main='Ammonia toxicity',ylab='Proportion of sites')
+text(bp,1.05,AmmonSitesPerYear$nSites[-c(1:4)],lwd=2)
+if(names(dev.cur())=='tiff'){dev.off()}
+
+rm(AmmonSitesPerYear,AmmoniacalEvolution,AmmoniacalEvolutionF)
+
+
+
+
+
+tiff(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d"),"/NOFTrendEcoliMed.tif"),
+     width = 8,height=12,units='in',res=300,compression='lzw',type='cairo')
+EcoliSitesPerYear = wqdata%>%filter(Measurement=="ECOLI")%>%filter(LawaSiteID%in%NOFSummaryTable$LawaSiteID)%>%
+  group_by(lubridate::isoyear(dmy(Date)))%>%dplyr::summarise(nsites=length(unique(LawaSiteID)))%>%ungroup
+names(EcoliSitesPerYear)=c("Year","nSites")
+NOFSummaryTable$EcoliMed_BandF=factor(as.character(NOFSummaryTable$EcoliMed_Band),levels=rev(c("ABC","DE","D","NA")),labels=rev(c("ABC","DE","D","NA")))
+NOFSummaryTable$EcoliMed_BandF[is.na(NOFSummaryTable$EcoliMed_Band)] <- "NA"
+
+par(mfrow=c(3,1))
+EColiEvolutionF <- NOFSummaryTable%>%
+  dplyr::select(Year,EcoliMed_BandF)%>%
+  # drop_na(EcoliMed_Band)%>%
+  mutate(Year=strFrom(Year,'to'))%>%
+  group_by(Year,EcoliMed_BandF,.drop = F)%>%
+  dplyr::summarise(count=n())%>%
+  ungroup%>%
+  pivot_wider(names_from = c("Year"),values_from = 'count')%>%arrange(desc(EcoliMed_BandF))%>%t%>%data.frame
+rnames=rownames(EColiEvolutionF)
+names(EColiEvolutionF)=sapply(EColiEvolutionF[1,],as.character)
+EColiEvolutionF=EColiEvolutionF[-1,]%>%apply(2,as.numeric)
+rownames(EColiEvolutionF) <- rnames[-1]
+areaplot(EColiEvolutionF,xlab='Year',
+         col=rev(c("#aaaaaaFF","#dd1111FF","#55bb66FF","#008800FF")),
+         legend=T,args.legend=list(x='bottomleft',inset=0.05),main='Median E. coli',ylab='Count of sites')
+lines(EcoliSitesPerYear$Year[-c(1:4)],EcoliSitesPerYear$nSites[-c(1:4)],lwd=2)
+text(EcoliSitesPerYear$Year[5],EcoliSitesPerYear$nSites[5]*0.9,"total sites available",cex=1,pos = 4)
+
+EColiEvolution <- NOFSummaryTable%>%
+  dplyr::select(Year,EcoliMed_Band)%>%
+  drop_na(EcoliMed_Band)%>%
+  mutate(Year=strFrom(Year,'to'))%>%
+  group_by(Year,EcoliMed_Band,.drop=F)%>%
+  dplyr::summarise(count=n())%>%
+  ungroup%>%
+  group_by(Year,.drop=F)%>%
+  dplyr::mutate(tot=sum(count),prop=count/tot)%>%
+  select(-count,-tot)%>%
+  pivot_wider(names_from = c("Year"),values_from = 'prop',values_fill = list(prop=0))%>%
+  arrange((EcoliMed_Band))%>%t%>%data.frame
+rnames=rownames(EColiEvolution)
+names(EColiEvolution)=sapply(EColiEvolution[1,],as.character)
+EColiEvolution=EColiEvolution[-1,]%>%apply(2,as.numeric)
+rownames(EColiEvolution) <- rnames[-1]
+areaplot(EColiEvolution,col=rev(c("#dd1111FF","#55bb66FF","#008800FF")),
+         legend=T,args.legend=list(x='bottomleft',inset=0.05),ylim=c(0,1.1),main='Median E. coli',ylab='Proportion of sites')
+text(EcoliSitesPerYear$Year[-c(1:4)],1.05,EcoliSitesPerYear$nSites[-c(1:4)],lwd=2)
+
+bp=barplot(t(EColiEvolution),col=rev(c("#dd1111FF","#55bb66FF","#008800FF")),
+           legend=T,args.legend=list(x='bottomleft',inset=0.04),ylim=c(0,1.1),main='Median E. coli',ylab='Proportion of sites')
+text(bp,1.05,EcoliSitesPerYear$nSites[-c(1:4)],lwd=2)
+if(names(dev.cur())=='tiff'){dev.off()}
+
+rm(EcoliSitesPerYear,EColiEvolution,EColiEvolutionF)
+
+
+
+tiff(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d"),"/NOFTrendEcoliSummary.tif"),
+     width = 8,height=12,units='in',res=300,compression='lzw',type='cairo')
+EcoliSitesPerYear = wqdata%>%filter(Measurement=="ECOLI")%>%filter(LawaSiteID%in%NOFSummaryTable$LawaSiteID)%>%
+  group_by(lubridate::isoyear(dmy(Date)))%>%dplyr::summarise(nsites=length(unique(LawaSiteID)))%>%ungroup
+names(EcoliSitesPerYear)=c("Year","nSites")
+NOFSummaryTable$EcoliSummarybandF=factor(as.character(NOFSummaryTable$EcoliSummaryband),levels=rev(c("A","B","C","D","E","NA")),labels=rev(c("A","B","C","D","E","NA")))
+NOFSummaryTable$EcoliSummarybandF[is.na(NOFSummaryTable$EcoliSummaryband)] <- "NA"
+
+par(mfrow=c(3,1))
+EColiEvolutionF <- NOFSummaryTable%>%
+  dplyr::select(Year,EcoliSummarybandF)%>%
+  # drop_na(EcoliSummaryband)%>%
+  mutate(Year=strFrom(Year,'to'))%>%
+  group_by(Year,EcoliSummarybandF,.drop = F)%>%
+  dplyr::summarise(count=n())%>%
+  ungroup%>%
+  pivot_wider(names_from = c("Year"),values_from = 'count')%>%arrange(desc(EcoliSummarybandF))%>%t%>%data.frame
+rnames=rownames(EColiEvolutionF)
+names(EColiEvolutionF)=sapply(EColiEvolutionF[1,],as.character)
+EColiEvolutionF=EColiEvolutionF[-1,]%>%apply(2,as.numeric)
+rownames(EColiEvolutionF) <- rnames[-1]
+areaplot(EColiEvolutionF,xlab='Year',
+         col=rev(c("#aaaaaaFF","#dd1111FF","#cc7766FF","#55bb66FF","#008800FF","#00CCCCFF")),
+         legend=T,args.legend=list(x='bottomleft',inset=0.05),main='E. coli summary',ylab='Count of sites')
+lines(EcoliSitesPerYear$Year[-c(1:4)],EcoliSitesPerYear$nSites[-c(1:4)],lwd=2)
+text(EcoliSitesPerYear$Year[5],EcoliSitesPerYear$nSites[5]*0.9,"total sites available",cex=1,pos = 4)
+
+EColiEvolution <- NOFSummaryTable%>%
+  dplyr::select(Year,EcoliSummaryband)%>%
+  drop_na(EcoliSummaryband)%>%
+  mutate(Year=strFrom(Year,'to'))%>%
+  group_by(Year,EcoliSummaryband,.drop=F)%>%
+  dplyr::summarise(count=n())%>%
+  ungroup%>%
+  group_by(Year,.drop=F)%>%
+  dplyr::mutate(tot=sum(count),prop=count/tot)%>%
+  select(-count,-tot)%>%
+  pivot_wider(names_from = c("Year"),values_from = 'prop',values_fill = list(prop=0))%>%
+  arrange((EcoliSummaryband))%>%t%>%data.frame
+rnames=rownames(EColiEvolution)
+names(EColiEvolution)=sapply(EColiEvolution[1,],as.character)
+EColiEvolution=EColiEvolution[-1,]%>%apply(2,as.numeric)
+rownames(EColiEvolution) <- rnames[-1]
+areaplot(EColiEvolution,col=rev(c("#dd1111FF","#cc7766FF","#55bb66FF","#008800FF","#00CCCCFF")),
+         legend=T,args.legend=list(x='bottomleft',inset=0.05),ylim=c(0,1.1),main='E. coli summary',ylab='Proportion of sites')
+text(EcoliSitesPerYear$Year[-c(1:4)],1.05,EcoliSitesPerYear$nSites[-c(1:4)],lwd=2)
+
+bp=barplot(t(EColiEvolution),col=rev(c("#dd1111FF","#cc7766FF","#55bb66FF","#008800FF","#00CCCCFF")),
+           legend=T,args.legend=list(x='bottomleft',inset=0.04),ylim=c(0,1.1),main='E. coli summary',ylab='Proportion of sites')
+text(bp,1.05,EcoliSitesPerYear$nSites[-c(1:4)],lwd=2)
+if(names(dev.cur())=='tiff'){dev.off()}
+
+rm(EcoliSitesPerYear,EColiEvolution,EColiEvolutionF)
+
+
+tiff(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d"),"/NOFTrendEcoliMed.tif"),
+     width = 8,height=8,units='in',res=300,compression='lzw',type='cairo')
+NOFSummaryTable$EcoliSummarybandF=factor(as.character(NOFSummaryTable$EcoliMed_band),levels=c("A","B","C","D","E","NA"),labels=c("A","B","C","D","E","NA"))
+NOFSummaryTable$EcoliSummarybandF[is.na(NOFSummaryTable$EcoliMed_band)] <- "NA"
+par(mfrow=c(2,1))
+EColiEvolutionF <- NOFSummaryTable%>%
+  dplyr::select(Year,EcoliSummarybandF)%>%
+  # drop_na(EcoliSummaryband)%>%
+  mutate(Year=strFrom(Year,'to'))%>%
+  group_by(Year,EcoliSummarybandF,.drop = F)%>%
+  dplyr::summarise(count=n())%>%
+  ungroup%>%
+  pivot_wider(names_from = c("Year"),values_from = 'count')%>%arrange(desc(EcoliSummarybandF))%>%t%>%data.frame
+rnames=rownames(EColiEvolutionF)
+names(EColiEvolutionF)=sapply(EColiEvolutionF[1,],as.character)
+EColiEvolutionF=EColiEvolutionF[-1,]%>%apply(2,as.numeric)
+rownames(EColiEvolutionF) <- rnames[-1]
+areaplot(EColiEvolutionF,xlab='Year',
+         col=c("#aaaaaaFF","#dd1111FF","#cc7766FF","#55bb66FF","#008800FF","#3388DDFF"),legend=T,args.legend=list(x='bottomleft'))
+EColiEvolution <- NOFSummaryTable%>%
+  dplyr::select(Year,EcoliSummaryband)%>%
+  drop_na(EcoliSummaryband)%>%
+  mutate(Year=strFrom(Year,'to'))%>%
+  group_by(Year,EcoliSummaryband,.drop=F)%>%
+  dplyr::summarise(count=n())%>%
+  ungroup%>%
+  group_by(Year,.drop=F)%>%
+  dplyr::mutate(tot=sum(count),prop=count/tot)%>%
+  select(-count,-tot)%>%
+  pivot_wider(names_from = c("Year"),values_from = 'prop',values_fill = list(prop=0))%>%
+  arrange(desc(EcoliSummaryband))%>%t%>%data.frame
+rnames=rownames(EColiEvolution)
+names(EColiEvolution)=sapply(EColiEvolution[1,],as.character)
+EColiEvolution=EColiEvolution[-1,]%>%apply(2,as.numeric)
+rownames(EColiEvolution) <- rnames[-1]
+areaplot(EColiEvolution,col=c("#dd1111FF","#cc7766FF","#55bb66FF","#008800FF","#3388DDFF"),legend=T,args.legend=list(x='bottomleft'))
+if(names(dev.cur())=='tiff'){dev.off()}
+
+
+
+tiff(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d"),"/NOFTrendEcoliSummary.tif"),
+     width = 8,height=8,units='in',res=300,compression='lzw',type='cairo')
+NOFSummaryTable$EcoliSummarybandF=factor(as.character(NOFSummaryTable$EcoliSummaryband),levels=c("A","B","C","D","E","NA"),labels=c("A","B","C","D","E","NA"))
+NOFSummaryTable$EcoliSummarybandF[is.na(NOFSummaryTable$EcoliSummaryband)] <- "NA"
+par(mfrow=c(2,1))
+EColiEvolutionF <- NOFSummaryTable%>%
+  dplyr::select(Year,EcoliSummarybandF)%>%
+  # drop_na(EcoliSummaryband)%>%
+  mutate(Year=strFrom(Year,'to'))%>%
+  group_by(Year,EcoliSummarybandF,.drop = F)%>%
+  dplyr::summarise(count=n())%>%
+  ungroup%>%
+  pivot_wider(names_from = c("Year"),values_from = 'count')%>%arrange(desc(EcoliSummarybandF))%>%t%>%data.frame
+rnames=rownames(EColiEvolutionF)
+names(EColiEvolutionF)=sapply(EColiEvolutionF[1,],as.character)
+EColiEvolutionF=EColiEvolutionF[-1,]%>%apply(2,as.numeric)
+rownames(EColiEvolutionF) <- rnames[-1]
+areaplot(EColiEvolutionF,xlab='Year',
+         col=c("#aaaaaaFF","#dd1111FF","#cc7766FF","#55bb66FF","#008800FF","#3388DDFF"),legend=T,args.legend=list(x='bottomleft'))
+EColiEvolution <- NOFSummaryTable%>%
+  dplyr::select(Year,EcoliSummaryband)%>%
+  drop_na(EcoliSummaryband)%>%
+  mutate(Year=strFrom(Year,'to'))%>%
+  group_by(Year,EcoliSummaryband,.drop=F)%>%
+  dplyr::summarise(count=n())%>%
+  ungroup%>%
+  group_by(Year,.drop=F)%>%
+  dplyr::mutate(tot=sum(count),prop=count/tot)%>%
+  select(-count,-tot)%>%
+  pivot_wider(names_from = c("Year"),values_from = 'prop',values_fill = list(prop=0))%>%
+  arrange(desc(EcoliSummaryband))%>%t%>%data.frame
+rnames=rownames(EColiEvolution)
+names(EColiEvolution)=sapply(EColiEvolution[1,],as.character)
+EColiEvolution=EColiEvolution[-1,]%>%apply(2,as.numeric)
+rownames(EColiEvolution) <- rnames[-1]
+areaplot(EColiEvolution,col=c("#dd1111FF","#cc7766FF","#55bb66FF","#008800FF","#3388DDFF"),legend=T,args.legend=list(x='bottomleft'))
+if(names(dev.cur())=='tiff'){dev.off()}
+
+
+
+
+
+
+names(NOFSummaryTable)[grepl('band',names(NOFSummaryTable),T)]
+
+

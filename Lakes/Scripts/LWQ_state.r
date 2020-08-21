@@ -204,9 +204,9 @@ TLI5Year = TLI%>%
 lake5YearMedian <- rbind(lake5YearMedian,TLI5Year)%>%arrange(LawaSiteID,Measurement)
 rm(TLI5Year)
 sum(lake5YearMedian$n>=30)/dim(lake5YearMedian)[1]
-#351 out of 738  0.476
+#467 out of 1047  0.446
 lake5YearMedian <- lake5YearMedian%>%filter(n>=30|Measurement=="TLI") #Require 30 monthly values to calculate 5-year state median
-#467 from 738
+#625 from 1047
 
 
 

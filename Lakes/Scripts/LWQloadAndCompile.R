@@ -177,14 +177,14 @@ rm(workers)
 #25Jun 77483
 #9July 79582
 #24/7/2020 80692
-
-
+#7/8/20 80660
+#14/8/20 71344
+#218/20 71731
 
 
 
 
   
- 
 write.csv(lakedata,paste0('h:/ericg/16666LAWA/LAWA2020/Lakes/Data/',format(Sys.Date(),"%Y-%m-%d"),'/LakesCombined.csv'),row.names = F)
 # lakedata=read.csv(tail(dir(path='h:/ericg/16666LAWA/LAWA2020/Lakes/Data/',pattern='LakesCombined',recursive=T,full.names = T,ignore.case = T),1),stringsAsFactors=F)
 lakedata$LawaSiteID = siteTable$LawaSiteID[match(tolower(lakedata$CouncilSiteID),tolower(siteTable$CouncilSiteID))]
@@ -197,6 +197,9 @@ lakedata%>%group_by(LawaSiteID)%>%
                    cid=paste(unique(CouncilSiteID),collapse=', '))%>%
   ungroup%>%
   filter(agCount>1)%>%dplyr::select(-agCount)
+
+lakedata <- lakedata%>%drop_na(LawaSiteID)
+
 
 # lakedata$LawaSiteID[tolower(lakedata$CouncilSiteID) =="omanuka lagoon (composite)"] = siteTable$LawaSiteID[tolower(siteTable$CouncilSiteID) =="omanuka lagoon (composite)"]
 
@@ -221,6 +224,11 @@ lakesWithMetadata <- lakesWithMetadata%>%
 
 table(lakesWithMetadata$Agency,lakesWithMetadata$GeomorphicLType)
 table(factor(lakesWithMetadata$Agency,levels=c('ac','boprc','ecan','es','gdc','gwrc','hbrc','hrc','mdc','ncc','nrc','orc','tdc','trc','wcrc','wrc')))
+
+# ac   boprc  ecan    es   gdc  gwrc  hbrc   hrc   mdc   ncc   nrc   orc   tdc   trc  wcrc   wrc 
+# 6580 22513 15939  9194     0  1997  3514  1794     0     0  8927  6829     0  1461  1563  7186 
+# 3050 9704  15939  9194     0  1997  3513  1794     0     0  8927  7023     0  1461  1556  7186
+# 3050 9742  15939  9194     0  1997  3513  1794     0     0  8927  7372     0  1461  1556  7186 
 
 suppressWarnings(try(dir.create(paste0('h:/ericg/16666LAWA/LAWA2020/Lakes/Data/',format(Sys.Date(),"%Y-%m-%d")))))
 write.csv(lakesWithMetadata,paste0('h:/ericg/16666LAWA/LAWA2020/Lakes/Data/',format(Sys.Date(),"%Y-%m-%d"),'/LakesWithMetadata.csv'),row.names = F)

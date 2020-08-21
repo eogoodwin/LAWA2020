@@ -354,7 +354,7 @@ TRCextra$AltitudeCl=siteTable$AltitudeCl[match(tolower(TRCextra$CouncilSiteID),t
 
 wqdata <- rbind(wqdata,TRCextra)
 rm(TRCextra)
-#1088559
+#1117454
 
 
 wqdata$Region[wqdata$Region=="horizons"] <- "manawatū-whanganui"
@@ -362,6 +362,10 @@ wqdata$Region[wqdata$Region=="horizons"] <- "manawatū-whanganui"
 table(wqdata$Agency,wqdata$QC==0)  #QC data in GWRC, HBRC, AC
 table(wqdata$Region)
 table(wqdata$Agency)
+#    ac  boprc   ecan     es    gdc   gwrc   hbrc    hrc    mdc    ncc   niwa    nrc    orc    tdc    trc   wcrc    wrc 
+# 54617  47156 162662  73340  27466  54929  85873 160718   4289  16893 103590  41344  47780  14992  20917  22749  143024 
+# 54061  49821 162662  81815  32391  54929  77699 160718  29796  16893 103590  41344  50056  15008  20917  22749  143024
+# 54060  49821 162662  81815  32391  54929  77681 160718  29796  16893 103590  41344  50056  15008  20917  22749  143024 
 table(wqdata$SWQLanduse,wqdata$SWQAltitude)
 
 wqdata$Units=tolower(wqdata$Units)
@@ -409,7 +413,7 @@ wqdata$Agency=tolower(wqdata$Agency)
 wqdata$CenType[wqdata$CenType%in%c("L","Left")] <- "Left"
 wqdata$CenType[wqdata$CenType%in%c("R","Right")] <- "Right"
 
-wqdata=unique(wqdata)  #1079547
+wqdata=unique(wqdata)  #1117473  14Aug 1117289 21Aug 1117279
 
 wqdata%>%group_by(LawaSiteID)%>%
   dplyr::summarise(agCount=length(unique(Agency)),
@@ -441,6 +445,9 @@ wqdata%>%group_by(LawaSiteID)%>%
 #1061942 16Jul2020
 #1079348 24Jul2020
 #1079547 31july2020
+#1073182 7August2020
+#1117289 14 August2020
+#1117279 21 August 2020
 
 table(unique(tolower(wqdata$LawaSiteID))%in%tolower(siteTable$LawaSiteID))
 table(unique(tolower(wqdata$CouncilSiteID))%in%tolower(siteTable$CouncilSiteID))
