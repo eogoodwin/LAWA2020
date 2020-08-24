@@ -15,16 +15,27 @@ dir.create(paste0("H:/ericg/16666LAWA/LAWA2020/Groundwater/Data/", format(Sys.Da
 #                            sheet=1,guess_max = 50000)%>%as.data.frame
 #229086 of 17
 GWdata = readxl::read_xlsx(paste0("C:/Users/ericg/Otago Regional Council/Abi Loughnan - LAWA Annual Water Refresh 2020/",
-                                  "Groundwater Quality/GWExport-14-08-2020.xlsx"),
+                                  "Groundwater Quality/GWExport_24-08-2020.xlsx"),
                            sheet=1,guess_max = 50000)%>%as.data.frame
 #206482 of 17 4-8-20
 #234751 of 17 10-8-20
 #254451  14-8-20
+#262451 24-8-20
 
 #6/3/20
 #CHeck BOPRC for censored ecoli
 GWdata%>%filter(Source=="Bay of Plenty")%>%grepl(pattern = '<',x = .$`Result-prefix`)%>%sum
-#BOP censoring indicated in the result-prefix column
+#BOP censoring should be indicated in the result-prefix column
+bopcens = readxl::read_xlsx('h:/ericg/16666LAWA/LAWA2020/Groundwater/Data/BOPRC E coli QT datasets.xlsx',sheet = 2)%>%
+  dplyr::rename(RC_ID=Site,'Result-prefix'=Qualifiers)%>%mutate(Date=Time-hours(12))
+bopcens$`Result-prefix` = as.character(factor(bopcens$`Result-prefix`,levels=c("<DL",">DL"),labels=c('<','>')))
+bopdat=GWdata%>%filter(Source=='Bay of Plenty'&Variable_aggregated=="E.coli")%>%select(-`Result-prefix`)
+bopdat = left_join(bopdat,bopcens%>%select(RC_ID,Date,`Result-prefix`),by=c("RC_ID","Date"))
+
+GWdata=full_join(GWdata%>%filter(!(Source=='Bay of Plenty'&Variable_aggregated=="E.coli")),bopdat)%>%arrange(Source)
+GWdata%>%split(f=.$Source)%>%purrr::map(.f = function(x)any(apply(x,2,FUN=function(y)any(grepl('<|>',y,ignore.case=T)))))
+
+#Auckland, Bay of Plenty, Nelson, Waikato missing censoring info
 
 #Check WEstCoast ecolie censoring
 GWdata%>%filter(Source=="West Coast",Variable_aggregated=="E.coli")%>%
@@ -39,9 +50,15 @@ GWdata <- GWdata%>%mutate(LawaSiteID=`LAWA_ID`,
                           # Date = `Date`,
                           Value=`Result-edited`,
                           siteMeas=paste0(LAWA_ID,'.',Variable_aggregated))
+
+#Drop QC-flagged problems
+stopifnot(all(bitwAnd(as.numeric(GWdata$Qualifier),255)%in%c(10,30,42,43,151,NA)))  #See email from Vanitha Pradeep 13-8-2020
+GWdata$Qualifier = bitwAnd(as.numeric(GWdata$Qualifier),255)
+GWdata <- GWdata%>%dplyr::filter(!Qualifier%in%c(42,151))  #42 means poor quality, 151 means missing
 #206482 of 22 4-8-20
 #234751 of 22 10-8-20
 #254451        14-8-20
+#262432 of 23 24-8-20
 
 #Some LawaSiteIDs went by two different names.  Often they were similarity.
 #This finds the commonality and uses that
@@ -58,7 +75,7 @@ noActualData = which(is.na(GWdata$Site_ID)&is.na(GWdata$`Result-raw`)&is.na(GWda
 if(length(noActualData)>0){
   GWdata <- GWdata[-noActualData,]
 }
-rm(noActualData) #254431
+rm(noActualData) #262412
 GWdata <- GWdata%>%distinct
 #214254 of 31 11-7
 #212401 of 31 11-14
@@ -70,6 +87,7 @@ GWdata <- GWdata%>%distinct
 #206382 of 22 04/08/20
 #234621 of 22 10-8-20
 #254315     14-8-20
+#262225 of 23 24-8-20  #qualifier column added
 
 GWdata$Value[which(GWdata$`Result-prefix`=='<')] <- GWdata$`Result-edited`[which(GWdata$`Result-prefix`=='<')]*0.5
 GWdata$Value[which(GWdata$`Result-prefix`=='>')] <- GWdata$`Result-edited`[which(GWdata$`Result-prefix`=='>')]*1.1
@@ -128,8 +146,8 @@ GWdata <- GetMoreDateInfo(GWdata)
 GWdata$monYear = format(GWdata$myDate,"%b-%Y")
 GWdata$quYear = paste0(quarters(GWdata$myDate),'-',format(GWdata$myDate,'%Y'))
 
-write.csv(GWdata,paste0('h:/ericg/16666LAWA/LAWA2020/Groundwater/Data/',format(Sys.Date(),'%Y-%m-%d'),'GWdata.csv'),row.names=F)
-# GWdata = read.csv('h:/ericg/16666LAWA/LAWA2020/Groundwater/Data/GWdata.csv',stringsAsFactors=F,check.names = F)
+write.csv(GWdata,paste0('h:/ericg/16666LAWA/LAWA2020/Groundwater/Data/',format(Sys.Date(),'%Y-%m-%d'),'/GWdata.csv'),row.names=F)
+# GWdata = read.csv(tail(dir('h:/ericg/16666LAWA/LAWA2020/Groundwater/Data/','GWdata.csv',recursive=T,full.names=T))[1],stringsAsFactors=F,check.names = F)
 
 
 
@@ -150,7 +168,7 @@ GWdataRelevantVariables <- GWdata%>%
                 Date=first(Date,1),
                 myDate=first(myDate,1))%>%
   ungroup%>%distinct
-
+#67798
 freqs <- split(x=GWdataRelevantVariables,f=GWdataRelevantVariables$siteMeas)%>%purrr::map(~freqCheck(.))%>%unlist
 table(freqs)
 # freqs
@@ -166,6 +184,7 @@ table(freqs)
 #        38       130       4151   04/08/2020
 #        43       130       4880    10/8/20
 #        43       134       5229    14-8-20
+#        44       134       5349    24-8-20
 
 GWdataRelevantVariables$Frequency=freqs[GWdataRelevantVariables$siteMeas]  
 rm(freqs)
@@ -207,11 +226,11 @@ GWmedians$censMedian[GWmedians$censoredPropn>=0.5 & GWmedians$CenType=='>'] <-
 GWmedians$EcoliDetect=NA
 GWmedians$EcoliDetect[which(GWmedians$Measurement=="E.coli")] <- "1"  #Detect
 GWmedians$EcoliDetect[which(GWmedians$Measurement=="E.coli"&(GWmedians$censoredPropn>0.5|GWmedians$median==0|is.na(GWmedians$median)))] <- "2"  #Non-detect
-table(GWmedians$EcoliDetect)   #104 667
+table(GWmedians$EcoliDetect)   #109 739
 GWmedians$EcoliDetectAtAll=NA
 GWmedians$EcoliDetectAtAll[which(GWmedians$Measurement=="E.coli")] <- "1"  #Detect
 GWmedians$EcoliDetectAtAll[which(GWmedians$Measurement=="E.coli"&(GWmedians$censoredPropn==1|GWmedians$median==0|is.na(GWmedians$median)))] <- "2"  #Non-detect
-table(GWmedians$EcoliDetectAtAll) #376 395
+table(GWmedians$EcoliDetectAtAll) #424 424
 
 table(GWmedians$EcoliDetect,GWmedians$EcoliDetectAtAll)
 
@@ -228,6 +247,8 @@ table(GWmedians$EcoliDetect,GWmedians$EcoliDetectAtAll)
 #4319 of 16 04/08/2020
 #5053 of 16 10/8/20
 #5473       14/8/20
+#5527       24/8/20
+
 
 
 GWmedians$meas = factor(GWmedians$Measurement,labels=c("NH4","Cl","DRP","ECOLI","NaCl","NO3"))
@@ -416,6 +437,7 @@ GWmedians <- GWmedians%>%filter(!Exclude)
 #4319          04/08/2020
 #5053         10/8/20
 #5476
+#5527
 
 if(plotto){
   table(GWmedians$count)
@@ -462,16 +484,6 @@ if(plotto){
 
 
   GWmedians$Source = GWdata$Source[match(GWmedians$LawaSiteID,GWdata$LawaSiteID)]
-#Westy coast couldnt get us censor limits, so dont publish their state
-# if(Sys.Date()=="2020-03-20"){
-  # WCEc=which(GWmedians$Source=="West Coast" & GWmedians$Measurement=="E.coli")
-  # GWmedians$median[WCEc]=NA
-  # GWmedians$EcoliDetect[WCEc]=NA
-  # GWmedians$EcoliDetectAtAll[WCEc]=NA
-  # GWmedians$censoredPropn[WCEc]=NA
-  # GWmedians$censoredCount[WCEc]=NA
-  # rm(WCEc)
-# }
 
 
 #Export Median values
@@ -517,7 +529,7 @@ foreach(py = c(10,15),.combine=rbind,.errorhandling="stop")%dopar%{
 }->GWtrends
 stopCluster(workers)
 rm(workers)
-Sys.time()-startTime           #2.1 mins
+Sys.time()-startTime           #2.7 mins
 #8592 of 39  11-11
 #8382 of 39  14-11
 #8478 of 39  22-11
@@ -527,17 +539,9 @@ Sys.time()-startTime           #2.1 mins
 #9070       04/08/20
 #10542      10/8/20
 #11436   14-8-20
+#11524
 
 GWtrends$Source = GWdata$Source[match(GWtrends$LawaSiteID,GWdata$LawaSiteID)]
-#Westy coast couldnt get us censor limits, so dont publish their state
-# if(Sys.Date()=="2020-03-20"){
-# WCEc=which(GWtrends$Source=="West Coast" & GWtrends$Measurement=="E.coli")
-# GWtrends[WCEc,match(c("KWstat","pvalue",
-# "nObs","S","VarS","D","tau","Z","p","MKProbability","AnalysisNote","prop.censored",
-# "prop.unique","no.censorlevels","Median","Sen_VarS","AnnualSenSlope","Intercept","Lci","Uci","Sen_Probability",
-# "Probabilitymax","Probabilitymin","Percent.annual.change","standard","ConfCat"),names(GWtrends))]=NA
-# rm(WCEc)
-# }
 
 
 GWtrends$ConfCat <- cut(GWtrends$MKProbability, breaks=  c(-0.1, 0.1,0.33,0.67,0.90, 1.1),
@@ -557,7 +561,7 @@ fGWt = GWtrends%>%filter(!grepl('^unassess',GWtrends$frequency)&!grepl('^Insuffi
 # 1537 of 41  04/08/2020
 # 1615 of 41  10/8/20
 # 1815
-
+# 1938 of 41  24/8/2020
 
 #    nitrate nitrogen, chloride, DRP, electrical conductivity and E. coli.
 # fGWt = fGWt%>%filter(Measurement %in% c("Nitrate nitrogen","Chloride","Dissolved reactive phosphorus",
