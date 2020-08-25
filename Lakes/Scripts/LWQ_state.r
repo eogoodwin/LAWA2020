@@ -44,6 +44,7 @@ if(!exists('lakeData')){
     }
     rm(these)
   }
+  lakeData$centype[is.na(lakeData$centype)] <- FALSE
 }
 
 lakeData$month=lubridate::month(lubridate::dmy(lakeData$Date))

@@ -1,4 +1,5 @@
-allcouncils.csv
+AllCouncils.csv
+GWdata.csv
 *RiverWQ_GraphData*
 *RiverWQ_PublicDownload*
 *RiversRawData*
@@ -9,6 +10,7 @@ LakesCombined.csv
 LakesWithMetadata.csv
 LakeDownloadData.xlsx
 .Rproj.user
+*.db
 *.pdf
 *.png
 *.tif

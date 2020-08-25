@@ -37,47 +37,12 @@
 "avondale @ thuja pl","8022","lawa-102238",FALSE,"auckland","ac",NA,"Unstated",-36.9293968579647,174.678643586042
 "avondale @ shadbolt","8019","arc-00036",FALSE,"auckland","ac","urban","lowland",-36.9232796028548,174.69177897747
 "makarau @ rail bridge","45505","arc-00033",FALSE,"auckland","ac","rural","lowland",-36.5566003309383,174.520676593504
-<<<<<<< HEAD
-"pakuranga @ botany rd","8217","arc-00018",FALSE,"auckland","ac","urban","lowland",-36.9132399996139,174.916080000186
-"auckland domain @ lower domain","108123","lawa-102723",FALSE,"auckland","ac","urban","lowland",-36.5543995371126,174.550225463679
-"anns creek @ hamlins hill","44030","lawa - 102722",FALSE,"auckland","ac","urban","lowland",-36.5527358021313,174.493730331329
-"castor @ braemar","7548","lawa - 102725",FALSE,"auckland","ac","urban","lowland",-36.452116325762,174.454013771431
-"dyers creek @ bush","6847","lawa - 102726",FALSE,"auckland","ac","rural","lowland",-36.2735438597175,174.41070443013
-"edgar @ maxwell av","10713","lawa-102727",FALSE,"auckland","ac","urban","lowland",-36.5127827101535,174.433792300902
-"kaitoke creek @ hotsprings tk","6990","lawa - 102728",FALSE,"auckland","ac","forest","lowland",-36.134601816445,175.252598582429
-"meola ck @ motions rd","8106","lawa-102732",FALSE,"auckland council","ac","urban","lowland",-36.5154659784347,174.4304263488
-"oakley @ beagle road","108144","lawa-102734",FALSE,"auckland","ac","urban","lowland",-36.5034550856739,176.580350182093
-=======
-"auckland domain @ lower domain","108123","lawa-102723",FALSE,"auckland","ac","urban","lowland",-36.5543995371126,174.550225463679
-"anns creek @ hamlins hill","44030","lawa-102722",FALSE,"auckland","ac","urban","lowland",-36.5527358021313,174.493730331329
-"castor @ braemar","7548","lawa-102725",FALSE,"auckland","ac","urban","lowland",-36.452116325762,174.454013771431
-"dyers creek @ bush","6847","lawa-102726",FALSE,"auckland","ac","rural","lowland",-36.2735438597175,174.41070443013
-"edgar @ maxwell av","10713","lawa-102727",FALSE,"auckland","ac","urban","lowland",-36.5127827101535,174.433792300902
-"kaitoke creek @ hotsprings tk","6990","lawa-102728",FALSE,"auckland","ac","forest","lowland",-36.134601816445,175.252598582429
-"la rosa reserve tr (south stream)","8026","lawa-102731",FALSE,"auckland","ac","urban","lowland",-36.5541285063134,174.403190424273
-"meola ck @ motions rd","8106","lawa-102732",FALSE,"auckland council","ac","urban","lowland",-36.5154054795847,174.430499103602
-"oakley @ beagle road","108144","lawa-102734",FALSE,"auckland","ac","urban","lowland",-36.5034550856739,176.580350182093
 "oakley @ richardson road","8128","lawa-102735",FALSE,"auckland","ac","urban","lowland",-36.5350649343927,174.431057874302
->>>>>>> bdc1e29... Adding csvs to track them during patch
 "oakley creek @ may road","10812","lawa-102738",FALSE,"auckland","ac","urban","lowland",-36.5412706348155,174.44139902433
 "tararata creek @ elmdon street","43929","lawa-102740",FALSE,"auckland","ac","urban","lowland",-36.5734092560525,174.473603086499
 "te muri @ fenceline","6996","lawa-102741",FALSE,"auckland","ac","rural","lowland",-36.3044876113982,174.42206671952
 "te muri @ weir","6995","lawa-102742",FALSE,"auckland","ac","rural","lowland",-36.3047649105152,174.420436627198
-<<<<<<< HEAD
-"botany creek @ tangello place","8268","lawa - 102724",FALSE,"auckland","ac","urban","lowland",-36.5342729139629,174.533367046736
-"kaukapakapa ref","45416","lawa-102729",FALSE,"auckland","ac","forest","lowland",-36.3748482477669,174.273961789863
-"meola ck @ motions rd","8106","lawa - 102732",FALSE,"auckland council","ac","urban","lowland",-36.5154659784347,174.4304263488
-"newmarket stream @ ayr street","8176","lawa -102733",FALSE,"auckland council","ac","urban","lowland",-36.5151302690798,174.469858110965
-"oakley @ war memorial park","108126","lawa-102737",FALSE,"auckland council","ac","urban","lowland",-36.5408457413324,174.439655639053
-=======
-"botany creek @ tangello place","8268","lawa-102724",FALSE,"auckland","ac","urban","lowland",-36.5342729139629,174.533367046736
-"kaukapakapa ref","45416","lawa-102729",FALSE,"auckland","ac","forest","lowland",-36.3748482477669,174.273961789863
-"la rosa reserve tl (north stream)","8027","lawa-102730",FALSE,"auckland","ac","urban","lowland",-36.5542896648757,174.402801334279
-"newmarket stream @ ayr street","8176","lawa-102733",FALSE,"auckland council","ac","urban","lowland",-36.5151302690798,174.469858110965
-"oakley @ walmsley park","108127","lawa-102736",FALSE,"auckland","ac","urban","lowland",-36.5355510519576,174.433912445308
-"oakley @ war memorial park","108126","lawa-102737",FALSE,"auckland council","ac","urban","lowland",-36.5408457413324,174.439655639053
 "tryphena @ medlands rd","6931","lawa-102743",FALSE,"auckland","ac","rural","lowland",-36.1753721600925,175.291343400279
->>>>>>> bdc1e29... Adding csvs to track them during patch
 "whangamarie stream @ hunter rd","43822","lawa-102744",FALSE,"auckland","ac","rural","lowland",-37.1116129626056,174.519828678258
 "aongatete at above pine ridge lane","BQ964696","ebop-00165",FALSE,"bay of plenty","boprc","urban","lowland",-37.397742403468,175.933099221882
 "awakaponga at manawahe rd","IM796551","ebop-00134",FALSE,"bay of plenty","boprc","rural","lowland",-37.9288200408995,176.731258024931
@@ -601,13 +566,8 @@
 "832","Nuhaka River at Nuhaka Valley Road","lawa-102699",FALSE,"hawkes bay","hbrc","rural","lowland",-39.0090110725833,177.765556270636
 "837","Ohara Stream at Big Hill Road","lawa-101796",FALSE,"hawkes bay","hbrc","rural","upland",-39.6005171199359,176.431048947954
 "841","Ohiwia Stream at Broughtons Br.","lawa-101797",FALSE,"hawkes bay","hbrc","rural","lowland",-39.5800699783238,176.739906349665
-<<<<<<< HEAD
-"915","Papanui Stream at Middle Road","hbrc-00085",FALSE,"hawkes bay","hbrc","rural","lowland",-39.8567144209582,176.715224992162
-"991","Poporangi Stream at Ohara Stn.","lawa-101798",FALSE,"hawkes bay","hbrc","rural","upland",-39.581232711129,176.442901303924
-=======
 "877","Opoutama Stream at Smiths Woolshed","hbrc-00050",FALSE,"hawkes bay","hbrc","rural","lowland",-39.0431392054505,177.834834866706
 "915","Papanui Stream at Middle Road","hbrc-00085",FALSE,"hawkes bay","hbrc","rural","lowland",-39.8567144209582,176.715224992162
->>>>>>> bdc1e29... Adding csvs to track them during patch
 "998","Porangahau River at SH52 Opposite Quarry","hbrc-00006",FALSE,"hawkes bay","hbrc","rural","lowland",-40.2966808318916,176.580728024137
 "1003","Porangahau Stream at Oruawhara Road","hbrc-00042",FALSE,"hawkes bay","hbrc","rural","upland",-40.0240694774502,176.371057907225
 "1044","Poukawa Stream at Stock Road","hbrc-00010",FALSE,"hawkes bay","hbrc","rural","lowland",-39.6976791045894,176.793889558877
@@ -628,10 +588,7 @@
 "1374","Tukituki River at Black Bridge","hbrc-00007",FALSE,"hawkes bay","hbrc","rural","lowland",-39.6045571724992,176.93197123346
 "1382","Tukituki River at Red Bridge","hbrc-00043",FALSE,"hawkes bay","hbrc","rural","lowland",-39.715466431443,176.927895556592
 "1397","Tukituki River at Tamumu Br.","hbrc-00088",FALSE,"hawkes bay","hbrc","rural","lowland",-39.96233140457,176.682308002222
-<<<<<<< HEAD
-=======
 "1398","Tukituki River at Tapairu Rd","hbrc-00131",FALSE,"hawkes bay","hbrc","rural","lowland",-39.9682216766009,176.609994992348
->>>>>>> bdc1e29... Adding csvs to track them during patch
 "1403","Tukituki River at Waipuk Onga Road","lawa-102697",FALSE,"hawkes bay","hbrc","rural","upland",-39.9586419235709,176.481821092504
 "1404","Tukituki River at Waipukurau","hbrc-00087",FALSE,"hawkes bay","hbrc","rural","lowland",-39.9887542567825,176.558350228826
 "1424","Tutaekuri River at Brookfields Bridge","hbrc-00005",FALSE,"hawkes bay","hbrc","rural","lowland",-39.5685281752153,176.881040366043
@@ -656,98 +613,6 @@
 "5273","Mohaka River D/S Waipunga River","hbrc-00072",FALSE,"hawkes bay","hbrc","forest","upland",-39.1000450920574,176.702160190694
 "5274","Mohaka River D/S Ripia River","hbrc-00071",FALSE,"hawkes bay","hbrc","forest","upland",-39.2072916203254,176.516996009466
 "5322","Porangahau Strm US Maharakeke Strm","lawa-102694",FALSE,"hawkes bay","hbrc","rural","upland",-40.0084683385788,176.454194597865
-<<<<<<< HEAD
-=======
-"whanganui at wades landing","Whanganui at Wades Landing","hrc-00061",FALSE,"manawatu-whanganui","hrc","rural","lowland",-39.11164,175.06128
-"whanganui at te maire","Whanganui at Te Maire","hrc-00062",FALSE,"manawatu-whanganui","hrc","forest","upland",-38.94251,175.18891
-"whanganui at pipiriki","Whanganui at Pipiriki","hrc-00060",FALSE,"manawatu-whanganui","hrc","rural","lowland",-39.47961,175.04452
-"whanganui at cherry grove","Whanganui at Cherry Grove","hrc-00063",FALSE,"manawatu-whanganui","hrc","rural","upland",-38.89163,175.25534
-"waikawa at u/s manakau confluence","Waikawa at u/s Manakau Confluence","lawa-101961",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.6915846799999,175.1833456
-"waikawa at north manakau road","Waikawa at North Manakau Road","hrc-00056",FALSE,"manawatu-whanganui","hrc","forest","lowland",-40.7077399999999,175.23359
-"waikawa stream at huritini","Waikawa at Huritini","hrc-00057",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.68652,175.16542
-"turitea at no1 dairy","Turitea at No1 Dairy","hrc-00353",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.38548,175.60685
-"turakina at oneills bridge","Turakina at ONeills Bridge","hrc-00055",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.02572,175.23333
-"tokomaru river at horseshoe bend","Tokomaru River at Horseshoe bend","hrc-00054",FALSE,"manawatu-whanganui","hrc","forest","lowland",-40.48729,175.52598
-"tokiahuru at karioi","Tokiahuru at Karioi Domain Road","hrc-00352",FALSE,"manawatu-whanganui","hrc","forest","upland",-39.4761599999999,175.50356
-"tiraumea at ngaturi","Tiraumea at Ngaturi","hrc-00050",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.4671099999999,175.92279
-"tamaki at tamaki reserve","Tamaki at Tamaki Reserve","hrc-00049",FALSE,"manawatu-whanganui","hrc","forest","upland",-40.12272,176.03354
-"tamaki at stephensons","Tamaki at Stephensons","hrc-00048",FALSE,"manawatu-whanganui","hrc","rural","upland",-40.24535,176.06491
-"raparapawai at jackson rd","Raparapawai at Jackson Rd","hrc-00047",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.32287,175.99543
-"rangitikei at pukeokahu","Rangitikei at Pukeokahu","hrc-00046",FALSE,"manawatu-whanganui","hrc","forest","upland",-39.62765,176.04425
-"rangitikei at onepuhi","Rangitikei at Onepuhi","hrc-00044",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.0795699999999,175.46384
-"rangitikei at mckelvies","Rangitikei at McKelvies","hrc-00043",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.29556,175.27557
-"rangitikei at mangaweka","Rangitikei at Mangaweka","hrc-00045",FALSE,"manawatu-whanganui","hrc","rural","upland",-39.8094199999999,175.80811
-"porewa at onepuhi","Porewa at Onepuhi Road","hrc-00042",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.0770899999999,175.45319
-"pohangina at piripiri","Pohangina at Piripiri","hrc-00041",FALSE,"manawatu-whanganui","hrc","forest","upland",-40.05216,175.94009
-"pohangina at mais reach","Pohangina at Mais Reach","hrc-00040",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.22457,175.783
-"patiki stream at kawiu road","Patiki Stream at Kawiu Road","hrc-00039",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.60803,175.27923
-"owahanga at branscombe bridge","Owahanga at Branscombe Bridge","hrc-00038",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.6307899999999,176.30245
-"oruakeretaki at s.h.2 napier","Oruakeretaki at S.H.2 Napier","hrc-00037",FALSE,"manawatu-whanganui","hrc","rural","upland",-40.2534199999999,176.03234
-"oroua at u/s feilding stp","Oroua at U/S Feilding STP","hrc-00079",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.26253,175.54461
-"oroua at d/s feilding stp","Oroua at d/s Feilding STP","lawa-101949",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.2634951799999,175.5411179
-"oroua at awahuri bridge","Oroua at Awahuri Bridge","hrc-00034",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.27565,175.52158
-"oroua at apiti gorge bridge","Oroua at Apiti","hrc-00036",FALSE,"manawatu-whanganui","hrc","forest","upland",-39.93807,175.9258
-"oroua at almadale slackline","Oroua at Almadale Slackline","hrc-00035",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.1734099999999,175.6599
-"ongarue at taringamotu","Ongarue at Taringamotu","hrc-00033",FALSE,"manawatu-whanganui","hrc","rural","upland",-38.86223,175.23823
-"ohau at u/s makahika confluence","Ohau at u/s Makahika Confluence","lawa-101947",FALSE,"manawatu-whanganui","hrc","forest","lowland",-40.6547545,175.360762
-"ohau at state highway bridge","Ohau at State Highway Bridge","lawa-100544",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.67066046,175.2406431
-"ohau at haines property","Ohau at Haines Property","hrc-00031",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.6642899999999,175.19784
-"ohau at gladstone reserve","Ohau at Gladstone Reserve","hrc-00030",FALSE,"manawatu-whanganui","hrc","forest","lowland",-40.66335,175.3374
-"mangawhero at u/s ohakune stp","Mangawhero at u/s Ohakune STP","hrc-00064",FALSE,"manawatu-whanganui","hrc","rural","upland",-39.40901,175.38394
-"mangawhero at raupiu road","Mangawhero at Raupiu Road","hrc-00027",FALSE,"manawatu-whanganui","hrc","rural","lowland",-39.70028,175.33113
-"mangawhero at pakihi rd bridge","Mangawhero at Pakihi Rd Bridge","hrc-00028",FALSE,"manawatu-whanganui","hrc","rural","upland",-39.431,175.32311
-"mangawhero at doc headquarters","Mangawhero at DOC Headquarters","hrc-00029",FALSE,"manawatu-whanganui","hrc","forest","upland",-39.4016999999999,175.41228
-"mangawhero at d/s ohakune stp","Mangawhero at d/s Ohakune STP","lawa-101944",FALSE,"manawatu-whanganui","hrc","rural","upland",-39.4081261699999,175.3827436
-"mangatoro at mangahei road","Mangatoro at Mangahei Road","hrc-00026",FALSE,"manawatu-whanganui","hrc","rural","upland",-40.24468,176.18953
-"mangatewainui at hardys","Mangatewainui at Hardys","hrc-00351",FALSE,"manawatu-whanganui","hrc","rural","upland",-40.1697799999999,176.19306
-"mangatera at u/s manawatu confluence","Mangatera at u/s Manawatu confluence","hrc-00025",FALSE,"manawatu-whanganui","hrc","rural","upland",-40.24085,176.0988
-"mangatera at dannevirke","Mangatera at Dannevirke","hrc-00075",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.22455,176.10159
-"mangatera at d/s dannevirke stp","Mangatera at d/s Dannevirke STP","lawa-101942",FALSE,"manawatu-whanganui","hrc","rural","upland",-40.22644299,176.1017423
-"mangatainoka at u/s tiraumea confluence","Mangatainoka at u/s Tiraumea Confluence","hrc-00344",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.4026299999999,175.88269
-"mangatainoka at u/s pahiatua stp","Mangatainoka at u/s Pahiatua STP","hrc-00083",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.4394399999999,175.84022
-"mangatainoka at scarborough konini rd","Mangatainoka at Scarborough Konini Rd","hrc-00343",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.4756599999999,175.79573
-"mangatainoka at putara","Mangatainoka at Putara","hrc-00021",FALSE,"manawatu-whanganui","hrc","forest","upland",-40.6805199999999,175.54746
-"mangatainoka at pahiatua town bridge","Mangatainoka at Pahiatua Town Bridge","hrc-00023",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.4495699999999,175.83121
-"mangatainoka at larsons road","Mangatainoka at Larsons Road","hrc-00022",FALSE,"manawatu-whanganui","hrc","forest","upland",-40.6403599999999,175.61099
-"mangatainoka at hukanui","Mangatainoka at Hukanui","hrc-00350",FALSE,"manawatu-whanganui","hrc","rural","upland",-40.5659499999999,175.71206
-"mangatainoka at d/s pahiatua stp","Mangatainoka at d/s Pahiatua STP","lawa-101941",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.43847492,175.8425347
-"mangatainoka at d/s db breweries","Mangatainoka at d/s DB Breweries","lawa-101940",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.41887136,175.870005
-"mangatainoka at brewery - s.h.2 bridge","Mangatainoka at Brewery - S.H.2 Bridge","hrc-00024",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.42268,175.86191
-"mangapapa at troup rd","Mangapapa at Troup Rd","hrc-00020",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.3419299999999,175.84788
-"manganui o te ao at ashworth","Manganui o te Ao at Ashworth","hrc-00349",FALSE,"manawatu-whanganui","hrc","rural","upland",-39.3098699999999,175.20645
-"mangahao at ballance","Mangahao at Ballance","hrc-00019",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.43611,175.79173
-"mangaatua at u/s woodville stp","Mangaatua at u/s Woodville STP","hrc-00076",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.34449,175.85389
-"mangaatua at d/s woodville stp","Mangaatua at d/s Woodville STP","lawa-101933",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.3445402999999,175.8515346
-"manawatu at weber road","Manawatu at Weber Road","hrc-00018",FALSE,"manawatu-whanganui","hrc","rural","upland",-40.23947,176.11638
-"manawatu at upper gorge","Manawatu at Upper Gorge","hrc-00017",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.33185,175.81803
-"manawatu at u/s pncc stp","Manawatu at u/s PNCC STP","hrc-00080",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.38783,175.58234
-"manawatu at teachers college","Manawatu at Teachers College","hrc-00015",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.3732899999999,175.62773
-"manawatu at opiki bridge","Manawatu at Opiki Br","hrc-00013",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.43535,175.46978
-"manawatu at hopelands","Manawatu at Hopelands","hrc-00016",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.3588599999999,175.96286
-"manawatu at d/s pncc stp","Manawatu at d/s PNCC STP","lawa-101931",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.39400746,175.5834723
-"manakau at s.h.1 bridge","Manakau at S.H.1 Bridge","hrc-00011",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.7243799999999,175.21165
-"manakau at cemetery","Manakau at Cemetery","lawa-101930",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.6906844599999,175.1833162
-"makuri at tuscan hills","Makuri at Tuscan Hills","hrc-00010",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.5236599999999,175.93115
-"makotuku at sh49a","Makotuku at SH49A","hrc-00009",FALSE,"manawatu-whanganui","hrc","forest","upland",-39.3714899999999,175.32457
-"makotuku at raetihi","Makotuku at Raetihi","hrc-00007",FALSE,"manawatu-whanganui","hrc","rural","upland",-39.4210199999999,175.2821
-"makotuku at d/s raetihi stp","Makotuku at d/s Raetihi STP","lawa-101929",FALSE,"manawatu-whanganui","hrc","rural","upland",-39.4377831799999,175.2854268
-"makotuku at above sewage plant","Makotuku at Above Sewage Plant","hrc-00066",FALSE,"manawatu-whanganui","hrc","rural","upland",-39.43825,175.28904
-"makorokio at tirohanga station","Makorokio at Tirohanga Station","lawa-101928",FALSE,"manawatu-whanganui","hrc","forest","lowland",-40.6913688499999,175.2874893
-"makaretu above ohau confluence","Makaretu Above Ohau Confluence","lawa-101926",FALSE,"manawatu-whanganui","hrc","forest","lowland",-40.66129648,175.3491642
-"makakahi at hamua","Makakahi at Hamua","hrc-00008",FALSE,"manawatu-whanganui","hrc","rural","upland",-40.56517,175.74511
-"makakahi at end kaiparoro road","Makakahi at end Kaiparoro Road","hrc-00348",FALSE,"manawatu-whanganui","hrc","forest","upland",-40.71343,175.60673
-"makahika above ohau confluence","Makahika Above Ohau Confluence","lawa-101924",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.65584762,175.3513385
-"kumeti at te rehunga","Kumeti at Te Rehunga","hrc-00006",FALSE,"manawatu-whanganui","hrc","rural","upland",-40.21971,176.01202
-"kuku at n. johnstone farm bridge","Kuku at N. Johnstone Farm Bridge","lawa-101920",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.67330208,175.1969459
-"koputaroa at tavistock rd","Koputaroa at Tavistock Rd","hrc-00347",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.5966799999999,175.33744
-"kiwitea at kimbolton rd","Kiwitea at Kimbolton Rd","hrc-00346",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.2109,175.59674
-"kahuterawa at keebles farm","Kahuterawa at Keebles Farm","hrc-00345",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.39313,175.59101
-"kahuterawa at johnstons rata","Kahuterawa at Johnstons Rata","hrc-00005",FALSE,"manawatu-whanganui","hrc","forest","lowland",-40.4490699999999,175.62164
-"hokio at lake horowhenua","Hokio at Lake Horowhenua","hrc-00004",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.605,175.23608
-"hautapu at us rangitikei river conf","Hautapu at US Rangitikei River Conf","hrc-00002",FALSE,"manawatu-whanganui","hrc","rural","upland",-39.7537599999999,175.83617
-"hautapu at alabasters","Hautapu at Alabasters","hrc-00003",FALSE,"manawatu-whanganui","hrc","rural","upland",-39.6568799999999,175.78086
-"arawhata drain at hokio beach road","Arawhata Drain at Hokio Beach Road","hrc-00001",FALSE,"manawatu-whanganui","hrc","rural","lowland",-40.6219,175.24728
->>>>>>> bdc1e29... Adding csvs to track them during patch
 "waihopai river at craiglochart","Waihopai River at Craiglochart","mdc-00030",FALSE,"marlborough","mdc","rural","upland",-41.62117201,173.68897967
 "branch river at weir intake","Branch River at Weir Intake","mdc-00005",FALSE,"marlborough","mdc","forest","upland",-41.70014713,173.18326957
 "awatere river at awapiri","Awatere River at Awapiri","mdc-00003",FALSE,"marlborough","mdc","rural","upland",-41.83477611,173.73081669
@@ -807,53 +672,23 @@
 "york at waimea rd","York at Waimea Rd","ncc-00009",FALSE,"nelson","ncc","urban","lowland",-41.29575659,173.26673193
 "hatea at mair park","100194","nrc-00019",FALSE,"northland","nrc","urban","lowland",-35.71100271,174.32972329
 "mangahahuru at main road","100237","nrc-00013",FALSE,"northland","nrc","forest","lowland",-35.63994339,174.31310476
-<<<<<<< HEAD
-"awanui at fndc","100363","nrc-00016",FALSE,"northland","nrc","rural","lowland",-35.12158307,173.27541636
-"waipapa at landing","101524","nrc-00031",FALSE,"northland","nrc","rural","lowland",-35.20326296,173.96839515
-"kerikeri at stone store","101530","nrc-00021",FALSE,"northland","nrc","rural","lowland",-35.21718382,173.96285807
-"kaihu at gorge","102256","nrc-00006",FALSE,"northland","nrc","rural","lowland",-35.76264196,173.68526146
-=======
-"mangahahuru at apotu road","100281","nrc-00014",FALSE,"northland","nrc","rural","lowland",-35.61771787,174.26008474
-"awanui at fndc","100363","nrc-00016",FALSE,"northland","nrc","rural","lowland",-35.12158307,173.27541636
-"awanui at waihue channel","100370","nrc-00017",FALSE,"northland","nrc","rural","lowland",-35.10803978,173.22728661
-"waipapa at landing","101524","nrc-00031",FALSE,"northland","nrc","rural","lowland",-35.20326296,173.96839515
-"kerikeri at stone store","101530","nrc-00021",FALSE,"northland","nrc","rural","lowland",-35.21718382,173.96285807
-"mangere at knight road","101625","nrc-00001",FALSE,"northland","nrc","rural","lowland",-35.69795439,174.1449511
-"waiotu at sh1","102248","nrc-00012",FALSE,"northland","nrc","rural","lowland",-35.53221197,174.22856874
-"whakapara at cableway","102249","nrc-00011",FALSE,"northland","nrc","rural","lowland",-35.54190088,174.27149499
-"kaihu at gorge","102256","nrc-00006",FALSE,"northland","nrc","rural","lowland",-35.76264196,173.68526146
 "manganui at mititai road","102257","nrc-00002",FALSE,"northland","nrc","rural","lowland",-35.96148471,174.11295815
->>>>>>> bdc1e29... Adding csvs to track them during patch
 "opouteke at suspension bridge","102258","nrc-00008",FALSE,"northland","nrc","forest","lowland",-35.69565634,173.86768807
 "kaeo at dip road","102674","nrc-00020",FALSE,"northland","nrc","rural","lowland",-35.09785338,173.77159365
 "waitangi at waimate north road","103178","nrc-00010",FALSE,"northland","nrc","rural","lowland",-35.29616152,173.90069715
 "waipoua at sh12","103304","nrc-00007",FALSE,"northland","nrc","forest","lowland",-35.65250409,173.57039274
-<<<<<<< HEAD
-=======
 "ruakaka at flyger road","105008","nrc-00026",FALSE,"northland","nrc","rural","lowland",-35.86945027,174.40261082
->>>>>>> bdc1e29... Adding csvs to track them during patch
 "waipapa at forest ranger","101751","nrwqn-00024",FALSE,"northland","nrc",NA,"lowland",-35.27339287,173.6881087
 "punakitere at taheke","105231","nrc-00005",FALSE,"northland","nrc","rural","lowland",-35.46260455,173.66127167
 "victoria at victoria valley road","105532","nrc-00015",FALSE,"northland","nrc","forest","lowland",-35.147225,173.40764898
 "waiarohia at second avenue","108359","nrc-00004",FALSE,"northland","nrc","urban","lowland",-35.72266387,174.31624099
-<<<<<<< HEAD
-"mangamuka at iwitaua road","108978","nrc-00022",FALSE,"northland","nrc","forest","lowland",-35.20920885,173.54106138
-=======
 "waipao at draffins road","108941","nrc-00030",FALSE,"northland","nrc","rural","lowland",-35.72655755,174.12530358
 "mangamuka at iwitaua road","108978","nrc-00022",FALSE,"northland","nrc","forest","lowland",-35.20920885,173.54106138
 "oruru at oruru road","108979","nrc-00024",FALSE,"northland","nrc","rural","lowland",-35.03863042,173.49052107
->>>>>>> bdc1e29... Adding csvs to track them during patch
 "hakaru at topuni","109021","nrc-00018",FALSE,"northland","nrc","rural","lowland",-36.20376405,174.49424394
 "mangakahia at twin bridges","109096","nrc-00009",FALSE,"northland","nrc","rural","lowland",-35.62991807,173.85405607
 "waimamaku at sh12","109098","nrc-00029",FALSE,"northland","nrc","rural","lowland",-35.55860768,173.44871601
 "otaika at otaika valley road","110431","nrc-00045",FALSE,"northland","nrc","rural","lowland",-35.77783168,174.27764197
-<<<<<<< HEAD
-=======
-"ngunguru at coalhill lane","110603","lawa-100668",FALSE,"northland","nrc","rural","lowland",-35.64242325,174.42564673
-"waitangi at wakelins","101752","nrwqn-00023",FALSE,"northland","nrc",NA,"unstated",-35.27724321,174.04755095
-"wairua at purua","101753","nrwqn-00022",FALSE,"northland","nrc","rural","lowland",-35.65281793,174.15189542
-"mangakahia at titoki","101038","nrwqn-00021",FALSE,"northland","nrc","rural","lowland",-35.73415795,174.05051642
->>>>>>> bdc1e29... Adding csvs to track them during patch
 "kakanui river at clifton falls br","Kakanui at Clifton Falls Bridge","orc-00115",FALSE,"otago","orc","rural","lowland",-45.03179169,170.75220051
 "lindsays creek at north rd bridge","Lindsays Creek at North Road Bridge","orc-00119",FALSE,"otago","orc","rural","lowland",-45.85174277,170.52383408
 "kye burn at sh85 bridge","Kye Burn at SH85 Bridge","orc-00098",FALSE,"otago","orc","rural","upland",-45.15003543,170.26123708
@@ -1003,41 +838,6 @@
 "la fontaine stm @ airstrip fishing access","La Fontaine Stm @ Airstrip Fishing Access","wcrc-00022",FALSE,"west coast","wcrc","rural","lowland",-43.06857049,170.51941215
 "la fontaine stm @ herepo fishing access","La Fontaine Stm @ Herepo Fishing Access","wcrc-00023",FALSE,"west coast","wcrc","rural","upland",-43.11252981,170.55326617
 "crooked rv @ te kinga","Crooked Rv @ Te Kinga","wcrc-00039",FALSE,"west coast","wcrc","forest","lowland",-42.60115919,171.49737356
-<<<<<<< HEAD
-"huriwai stm at waikaretu rd","24254","lawa-100274",FALSE,"waikato","wrc",NA,"Unstated",-37.4256792778972,174.74059580676
-"kaiwhitwhiti stm at tiverton downs farm","36681","lawa-100275",FALSE,"waikato","wrc",NA,"Unstated",-38.6125417639991,176.300813537907
-"kauaeranga river at upstream from road end","36774","lawa-100276",FALSE,"waikato","wrc",NA,"Unstated",-37.0615166312879,175.670536406031
-"kawaunui stm at sh5 br","36800","ew-00010",FALSE,"waikato","wrc","rural","upland",-38.382238370817,176.342556260567
-"kiritihere stm at mangatoa rd","36875","lawa-100277",FALSE,"waikato","wrc",NA,"Unstated",-38.3427841463226,174.736739444971
-"ohinemuri river at sh25 br","41011","ew-00050",FALSE,"waikato","wrc","rural","lowland",-37.3734378909694,175.866745259212
-"omanawa stm trib at pirongia west road","41144","lawa-100301",FALSE,"waikato","wrc",NA,"Unstated",-38.0204400738274,175.059706369491
-"otautora stm at inside maungatautari enclosure","41386","lawa-100302",FALSE,"waikato","wrc",NA,"Unstated",-38.0594577804616,175.581246435247
-"parawai stm at ohautira rd","41556","lawa-100303",FALSE,"waikato","wrc",NA,"Unstated",-37.800029009408,174.976406409872
-"piako river at kiwitahi","41630","ew-00057",FALSE,"waikato","wrc","rural","lowland",-37.7021524500451,175.60415968722
-"piakonui stm trib at piakonui road doc estate","41673","lawa-100304",FALSE,"waikato","wrc",NA,"Unstated",-37.8106268389688,175.634090210622
-"pohomihi stm at above water intake consented site mpdc","41715","lawa-100305",FALSE,"waikato","wrc",NA,"Unstated",-37.561200941171,175.774162863121
-"pokaiwhenua stm at puketurua","41766","ew-00060",FALSE,"waikato","wrc","rural","lowland",-38.0579166582422,175.722546791127
-"purangirangi stm at oamaru road","41919","lawa-100306",FALSE,"waikato","wrc",NA,"Unstated",-38.1369790277293,175.051763746799
-"tapu river at tapu-coroglen rd","42385","ew-00066",FALSE,"waikato","wrc","forest","lowland",-36.9815869379655,175.505094549805
-"tawarau river at speedies rd","42486","lawa-100307",FALSE,"waikato","wrc",NA,"Unstated",-38.2655740361686,174.846477594993
-"tawatawa stm at niwa site 9 sh25","42487","lawa-100651",FALSE,"waikato","wrc",NA,"Unstated",-37.1236561952799,175.848670307482
-"te rekereke stm at karioi at papanui","42598","lawa-100308",FALSE,"waikato","wrc",NA,"Unstated",-37.8688932431121,174.769980799636
-"toenepi stm at tahuroa rd","42673","lawa-100309",FALSE,"waikato","wrc",NA,"Unstated",-37.7044684662726,175.550595114482
-"tongariro river trib at off tree trunk gorge road","42725","lawa-100310",FALSE,"waikato","wrc",NA,"Unstated",-39.1669777899325,175.808451877147
-=======
-"waitoa river at landsdowne rd br","44331","ew-00101",FALSE,"waikato","wrc","rural","lowland",-37.7653456084661,175.741164634185
-"waitoki stm at rawhiti rd","44354","lawa-100320",FALSE,"waikato","wrc",NA,"Unstated",-37.4695041119694,175.683003133566
-"waitomo stm at tumutumu rd","44388","lawa-100321",FALSE,"waikato","wrc",NA,"Unstated",-38.2608472898099,175.092570341332
-"waitomo stm at waitomo valley rd","44395","lawa-100322",FALSE,"waikato","wrc",NA,"Unstated",-38.1882513846067,175.182251133453
-"waiwawa river at u/s toranoho stm","44406","lawa-100323",FALSE,"waikato","wrc",NA,"Unstated",-36.9537367041484,175.654470403411
-"waiwhata stm at 4.3 km from sh27 on ohinewai road","44412","lawa-100324",FALSE,"waikato","wrc",NA,"Unstated",-37.3974761919448,175.393614400794
-"whakakai stm at whatawhata research station","44508","lawa-100325",FALSE,"waikato","wrc",NA,"Unstated",-37.7775845317888,175.070590619384
-"whakarautawa stm at mangati rd","44557","lawa-100326",FALSE,"waikato","wrc",NA,"Unstated",-38.0505014197103,175.108525341799
-"whangamata stm (kinloch) at whangamata stm mouth","44658","lawa-100327",FALSE,"waikato","wrc",NA,"Unstated",-38.6595205389214,175.913581299136
-"wharekawa river at u/s adams farm br","44754","lawa-100328",FALSE,"waikato","wrc",NA,"Unstated",-37.1442676906498,175.837286711142
-"whirinaki stm at corbett rd","44845","ew-00118",FALSE,"waikato","wrc","rural","upland",-38.3030801759577,176.265152969159
-"mystery creek stm at bardoul farm 123 kaipaki rd","453228","lawa-100300",FALSE,"waikato","wrc",NA,"Unstated",-37.8950491670711,175.320857808092
->>>>>>> bdc1e29... Adding csvs to track them during patch
 "mangahoanga stm (moerangi) at moerangi rd","37656","lawa-100278",FALSE,"waikato","wrc",NA,"Unstated",-38.0294890685888,174.944289328358
 "mangakara stm (pirongia) at bushline","37694","lawa-100279",FALSE,"waikato","wrc",NA,"Unstated",-37.9655315999646,175.151383495354
 "mangakotukutuku stm (rukuhia) at peacockes rd","37768","ew-00020",FALSE,"waikato","wrc","rural","lowland",-37.8117970730327,175.300494505438
@@ -1063,17 +863,6 @@
 "matatoki stm at matatoki rd","38622","lawa-100298",FALSE,"waikato","wrc",NA,"Unstated",-37.2134731200154,175.601984249473
 "mokaihaha stm at galaxy road upstream of road","40708","lawa-100299",FALSE,"waikato","wrc",NA,"Unstated",-38.1757870319348,176.022568722692
 "mokau river at totoro rd recorder","40720","ew-00045",FALSE,"waikato","wrc","forest","lowland",-38.5708641167244,174.902704995384
-<<<<<<< HEAD
-"ahirau stm coromandel at port charles rd 2.5 km from colville rd","14328","lawa-100268",FALSE,"waikato","wrc",NA,"Unstated",-36.5863804980072,175.468351104224
-"apakura stm at puriri valley rd","14371","lawa-100269",FALSE,"waikato","wrc",NA,"Unstated",-37.2173934707226,175.66915183619
-"awakino river at gribbon road","14400","lawa-100270",FALSE,"waikato","wrc",NA,"Unstated",-38.5241241994371,174.799579557304
-"awaroa river (kawhia hbr) at hauturu road bridge","14406","lawa-100271",FALSE,"waikato","wrc",NA,"Unstated",-38.1486001751495,174.941205971543
-"bankwood stm at emerald tce","14487","lawa-100272",FALSE,"waikato","wrc",NA,"Unstated",-37.7575656268786,175.273150143883
-"firewood creek trib at off walkway 2nd bridge on doc track","23978","lawa-100273",FALSE,"waikato","wrc",NA,"Unstated",-37.6836181729034,175.121281120795
-"gumdigger gully at niwa report 14","24062","lawa-100652",FALSE,"waikato","wrc",NA,"Unstated",-37.0445773751247,175.846261119163
-"wahitapu stm at niwa site 8 ohui rd","42984","lawa-100653",FALSE,"waikato","wrc",NA,"Unstated",-37.0769560870451,175.861552528096
-"torehape stm at torehape west rd","42756","lawa-100311",FALSE,"waikato","wrc",NA,"Unstated",-37.3583172002468,175.385731261756
-=======
 "ohinemuri river at sh25 br","41011","ew-00050",FALSE,"waikato","wrc","rural","lowland",-37.3734378909694,175.866745259212
 "omanawa stm trib at pirongia west road","41144","lawa-100301",FALSE,"waikato","wrc",NA,"Unstated",-38.0204400738274,175.059706369491
 "otautora stm at inside maungatautari enclosure","41386","lawa-100302",FALSE,"waikato","wrc",NA,"Unstated",-38.0594577804616,175.581246435247
@@ -1091,7 +880,6 @@
 "tongariro river trib at off tree trunk gorge road","42725","lawa-100310",FALSE,"waikato","wrc",NA,"Unstated",-39.1669777899325,175.808451877147
 "torehape stm at torehape west rd","42756","lawa-100311",FALSE,"waikato","wrc",NA,"Unstated",-37.3583172002468,175.385731261756
 "wahitapu stm at niwa site 8 ohui rd","42984","lawa-100653",FALSE,"waikato","wrc",NA,"Unstated",-37.0769560870451,175.861552528096
->>>>>>> bdc1e29... Adding csvs to track them during patch
 "waikato river trib at unnamed trib at river rd just south kay","43614","lawa-100314",FALSE,"waikato","wrc",NA,"Unstated",-37.7206081291621,175.229828682683
 "waikato river trib at unnamed trib at lake road","43615","lawa-100312",FALSE,"waikato","wrc",NA,"Unstated",-37.6913888781156,175.206555856986
 "waikato river trib at unnamed trib at river rd sth patterson","43616","lawa-100313",FALSE,"waikato","wrc",NA,"Unstated",-37.7031906508541,175.219699772313
@@ -1100,121 +888,5 @@
 "waimakariri stm at off end of waimakariri rd","43744","lawa-100317",FALSE,"waikato","wrc",NA,"Unstated",-38.0106020695938,175.862862598732
 "wainui stm (raglan) at wainui reserve bridge","43787","lawa-100318",FALSE,"waikato","wrc",NA,"Unstated",-37.815346091903,174.84036022048
 "waiomou stm at waiomou rd","43807","lawa-100319",FALSE,"waikato","wrc",NA,"Unstated",-37.9399673154337,175.841482372112
-<<<<<<< HEAD
-"waitoa river at landsdowne rd br","44331","ew-00101",FALSE,"waikato","wrc","rural","lowland",-37.7653456084661,175.741164634185
-"waitoki stm at rawhiti rd","44354","lawa-100320",FALSE,"waikato","wrc",NA,"Unstated",-37.4695041119694,175.683003133566
-"waitomo stm at tumutumu rd","44388","lawa-100321",FALSE,"waikato","wrc",NA,"Unstated",-38.2608472898099,175.092570341332
-"waitomo stm at waitomo valley rd","44395","lawa-100322",FALSE,"waikato","wrc",NA,"Unstated",-38.1882513846067,175.182251133453
-"waiwawa river at u/s toranoho stm","44406","lawa-100323",FALSE,"waikato","wrc",NA,"Unstated",-36.9537367041484,175.654470403411
-"waiwhata stm at 4.3 km from sh27 on ohinewai road","44412","lawa-100324",FALSE,"waikato","wrc",NA,"Unstated",-37.3974761919448,175.393614400794
-"whakakai stm at whatawhata research station","44508","lawa-100325",FALSE,"waikato","wrc",NA,"Unstated",-37.7775845317888,175.070590619384
-"whakarautawa stm at mangati rd","44557","lawa-100326",FALSE,"waikato","wrc",NA,"Unstated",-38.0505014197103,175.108525341799
-"whangamata stm (kinloch) at whangamata stm mouth","44658","lawa-100327",FALSE,"waikato","wrc",NA,"Unstated",-38.6595205389214,175.913581299136
-"wharekawa river at u/s adams farm br","44754","lawa-100328",FALSE,"waikato","wrc",NA,"Unstated",-37.1442676906498,175.837286711142
-"whirinaki stm at corbett rd","44845","ew-00118",FALSE,"waikato","wrc","rural","upland",-38.3030801759577,176.265152969159
-"mystery creek stm at bardoul farm 123 kaipaki rd","453228","lawa-100300",FALSE,"waikato","wrc",NA,"Unstated",-37.8950491670711,175.320857808092
-"whanganui at wades landing","Whanganui at Wades Landing","hrc-00061",FALSE,"wanganui manawatu","hrc","rural","lowland",-39.11164,175.06128
-"whanganui at te maire","Whanganui at Te Maire","hrc-00062",FALSE,"wanganui manawatu","hrc","forest","upland",-38.94251,175.18891
-"whanganui at pipiriki","Whanganui at Pipiriki","hrc-00060",FALSE,"wanganui manawatu","hrc","forest","lowland",-39.47961,175.04452
-"whanganui at cherry grove","Whanganui at Cherry Grove","hrc-00063",FALSE,"wanganui manawatu","hrc","forest","upland",-38.89163,175.25534
-"waikawa at u/s manakau confluence","Waikawa at u/s Manakau Confluence","lawa-101961",FALSE,"wanganui manawatu","hrc",NA,"lowland",-40.6915846799999,175.1833456
-"waikawa at north manakau road","Waikawa at North Manakau Road","hrc-00056",FALSE,"wanganui manawatu","hrc","forest","lowland",-40.7077399999999,175.23359
-"waikawa stream at huritini","Waikawa at Huritini","hrc-00057",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.68652,175.16542
-"turitea at no1 dairy","Turitea at No1 Dairy","hrc-00353",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.38548,175.60685
-"turakina at oneills bridge","Turakina at ONeills Bridge","hrc-00055",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.02572,175.23333
-"tokomaru river at horseshoe bend","Tokomaru River at Horseshoe bend","hrc-00054",FALSE,"wanganui manawatu","hrc","forest","lowland",-40.48729,175.52598
-"tokiahuru at karioi","Tokiahuru at Karioi Domain Road","hrc-00352",FALSE,"wanganui manawatu","hrc",NA,"Unstated",-39.4761599999999,175.50356
-"tiraumea at ngaturi","Tiraumea at Ngaturi","hrc-00050",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.4671099999999,175.92279
-"tamaki at tamaki reserve","Tamaki at Tamaki Reserve","hrc-00049",FALSE,"wanganui manawatu","hrc","forest","upland",-40.12272,176.03354
-"tamaki at stephensons","Tamaki at Stephensons","hrc-00048",FALSE,"wanganui manawatu","hrc","rural","upland",-40.24535,176.06491
-"raparapawai at jackson rd","Raparapawai at Jackson Rd","hrc-00047",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.32287,175.99543
-"rangitikei at pukeokahu","Rangitikei at Pukeokahu","hrc-00046",FALSE,"wanganui manawatu","hrc","forest","upland",-39.62765,176.04425
-"rangitikei at onepuhi","Rangitikei at Onepuhi","hrc-00044",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.0795699999999,175.46384
-"rangitikei at mckelvies","Rangitikei at McKelvies","hrc-00043",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.29556,175.27557
-"rangitikei at mangaweka","Rangitikei at Mangaweka","hrc-00045",FALSE,"wanganui manawatu","hrc","rural","upland",-39.8094199999999,175.80811
-"porewa at onepuhi","Porewa at Onepuhi Road","hrc-00042",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.0770899999999,175.45319
-"pohangina at piripiri","Pohangina at Piripiri","hrc-00041",FALSE,"wanganui manawatu","hrc","forest","upland",-40.05216,175.94009
-"pohangina at mais reach","Pohangina at Mais Reach","hrc-00040",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.22457,175.783
-"patiki stream at kawiu road","Patiki Stream at Kawiu Road","hrc-00039",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.60803,175.27923
-"owahanga at branscombe bridge","Owahanga at Branscombe Bridge","hrc-00038",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.6307899999999,176.30245
-"oruakeretaki at s.h.2 napier","Oruakeretaki at S.H.2 Napier","hrc-00037",FALSE,"wanganui manawatu","hrc","rural","upland",-40.2534199999999,176.03234
-"oroua at u/s feilding stp","Oroua at U/S Feilding STP","hrc-00079",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.26253,175.54461
-"oroua at d/s feilding stp","Oroua at d/s Feilding STP","lawa-101949",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.2634951799999,175.5411179
-"oroua at awahuri bridge","Oroua at Awahuri Bridge","hrc-00034",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.27565,175.52158
-"oroua at apiti gorge bridge","Oroua at Apiti","hrc-00036",FALSE,"wanganui manawatu","hrc","forest","upland",-39.93807,175.9258
-"oroua at almadale slackline","Oroua at Almadale Slackline","hrc-00035",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.1734099999999,175.6599
-"ongarue at taringamotu","Ongarue at Taringamotu","hrc-00033",FALSE,"wanganui manawatu","hrc","rural","upland",-38.8622299999999,175.23823
-"ohau at u/s makahika confluence","Ohau at u/s Makahika Confluence","lawa-101947",FALSE,"wanganui manawatu","hrc",NA,"lowland",-40.6547545,175.360762
-"ohau at state highway bridge","Ohau at State Highway Bridge","lawa-100544",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.67066046,175.2406431
-"ohau at haines property","Ohau at Haines Property","hrc-00031",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.6642899999999,175.19784
-"ohau at gladstone reserve","Ohau at Gladstone Reserve","hrc-00030",FALSE,"wanganui manawatu","hrc","forest","lowland",-40.66335,175.3374
-"mangawhero at u/s ohakune stp","Mangawhero at u/s Ohakune STP","hrc-00064",FALSE,"wanganui manawatu","hrc","rural","upland",-39.40901,175.38394
-"mangawhero at raupiu road","Mangawhero at Raupiu Road","hrc-00027",FALSE,"wanganui manawatu","hrc","rural","lowland",-39.70028,175.33113
-"mangawhero at pakihi rd bridge","Mangawhero at Pakihi Rd Bridge","hrc-00028",FALSE,"wanganui manawatu","hrc","rural","upland",-39.431,175.32311
-"mangawhero at doc headquarters","Mangawhero at DOC Headquarters","hrc-00029",FALSE,"wanganui manawatu","hrc","forest","upland",-39.4016999999999,175.41228
-"mangawhero at d/s ohakune stp","Mangawhero at d/s Ohakune STP","lawa-101944",FALSE,"wanganui manawatu","hrc","rural","upland",-39.40812617,175.3827436
-"mangatoro at mangahei road","Mangatoro at Mangahei Road","hrc-00026",FALSE,"wanganui manawatu","hrc","rural","upland",-40.24468,176.18953
-"mangatewainui at hardys","Mangatewainui at Hardys","hrc-00351",FALSE,"wanganui manawatu","hrc","rural","upland",-40.16978,176.19306
-"mangatera at u/s manawatu confluence","Mangatera at u/s Manawatu confluence","hrc-00025",FALSE,"wanganui manawatu","hrc","rural","upland",-40.24085,176.0988
-"mangatera at dannevirke","Mangatera at Dannevirke","hrc-00075",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.22455,176.10159
-"mangatera at d/s dannevirke stp","Mangatera at d/s Dannevirke STP","lawa-101942",FALSE,"wanganui manawatu","hrc","rural","upland",-40.22644299,176.1017423
-"mangatainoka at u/s tiraumea confluence","Mangatainoka at u/s Tiraumea Confluence","hrc-00344",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.4026299999999,175.88269
-"mangatainoka at u/s pahiatua stp","Mangatainoka at u/s Pahiatua STP","hrc-00083",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.4394399999999,175.84022
-"mangatainoka at scarborough konini rd","Mangatainoka at Scarborough Konini Rd","hrc-00343",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.4756599999999,175.79573
-"mangatainoka at putara","Mangatainoka at Putara","hrc-00021",FALSE,"wanganui manawatu","hrc","forest","upland",-40.6805199999999,175.54746
-"mangatainoka at pahiatua town bridge","Mangatainoka at Pahiatua Town Bridge","hrc-00023",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.4495699999999,175.83121
-"mangatainoka at larsons road","Mangatainoka at Larsons Road","hrc-00022",FALSE,"wanganui manawatu","hrc","forest","upland",-40.6403599999999,175.61099
-"mangatainoka at hukanui","Mangatainoka at Hukanui","hrc-00350",FALSE,"wanganui manawatu","hrc",NA,"Unstated",-40.5659499999999,175.71206
-"mangatainoka at d/s pahiatua stp","Mangatainoka at d/s Pahiatua STP","lawa-101941",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.43847492,175.8425347
-"mangatainoka at d/s db breweries","Mangatainoka at d/s DB Breweries","lawa-101940",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.41887136,175.870005
-"mangatainoka at brewery - s.h.2 bridge","Mangatainoka at Brewery - S.H.2 Bridge","hrc-00024",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.42268,175.86191
-"mangapapa at troup rd","Mangapapa at Troup Rd","hrc-00020",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.3419299999999,175.84788
-"manganui o te ao at ashworth","Manganui o te Ao at Ashworth","hrc-00349",FALSE,"wanganui manawatu","hrc",NA,"Unstated",-39.3098699999999,175.20645
-"mangahao at ballance","Mangahao at Ballance","hrc-00019",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.43611,175.79173
-"mangaatua at u/s woodville stp","Mangaatua at u/s Woodville STP","hrc-00076",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.34449,175.85389
-"mangaatua at d/s woodville stp","Mangaatua at d/s Woodville STP","lawa-101933",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.3445402999999,175.8515346
-"manawatu at weber road","Manawatu at Weber Road","hrc-00018",FALSE,"wanganui manawatu","hrc","rural","upland",-40.23947,176.11638
-"manawatu at upper gorge","Manawatu at Upper Gorge","hrc-00017",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.33185,175.81803
-"manawatu at u/s pncc stp","Manawatu at u/s PNCC STP","hrc-00080",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.38783,175.58234
-"manawatu at teachers college","Manawatu at Teachers College","hrc-00015",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.3732899999999,175.62773
-"manawatu at opiki bridge","Manawatu at Opiki Br","hrc-00013",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.43535,175.46978
-"manawatu at hopelands","Manawatu at Hopelands","hrc-00016",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.3588599999999,175.96286
-"manawatu at d/s pncc stp","Manawatu at d/s PNCC STP","lawa-101931",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.3940074599999,175.5834723
-"manakau at s.h.1 bridge","Manakau at S.H.1 Bridge","hrc-00011",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.7243799999999,175.21165
-"manakau at cemetery","Manakau at Cemetery","lawa-101930",FALSE,"wanganui manawatu","hrc",NA,"lowland",-40.6906844599999,175.1833162
-"makuri at tuscan hills","Makuri at Tuscan Hills","hrc-00010",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.5236599999999,175.93115
-"makotuku at sh49a","Makotuku at SH49A","hrc-00009",FALSE,"wanganui manawatu","hrc","forest","upland",-39.3714899999999,175.32457
-"makotuku at raetihi","Makotuku at Raetihi","hrc-00007",FALSE,"wanganui manawatu","hrc","rural","upland",-39.4210199999999,175.2821
-"makotuku at d/s raetihi stp","Makotuku at d/s Raetihi STP","lawa-101929",FALSE,"wanganui manawatu","hrc","rural","upland",-39.4377831799999,175.2854268
-"makotuku at above sewage plant","Makotuku at Above Sewage Plant","hrc-00066",FALSE,"wanganui manawatu","hrc","rural","upland",-39.43825,175.28904
-"makorokio at tirohanga station","Makorokio at Tirohanga Station","lawa-101928",FALSE,"wanganui manawatu","hrc",NA,"lowland",-40.6913688499999,175.2874893
-"makaretu above ohau confluence","Makaretu Above Ohau Confluence","lawa-101926",FALSE,"wanganui manawatu","hrc",NA,"lowland",-40.66129648,175.3491642
-"makakahi at hamua","Makakahi at Hamua","hrc-00008",FALSE,"wanganui manawatu","hrc","rural","upland",-40.56517,175.74511
-"makakahi at end kaiparoro road","Makakahi at end Kaiparoro Road","hrc-00348",FALSE,"wanganui manawatu","hrc","forest","upland",-40.71343,175.60673
-"makahika above ohau confluence","Makahika Above Ohau Confluence","lawa-101924",FALSE,"wanganui manawatu","hrc",NA,"lowland",-40.65584762,175.3513385
-"kumeti at te rehunga","Kumeti at Te Rehunga","hrc-00006",FALSE,"wanganui manawatu","hrc","rural","upland",-40.21971,176.01202
-"kuku at n. johnstone farm bridge","Kuku at N. Johnstone Farm Bridge","lawa-101920",FALSE,"wanganui manawatu","hrc",NA,"lowland",-40.67330208,175.1969459
-"koputaroa at tavistock rd","Koputaroa at Tavistock Rd","hrc-00347",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.5966799999999,175.33744
-"kiwitea at kimbolton rd","Kiwitea at Kimbolton Rd","hrc-00346",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.2109,175.59674
-"kahuterawa at keebles farm","Kahuterawa at Keebles Farm","hrc-00345",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.39313,175.59101
-"kahuterawa at johnstons rata","Kahuterawa at Johnstons Rata","hrc-00005",FALSE,"wanganui manawatu","hrc","forest","lowland",-40.4490699999999,175.62164
-"hokio at lake horowhenua","Hokio at Lake Horowhenua","hrc-00004",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.605,175.23608
-"hautapu at us rangitikei river conf","Hautapu at US Rangitikei River Conf","hrc-00002",FALSE,"wanganui manawatu","hrc","rural","upland",-39.7537599999999,175.83617
-"hautapu at alabasters","Hautapu at Alabasters","hrc-00003",FALSE,"wanganui manawatu","hrc","rural","upland",-39.6568799999999,175.78086
-"arawhata drain at hokio beach road","Arawhata Drain at Hokio Beach Road","hrc-00001",FALSE,"wanganui manawatu","hrc","rural","lowland",-40.6219,175.24728
-=======
-"firewood creek trib at off walkway 2nd bridge on doc track","23978","lawa-100273",FALSE,"waikato","wrc",NA,"Unstated",-37.6836181729034,175.121281120795
-"gumdigger gully at niwa report 14","24062","lawa-100652",FALSE,"waikato","wrc",NA,"Unstated",-37.0445773751247,175.846261119163
-"huriwai stm at waikaretu rd","24254","lawa-100274",FALSE,"waikato","wrc",NA,"Unstated",-37.4256792778972,174.74059580676
-"kaiwhitwhiti stm at tiverton downs farm","36681","lawa-100275",FALSE,"waikato","wrc",NA,"Unstated",-38.6125417639991,176.300813537907
-"kauaeranga river at upstream from road end","36774","lawa-100276",FALSE,"waikato","wrc",NA,"Unstated",-37.0615166312879,175.670536406031
-"kawaunui stm at sh5 br","36800","ew-00010",FALSE,"waikato","wrc","rural","upland",-38.382238370817,176.342556260567
-"kiritihere stm at mangatoa rd","36875","lawa-100277",FALSE,"waikato","wrc",NA,"Unstated",-38.3427841463226,174.736739444971
-"ahirau stm coromandel at port charles rd 2.5 km from colville rd","14328","lawa-100268",FALSE,"waikato","wrc",NA,"Unstated",-36.5863804980072,175.468351104224
-"apakura stm at puriri valley rd","14371","lawa-100269",FALSE,"waikato","wrc",NA,"Unstated",-37.2173934707226,175.66915183619
-"awakino river at gribbon road","14400","lawa-100270",FALSE,"waikato","wrc",NA,"Unstated",-38.5241241994371,174.799579557304
-"awaroa river (kawhia hbr) at hauturu road bridge","14406","lawa-100271",FALSE,"waikato","wrc",NA,"Unstated",-38.1486001751495,174.941205971543
-"bankwood stm at emerald tce","14487","lawa-100272",FALSE,"waikato","wrc",NA,"Unstated",-37.7575656268786,175.273150143883
->>>>>>> bdc1e29... Adding csvs to track them during patch
 "Hakataramea River u/s SH82 bridge","SQ10067","ECAN-10004",FALSE,"canterbury","niwa","Rural","Upland",-44.7261003265148,170.490343900741
 "Waipapa @ Forest Ranger","103248","NRC-10008",FALSE,"northland","niwa","","",-35.2763146207668,173.684049395477

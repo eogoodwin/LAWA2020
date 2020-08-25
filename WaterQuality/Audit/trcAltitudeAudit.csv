@@ -1,4 +1,16 @@
 "Region","Agency","CouncilSiteID","SiteID","LawaSiteID","NZReach","Lat","Long","SWQAltitude","AltitudeCl","Altitude"
+"taranaki","trc","Mangaehu at Bridge","34309","trc-00001",6009244,-39.388696695389,174.46659514071,"unstated","Upland",169
+"taranaki","trc","Mangaoraka at Corbett Rd","39402","trc-00003",6002693,-39.0561874531992,174.185074587009,"unstated","Lowland",57
 "taranaki","trc","MGH000950","mangaehu river at raupuha rd bridge","trc-00001",6009244,-39.388696695389,174.46659514071,"lowland","Upland",169
 "taranaki","trc","MKW000300","maketawa stream at tarata rd.","trc-00002",6004420,-39.1553326474269,174.259022657298,"lowland","Upland",150
+"taranaki","trc","Patea at Skinner Rd","34308","trc-00005",6008066,-39.339535909765,174.345112058216,"unstated","Upland",237
+"taranaki","trc","Stony at Mangatete Bridge","38002","trc-00008",6005935,-39.2250290649146,173.896921086552,"unstated","Upland",311
+"taranaki","niwa","WA1","Waitara at Bertrand Rd (NRWQN) (WA1)","nrwqn-00036",6002533,-39.0479011535645,174.255065917969,"unstated","Lowland",42
+"taranaki","niwa","WA2","Manganui at SH3 (NRWQN) (WA2)","nrwqn-00035",6006922,-39.2811698913574,174.261764526367,"unstated","Upland",329
+"taranaki","niwa","WA3","Waingongoro at SH45 (NRWQN) (WA3)","trc-00010",6013024,-39.5763397216797,174.21028137207,"unstated","Lowland",69.5
+"taranaki","trc","Waingongoro at Eltham Rd","35004","trc-00009",6010234,-39.4290325603954,174.284754654696,"unstated","Upland",198.5
+"taranaki","trc","Waingongoro at SH45","35005","trc-00010",6013024,-39.5762833937108,174.210241450866,"unstated","Lowland",69.5
+"taranaki","trc","Waitara at Bertrand Rd","39503","nrwqn-00036",6002613,-39.0479013294817,174.255104112262,"unstated","Lowland",26
+"taranaki","trc","Waiwhakaiho at Egmont Village","39201","trc-00011",6004135,-39.1416070338834,174.137432765365,"unstated","Upland",187
+"taranaki","trc","Whenuakura at Nicholson Rd","34202","trc-00050",6015635,-39.7542575926025,174.549643012479,"unstated","Lowland",39
 "taranaki","trc","WTR000540","waitara at autawa road","lawa-100578",6004706,-39.167829909107,174.397395530163,"lowland","Upland",186

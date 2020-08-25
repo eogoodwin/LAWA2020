@@ -7,7 +7,8 @@ EndYear <- lubridate::isoyear(Sys.Date())-1    #2019
 source("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Scripts/SWQ_state_functions.R")
 source("h:/ericg/16666LAWA/LAWA2020/Scripts/LAWAFunctions.R")
 
-dir.create(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d")))
+dir.create(paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/", format(Sys.Date(),"%Y-%m-%d")),showWarnings = F)
+
 
 riverSiteTable=loadLatestSiteTableRiver()
 

@@ -32,8 +32,8 @@ require(RCurl)
 # Happy to discuss further.
 # Cheers,
 # PK
-bitAnd(1034,255)
-bitAnd(9426,255)
+bitops::bitAnd(1034,255)
+bitops::bitAnd(9426,255)
 
 setwd("H:/ericg/16666LAWA/LAWA2020/WaterQuality")
 agency='wrc'
@@ -43,7 +43,7 @@ Measurements=c(Measurements,'WQ Sample')
 
 siteTable=loadLatestSiteTableRiver()
 sites = unique(siteTable$CouncilSiteID[siteTable$Agency=='wrc'])
-
+if(exists('Data'))rm(Data)
 cat("SiteID\tMeasurementName\tSitesPct\tMeasuresPct\tRERIMP\tWARIMP\n")
 for(i in 1:length(sites)){
   cat('\n',sites[i],i,'out of',length(sites),'\n')
@@ -131,15 +131,12 @@ for(i in 1:length(sites)){
     time <- sapply(getNodeSet(doc=xmlfile, "//wml2:time"), xmlValue)
     #Create vector of  values
     value <- sapply(getNodeSet(doc=xmlfile, "//wml2:value"), xmlValue)
-    
     df <- data.frame(time=time,value=value, stringsAsFactors = FALSE)
     rm(time, value)
-    
-    
     df$Site <- sites[i]
     df$Measurement <- Measurements[j]
     df$Units <- xattrs_default[2]  ## xattrs_default vector contains (qualifier_default, unit, interpolationtype)
-    df <- df[,c(3,4,1,2,5)]
+    df <- df[,c(3,4,1,2,5)]  #site measurement time value units
     
     # merge in additional qualifiers, if present, from df_xattrs
     if(nrow(df_xattrs)!=0) {
@@ -288,6 +285,8 @@ while(i<=max){
   con$closeTag() # Measurement    
   
 }
+
+rm(Data)
 # saveXML(con$value(), file = paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/MetaData/",format(Sys.Date(),'%Y-%m-%d'),"/",agency,"SWQ.xml"))
 saveXML(con$value(), paste0("D:/LAWA/2020/",agency,"SWQ.xml"))
 file.copy(from=paste0("D:/LAWA/2020/",agency,"SWQ.xml"),

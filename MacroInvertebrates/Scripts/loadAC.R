@@ -17,6 +17,7 @@ agency='ac'
 # acmacros = readxl::read_xlsx("H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Data/ARC_LAWA_MCI_2020.xlsx",sheet='Sheet2',skip=1)
 acmacros = readxl::read_xlsx("H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Data/20200625_LAWA_MCI_AC edit2.xlsx",sheet='Sheet2',skip=3)
                              # 190703_LAWA_MCI_2020.xlsx",sheet='Sheet2',skip=1)
+acmacros$SiteID[acmacros$SiteID=="Avondale @ Shadbolt park"] <- "Avondale @ Shadbolt Park"
 acMacros <- acmacros%>%
   dplyr::select(LAWASiteID,SiteID,Date,"Selected MCI score","Taxonomic Richness","% EPT Richness","QualityCode")%>%
   dplyr::rename(LawaSiteID=LAWASiteID,
@@ -32,6 +33,39 @@ write.csv(acMacros,
           row.names=F)
 
  cat("AC MACROS DELIVERED BY SPREADSHEET")
+
+if(0){
+  acmissingsites=c(44030,8268,7548,6847,6990,8027,8026,8176,8128,8127,8217,6931)
+  acmissingsites=c(6931, 8026, 8027, 8127, 8128, 8217,108217)
+  
+acmissingLIDs = acmacros$LAWASiteID[match(acmissingsites,acmacros$CouncilSampleID)]
+acmissingCSIDs = acmacros$SiteID[match(acmissingsites,acmacros$CouncilSampleID)]
+
+ acmissingsites[acmissingsites%in%macroSiteTable$CouncilSiteID]
+ acmissingsites[!acmissingsites%in%macroSiteTable$CouncilSiteID]
+#Shows that some are in teh site table but not all
+ 
+ acmissingsites[acmissingsites%in%acmacros$CouncilSampleID]
+ acmissingsites[!acmissingsites%in%acmacros$CouncilSampleID]
+ #All are deivered
+ acmissingLIDs[acmissingLIDs%in%acMacros$LawaSiteID]
+ acmissingLIDs[!acmissingLIDs%in%acMacros$LawaSiteID]
+ #All are converted, ready for aggregation. Hmm.
+ acmissingLIDs[acmissingLIDs%in%acmac$LawaSiteID]
+ acmissingLIDs[!acmissingLIDs%in%acmac$LawaSiteID]
+ #THeyre all loaded at the aggregation point.
+ 
+ 
+ 
+ acmissingLIDs[tolower(acmissingLIDs)%in%tolower(macroData$LawaSiteID)]
+ acmissingLIDs[!tolower(acmissingLIDs)%in%tolower(macroData$LawaSiteID)]
+ 
+ acmissingCSIDs[tolower(acmissingCSIDs)%in%tolower(macroData$CouncilSiteID)]
+ acmissingCSIDs[!tolower(acmissingCSIDs)%in%tolower(macroData$CouncilSiteID)]
+ }
+
+ 
+ #
 # 
 # sites = unique(siteTable$CouncilSiteID[siteTable$Agency==agency])
 # 

@@ -126,6 +126,11 @@ for(i in 1:length(sites)){
     
   }
 }
+sapply(unique(as.numeric(Data$qualifier)),FUN=function(x)paste(sapply(strsplit(paste(rev(intToBits(x))),""),`[[`,2),collapse=""))
+sapply(unique(as.numeric(Data$qualifier)),FUN=function(x)bitwAnd(x,255))
+table(sapply(as.numeric(Data$qualifier),FUN=function(x)bitwAnd(x,255)))
+sapply(unique(as.numeric(Data$qualifier)),FUN=function(x)bitwAnd(x,2^13))
+sapply(unique(as.numeric(Data$qualifier)),FUN=function(x)bitwAnd(x,2^14))
 
 
 con <- xmlOutputDOM("Hilltop")

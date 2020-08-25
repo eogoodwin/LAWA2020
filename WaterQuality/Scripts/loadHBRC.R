@@ -22,6 +22,7 @@ sites = unique(siteTable$CouncilSiteID[siteTable$Agency==agency])
 
 con <- xmlOutputDOM("Hilltop")
 con$addTag("Agency", toupper(agency))
+if(exists("Data"))rm(Data)
 
 for(i in 1:length(sites)){
   cat('\n',sites[i],i,'out of ',length(sites),'\t')

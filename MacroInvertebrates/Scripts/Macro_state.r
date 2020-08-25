@@ -24,10 +24,11 @@ if(!exists('macroData')){
 }
 
 #Bay of Plenty 2017 squeeze it in
-year2017=read_csv("H:/ericg/16666Lawa/LAWA2020/MacroInvertebrates/Data/BOPRC_Data_for_LAWA_2017_2018.csv")%>%
-  drop_na(Aquarius)
-macroData$LawaSiteID[which(is.na(macroData$LawaSiteID))]=tolower(year2017$LAWA_ID[match(tolower(macroData$CouncilSiteID[which(is.na(macroData$LawaSiteID))]),
-                                                                                        tolower(year2017$Aquarius))])
+#Doesnt add data, and doesnt appear to be needed, for filling LawaSiteIDs as of 14/8/20
+# year2017=read_csv("H:/ericg/16666Lawa/LAWA2020/MacroInvertebrates/Data/BOPRC_Data_for_LAWA_2017_2018.csv")%>%
+#   drop_na(Aquarius)
+# macroData$LawaSiteID[which(is.na(macroData$LawaSiteID))]=tolower(year2017$LAWA_ID[match(tolower(macroData$CouncilSiteID[which(is.na(macroData$LawaSiteID))]),
+#                                                                                         tolower(year2017$Aquarius))])
 
 #Output the raw data for ITE
 #Output for ITE
@@ -49,7 +50,7 @@ macroData$month=lubridate::month(lubridate::dmy(macroData$Date))
 macroData$isoYear=lubridate::isoyear(lubridate::dmy(macroData$Date))
 macroData=macroData[which(macroData$isoYear>=startYear5 & macroData$isoYear<=EndYear),]
 
-#31614 to 9565 for startYear5 Jun23
+#49506 to 15576 for startYear5 Aug13
 
 
 macroMeas <- c("PercentageEPTTaxa", "TaxaRichness", "MCI") 
@@ -153,9 +154,9 @@ lawaMacroState5yr <- lawaMacroData%>%
   dplyr::summarise(Median=quantile(Value,prob=0.5,type=5,na.rm=T),n=n())%>%ungroup
 sum(lawaMacroState5yr$n>=3)
 sum(lawaMacroState5yr$n>=3)/dim(lawaMacroState5yr)[1]
-#0.94  1873 out of 1986
+#0.95  3010 out of 3161
 lawaMacroState5yr <- lawaMacroState5yr%>%filter(n>=3)
-#1986 to 1873
+#3161 to 3010
 
 # lawaMacroState5yr$period=5
 write.csv(lawaMacroState5yr%>%transmute(LAWAID=LawaSiteID,

@@ -5,7 +5,7 @@ source('H:/ericg/16666LAWA/LAWA2020/scripts/LAWAFunctions.R')
 source('K:/R_functions/nzmg2WGS.r')
 source('K:/R_functions/nztm2WGS.r')
 
-try(dir.create(paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/", format(Sys.Date(),"%Y-%m-%d"))))
+dir.create(paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/", format(Sys.Date(),"%Y-%m-%d")),showWarnings = F)
 
 siteTable=loadLatestSiteTableRiver()
 rownames(siteTable)=NULL
@@ -71,18 +71,18 @@ transfers=read.table("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Metadata/transfer
 ##############################################################################
 # agencies=c("ac","boprc","gdc","gwrc","hbrc")
 
-agencies=c("boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc") #"ac",
+agencies=c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc") 
 lawaset=c("NH4", "TURB","TURBFNU", "BDISC",  "DRP",  "ECOLI",  "TN",  "TP",  "TON",  "PH")
 transfers=read.table("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Metadata/transfers_plain_english_view.txt",
                      sep=',',header = T,stringsAsFactors = F)
-transfers$CallName[which(transfers$CallName=="Clarity (Black Disc Field)"&transfers$Agency=='es')] <- "Clarity (Black Disc, Field)"
+# transfers$CallName[which(transfers$CallName=="Clarity (Black Disc Field)"&transfers$Agency=='es')] <- "Clarity (Black Disc, Field)"
 
 workersB <- makeCluster(7)
 registerDoParallel(workersB)
 cc=clusterCall(workersB,function(){
   library(tidyverse)
   source('H:/ericg/16666LAWA/LAWA2020/scripts/LAWAFunctions.R')
-  agencies=c("boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc") #"ac",  ac downloaded in csv
+  agencies=c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc") 
   lawaset=c("NH4", "TURB", "BDISC",  "DRP",  "ECOLI",  "TN",  "TP",  "TON",  "PH")
   })
 startTime=Sys.time()
@@ -107,9 +107,11 @@ donexmltocsv=T
 
 #19 June 2020
 #Check agency and region count per file
- for(agency in c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc")){
-    checkCSVageRiver(agency = agency)
- }
+for(agency in c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc")){
+  checkXMLageRiver(agency)
+  checkCSVageRiver(agency = agency)
+}
+
    #   mfl=loadLatestCSVRiver(agency,maxHistory = 3,silent=T)
 #    cat(names(mfl),'\n')
 #   # print(knitr::kable(table(tolower(mfl$SiteName)==tolower(mfl$CouncilSiteID))))
@@ -296,14 +298,15 @@ foreach(agency =1:length(agencies),.combine = rbind,.errorhandling = 'stop')%dop
             #16/7/2020   1084848
             #24/7/2020   1102252
             #31/7/2020   1087519
+            #07/08/2020  1080963
+            #14/8/2020   1116097
 stopCluster(workers)
 rm(workers)
 
-Sys.time()-startTime  #22.1s
+Sys.time()-startTime  #28s
 
 donecombine=T
 
-# wqdata$Measurement[wqdata$Measurement=="Field Turb"] <- "TURBFNU"
 
 
  lawaset=c("NH4", "TURB","TURBFNU", "BDISC",  "DRP",  "ECOLI",  "TN",  "TP",  "TON",  "PH")
@@ -341,8 +344,6 @@ TRCextra$Measurement[TRCextra$Measurement=="Nitrite/nitrate nitrogen"] <- "TON"
 TRCextra$Measurement[TRCextra$Measurement=="pH"] <- "PH"
 TRCextra <- TRCextra%>%filter(Measurement%in%lawaset)
 
-
-
 TRCextra$NZReach=siteTable$NZReach[match(tolower(TRCextra$CouncilSiteID),tolower(siteTable$CouncilSiteID))]
 TRCextra$SWQAltitude=siteTable$SWQAltitude[match(tolower(TRCextra$CouncilSiteID),tolower(siteTable$CouncilSiteID))]
 TRCextra$SWQLanduse=siteTable$SWQLanduse[match(tolower(TRCextra$CouncilSiteID),tolower(siteTable$CouncilSiteID))]
@@ -359,7 +360,7 @@ rm(TRCextra)
 
 wqdata$Region[wqdata$Region=="horizons"] <- "manawatū-whanganui"
 
-table(wqdata$Agency,wqdata$QC==0)  #QC data in GWRC, HBRC, AC
+table(wqdata$Agency,wqdata$QC==0)  #QC data in GWRC, HBRC
 table(wqdata$Region)
 table(wqdata$Agency)
 #    ac  boprc   ecan     es    gdc   gwrc   hbrc    hrc    mdc    ncc   niwa    nrc    orc    tdc    trc   wcrc    wrc 
@@ -381,10 +382,22 @@ wqdata$Units = gsub(pattern = "meter",replacement = "m",x = wqdata$Units)
 wqdata$Units = gsub(pattern = "formazin nephelometric unit",replacement = "fnu",x = wqdata$Units)
 unique(wqdata$Units)
 
-write.csv(table(wqdata$Units,wqdata$Agency),'h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/2020-07-09/unitsagency.csv',row.names = F)
-write.csv(table(wqdata$Units,wqdata$Measurement),'h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/2020-07-09/unitsmeasurement.csv',row.names = F)
 table(wqdata$Units,wqdata$Agency)
 table(wqdata$Units,wqdata$Measurement)
+table(wqdata$Agency,wqdata$Measurement)
+table(wqdata$Agency[wqdata$Units=='ntu'&wqdata$Measurement=="TURBFNU"]) #TRC
+wqdata$Measurement[wqdata$Units=='ntu'&wqdata$Measurement=="TURBFNU"]<-"TURB"  #Switched in July 2019
+wqdata%>%filter(Agency=='trc')%>%select(Measurement,Units)%>%table
+wqdata%>%filter(Agency=='wcrc')%>%select(Measurement,Units)%>%table
+wqdata%>%filter(Agency=='orc')%>%select(Measurement,Units)%>%table
+wqdata%>%filter(Units=='fnu')%>%select(Agency,Measurement)%>%table
+wqdata%>%filter(Units=='')%>%select(Agency,Measurement)%>%table
+wqdata$Measurement[wqdata$Units=='fnu'&wqdata$Agency=='wcrc'] <- "TURBFNU"
+wqdata$Measurement[wqdata$Units=='fnu'] <- "TURBFNU"
+wqdata%>%filter(Measurement=="TURBFNU")%>%select(Agency,Units)%>%table
+
+write.csv(table(wqdata$Units,wqdata$Agency),'h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/2020-07-09/unitsagency.csv',row.names = F)
+write.csv(table(wqdata$Units,wqdata$Measurement),'h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/2020-07-09/unitsmeasurement.csv',row.names = F)
 
 
 wqdata$SWQLanduse[which(is.na(wqdata$SWQLanduse))] <- siteTable$SWQLanduse[match(wqdata$LawaSiteID[which(is.na(wqdata$SWQLanduse))],
@@ -400,8 +413,8 @@ wqdata$SWQAltitude=pseudo.titlecase(wqdata$SWQAltitude)
 table(wqdata$SWQLanduse,wqdata$SWQAltitude)
 
 
-wqdata$SiteID=trimws(wqdata$SiteID)
-wqdata$CouncilSiteID=trimws(wqdata$CouncilSiteID)
+wqdata$SiteID=trimws(tolower(wqdata$SiteID))
+wqdata$CouncilSiteID=trimws(tolower(wqdata$CouncilSiteID))
 wqdata$LawaSiteID=trimws(wqdata$LawaSiteID)
 # wqdata$SWQAltitude=tolower(wqdata$SWQAltitude)
 wqdata$Altitude=tolower(wqdata$Altitude)
@@ -415,7 +428,7 @@ wqdata$CenType[wqdata$CenType%in%c("R","Right")] <- "Right"
 
 wqdata=unique(wqdata)  #1117473  14Aug 1117289 21Aug 1117279
 
-wqdata%>%group_by(LawaSiteID)%>%
+wqdata%>%group_by(tolower(LawaSiteID))%>%
   dplyr::summarise(agCount=length(unique(Agency)),
                    ags=paste(unique(Agency),collapse=' '),
                    cid=paste(unique(CouncilSiteID),collapse=', '),
@@ -424,6 +437,17 @@ wqdata%>%group_by(LawaSiteID)%>%
   filter(agCount>1)%>%dplyr::select(-agCount)
 
 
+
+#Tag the sites that are under NIWA and under an agency
+wqdata%>%group_by(tolower(LawaSiteID))%>%
+  dplyr::summarise(agCount=length(unique(Agency)),
+                   ags=paste(unique(Agency),collapse=' '),
+                   cid=paste(unique(CouncilSiteID),collapse=', '))%>%
+  ungroup%>%
+  filter(agCount>1)%>%dplyr::select(`tolower(LawaSiteID)`)%>%unlist%>%unname->dupSites
+
+wqdata$LawaSiteID[wqdata$LawaSiteID%in%dupSites&wqdata$Agency=='niwa'] <- 
+  paste0(wqdata$LawaSiteID[wqdata$LawaSiteID%in%dupSites&wqdata$Agency=='niwa'],"_NIWA")
 
 #855695 July8 2019
 #932548 July17 2019

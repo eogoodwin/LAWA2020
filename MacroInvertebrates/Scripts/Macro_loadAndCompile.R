@@ -8,21 +8,21 @@ try(shell(paste('mkdir "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Data/"',f
 
 
 
-scriptsToRun = c("H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadAC.R",
+scriptsToRun = c("H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadAC.R", #1
   "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadBOP.R",
   "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadECAN.R",
   "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadES.R",
-  "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadGDC.R",
+  "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadGDC.R",              #5
   "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadGWRC.R",
   "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadHBRC.R",
   "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadHRC.R",
   "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadMDC.R",
-  "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadNCC.R",
+  "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadNCC.R",        #10
   "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadNIWA.R",
   "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadNRC.R",
   "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadORC.R",
   "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadTDC.R",
-  "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadTRC.R",
+  "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadTRC.R",         #15
   "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadWCRC.R",
   "H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Scripts/loadWRC.R")
 agencies = c('ac','boprc','ecan','es','gdc','gwrc','hbrc','hrc','mdc','ncc','nrc','orc','tdc','trc','wcrc','wrc')
@@ -40,6 +40,11 @@ rm(workers)
 cat("Done load\n")
 
 
+for(agency in agencies){
+  checkXMLageMacro(agency)
+  checkCSVageMacros(agency)
+}
+
 
 #XML 2 CSV for MACROS ####
 lawaset=c("TaxaRichness","MCI","PercentageEPTTaxa")
@@ -55,7 +60,7 @@ for(agency in c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","
   }
   forcsv$Measurement[grepl(pattern = 'Taxa',x = forcsv$Measurement,ignore.case = T)&
                      !grepl('EPT',forcsv$Measurement,ignore.case = F)] <- "TaxaRichness"
-  forcsv$Measurement[grepl(pattern = 'MCI|ate community ind',x = forcsv$Measurement,ignore.case = T)] <- "MCI"
+  forcsv$Measurement[grepl(pattern = 'MCI|ate( community)* ind',x = forcsv$Measurement,ignore.case = T)] <- "MCI"
   forcsv$Measurement[grepl(pattern = 'EPT',x = forcsv$Measurement,ignore.case = T)] <- "PercentageEPTTaxa"
   forcsv$Measurement[grepl(pattern = 'Rich',x = forcsv$Measurement,ignore.case = T)] <- "TaxaRichness"
   excess=unique(forcsv$Measurement)[!unique(forcsv$Measurement)%in%lawaset]
@@ -77,6 +82,7 @@ browser()
 #                                 *****
 ##############################################################################
 #Build the combo ####
+startTime=Sys.time()
 if(exists('macroData')){rm(macroData)}
 siteTable=loadLatestSiteTableMacro()
 rownames(siteTable)=NULL
@@ -186,10 +192,12 @@ acmac=loadLatestCSVmacro(agency = 'ac')%>%select(-QC)
 acmac$Measurement[acmac$Measurement=="% EPT Richness"] <- "PercentageEPTTaxa"
 acmac$Measurement[acmac$Measurement=="Total Richness"] <- "TaxaRichness"
 acmac$Value[acmac$Measurement=="PercentageEPTTaxa"]=acmac$Value[acmac$Measurement=="PercentageEPTTaxa"]*100
-macroData=rbind(macroData[,names(acmac)],acmac) #72571
+macroData=rbind(macroData[,names(acmac)],acmac) #77790
+
 
 niwamac = loadLatestCSVmacro(agency='niwa')
-niwamac$Measurement[niwamac$Measurement=="ntaxa"] <- "TaxaRichness"
+niwamac$LawaSiteID=tolower(niwamac$LawaSiteID)
+# niwamac$Measurement[niwamac$Measurement=="ntaxa"] <- "TaxaRichness"
 macroData=rbind(macroData,niwamac)
 #80385
 #83007
@@ -204,13 +212,27 @@ rm(acmac,niwamac)
 
 macroData$Year = lubridate::isoyear(lubridate::dmy(macroData$Date))
 
+#Audit the sites that are under NIWA and under an agency
+macroData%>%group_by(tolower(LawaSiteID))%>%
+  dplyr::summarise(agCount=length(unique(Agency)),
+                   ags=paste(unique(Agency),collapse=' '),
+                   cid=paste(unique(CouncilSiteID),collapse=', '))%>%
+  ungroup%>%
+  filter(agCount>1)%>%dplyr::select(-agCount)%>%arrange(`tolower(LawaSiteID)`)%>%as.data.frame->dupData
 
 macroData%>%group_by(tolower(LawaSiteID))%>%
   dplyr::summarise(agCount=length(unique(Agency)),
                    ags=paste(unique(Agency),collapse=' '),
                    cid=paste(unique(CouncilSiteID),collapse=', '))%>%
   ungroup%>%
-  filter(agCount>1)%>%dplyr::select(-agCount)
+  filter(agCount>1)%>%dplyr::select(`tolower(LawaSiteID)`)%>%unlist%>%unname->dupSites
+
+
+
+macroData$LawaSiteID[macroData$LawaSiteID%in%dupSites&macroData$Agency=='niwa'] <- 
+  paste0(macroData$LawaSiteID[macroData$LawaSiteID%in%dupSites&macroData$Agency=='niwa'],"_NIWA")
+
+
 #Let's check this.
 # ebop223=macroData%>%filter(grepl("ebop-00223",LawaSiteID,T))
 # plot(dmy(ebop223$Date),ebop223$Value,pch=as.numeric(factor(ebop223$Measurement)),col=as.numeric(factor(ebop223$Agency)))

@@ -1,4 +1,6 @@
 "Region","Agency","CouncilSiteID","SiteID","LawaSiteID","NZReach","Lat","Long","SWQAltitude","AltitudeCl","Altitude"
+"gisborne","niwa","GS1","Waipaoa at Kanakanaia (NRWQN) (GS1)","gdc-00027",5010399,-38.4685478210449,177.881820678711,"unstated","Upland",177
+"gisborne","gdc","Ihungia River at Ihungia Rd Br","ihungia river at ihungia rd br","gdc-00005",5004508,-38.04691689,178.1766513,"unstated","Upland",220
 "gisborne","gdc","Mangaoporo River at Tutumatai Bridge","mangaoporo river at tutumatai bridge","gdc-00009",5002342,-37.83774273,178.29385929,"lowland","Upland",302
 "gisborne","gdc","Mangatu River at Omapere Station","mangatu river at omapere station","gdc-00010",5008473,-38.37861727,177.79314223,"lowland","Upland",186.5
 "gisborne","gdc","Mangatutu Str at Sh35-Waipahuru Bridge","mangatutu str at sh35-waipahuru bridge","lawa-100336",5000205,-37.59944782,178.26023485,"lowland","Upland",198

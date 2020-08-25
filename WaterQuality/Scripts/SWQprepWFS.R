@@ -7,9 +7,17 @@ source("H:/ericg/16666LAWA/LAWA2020/scripts/LAWAFunctions.R")
 source('K:/R_functions/nzmg2WGS.r')
 source('K:/R_functions/nztm2WGS.r')
 
-try(shell(paste('mkdir "H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/"',format(Sys.Date(),"%Y-%m-%d"),sep=""), translate=TRUE),silent = TRUE)
+# https://www.lawa.org.nz/media/18225/nrwqn-monitoring-sites-sheet1-sheet1.pdf
+
+dir.create(paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/", format(Sys.Date(),"%Y-%m-%d")),showWarnings = F)
 
 urls          <- read.csv("H:/ericg/16666LAWA/LAWA2020/Metadata/CouncilWFS.csv",stringsAsFactors=FALSE)
+
+if(0){
+  if(HRCsWFSisMisBehaving){
+    urls$URL[8] <- "H:\\ericg\\16666LAWA\\LAWA2020\\WaterQuality\\Data\\2020-07-31\\HRC_WFS.xml"
+  }
+}
 
 #The first on the list prioritises the ID to be used and match every else to it.
 vars <- c("CouncilSiteID","SiteID","LawaSiteID","NZReach","Region","Agency","SWQAltitude","SWQLanduse","Catchment")
@@ -191,7 +199,7 @@ foreach(h = 1:length(urls$URL),.combine = rbind,.errorhandling = "stop")%dopar%{
 stopCluster(workers)
 rm(workers)
 
-Sys.time()-startTime  #1.7 minutes
+Sys.time()-startTime  #20s
 
 siteTable$SiteID=as.character(siteTable$SiteID)
 siteTable$LawaSiteID=as.character(siteTable$LawaSiteID)
@@ -346,17 +354,13 @@ table(siteTable$Agency)
 siteTable$Agency[siteTable$Agency%in%c('arc','auckland','auckland council')] <- 'ac'
 siteTable$Agency[siteTable$Agency=='christchurch'] <- 'ecan'
 siteTable$Agency[siteTable$Agency=='environment canterbury'] <- 'ecan'
+siteTable$Agency[siteTable$Agency%in%c('boprc/niwa','niwa/boprc')] <- 'boprc'
 table(siteTable$Agency)
 
 agencies= c("ac","boprc","ecan","es","gdc","gwrc","hbrc","hrc","mdc","ncc","niwa","nrc","orc","tdc","trc","wcrc","wrc")
-agencies[!agencies%in%siteTable$Agency]
+(agencies[!agencies%in%siteTable$Agency]->missingAgencies)
+unique(siteTable$Agency[!siteTable$Agency%in%agencies])
 
-if(!'hrc'%in%unique(siteTable$Agency)){  #actually if you need to pull sites in from an old WFS sesh, like if one of them doesn respond
-  oldsiteTable = read.csv("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/2020-07-29/SiteTable_River29Jul20.csv",stringsAsFactors = F)
-  hrcs=oldsiteTable%>%filter(Agency=='hrc')
-  siteTable = rbind(siteTable,hrcs[,1:12])
-rm(hrcs,oldsiteTable)
-  }
 
 
 ## Changing BOP Site names that use extended characters
@@ -450,6 +454,19 @@ for(st in st:dim(siteTable)[1]){
 }
 # table(siteTable$StreamOrder,siteTable$Order)
 
+siteTable <- siteTable%>%select(-StreamOrder,-Order)
+
+
+if(!all(agencies%in%unique(siteTable$Agency))){  #actually if you need to pull sites in from an old WFS sesh, like if one of them doesn respond
+  oldsiteTable = read.csv("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/2020-07-29/SiteTable_River29Jul20.csv",stringsAsFactors = F)
+  missingCouncils = agencies[!agencies%in%unique(siteTable$Agency)]
+  oldsiteTable=oldsiteTable%>%filter(Agency%in%missingCouncils)
+  if(dim(oldsiteTable)[1]>0){
+    siteTable = rbind(siteTable,oldsiteTable[,names(siteTable)])
+  }
+  rm(oldsiteTable)
+}
+
 # write.csv(siteTable,'h:/ericg/16666LAWA/LAWA2020/WaterQuality/Metadata/SiteTableRawLandUse.csv',row.names=F)
 
 #Categorise landcover and altitude
@@ -516,7 +533,7 @@ siteTable$SWQLanduse[is.na(siteTable$SWQLanduse)]=siteTable$Landcover[is.na(site
 # siteTable$CouncilSiteID = gsub(pattern = 'Dipton Rd',replacement = "Dipton Road",x = siteTable$CouncilSiteID)
 # siteTable$CouncilSiteID = gsub(pattern = 'Makarewa Confl$',replacement = "Makarewa Confluence",x = siteTable$CouncilSiteID)
 
-write.csv(x = siteTable%>%dplyr::select(-StreamOrder,-Order),
+write.csv(x = siteTable,#%>%dplyr::select(-StreamOrder,-Order),
           file = paste0("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/",
                         format(Sys.Date(),"%Y-%m-%d"),
                         "/SiteTable_River",format(Sys.Date(),"%d%b%y"),".csv"),row.names = F)
@@ -565,6 +582,7 @@ rm(WQWFSsiteFiles)
 # 15    trc      22      22      22      22      22      22      22      22      22      22      22
 # 16   wcrc      38      38      38      38      38      38      38      38      38      38      38
 # 17    wrc       0     108     108     108     108     108     108     108     108     108     108
+   
 
 plot(x=as.numeric(AgencyRep[1,-1]),type='l',ylim=c(10,200))
 apply(AgencyRep[,-1],1,function(x)lines(x))

@@ -856,7 +856,7 @@ xml2csvMacro <- function(agency,maxHistory=365,quiet=F){
   }else{
     
     varNames = unique(sapply(getNodeSet(doc=xmlIn,path="//Measurement/DataSource"),xmlGetAttr,name="Name"))
-    if(varNames=="WQ Sample"){
+    if(length(varNames)==1&&varNames=="WQ Sample"){
       cat("No data, only metadata\n")
       return(NULL)
     }

@@ -265,6 +265,8 @@ Impute.upper <- function(x, ValuesToUse = "i1Values") {
 # Pre-Process censored data
 #********************************#
 RemoveAlphaDetect <-  function(x, AdjustDL = 1, AdjustUpper = 1) {   #  removes non detect ("<" and ">") and produces a dataframe with a numeric value and a boolean defining if value is censored.
+  warnopt=options('warn')$warn
+  options(warn=-1)
   if(is.numeric(x)) xNumeric <- x   # check values may be already numeric
   if(is.factor(x)) xNumeric <- unfactor(x) # converts to numeric (but note the values < and > are returned as NA)
   if(is.character(x)) xNumeric <- as.numeric(x) # converts to numeric (but note the values < and > are returned as NA)
@@ -281,8 +283,8 @@ RemoveAlphaDetect <-  function(x, AdjustDL = 1, AdjustUpper = 1) {   #  removes 
   CenType[isNonDetLT] <- "lt" # less than censored
   CenType[isNonDetGT] <- "gt" # greater than censored
   CenType <- factor(CenType, levels = c("gt", "lt", "not"))
-  cat("*** It is safe to ignore warning message ***")
-  
+  # cat("*** It is safe to ignore warning message ***")
+  options(warn=warnopt)
   Censored <- ifelse(Censored == "TRUE", T, F) # ensure this a binary
   return(data.frame(RawValue = xNumeric, Censored=Censored, CenType=CenType)) # raw values means NOT Flow-Adjusted and no < or > values 
 }
@@ -763,7 +765,7 @@ GetInterObservationSlopes<-function(Data,myPrecision=NULL){
 
 PlotTrend<-function(x,x1,mymain=NULL,Intercept=NA,ValuesToUse = "RawValue",AnnualSenSlope=NA,
                     Lci=NA,Uci=NA,IsSeasonal=FALSE,Ymed=NA,Tmed=NA,Percent.annual.change=NA,
-                    Probability=NA,legend.pos="top",ylimlow=NULL,ylimhi=NULL,
+                    Sen_Probability=NA,legend.pos="top",ylimlow=NULL,ylimhi=NULL,
                     logax='',col='gray68',doLegends=T,doCI=T,doPoints=T,ylab="Value",xlab="Time",...){
   if(is.null(x$myDate)) x$myDate<-x$NewDate
   
@@ -802,7 +804,7 @@ PlotTrend<-function(x,x1,mymain=NULL,Intercept=NA,ValuesToUse = "RawValue",Annua
   if(doLegends==T){
     legend(paste0(legend.pos,"left"),  legend=c(paste("% ",SenLabel," = ", round(Percent.annual.change,1),"%"),
                                                 paste(SenLabel," = ", signif(AnnualSenSlope,3)),
-                                                paste("Probability decreasing = ",round(Probability,3))), 
+                                                paste("Probability decreasing = ",round(Sen_Probability,3))), 
            text.col = "black",  pch = c(NA, NA), bg = 'transparent', inset = .05,cex=0.8)
     
     legend(paste0(legend.pos,"right"),  legend=c("Trend","90% C.I.", "Seas. Non-censored","Censored","Raw Observations"), 
@@ -820,7 +822,8 @@ NonSeasonalTrendAnalysis<-function(...){
   A1<-MannKendall(...)
   if(A1$AnalysisNote =="ok"){#Then carry on and do the Sen Slope test
     A1$AnalysisNote <- NULL
-    A2<-SenSlope(Probability=A1$MKProbability,...)
+    A2<-SenSlope(...)
+    # A2<-SenSlope(MKProbability=A1$MKProbability,...)
   }else{
     A2<-data.frame(Median=NA, Sen_VarS=NA, AnnualSenSlope=NA, Intercept=NA, 
                    Lci=NA, Uci=NA,Sen_Probability=NA, Probabilitymax=NA, Probabilitymin=NA,
@@ -846,7 +849,8 @@ SeasonalTrendAnalysis<-function(...){
   if(A1$AnalysisNote =="ok"){
     #Contiue on to do Seasonal Sen Slope if Seasonal Kendall Test was sucessful
     A1$AnalysisNote <- NULL
-    A2<-SeasonalSenSlope(Probability=A1$Probability,...)
+    A2<-SeasonalSenSlope(...) #Why are we passing SeasonalSenSlope, the MK Probability? For why?
+    # A2<-SeasonalSenSlope(MKProbability=A1$MKProbability,...) #Why are we passing SeasonalSenSlope, the MK Probability? For why?
     
   }else{
     A2<-data.frame(Median=NA, Sen_VarS=NA, AnnualSenSlope=NA, Intercept=NA, 
@@ -854,7 +858,7 @@ SeasonalTrendAnalysis<-function(...){
                    Percent.annual.change=NA)
   }
   A<-cbind.data.frame(A1,A2)
-  if(is.na(A$Probability)){
+  if(is.na(A$MKProbability)){
     A$TrendCategory<-"Not Analysed"
     A$TrendDirection<-"Not Analysed"
   }else{
@@ -1077,7 +1081,7 @@ SenSlope <- function(x, ValuesToUse = "RawValue", ValuesToUseforMedian="RawValue
       
       if(doPlot) {
         PlotTrend(Data,x1,Intercept=Intercept,AnnualSenSlope=AnnualSenSlope,Lci=Lci,Uci=Uci,mymain=mymain,ValuesToUse = "V1",
-                  IsSeasonal=FALSE,Ymed=Ymed,Tmed=Tmed,Percent.annual.change=Percent.annual.change,Probability=Sen_Probability,...)
+                  IsSeasonal=FALSE,Ymed=Ymed,Tmed=Tmed,Percent.annual.change=Percent.annual.change,Sen_Probability=Sen_Probability,...)
       }
       
     } # end else
@@ -1277,7 +1281,7 @@ SeasonalSenSlope <- function(x, ValuesToUse = "RawValue",ValuesToUseforMedian="R
       Percent.annual.change = AnnualSenSlope/abs(Median)*100 #using abs of median as sometimes median is -ve after flow adjustment
       
       if(doPlot) { # graphics.off(); x11()
-        PlotTrend(Data,x1,Intercept=Intercept,AnnualSenSlope=AnnualSenSlope,Probability=Sen_Probability,Lci=Lci,Uci=Uci,mymain=mymain,ValuesToUse = "V1",
+        PlotTrend(Data,x1,Intercept=Intercept,AnnualSenSlope=AnnualSenSlope,Sen_Probability=Sen_Probability,Lci=Lci,Uci=Uci,mymain=mymain,ValuesToUse = "V1",
                   IsSeasonal=TRUE,Ymed=Ymed,Tmed=Tmed,Percent.annual.change=Percent.annual.change,...)
               }
     } # end of second if-else statement 
@@ -1538,7 +1542,8 @@ FaceValueCounter <- function(x,  myRound = 1,Reverse=Reverse) {  # for rounding 
 #  Assign Categorical improvement confidence (IPCC defintions)
 #********************************#
 #Function to provide caterogrical confidence categories for the probability of improvement for trend assessment results
-ImprovementConfCat<-function(x,Reverse=c("CLAR","MCI")){ # x = dataframe of trend assessement results that  contains column named "Probability"
+ImprovementConfCat<-function(x,Reverse=c("CLAR","MCI")){ 
+  # x = dataframe of trend assessement results that  contains column named "Probability"    (MKProbability?)
   # Reverse = vector of variable names where increasing trends indicate improvement
   
   P<-x$Probability
@@ -1576,7 +1581,8 @@ ImprovementConfCat<-function(x,Reverse=c("CLAR","MCI")){ # x = dataframe of tren
 #  Assign Categorical improvement confidence (LAWA defintions)
 #********************************#
 #Function to provide caterogrical confidence categories for the probability of improvement for trend assessment results
-ImprovementConfCatLAWA<-function(x,Reverse=c("CLAR","MCI")){ # x = dataframe of trend assessement results that  contains column named "Probability"
+ImprovementConfCatLAWA<-function(x,Reverse=c("CLAR","MCI")){ 
+  # x = dataframe of trend assessement results that  contains column named "Probability"  #    (MKProbability?)
   # Reverse = vector of variable names where increasing trends indicate improvement
   
   P<-x$Probability

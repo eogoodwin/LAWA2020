@@ -21,7 +21,7 @@ con <- xmlOutputDOM("Hilltop")
 con$addTag("Agency", agency)
 
 for(i in 1:length(sites)){
-  cat(sites[i],i,'out of',length(sites),'\n')
+  cat('\n',sites[i],i,'out of',length(sites))
   for(j in 1:length(Measurements)){
     url <- paste0("http://envdata.tasman.govt.nz/Invertebrates.hts?service=Hilltop&request=GetData",
                  "&Site=",sites[i],
@@ -29,7 +29,7 @@ for(i in 1:length(sites)){
                  "&From=1999-01-01",
                  "&To=2020-06-01")
     url <- URLencode(url)
-    xmlfile <- ldMWQ(url,agency)
+    xmlfile <- ldMWQ(url,agency,method='wininet')
     if(!is.null(xmlfile)){
       xmltop<-xmlRoot(xmlfile)
       m<-xmltop[['Measurement']]

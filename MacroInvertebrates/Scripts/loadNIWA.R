@@ -57,30 +57,90 @@ NIWAmacroSites$dist=minDists
 
 # NIWAmacroSites[,c(8,15)]%>%as.data.frame
 
+#2020 delivery from RickStoffels
+niwamacroraw=read.csv('./Data/NIWAMacros.csv',stringsAsFactors = F,skip=2)%>%dplyr::rename(Year=Group)
+niwamacromet=read_lines(file = './Data/NIWAMacros.csv',skip=0,n_max = 2)%>%str_split(',')%>%unlist%>%matrix(nrow=2,byrow = T)
+niwamacromet=niwamacromet[,-c(1,2,3,117)]%>%t
+
+niwaEPTcount = niwamacroraw[,grepl("Ephemeroptera|Plecoptera|Trichoptera",names(niwamacroraw),T)]
+niwaEPTcount =apply(niwaEPTcount,1,FUN=function(x)sum(x>0,na.rm=T))
+niwaTAXONrich=niwamacroraw[,-c(1,2,3,117)]
+niwaTAXONrich = 
+  apply(X = niwaTAXONrich,MARGIN = 1,FUN=function(x)length(which(as.numeric(x)>0)))
+niwaPCEPT=(niwaEPTcount/niwaTAXONrich)*100
+                 
+niwaMCIpa = niwamacroraw[,-c(1,2,3,117)]  #1823 rows of 113 
+niwaMCIpa = apply(niwaMCIpa,1,FUN=function(x)as.numeric(as.logical(as.numeric(x))))%>%t  #1823 of 113
+niwaMCIsc = apply(niwaMCIpa,MARGIN = 1,FUN=function(x)x*as.numeric(niwamacromet[,2]))%>%t
+niwaMCI = apply(niwaMCIsc,MARGIN = 1,FUN=function(x)mean(x[x>0],na.rm=T))*20
+#use like pairs(indices_dat%>%select(N,RI_AMBI,S,TN),lower.panel=panel.smooth,upper.panel=panel.cor)
+# pairs(cbind(niwaMCI,niwaPCEPT,niwaTAXONrich),lower.panel=panel.smooth,upper.panel=panel.cor)
 
 
-NIWAMCI=readxl::read_xlsx('h:/ericg/16666LAWA/2018/MacroInvertebrates/1.Imported/NIWAInvertebrate.xlsx',sheet = 'MCI')
-NIWAMCI$lawaid=gsub(x = NIWAMCI$lawaid,pattern = '-ND',replacement = '-DN')
-NIWAMCI$LawaSiteID = NIWAmacroSites$LawaSiteID[match(NIWAMCI$lawaid,NIWAmacroSites$lawaid)]
+niwaMacro=data.frame(Date=niwamacroraw$Date,Site.code=trimws(niwamacroraw$Site.code),Year=niwamacroraw$Year,MCI=niwaMCI,pcEPT=niwaPCEPT,taxonRich=niwaTAXONrich)
+rm(niwamacromet,niwaEPTcount,niwaMCIpa,niwaMCIsc,niwamacroraw)
 
-# NIWAMCI$SiteName = extraMacroTable$CouncilSiteID[match(NIWAMCI$LawaSiteID,extraMacroTable$LawaSiteID)]
- NIWAMCI$SiteName = lawaIDs$SiteName[match(NIWAMCI$LawaSiteID,lawaIDs$LawaID)]
-NIWAMCI=NIWAMCI%>%select(-'QMCI',-'ntotal',-'Site.code')
-NIWAMCI$agency='niwa'
-NIWAMCIl=NIWAMCI%>%gather(key = 'parameter',value = 'Value',c("MCI","ntaxa"))
-NIWAMCIl$Date = format((NIWAMCIl$Date),'%d-%b-%Y')
-NIWAMCIl$Value=as.numeric(NIWAMCIl$Value)
-#Round the year to that of the nearest Jan1 
-NIWAMCIl$Year = lubridate::year(round_date(lubridate::dmy(NIWAMCIl$Date),unit = 'year'))
-NIWAMCIl$SiteNamelc=tolower(NIWAMCIl$SiteName)
-NIWAMCIl$Method=NA
+niwaMacro$Site.code[niwaMacro$Site.code%in%c("DNI","ND1")] <- "DN1"
+niwaMacro$Site.code[niwaMacro$Site.code%in%c("ND2")] <- "DN2"
+NIWAmacroSites$Site.code = strFrom(s = NIWAmacroSites$nemarid,c='-')
+NIWAmacroSites$Site.code = gsub('([[:alpha:]])0','\\1',NIWAmacroSites$Site.code)
 
-rm(lawaIDs)
-NIWAMCIl$Measurement=NIWAMCIl$parameter
-write.csv(NIWAMCIl%>%select(LawaSiteID,CouncilSiteID=lawaid,Date,Measurement,Value,Agency=agency),
+table(unique(niwaMacro$Site.code)%in%NIWAmacroSites$Site.code)
+unique(niwaMacro$Site.code)[!unique(niwaMacro$Site.code)%in%NIWAmacroSites$Site.code]
+
+niwaMacro <- merge(niwaMacro,NIWAmacroSites,by="Site.code")
+niwaMacro$Agency='niwa'
+niwaMacro <- niwaMacro%>%dplyr::rename(CouncilSiteID=lawaid,PercentageEPTTaxa=pcEPT,TaxaRichness=taxonRich)
+niwaMacrol = niwaMacro%>%pivot_longer(cols=c("MCI",'PercentageEPTTaxa',"TaxaRichness"),names_to="Measurement",values_to="Value")
+niwaMacrol$Date=as.character(niwaMacrol$Date)
+niwaMacrol$Date[niwaMacrol$Date=='13/82018']="13/8/2018"
+niwaMacrol$Date = format(lubridate::dmy(niwaMacrol$Date),'%d-%b-%Y')
+niwaMacrol$Value=as.numeric(niwaMacrol$Value)
+
+niwaMacrol <- niwaMacrol%>%drop_na(Date)
+
+write.csv(niwaMacrol%>%select(LawaSiteID,CouncilSiteID,Date,Measurement,Value,Agency),
           file=paste0( 'H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Data/',format(Sys.Date(),"%Y-%m-%d"),'/','NIWA.csv'),
           row.names=F)
 
+
+if(0){
+  NIWAMCI=readxl::read_xlsx('h:/ericg/16666LAWA/2018/MacroInvertebrates/1.Imported/NIWAInvertebrate.xlsx',sheet = 'MCI',na = 'NA')
+  NIWAMCI$lawaid=gsub(x = NIWAMCI$lawaid,pattern = '-ND',replacement = '-DN')
+  NIWAMCI$LawaSiteID = tolower(NIWAmacroSites$LawaSiteID[match(NIWAMCI$lawaid,NIWAmacroSites$lawaid)])
+  names(NIWAMCI)[7]="TaxaRichness"
+  
+  NIWAEPT = readxl::read_xlsx('h:/ericg/16666LAWA/2018/MacroInvertebrates/1.Imported/NIWAInvertebrate.xlsx',sheet=3,na = 'not sampled',skip=2)
+  NIWAEPT$Group[NIWAEPT$Group=="DNI"] <- "DN1"
+  NIWAEPT$LawaSiteID = NIWAMCI$LawaSiteID[match(tolower(NIWAEPT$Group),tolower(NIWAMCI$Site.code))]
+  NIWAEPT$LawaSiteID[NIWAEPT$Group=="DN4"] <- "nrwqn-00025"
+  names(NIWAEPT)[1]="Date"
+  names(NIWAEPT)[124]="PercentageEPTTaxa"
+  
+  NIWAMCI <- merge(NIWAMCI,NIWAEPT%>%select(LawaSiteID,PercentageEPTTaxa,Date),by=c("LawaSiteID","Date"))
+  
+  NIWAMCI$SiteName = lawaIDs$SiteName[match(tolower(NIWAMCI$LawaSiteID),tolower(lawaIDs$LawaID))]
+  NIWAMCI=NIWAMCI%>%select(-'QMCI',-'ntotal',-'Site.code')
+  NIWAMCI$agency='niwa'
+  
+  
+  NIWAMCIl=NIWAMCI%>%pivot_longer(cols=c(c("MCI","TaxaRichness","PercentageEPTTaxa")),names_to="Measurement",values_to='Value')
+  # NIWAMCIl=NIWAMCI%>%gather(key = 'parameter',value = 'Value',c("MCI","TaxaRichness")) #TaxaRichness
+  NIWAMCIl$Date = format((NIWAMCIl$Date),'%d-%b-%Y')
+  NIWAMCIl$Value=as.numeric(NIWAMCIl$Value)
+  
+  #Round the year to that of the nearest Jan1 
+  NIWAMCIl$Year = lubridate::year(round_date(lubridate::dmy(NIWAMCIl$Date),unit = 'year'))
+  NIWAMCIl$SiteNamelc=tolower(NIWAMCIl$SiteName)
+  NIWAMCIl$Method=NA
+
+
+  rm(lawaIDs)
+  # NIWAMCIl$Measurement=NIWAMCIl$parameter
+  write.csv(NIWAMCIl%>%select(LawaSiteID,CouncilSiteID=lawaid,Date,Measurement,Value,Agency=agency),
+            file=paste0( 'H:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Data/',format(Sys.Date(),"%Y-%m-%d"),'/','NIWA.csv'),
+            row.names=F)
+}
 
 
 
