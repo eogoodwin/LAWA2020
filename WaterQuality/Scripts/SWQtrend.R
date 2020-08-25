@@ -5,7 +5,7 @@ library(doParallel)
 source("h:/ericg/16666LAWA/LWPTrends_v1901/LWPTrends_v1901.R")
 source("h:/ericg/16666LAWA/LAWA2020/Scripts/LAWAFunctions.R")
 source("h:/ericg/16666LAWA/LAWA2020/WaterQuality/scripts/SWQ_state_functions.R")
-try(dir.create(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d"))),silent=T)
+dir.create(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d")),showWarnings = F)
 
 startTime=Sys.time()
 Mode=function(x) {
@@ -13,7 +13,7 @@ Mode=function(x) {
   ux[which.max(tabulate(match(x, ux)))]
 }
 
-EndYear <- year(Sys.Date())-1
+EndYear <- lubridate::year(Sys.Date())-1
 startYear5 <- EndYear - 5+1
 startYear10 <- EndYear - 10+1
 startYear15 <- EndYear - 15+1
@@ -26,10 +26,10 @@ if(!exists('wqdata')){
   cat(wqdataFileName)
   wqdata=read_csv(wqdataFileName,guess_max = 100000)%>%as.data.frame
   rm(wqdataFileName)
-  wqdata$SWQLanduse[is.na(wqdata$SWQLanduse)]=riverSiteTable$SWQLanduse[match(wqdata$LawaSiteID[is.na(wqdata$SWQLanduse)],riverSiteTable$LawaSiteID)]
-  wqdata$SWQAltitude[is.na(wqdata$SWQAltitude)]=riverSiteTable$SWQAltitude[match(wqdata$LawaSiteID[is.na(wqdata$SWQAltitude)],riverSiteTable$LawaSiteID)]
-  wqdata$SWQLanduse[tolower(wqdata$SWQLanduse)%in%c("unstated","")] <- NA
-  wqdata$SWQLanduse[tolower(wqdata$SWQLanduse)%in%c("forest","native","exotic","natural")] <- "Forest"
+  # wqdata$SWQLanduse[is.na(wqdata$SWQLanduse)]=riverSiteTable$SWQLanduse[match(wqdata$LawaSiteID[is.na(wqdata$SWQLanduse)],riverSiteTable$LawaSiteID)]
+  # wqdata$SWQAltitude[is.na(wqdata$SWQAltitude)]=riverSiteTable$SWQAltitude[match(wqdata$LawaSiteID[is.na(wqdata$SWQAltitude)],riverSiteTable$LawaSiteID)]
+  # wqdata$SWQLanduse[tolower(wqdata$SWQLanduse)%in%c("unstated","")] <- NA
+  # wqdata$SWQLanduse[tolower(wqdata$SWQLanduse)%in%c("forest","native","exotic","natural")] <- "Forest"
   wqdata$myDate <- as.Date(as.character(wqdata$Date),"%d-%b-%Y")
   wqdata$myDate[wqdata$myDate<as.Date('2000-01-01')] <- as.Date(as.character(wqdata$Date[wqdata$myDate<as.Date('2000-01-01')]),"%d-%b-%y")
   wqdata <- GetMoreDateInfo(wqdata)
@@ -56,11 +56,11 @@ if(0){
 
 
 #15 year trend ####
-datafor15=wqdata%>%filter(Year>=startYear15 & Year <= EndYear & Measurement!="PH")
+datafor15=wqdata%>%filter(Year>=startYear15 & Year <= EndYear & !Measurement%in%c("PH","TURBFNU"))
 
 usites=unique(datafor15$LawaSiteID)
 uMeasures=unique(datafor15$Measurement)
-nMax=length(table(datafor15$LawaSiteID,datafor15$Measurement)[table(datafor15$LawaSiteID,datafor15$Measurement)>0])
+if("TURBFNU"%in%uMeasures){uMeasures=uMeasures[-which(uMeasures=="TURBFNU")]}
 cat('\n',length(usites),'\n')
 usite=1
 workers <- makeCluster(7)
@@ -173,11 +173,10 @@ rm(trendTable15)
 
 
 #10 year trend ####
-datafor10=wqdata%>%filter(Year>=startYear10 & Year <= EndYear & Measurement!="PH")%>%drop_na(LawaSiteID)
+datafor10=wqdata%>%filter(Year>=startYear10 & Year <= EndYear & !Measurement%in%c("PH","TURBFNU"))%>%drop_na(LawaSiteID)
 
 usites=unique(datafor10$LawaSiteID)
 uMeasures=unique(datafor10$Measurement)
-# nMax=length(table(datafor10$LawaSiteID,datafor10$Measurement)[table(datafor10$LawaSiteID,datafor10$Measurement)>0])
 cat('\n',length(usites),'\n')
 usite=1
 library(parallel)
@@ -294,11 +293,10 @@ rm(trendTable10)
 
 
 #5 year trend ####
-datafor5=wqdata%>%filter(Year>=startYear5 & Year <= EndYear & Measurement!="PH")
+datafor5=wqdata%>%filter(Year>=startYear5 & Year <= EndYear & !Measurement%in%c("PH","TURBFNU"))
 
 usites=unique(datafor5$LawaSiteID)
 uMeasures=unique(datafor5$Measurement)
-nMax=length(table(datafor5$LawaSiteID,datafor5$Measurement)[table(datafor5$LawaSiteID,datafor5$Measurement)>0])
 cat('\n',length(usites),'\n')
 usite=1
 workers <- makeCluster(7)
@@ -401,9 +399,6 @@ load(tail(dir(path = "h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",
 load(tail(dir(path = "h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",
               pattern = "Trend5Year.rData",full.names = T,recursive = T),1),verbose = T)
 
-# trendTable5 <- trendTable5%>%drop_na(LawaSiteID)
-# trendTable10 <- trendTable10%>%drop_na(LawaSiteID)
-# trendTable15 <- trendTable15%>%drop_na(LawaSiteID)
 
 #number parameters per agency with trends, on average per site
 table(trendTable15$Agency)/table(riverSiteTable$Agency)[match(names(table(trendTable15$Agency)),names(table(riverSiteTable$Agency)))]
@@ -440,8 +435,9 @@ if(any(trendTable15$Agency=="mdc" & trendTable15$Measurement=="ECOLI")){
 
 #Combine WQ trends
 combTrend <- rbind(rbind(trendTable15,trendTable10),trendTable5)
-combTrend$CouncilSiteID = riverSiteTable$CouncilSiteID[match(tolower(combTrend$LawaSiteID),tolower(riverSiteTable$LawaSiteID))]
+combTrend$CouncilSiteID = riverSiteTable$CouncilSiteID[match(tolower(gsub('_NIWA','',combTrend$LawaSiteID)),tolower(riverSiteTable$LawaSiteID))]
 #19840 23Jun
+#24664 21Aug
 
 #Save for ITE
 combTrend$SWQAltitude=pseudo.titlecase(combTrend$SWQAltitude)
@@ -497,7 +493,12 @@ if(0){
 
 
 #Refresh-document plots ####
+# wqdata$myDate <- as.Date(as.character(wqdata$Date),"%d-%b-%Y")
+# wqdata$myDate[wqdata$myDate<as.Date('2000-01-01')] <- as.Date(as.character(wqdata$Date[wqdata$myDate<as.Date('2000-01-01')]),"%d-%b-%y")
+# wqdata <- GetMoreDateInfo(wqdata)
+# wqdata$monYear = format(wqdata$myDate,"%b-%Y")
 wqdata$Season=wqdata$Month
+wqdata$Year = lubridate::year(lubridate::dmy(wqdata$Date))
 SeasonString=sort(unique(wqdata$Season))
 savePlott=T
 usites=unique(combTrend$LawaSiteID)
@@ -524,19 +525,19 @@ for(uparam in seq_along(uMeasures)){
   theseInd <- which(subwq$LawaSiteID==subTrend$LawaSiteID[leastKnown] & subwq$Year>=startYear10)
   theseImp <- which(subwq$LawaSiteID==subTrend$LawaSiteID[bestImp] & subwq$Year>=startYear10)
   if(length(theseDeg)>0){
-  Deg_med <- eval(parse(text=paste0("summaryBy(formula=",uMeasures[uparam],"~LawaSiteID+monYear,
+    Deg_med <- eval(parse(text=paste0("summaryBy(formula=",uMeasures[uparam],"~LawaSiteID+monYear,
                          id=~Censored+CenType+myDate+Year+Month+Qtr+Season,
                          data=subwq[theseDeg,], 
                          FUN=quantile, prob=c(0.5), type=5, na.rm=TRUE, keep.name=TRUE)")))
   }
-if(length(theseInd)>0){
-Ind_med <- eval(parse(text=paste0("summaryBy(formula=",uMeasures[uparam],"~LawaSiteID+monYear,
+  if(length(theseInd)>0){
+    Ind_med <- eval(parse(text=paste0("summaryBy(formula=",uMeasures[uparam],"~LawaSiteID+monYear,
                          id=~Censored+CenType+myDate+Year+Month+Qtr+Season,
                                       data=subwq[theseInd,], 
                                       FUN=quantile, prob=c(0.5), type=5, na.rm=TRUE, keep.name=TRUE)")))
   }
-if(length(theseImp)>0){
-Imp_med <- eval(parse(text=paste0("summaryBy(formula=",uMeasures[uparam],"~LawaSiteID+monYear,
+  if(length(theseImp)>0){
+    Imp_med <- eval(parse(text=paste0("summaryBy(formula=",uMeasures[uparam],"~LawaSiteID+monYear,
                          id=~Censored+CenType+myDate+Year+Month+Qtr+Season,
                                       data=subwq[theseImp,], 
                                       FUN=quantile, prob=c(0.5), type=5, na.rm=TRUE, keep.name=TRUE)")))
@@ -544,35 +545,35 @@ Imp_med <- eval(parse(text=paste0("summaryBy(formula=",uMeasures[uparam],"~LawaS
   
   if(length(theseDeg)>0){
     st <- SeasonalityTest(x = Deg_med,main=uMeasures[uparam],ValuesToUse = uMeasures[uparam],do.plot =F)
-  if(!is.na(st$pvalue)&&st$pvalue<0.05){
-    SeasonalKendall(x = Deg_med,ValuesToUse = uMeasures[uparam],doPlot = F)
-    SeasonalSenSlope(HiCensor=T,x = Deg_med,ValuesToUse = uMeasures[uparam],ValuesToUseforMedian = uMeasures[uparam],doPlot = T,mymain = subTrend$LawaSiteID[worstDeg])
-  }else{
-    MannKendall(HiCensor=T,x = Deg_med,ValuesToUse = uMeasures[uparam],doPlot=F)
-    SenSlope(HiCensor=T,x = Deg_med,ValuesToUse = uMeasures[uparam],ValuesToUseforMedian = uMeasures[uparam],doPlot = T,mymain = subTrend$LawaSiteID[worstDeg])
-  }
+    if(!is.na(st$pvalue)&&st$pvalue<0.05){
+      SeasonalKendall(x = Deg_med,ValuesToUse = uMeasures[uparam],doPlot = F)
+      SeasonalSenSlope(HiCensor=T,x = Deg_med,ValuesToUse = uMeasures[uparam],ValuesToUseforMedian = uMeasures[uparam],doPlot = T,mymain = subTrend$LawaSiteID[worstDeg])
+    }else{
+      MannKendall(HiCensor=T,x = Deg_med,ValuesToUse = uMeasures[uparam],doPlot=F)
+      SenSlope(HiCensor=T,x = Deg_med,ValuesToUse = uMeasures[uparam],ValuesToUseforMedian = uMeasures[uparam],doPlot = T,mymain = subTrend$LawaSiteID[worstDeg])
+    }
   }
   if(length(theseInd)>0){
     st <- SeasonalityTest(x = Ind_med,main=uMeasures[uparam],ValuesToUse = uMeasures[uparam],do.plot =F)
-  if(!is.na(st$pvalue)&&st$pvalue<0.05){
-    SeasonalKendall(HiCensor=T,x = Ind_med,ValuesToUse = uMeasures[uparam],doPlot = F)
-    SeasonalSenSlope(HiCensor=T,x = Ind_med,ValuesToUse = uMeasures[uparam],ValuesToUseforMedian = uMeasures[uparam],doPlot = T,mymain = subTrend$LawaSiteID[leastKnown])
-  }else{
-    MannKendall(HiCensor=T,x = Ind_med,ValuesToUse = uMeasures[uparam],doPlot=F)
-    SenSlope(HiCensor=T,x = Ind_med,ValuesToUse = uMeasures[uparam],ValuesToUseforMedian = uMeasures[uparam],doPlot = T,mymain = subTrend$LawaSiteID[leastKnown])
-  }
+    if(!is.na(st$pvalue)&&st$pvalue<0.05){
+      SeasonalKendall(HiCensor=T,x = Ind_med,ValuesToUse = uMeasures[uparam],doPlot = F)
+      SeasonalSenSlope(HiCensor=T,x = Ind_med,ValuesToUse = uMeasures[uparam],ValuesToUseforMedian = uMeasures[uparam],doPlot = T,mymain = subTrend$LawaSiteID[leastKnown])
+    }else{
+      MannKendall(HiCensor=T,x = Ind_med,ValuesToUse = uMeasures[uparam],doPlot=F)
+      SenSlope(HiCensor=T,x = Ind_med,ValuesToUse = uMeasures[uparam],ValuesToUseforMedian = uMeasures[uparam],doPlot = T,mymain = subTrend$LawaSiteID[leastKnown])
+    }
   }
   if(length(theseImp)>0){
     st <- SeasonalityTest(x = Imp_med,main=uMeasures[uparam],ValuesToUse = uMeasures[uparam],do.plot =F)
-  if(!is.na(st$pvalue)&&st$pvalue<0.05){
-    SeasonalKendall(HiCensor=T,x = Imp_med,ValuesToUse = uMeasures[uparam],doPlot = F)
-    if(is.na(SeasonalSenSlope(HiCensor=T,x = Imp_med,ValuesToUse = uMeasures[uparam],ValuesToUseforMedian = uMeasures[uparam],doPlot = T,mymain = subTrend$LawaSiteID[bestImp])$Sen_Probability)){
+    if(!is.na(st$pvalue)&&st$pvalue<0.05){
+      SeasonalKendall(HiCensor=T,x = Imp_med,ValuesToUse = uMeasures[uparam],doPlot = F)
+      if(is.na(SeasonalSenSlope(HiCensor=T,x = Imp_med,ValuesToUse = uMeasures[uparam],ValuesToUseforMedian = uMeasures[uparam],doPlot = T,mymain = subTrend$LawaSiteID[bestImp])$Sen_Probability)){
+        SenSlope(HiCensor=T,x = Imp_med,ValuesToUse = uMeasures[uparam],ValuesToUseforMedian = uMeasures[uparam],doPlot = T,mymain = subTrend$LawaSiteID[bestImp])
+      }
+    }else{
+      MannKendall(HiCensor=T,x = Imp_med,ValuesToUse = uMeasures[uparam],doPlot=F)
       SenSlope(HiCensor=T,x = Imp_med,ValuesToUse = uMeasures[uparam],ValuesToUseforMedian = uMeasures[uparam],doPlot = T,mymain = subTrend$LawaSiteID[bestImp])
     }
-  }else{
-    MannKendall(HiCensor=T,x = Imp_med,ValuesToUse = uMeasures[uparam],doPlot=F)
-    SenSlope(HiCensor=T,x = Imp_med,ValuesToUse = uMeasures[uparam],ValuesToUseforMedian = uMeasures[uparam],doPlot = T,mymain = subTrend$LawaSiteID[bestImp])
-  }
   }
   if(names(dev.cur())=='tiff'){dev.off()}
   rm(theseDeg,theseImp,theseInd)
@@ -592,19 +593,154 @@ table(TrendsForPlotting$Measurement[which(is.na(TrendsForPlotting$TrendScore))])
 #     2    36    16   105    12    30    11     5   489 
 #Drop the NAs
 TrendsForPlotting = TrendsForPlotting%>%tidyr::drop_na(TrendScore)
-#4439 to 3802
+#4450 to 3940
 #Starts as DRP   NH4   TP    TON   TURB  ECOLI TN    BDISC  MCI
 #labelled  DRP   NH4   TP    TON   TURB  ECOLI TN    CLAR   MCI
 #Reorder 2 CLAR TURB   TN    TON   NH4   TP    DRP   ECOLI  MCI
 TrendsForPlotting$Measurement <- factor(TrendsForPlotting$Measurement,
                                         levels=c("BDISC","TURB","TN","TON","NH4","TP","DRP","ECOLI","MCI")) #,"MCI"
 
+#In LWPTrends MannKendall()
+# KendalTest$MKProbability<-1-0.5*KendalTest$p
+# KendalTest$MKProbability[which(KendalTest$S>0)]<-0.5*KendalTest$p[which(KendalTest$S>0)]
+if(0){
+tfp=TrendsForPlotting
+  lawaMacroState5yr = read.csv(tail(dir(path='h:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Analysis/',pattern='MACRO_STATE_ForITE|MacroState',recursive = T,full.names = T),1),stringsAsFactors = F)
+  lawaMacroState5yr = lawaMacroState5yr%>%filter(Parameter=="MCI")%>%dplyr::rename(LawaSiteID=LAWAID,Measurement=Parameter,Q50=Median)
+  sa <- read.csv(tail(dir(path="h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",pattern=paste0("^sa",startYear5,"-",EndYear,".csv"),recursive=T,full.names=T,ignore.case=T),1),stringsAsFactors = F)
+sa <- sa%>%filter(Scope=="Site")%>%select(LawaSiteID,Measurement,Q50)
+sa <- rbind(sa,lawaMacroState5yr)
+tfp <- merge(tfp,sa)
+rm(sa,lawaMacroState5yr)
+
+par(mfrow=c(1,1))
+stdise <- function(x){(x-min(x,na.rm=T))/(max(x-min(x,na.rm=T),na.rm=T))}
+BDISCdens=with(tfp%>%filter(Measurement=="BDISC"),density(MKProbability,na.rm=T,from=0,to=1))
+TURBdens=with(tfp%>%filter(Measurement=="TURB"),density(MKProbability,na.rm=T,from=0,to=1))
+TNdens=with(tfp%>%filter(Measurement=="TN"),density(MKProbability,na.rm=T,from=0,to=1))
+TONdens=with(tfp%>%filter(Measurement=="TON"),density(MKProbability,na.rm=T,from=0,to=1))
+NH4dens=with(tfp%>%filter(Measurement=="NH4"),density(MKProbability,na.rm=T,from=0,to=1))
+TPdens=with(tfp%>%filter(Measurement=="TP"),density(MKProbability,na.rm=T,from=0,to=1))
+DRPdens=with(tfp%>%filter(Measurement=="DRP"),density(MKProbability,na.rm=T,from=0,to=1))
+ECOLIdens=with(tfp%>%filter(Measurement=="ECOLI"),density(MKProbability,na.rm=T,from=0,to=1))
+MCIdens=with(tfp%>%filter(Measurement=="MCI"),density(MKProbability,na.rm=T,from=0,to=1))
+plot(stdise(BDISCdens$y),BDISCdens$x,type='l',xlim=c(0,9),xlab='',xaxt='n',col='blue',lwd=2)
+lines(stdise(TURBdens$y)+1,TURBdens$x,col='blue',lwd=2)
+lines(stdise(TNdens$y)+2,TNdens$x,col='blue',lwd=2)
+lines(stdise(TONdens$y)+3,TONdens$x,col='blue',lwd=2)
+lines(stdise(NH4dens$y)+4,NH4dens$x,col='blue',lwd=2)
+lines(stdise(TPdens$y)+5,TPdens$x,col='blue',lwd=2)
+lines(stdise(DRPdens$y)+6,DRPdens$x,col='blue',lwd=2)
+lines(stdise(ECOLIdens$y)+7,ECOLIdens$x,col='blue',lwd=2)
+lines(stdise(MCIdens$y)+8,MCIdens$x,col='blue',lwd=2)
+abline(v=c(0:9),lty=2)
+axis(side = 1,at=colMPs-0.5,labels = c('Clarity','Turbidity','TN','TON',expression(NH[4]),'TP',
+                                   'DRP',expression(italic(E.~coli)),'MCI'),las=2)
+BDISCdens=with(tfp%>%filter(Measurement=="BDISC"),density(p,na.rm=T,from=0,to=1))
+TURBdens=with(tfp%>%filter(Measurement=="TURB"),density(p,na.rm=T,from=0,to=1))
+TNdens=with(tfp%>%filter(Measurement=="TN"),density(p,na.rm=T,from=0,to=1))
+TONdens=with(tfp%>%filter(Measurement=="TON"),density(p,na.rm=T,from=0,to=1))
+NH4dens=with(tfp%>%filter(Measurement=="NH4"),density(p,na.rm=T,from=0,to=1))
+TPdens=with(tfp%>%filter(Measurement=="TP"),density(p,na.rm=T,from=0,to=1))
+DRPdens=with(tfp%>%filter(Measurement=="DRP"),density(p,na.rm=T,from=0,to=1))
+ECOLIdens=with(tfp%>%filter(Measurement=="ECOLI"),density(p,na.rm=T,from=0,to=1))
+MCIdens=with(tfp%>%filter(Measurement=="MCI"),density(p,na.rm=T,from=0,to=1))
+lines(stdise(BDISCdens$y),BDISCdens$x,lwd=2)
+lines(stdise(TURBdens$y)+1,TURBdens$x,lwd=2)
+lines(stdise(TNdens$y)+2,TNdens$x,lwd=2)
+lines(stdise(TONdens$y)+3,TONdens$x,lwd=2)
+lines(stdise(NH4dens$y)+4,NH4dens$x,lwd=2)
+lines(stdise(TPdens$y)+5,TPdens$x,lwd=2)
+lines(stdise(DRPdens$y)+6,DRPdens$x,lwd=2)
+lines(stdise(ECOLIdens$y)+7,ECOLIdens$x,lwd=2)
+lines(stdise(MCIdens$y)+8,MCIdens$x,lwd=2)
+
+
+par(mfrow=c(1,1),mar=c(5,4,4,2),xpd=F)
+plot(stdise(BDISCdens$y)+0.2,rev(BDISCdens$x),lwd=2,xlim=c(0,11),type='l')
+lines(stdise(TURBdens$y)+1.4,rev(TURBdens$x),lwd=2)
+lines(stdise(TNdens$y)+2.6,rev(TNdens$x),lwd=2)
+lines(stdise(TONdens$y)+3.8,rev(TONdens$x),lwd=2)
+lines(stdise(NH4dens$y)+5.0,rev(NH4dens$x),lwd=2)
+lines(stdise(TPdens$y)+6.2,rev(TPdens$x),lwd=2)
+lines(stdise(DRPdens$y)+7.4,rev(DRPdens$x),lwd=2)
+lines(stdise(ECOLIdens$y)+8.6,rev(ECOLIdens$x),lwd=2)
+lines(stdise(MCIdens$y)+9.8,rev(MCIdens$x),lwd=2)
+abline(h=c(0.1,0.33,0.67,0.90),lty=2)
+
+
+tiff(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d"),"/TrendStateBDISC.tif"),
+     width = 8,height=8,units='in',res=300,compression='lzw',type='cairo')
+with(tfp%>%filter(Measurement=="BDISC"),{par(mfrow=c(2,1),cex.axis=0.75)
+  boxplot(Q50~ConfCat,xlim=c(5.25,0.75),varwidth=T,log='y',main="BDISC",ylab='Median (Q50)')
+  plot(p,Q50,log='y')
+  abline(v=c(0.1,0.33,0.67,0.90),lty=2)
+})
+if(names(dev.cur())=='tiff')dev.off()
+tiff(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d"),"/TrendStateTURB.tif"),
+     width = 8,height=8,units='in',res=300,compression='lzw',type='cairo')
+with(tfp%>%filter(Measurement=="TURB"),{par(mfrow=c(2,1),cex.axis=0.75)
+  boxplot(Q50~ConfCat,xlim=c(5.25,0.75),varwidth=T,log='y',main='TURB',ylab='Median (Q50)')
+  plot(p,Q50,log='y');abline(v=c(0.1,0.33,0.67,0.90),lty=2)
+})
+if(names(dev.cur())=='tiff')dev.off()
+tiff(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d"),"/TrendStateTN.tif"),
+     width = 8,height=8,units='in',res=300,compression='lzw',type='cairo')
+with(tfp%>%filter(Measurement=="TN"),{par(mfrow=c(2,1),cex.axis=0.75)
+  boxplot(Q50~ConfCat,xlim=c(5.25,0.75),varwidth=T,log='y',main="TN",ylab='Median (Q50)')
+  plot(p,Q50,log='y');abline(v=c(0.1,0.33,0.67,0.90),lty=2)
+})
+if(names(dev.cur())=='tiff')dev.off()
+tiff(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d"),"/TrendStateTON.tif"),
+     width = 8,height=8,units='in',res=300,compression='lzw',type='cairo')
+with(tfp%>%filter(Measurement=="TON"),{par(mfrow=c(2,1),cex.axis=0.75)
+  boxplot(Q50~ConfCat,xlim=c(5.25,0.75),varwidth=T,log='y',main="TON",ylab='Median (Q50)')
+  plot(p,Q50,log='y');abline(v=c(0.1,0.33,0.67,0.90),lty=2)
+})
+if(names(dev.cur())=='tiff')dev.off()
+tiff(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d"),"/TrendStateNH4.tif"),
+     width = 8,height=8,units='in',res=300,compression='lzw',type='cairo')
+with(tfp%>%filter(Measurement=="NH4"),{par(mfrow=c(2,1),cex.axis=0.75)
+  boxplot(Q50~ConfCat,xlim=c(5.25,0.75),varwidth=T,log='y',main="NH4",ylab='Median (Q50)')
+  plot(p,Q50,log='y');abline(v=c(0.1,0.33,0.67,0.90),lty=2)
+})
+if(names(dev.cur())=='tiff')dev.off()
+tiff(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d"),"/TrendStateTP.tif"),
+     width = 8,height=8,units='in',res=300,compression='lzw',type='cairo')
+with(tfp%>%filter(Measurement=="TP"),{par(mfrow=c(2,1),cex.axis=0.75)
+  boxplot(Q50~ConfCat,xlim=c(5.25,0.75),varwidth=T,log='y',main="TP",ylab='Median (Q50)')
+  plot(p,Q50,log='y');abline(v=c(0.1,0.33,0.67,0.90),lty=2)
+})
+if(names(dev.cur())=='tiff')dev.off()
+tiff(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d"),"/TrendStateDRP.tif"),
+     width = 8,height=8,units='in',res=300,compression='lzw',type='cairo')
+with(tfp%>%filter(Measurement=="DRP"),{par(mfrow=c(2,1),cex.axis=0.75)
+  boxplot(Q50~ConfCat,xlim=c(5.25,0.75),varwidth=T,log='y',main="DRP",ylab='Median (Q50)')
+  plot(p,Q50,log='y');abline(v=c(0.1,0.33,0.67,0.90),lty=2)
+})
+if(names(dev.cur())=='tiff')dev.off()
+tiff(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d"),"/TrendStateECOLI.tif"),
+     width = 8,height=8,units='in',res=300,compression='lzw',type='cairo')
+with(tfp%>%filter(Measurement=="ECOLI"),{par(mfrow=c(2,1),cex.axis=0.75)
+  boxplot(Q50~ConfCat,xlim=c(5.25,0.75),varwidth=T,log='y',main="ECOLI",ylab='Median (Q50)')
+  plot(p,Q50,log='y');abline(v=c(0.1,0.33,0.67,0.90),lty=2)
+})
+if(names(dev.cur())=='tiff')dev.off()
+tiff(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d"),"/TrendStateMCI.tif"),
+     width = 8,height=8,units='in',res=300,compression='lzw',type='cairo')
+with(tfp%>%filter(Measurement=="MCI"),{par(mfrow=c(2,1),cex.axis=0.75)
+  boxplot(Q50~ConfCat,xlim=c(5.25,0.75),varwidth=T,main="MCI",ylab='Median (Q50)')
+  plot(p,Q50);abline(v=c(0.1,0.33,0.67,0.90),lty=2)
+})
+if(names(dev.cur())=='tiff')dev.off()
+}
+
 #Make the coloured plot
 par(mfrow=c(1,1))
 colMPs=-0.5+(1:9)*1.2
 tb <- plot(factor(TrendsForPlotting$Measurement),
            factor(TrendsForPlotting$TrendScore),
-           col=c("#dd1111FF","#ee4411FF","#aaaaaaFF","#11cc11FF","#008800FF"), #"#dddddd",
+           col=c("#dd1111FF","#cc7766FF","#aaaaaaFF","#55bb66FF","#008800FF"), #"#dddddd",
            main="Ten year trends")
 tbp <- apply(X = tb,MARGIN = 1,FUN = function(x)x/sum(x))
 mbp <- apply(tbp,MARGIN = 2,FUN=cumsum)
@@ -616,7 +752,7 @@ tiff(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date
      width = 8,height=8,units='in',res=300,compression='lzw',type='cairo')
 par(mfrow=c(1,1),mar=c(5,10,6,2))
 barplot(tbp,main="Ten year monthly trends",las=2,
-        col=c("#dd1111FF","#ee4411FF","#bbbbbbFF","#11cc11FF","#008800FF"),yaxt='n',xaxt='n') #"#dddddd",
+        col=c("#dd1111FF","#cc7766FF","#aaaaaaFF","#55bb66FF","#008800FF"),yaxt='n',xaxt='n') #"#dddddd",
 axis(side = 1,at=colMPs,labels = c('Clarity','Turbidity','TN','TON',expression(NH[4]),'TP',
                                    'DRP',expression(italic(E.~coli)),'MCI'),las=2)
 axis(side = 2,at = seq(0,1,le=11),labels = paste0(100*seq(0,1,le=11),'%'),las=2,lty = 1,lwd = 0,lwd.ticks = 0)
@@ -632,7 +768,7 @@ tiff(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date
      width = 8,height=8,units='in',res=300,compression='lzw',type='cairo')
 par(mfrow=c(1,1),mar=c(5,10,6,2))
 barplot(tbp,main="Ten year monthly trends",las=2,
-        col=c("#dd1111FF","#ee4411FF","#bbbbbbFF","#11cc11FF","#008800FF"),yaxt='n',xaxt='n') #"#dddddd",
+        col=c("#dd1111FF","#cc7766FF","#aaaaaaFF","#55bb66FF","#008800FF"),yaxt='n',xaxt='n') #"#dddddd",
 axis(side = 1,at=colMPs,labels = c('Clarity','Turbidity','TN','TON',expression(NH[4]),'TP',
                                    'DRP',expression(italic(E.~coli)),'MCI'),las=2)
 axis(side = 2,at = seq(0,1,le=11),labels = paste0(100*seq(0,1,le=11),'%'),las=2,lty = 1,lwd = 0,lwd.ticks = 0)
@@ -649,7 +785,7 @@ tiff(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date
      width = 8,height=8,units='in',res=300,compression='lzw',type='cairo')
 par(mfrow=c(1,1),mar=c(5,10,6,2))
 barplot(tbp,main="Ten year monthly trends",las=2,
-        col=c("#dd1111FF","#ee4411FF","#bbbbbbFF","#11cc11FF","#008800FF"),yaxt='n',xaxt='n') #"#dddddd",
+        col=c("#dd1111FF","#cc7766FF","#aaaaaaFF","#55bb66FF","#008800FF"),yaxt='n',xaxt='n') #"#dddddd",
 axis(side = 1,at=colMPs,labels = c('Clarity','Turbidity','TN','TON',expression(NH[4]),'TP',
                                    'DRP',expression(italic(E.~coli)),'MCI'),las=2)
 axis(side = 2,at = seq(0,1,le=11),labels = paste0(100*seq(0,1,le=11),'%'),las=2,lty = 0)
@@ -699,7 +835,7 @@ tiff(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date
      width = 8,height=8,units='in',res=300,compression='lzw',type='cairo')
 par(mfrow=c(1,1),mar=c(5,10,6,2))
 barplot(tbp,main="Fifteen year trends",las=2,
-        col=c("#dd1111FF","#ee4411FF","#bbbbbbFF","#11cc11FF","#008800FF"),yaxt='n',xaxt='n') #"#dddddd",
+        col=c("#dd1111FF","#cc7766FF","#aaaaaaFF","#55bb66FF","#008800FF"),yaxt='n',xaxt='n') #"#dddddd",
 axis(side = 1,at=colMPs,labels = c('Clarity','Turbidity','TN','TON',expression(NH[4]),'TP',
                                    'DRP',expression(italic(E.~coli)),'MCI'),las=2)
 axis(side = 2,at = seq(0,1,le=11),labels = paste0(100*seq(0,1,le=11),'%'),las=2,lty = 1,lwd = 0,lwd.ticks = 0)
@@ -716,7 +852,7 @@ tiff(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date
      width = 8,height=8,units='in',res=300,compression='lzw',type='cairo')
 par(mfrow=c(1,1),mar=c(5,10,6,2))
 barplot(tbp,main="Fifteen year trends",las=2,
-        col=c("#dd1111FF","#ee4411FF","#bbbbbbFF","#11cc11FF","#008800FF"),yaxt='n',xaxt='n') #"#dddddd",
+        col=c("#dd1111FF","#cc7766FF","#aaaaaaFF","#55bb66FF","#008800FF"),yaxt='n',xaxt='n') #"#dddddd",
 axis(side = 1,at=colMPs,labels = c('Clarity','Turbidity','TN','TON',expression(NH[4]),'TP',
                                    'DRP',expression(italic(E.~coli)),'MCI'),las=2)
 axis(side = 2,at = seq(0,1,le=11),labels = paste0(100*seq(0,1,le=11),'%'),las=2,lty = 1,lwd = 0,lwd.ticks = 0)
@@ -733,7 +869,7 @@ tiff(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date
      width = 8,height=8,units='in',res=300,compression='lzw',type='cairo')
 par(mfrow=c(1,1),mar=c(5,10,6,2))
 barplot(tbp,main="Fifteen year trends",las=2,
-        col=c("#dd1111FF","#ee4411FF","#bbbbbbFF","#11cc11FF","#008800FF"),yaxt='n',xaxt='n') #"#dddddd",
+        col=c("#dd1111FF","#cc7766FF","#aaaaaaFF","#55bb66FF","#008800FF"),yaxt='n',xaxt='n') #"#dddddd",
 axis(side = 1,at=colMPs,labels = c('Clarity','Turbidity','TN','TON',expression(NH[4]),'TP',
                                    'DRP',expression(italic(E.~coli)),'MCI'),las=2)
 axis(side = 2,at = seq(0,1,le=11),labels = paste0(100*seq(0,1,le=11),'%'),las=2,lty = 0)
@@ -751,9 +887,9 @@ if(names(dev.cur())=='tiff'){dev.off()}
 
 
 par(mfrow=c(3,1))
-t5 <- plot(factor(trendTable5$Measurement),trendTable5$ConfCat,col=c("#dd1111FF","#ee4411FF","#bbbbbbFF","#11cc11FF","#008800FF"),main="5 Year monthly")
-t10 <- plot(factor(trendTable10$Measurement),trendTable10$ConfCat,col=c("#dd1111FF","#ee4411FF","#bbbbbbFF","#11cc11FF","#008800FF"),main="10 Year monthly")
-t15 <- plot(factor(trendTable15$Measurement),trendTable15$ConfCat,col=c("#dd1111FF","#ee4411FF","#bbbbbbFF","#11cc11FF","#008800FF"),main="15 Year monthly")
+t5 <- plot(factor(trendTable5$Measurement),trendTable5$ConfCat,col=c("#dd1111FF","#cc7766FF","#aaaaaaFF","#55bb66FF","#008800FF"),main="5 Year monthly")
+t10 <- plot(factor(trendTable10$Measurement),trendTable10$ConfCat,col=c("#dd1111FF","#cc7766FF","#aaaaaaFF","#55bb66FF","#008800FF"),main="10 Year monthly")
+t15 <- plot(factor(trendTable15$Measurement),trendTable15$ConfCat,col=c("#dd1111FF","#cc7766FF","#aaaaaaFF","#55bb66FF","#008800FF"),main="15 Year monthly")
 # write.csv(t5,paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d"),"/Trend5Year.csv"))
 # write.csv(t10,paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d"),"/Trend10Year.csv"))
 # write.csv(t15,paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d"),"/Trend10YearQuarterly.csv"))
@@ -779,19 +915,19 @@ tiff(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date
      width = 10,height=15,units='in',res=350,compression='lzw',type='cairo')
 par(mfrow=c(3,1),mar=c(5,10,4,2))
 barplot(t5p,main="5 Year",las=2,
-        col=c("#dd1111FF","#ee4411FF","#bbbbbbFF","#11cc11FF","#008800FF"),yaxt='n')
+        col=c("#dd1111FF","#cc7766FF","#aaaaaaFF","#55bb66FF","#008800FF"),yaxt='n')
 axis(side = 2,at = m5p[,1],labels = colnames(t5),las=2,lty = 0)
 for(cc in 1:8){
   text(rep(colMPs[cc],5),m5p[,cc],paste0(t5[cc,],'\n(',round(t5p[,cc]*100,0),'%)'))
 }
 barplot(t10p,main="10 Year",las=2,
-        col=c("#dd1111FF","#ee7711FF","#bbbbbbFF","#11cc11FF","#008800FF"),yaxt='n')
+        col=c("#dd1111FF","#cc7766FF","#aaaaaaFF","#55bb66FF","#008800FF"),yaxt='n')
 axis(side = 2,at = m10p[,1],labels = colnames(t10),las=2,lty = 0)
 for(cc in 1:8){
   text(rep(colMPs[cc],5),m10p[,cc],paste0(t10[cc,],'\n(',round(t10p[,cc]*100,0),'%)'))
 }
 barplot(t15p,main="15 Year",las=2,
-        col=c("#dd1111FF","#ee7711FF","#bbbbbbFF","#11cc11FF","#008800FF"),yaxt='n')
+        col=c("#dd1111FF","#cc7766FF","#aaaaaaFF","#55bb66FF","#008800FF"),yaxt='n')
 axis(side = 2,at = m15p[,1],labels = colnames(t15),las=2,lty = 0)
 for(cc in 1:8){
   text(rep(colMPs[cc],5),m15p[,cc],paste0(t15[cc,],'\n(',round(t15p[,cc]*100,0),'%)'))
@@ -801,3 +937,69 @@ par(mfrow=c(1,1))
 
 
 Sys.time()-startTime
+
+
+
+EndYear <- lubridate::year(Sys.Date())-1
+startYear5 <- EndYear - 5+1
+startYear10 <- EndYear - 10+1
+startYear15 <- EndYear - 15+1
+
+combTrend=read.csv(tail(dir("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/","RiverWQ_Trend",	recursive = T,full.names = T,ignore.case=T),1),stringsAsFactors = F)
+combTrend$ConfCat=factor(combTrend$ConfCat,levels=c("Very likely improving","Likely improving","Indeterminate","Likely degrading","Very likely degrading" ))
+Trends10yrMonthly = combTrend%>%
+dplyr::filter(period==10&(frequency=='monthly'|Measurement=='MCI'))#%>%
+# dplyr::select(LawaSiteID,Measurement,Region,TrendScore)
+Trends10yrMonthly$TrendScore[Trends10yrMonthly$TrendScore==-99] <- NA
+table(Trends10yrMonthly$Measurement[which(is.na(Trends10yrMonthly$TrendScore))]) ->naTab
+naTab
+#    DRP ECOLI   NH4    TN   TON    TP  TURB   MCI
+#     29    16    96     9    26     8     5   332
+#Drop the NAs
+Trends10yrMonthly = Trends10yrMonthly%>%tidyr::drop_na(TrendScore)
+#4620 to 4099
+#Starts as DRP   NH4   TP    TON   TURB  ECOLI TN    BDISC  MCI
+#labelled  DRP   NH4   TP    TON   TURB  ECOLI TN    CLAR   MCI
+#Reorder 2 CLAR TURB   TN    TON   NH4   TP    DRP   ECOLI  MCI
+Trends10yrMonthly$Measurement <- factor(Trends10yrMonthly$Measurement,
+                                        levels=c("BDISC","TURB","TN","TON","NH4","TP","DRP","ECOLI","MCI")) #,"MCI"
+tfp10m=Trends10yrMonthly
+lawaMacroState5yr = read.csv(tail(dir(path='h:/ericg/16666LAWA/LAWA2020/MacroInvertebrates/Analysis/',pattern='MACRO_STATE_ForITE|MacroState',recursive = T,full.names = T),1),stringsAsFactors = F)
+lawaMacroState5yr = lawaMacroState5yr%>%filter(Parameter=="MCI")%>%dplyr::rename(LawaSiteID=LAWAID,Measurement=Parameter,Q50=Median)
+sa <- read.csv(tail(dir(path="h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",pattern=paste0("^sa",startYear5,"-",EndYear,".csv"),recursive=T,full.names=T,ignore.case=T),1),stringsAsFactors = F)
+sa <- sa%>%filter(Scope=="Site")%>%select(LawaSiteID,Measurement,Q50)
+sa <- rbind(sa,lawaMacroState5yr)
+tfp10m <- merge(tfp10m,sa)
+rm(sa,lawaMacroState5yr)
+
+tfp10m$ConfCat=factor(tfp10m$ConfCat)
+RiverNOF=read.csv(tail(dir(path = "h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",pattern='ITERiverNOF',recursive=T,full.names=T),1),stringsAsFactors=F)
+RiverNOF$Parameter[RiverNOF$Parameter=="EcoliSummaryband"] <- "ECOLI"
+RiverNOF$Parameter[RiverNOF$Parameter=="AmmoniacalMed_Band"] <- "NH4"
+RiverNOF$Parameter[RiverNOF$Parameter=="Nitrate_Toxicity_Band"] <- "TON"
+
+RiverNOF <- RiverNOF%>%filter(Parameter%in%c("ECOLI","NH4","TON"))%>%
+  dplyr::rename(Measurement=Parameter,LawaSiteID=LAWAID)%>%select(-Year,-Value,-SiteName)
+
+tfp10m <- merge(x=tfp10m,RiverNOF,by=c("LawaSiteID","Measurement"),all.x=T)%>%arrange(LawaSiteID)
+tfp10m$Band[tfp10m$Measurement=="MCI"]=as.character(cut(tfp10m$Q50[tfp10m$Measurement=="MCI"],
+                                                        breaks = c(0,90,110,130,200),
+                                                        labels = c('D',"C",'B',"A")))
+tfp10m$ConfCat=factor(tfp10m$ConfCat,levels=rev(c("Very likely improving","Likely improving","Indeterminate","Likely degrading","Very likely degrading")))
+
+
+
+tiff(paste0("h:/ericg/16666LAWA/LAWA2020/WaterQuality/Analysis/",format(Sys.Date(),"%Y-%m-%d"),"/TrendByNOFState.tif"),
+     width = 10,height=15,units='in',res=350,compression='lzw',type='cairo')
+par(mfrow=c(4,1),las=1,mar=c(5,20,4,8),mgp=c(3,1,0),cex.axis=2,cex.main=2)
+tfp10m%>%filter(Measurement=="ECOLI")%>%drop_na(Band)%>%transmute(x=factor(Band),y=factor(ConfCat))%>%
+plot(xlab="NOF Band",ylab="",col=(c("#dd1111FF","#cc7766FF","#aaaaaaFF","#55bb66FF","#008800FF")),main="ECOLI")->sp1
+tfp10m%>%filter(Measurement=="NH4")%>%transmute(x=factor(Band),y=factor(ConfCat))%>%
+plot(xlab="NOF Band",ylab="",col=(c("#dd1111FF","#cc7766FF","#aaaaaaFF","#55bb66FF","#008800FF")),main="NH4 toxicity")
+tfp10m%>%filter(Measurement=="MCI")%>%transmute(x=factor(Band),y=factor(ConfCat))%>%
+  plot(xlab="NOF Band",ylab="",col=(c("#dd1111FF","#cc7766FF","#aaaaaaFF","#55bb66FF","#008800FF")),main="MCI")
+tfp10m%>%filter(Measurement=="TON")%>%transmute(x=factor(Band),y=factor(ConfCat))%>%
+  plot(xlab="NOF Band",ylab="",col=(c("#dd1111FF","#cc7766FF","#aaaaaaFF","#55bb66FF","#008800FF")),main="TON toxicity")
+if(names(dev.cur())=='tiff')dev.off()
+
+

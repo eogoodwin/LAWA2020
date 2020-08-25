@@ -160,7 +160,7 @@ ucounc=unique(LWQdata$agency)
   if(tolower(upara[up])%in%c("secchi","ph")){
     plot(factor(pvals$agency),pvals$Value,las=2,ylab=upara[up],main=upara[up])
     }else{
-    plot(factor(pvals$agency),log10(pvals$Value),las=2,ylab=upara[up],main=upara[up])
+    plot(factor(pvals$agency),log10(pvals$Value),las=2,ylab=upara[up],main=paste("log10",upara[up]))
     }
   
   # par(mfrow=c(4,3),mar=c(3,1,2,1))

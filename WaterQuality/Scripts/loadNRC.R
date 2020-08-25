@@ -19,6 +19,7 @@ con$addTag("Agency", toupper(agency))
 dataDFval=NULL
 dataDFdate=NULL
 dataDFtype=NULL
+if(exists("Data"))rm(Data)
 for(i in 1:length(sites)){
   cat(sites[i],i,'out of',length(sites),'\n')
   for(j in 1:length(Measurements)){

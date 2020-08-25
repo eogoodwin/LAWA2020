@@ -17,6 +17,7 @@ library(DT)
 require(Hmisc)#For hiding TOC
 source('H:/ericg/16666LAWA/LAWA2020/Scripts/LAWAFunctions.R')
 siteTable=loadLatestSiteTableMacro()
+siteTable$LawaSiteID <- gsub(pattern = ' *- *',replacement = '-',x = siteTable$LawaSiteID)
 agency=params$agency
 urls          <- read.csv("H:/ericg/16666LAWA/LAWA2020/Metadata/CouncilWFS.csv",stringsAsFactors=FALSE)
 c("% EPT Richness", "Total Richness", "MCI", "TaxaRichness", "PercentageEPTTaxa")
@@ -149,7 +150,7 @@ paste(siteTableLIDs[!siteTableLIDs%in%agencyCSVLIDs],collapse=', '),
 
   DT::datatable(siteTable%>%
                   filter(tolower(CouncilSiteID)%in%missingLIDs|tolower(SiteID)%in%missingLIDs|tolower(LawaSiteID)%in%missingLIDs)%>%
-                  select(SiteID,CouncilSiteID,LawaSiteID,Catchment)%>%
+                  select(SiteID,CouncilSiteID,LawaSiteID,Catchment)%>%distinct%>%
                   arrange(LawaSiteID),rownames=F)
 }
 missingLIDs=siteTableLIDs[!siteTableLIDs%in%macroLIDs]

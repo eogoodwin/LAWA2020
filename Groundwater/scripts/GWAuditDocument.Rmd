@@ -10,18 +10,18 @@ title: "`r paste(toupper(params$agency),'GW Audit')`"
 
 ```{r setup, include=FALSE,echo=FALSE}
 library(tidyverse)
-source('H:/ericg/16666LAWA/LAWA2019/Scripts/LAWAFunctions.R')
+source('H:/ericg/16666LAWA/LAWA2020/Scripts/LAWAFunctions.R')
 lawaset=c("Chloride", "Dissolved reactive phosphorus", "E.coli", "Electrical conductivity/salinity", 
 "Nitrate nitrogen", "Ammoniacal nitrogen")
 
 agency=params$agency
 
-GWdata=read.csv('h:/ericg/16666LAWA/LAWA2019/GW/Data/GWdata.csv',stringsAsFactors = F)
+GWdata=read.csv(tail(dir(path='h:/ericg/16666LAWA/LAWA2020/Groundwater/Data/',pattern='GWdata.csv',full.names = T,recursive =T) ,1),stringsAsFactors = F)
 GWdata$Agency=factor(GWdata$Source,labels=c('ac','boprc','ecan','gdc','hbrc','hrc','mdc',
                                             'nrc','orc','es','trc','tdc','wrc','gwrc','wcrc'))
 agencyGWdata=GWdata%>%filter(Agency==agency)
 
-gwAudit = read.csv(tail(dir(path="H:/ericg/16666LAWA/LAWA2019/GW/Audit",
+gwAudit = read.csv(tail(dir(path="H:/ericg/16666LAWA/LAWA2020/GW/Audit",
                             pattern = paste0(agency,".*Audit.csv"),
                             recursive = T,full.names = T,ignore.case = T),1),
                    stringsAsFactors = F)
@@ -31,7 +31,7 @@ gwAudit$Agency=GWdata$Agency[match(tolower(gwAudit$Site),tolower(GWdata$LawaSite
 agencyGWdataLIDs = unique(tolower(agencyGWdata$LawaSiteID))
 agencyLIDs=unique(agencyGWdataLIDs)
 
-ss <- read.csv(tail(dir(path = "h:/ericg/16666LAWA/LAWA2019/GW/Analysis",
+ss <- read.csv(tail(dir(path = "h:/ericg/16666LAWA/LAWA2020/GW/Analysis",
                         pattern = 'ITEGWState',
 						full.names = T,recursive=T,ignore.case=T),1),stringsAsFactors = F)
 ss=ss[which(tolower(ss$LawaSiteID)%in%agencyLIDs),]

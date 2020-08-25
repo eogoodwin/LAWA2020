@@ -17,6 +17,7 @@ suppressWarnings(rm(Data))
 
 con <- xmlOutputDOM("Hilltop")
 con$addTag("Agency", agency)
+if(exists("Data"))rm(Data)
 
 for(i in 1:length(sites)){
   cat(sites[i],i,'out of ',length(sites),'\n')

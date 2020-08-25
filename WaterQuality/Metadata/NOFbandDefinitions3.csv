@@ -1,6 +1,6 @@
-Band,Median Nitrate,95th Percentile Nitrate,Median Ammoniacal N,Max Ammoniacal N,E. coli,Ecoli95,EcoliRec540,EcoliRec260
-A,x<=1.0,x<=1.5,x<=0.03,x<=0.05,x<=130,x<=540,x<5,x<20
-B,x>1&x<=2.4,x>1.5&x<=3.5,x>0.03&x<=0.24,x>0.05&x<=0.4,x<=130,x<=1000,x>=5&x<=10,x>=20&x<=30
-C,x>2.4&x<=6.9,x>3.5&x<=9.8,x>0.24&x<=1.3,x>0.4&x<=2.2,x<=130,x<=1200,x>=10&x<=20,x>=20&x<=34
-D,x>6.9,x>9.8,x>1.30,x>2.2,x>130,x>1200,x>=20&x<=30,x>34
-E,x>Inf,x>Inf,x>Inf,x>Inf,x>260,x>1200,x>30,x>50
+Band,Median Nitrate,95th Percentile Nitrate,Median Ammoniacal N,Max Ammoniacal N,E. coli,Ecoli95,EcoliRec540,EcoliRec260,MedianDRP2020,95DRP2020,MedAmmonia2020,MaxAmmonia2020,MedianNitrate2020,95tNitrate2020,MedE.coli2020,95Ecoli2020,EcoliRec5402020,EcoliRec2602020
+A,x<=1.0,x<=1.5,x<=0.03,x<=0.05,x<=130,x<=540,x<5,x<20,x<=0.006,x<=0.021,x<=0.03,x<=0.05,x<=1.0,x<=1.5,x<=130,x<=540,x<5,x<20
+B,x>1&x<=2.4,x>1.5&x<=3.5,x>0.03&x<=0.24,x>0.05&x<=0.4,x<=130,x<=1000,x>=5&x<=10,x>=20&x<=30,x>0.006&x<=0.01,x>0.021&x<=0.03,x>0.03&x<=0.24,x>0.05&x<=0.4,x>1&x<=2.4,x>1.5&x<=3.5,x<=130,x<=1000,x>=5&x<=10,x>=20&x<=30
+C,x>2.4&x<=6.9,x>3.5&x<=9.8,x>0.24&x<=1.3,x>0.4&x<=2.2,x<=130,x<=1200,x>=10&x<=20,x>=20&x<=34,x>0.01&x<=0.018,x>0.03&x<=0.054,x>024&x<=1.3,x>0.4&x<=2.2,x>2.4&x<=6.9,x>3.5&x<=9.8,x<=130,x<=1200,x>=10&x<=20,x>=20&x<=34
+D,x>6.9,x>9.8,x>1.30,x>2.2,x>130,x>1200,x>=20&x<=30,x>34,x>0.018,x>0.054,x>1.3,x>2.2,x>6.9,x>9.8,x>130,x>1200,x>=20&x<=30,x>34
+E,x>Inf,x>Inf,x>Inf,x>Inf,x>260,x>1200,x>30,x>50,x>Inf,x>Inf,x>Inf,x>Inf,x>Inf,x>Inf,x>260,x>1200,x>30,x>50

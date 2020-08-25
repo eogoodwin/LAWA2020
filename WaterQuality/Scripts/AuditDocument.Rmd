@@ -509,7 +509,7 @@ if(all(c("BDISC","TURB")%in%unique(agencyWQdata$Measurement))){
 
 ```{r echo=F,results='asis'}
 DT::datatable(ss%>%
-                dplyr::select(CouncilSiteID,Catchment,Parameter,Median)%>%
+                dplyr::select(CouncilSiteID,LawaID,Catchment,Parameter,Median)%>%
                 dplyr::mutate(Median=signif(Median,4))%>%spread(Parameter,Median),
               rownames = F,extensions='Buttons',options=list(dom='Bfpl',pagelength=10,buttons=c('copy','csv','excel')))
 ```
@@ -518,7 +518,7 @@ DT::datatable(ss%>%
 
 These are quartile based.  1 means in the top quartile, 4 in the lowest quartile.  NA couldnt be assessed.
 ```{r echo=F,results='asis'}
-DT::datatable(ss%>%dplyr::select(CouncilSiteID,Catchment,Parameter,StateScore)%>%spread(Parameter,StateScore))
+DT::datatable(ss%>%dplyr::select(CouncilSiteID,LawaID,Catchment,Parameter,StateScore)%>%spread(Parameter,StateScore))
 ```
 
 ## NOF scores per site, overall
@@ -530,6 +530,7 @@ This year there are many more results shown here, as we're now looking at histor
 ### Bands summary
 
 ```{r echo=F,results='asis'}
+nfts <- nfts%>%filter(Year=="2015to2019")
 DT::datatable(nfts%>%dplyr::select(CouncilSiteID,Catchment,Year,contains('band'))%>%
                 rename_all(.funs = ~gsub(x=.,pattern = '_band|band',replacement = '',ignore.case = T)),
               rownames = F,extensions='Buttons',options=list(dom='Bfpl',buttons=c('copy','csv','excel')))

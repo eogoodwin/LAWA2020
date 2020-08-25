@@ -62,7 +62,7 @@ reps <- length(yr)
 lakesMonthlyMedians$Date=lubridate::dmy(paste0('1-',lakesMonthlyMedians$month,'-',lakesMonthlyMedians$Year))
 lakesMonthlyMedians$Measurement=toupper(lakesMonthlyMedians$Measurement)
 
-
+if(0){
 # To run chl and clarity manually 
 # #2 October 2018
 # #Clarity bands
@@ -99,7 +99,7 @@ write.csv(chlNOF,paste0("h:/ericg/16666LAWA/LAWA2020/Lakes/Analysis/",format(Sys
 # 
 # #/2 October 2018
 # 
-
+}
 
 
 
@@ -162,13 +162,13 @@ foreach(i = 1:length(uclids),.combine=rbind,.errorhandling='stop')%dopar%{
                          ChlAAnalysisNote         = rep('',reps),
                          EcoliPeriod              = rep(as.numeric(NA),reps),
                          EcoliMedian              = rep(as.numeric(NA),reps),
-                         EcoliBand                = rep(NA),reps,
+                         EcoliBand                = rep(NA,reps),
                          Ecoli95                  = rep(as.numeric(NA),reps),
-                         Ecoli95_Band             = rep(NA),reps,
+                         Ecoli95_Band             = rep(NA,reps),
                          EcoliRecHealth540        = rep(as.numeric(NA),reps),
-                         EcoliRecHealth540_Band   = rep(NA),reps,
+                         EcoliRecHealth540_Band   = rep(NA,reps),
                          EcoliRecHealth260        = rep(as.numeric(NA),reps),
-                         EcoliRecHealth260_Band   = rep(NA),reps,
+                         EcoliRecHealth260_Band   = rep(NA,reps),
                          EcoliSummaryBand         = rep(as.character(NA),reps),
                          EcoliAnalysisNote        = rep('',reps),
                          stringsAsFactors = FALSE)
@@ -184,7 +184,7 @@ foreach(i = 1:length(uclids),.combine=rbind,.errorhandling='stop')%dopar%{
     rollingMeds=rolling5(siteChemSet=tnsite,quantProb=0.5)
     rollFails=is.na(as.numeric(rollingMeds))
     Com_NOF$NitrogenMed[yr%in%names(rollingMeds)] <- as.numeric(rollingMeds)
-    Com_NOF$NitrateAnalysisNote[rollyrs[rollFails]] <- paste0("Need 30 values for median, have",
+    Com_NOF$NitrateAnalysisNote[rollyrs[rollFails]] <- paste0("Need 30 values for median, have ",
                                                               strFrom(s=rollingMeds[rollFails],c='y'))
     #find the Band which each value belong to
     if(lakeSiteTable$LType[which(lakeSiteTable$uclid==uclids[i])]%in%c("stratified","brackish","icoll","monomictic")){
@@ -429,9 +429,6 @@ NOFSummaryTable$SiteID=lakeSiteTable$SiteID[match(NOFSummaryTable$LawaSiteID,lak
 NOFSummaryTable <- NOFSummaryTable%>%select(LawaSiteID:SiteID,Year:EcoliSummaryBand)
 
 
-# Reshape Output
-NOFSummaryTableLong <- melt(data=NOFSummaryTable,
-                            id.vars=c("LawaSiteID","CouncilSiteID","SiteID","Agency","Year","Region"))
 
 
 #############################Save output tables ############################
@@ -440,11 +437,17 @@ write.csv(NOFSummaryTable%>%dplyr::filter(grepl('to',Year)),
           file = paste0("h:/ericg/16666LAWA/LAWA2020/Lakes/Analysis/",format(Sys.Date(),'%Y-%m-%d'),
                         "/NOFLakesOverall",format(Sys.time(),"%d%b%Y"),".csv"),row.names=F)
 
+
+
 #Make outputs for ITE
+# Reshape Output
+NOFSummaryTableLong <- melt(data=NOFSummaryTable,
+                            id.vars=c("LawaSiteID","CouncilSiteID","SiteID","Agency","Year","Region"))
 LakeSiteNOF <- NOFSummaryTableLong%>%
   dplyr::select(LawaSiteID,variable,Year,value)%>%
   dplyr::filter(grepl('Band',variable,ignore.case=T))%>%
   dplyr::filter(grepl('to',Year))
+
 LakeSiteNOF$parameter=LakeSiteNOF$variable
 LakeSiteNOF$parameter[which(LakeSiteNOF$variable%in%c("Ecoli95","Ecoli95_Band","EcoliPeriod",
                                                      "EcoliMedian","EcoliBand",
@@ -463,11 +466,13 @@ LakeSiteNOF$parameter <- gsub(pattern = "_Toxicity",replacement = "",x = LakeSit
 LakeSiteNOF$parameter <- gsub(pattern = "RecHealth...",replacement = "",x = LakeSiteNOF$parameter,ignore.case = T)
 LakeSiteNOF$parameter <- gsub(pattern = "Ammoniacal",replacement = "Ammonia",x = LakeSiteNOF$parameter,ignore.case = T)
 
+LakeSiteNOF <- LakeSiteNOF%>%drop_na(LawaSiteID)%>%filter(LawaSiteID!="")
+
 write.csv(LakeSiteNOF%>%transmute(LAWAID=LawaSiteID,
                                   BandingRule=variable,
                                   #Parameter=parameter,
-                                  Year=EndYear,
-                                  NOFMedian=value),
+                                  Year=Year,
+                                  NOFMedian=value)%>%filter(Year=="2015to2019"),
           file=paste0("h:/ericg/16666LAWA/LAWA2020/Lakes/Analysis/",format(Sys.Date(),'%Y-%m-%d'),
                       "/ITELakeSiteNOF",format(Sys.time(),"%d%b%Y"),".csv"),row.names=F)
 rm(LakeSiteNOF)

@@ -65,6 +65,7 @@ year2017=read_csv("H:/ericg/16666Lawa/LAWA2020/MacroInvertebrates/Data/BOPRC_Dat
   drop_na(Aquarius)%>%
   tidyr::gather(key="Measurement",value="Value",c("MCI_Actual","Richness","P_EPT1_r"))%>%
   transmute(Site=Aquarius,Measurement=Measurement,time="2017-12-31T00:00:00.000Z",value=Value,Units="None")
+year2017 <- year2017%>%filter(Site%in%sites) #372 to 351
 Data=rbind(Data,year2017)
 rm(year2017)
 

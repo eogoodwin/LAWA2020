@@ -1,10 +1,11 @@
 "Region","Agency","CouncilSiteID","SiteID","LawaSiteID","NZReach","Lat","Long","SWQAltitude","AltitudeCl","Altitude"
-"horizons","hrc","Kahuterawa at Johnstons Rata","kahuterawa at johnstons rata","hrc-00005",7041729,-40.4490699999999,175.62164,"lowland","Upland",174.666666666667
-"horizons","hrc","Makuri at Tuscan Hills","makuri at tuscan hills","hrc-00010",7044151,-40.5236599999999,175.93115,"lowland","Upland",186.666666666667
-"horizons","hrc","Manawatu at Upper Gorge","manawatu at upper gorge","hrc-00017",7039002,-40.33185,175.81803,"lowland","Upland",284
-"horizons","hrc","Mangatera at Dannevirke","mangatera at dannevirke","hrc-00075",7036853,-40.22455,176.10159,"lowland","Upland",182
-"horizons","hrc","Mangawhero at Raupiu Road","mangawhero at raupiu road","hrc-00027",7024561,-39.70028,175.33113,"lowland","Upland",277
-"horizons","hrc","Oroua at Almadale Slackline","oroua at almadale slackline","hrc-00035",7035276,-40.1734099999999,175.6599,"lowland","Upland",153.666666666667
-"horizons","hrc","Porewa at Onepuhi Road","porewa at onepuhi","hrc-00042",7033068,-40.0770899999999,175.45319,"lowland","Upland",372.5
-"horizons","hrc","Whanganui at Te Rewa","whanganui at te rewa","hrc-00059",7026174,-39.7694,175.16185,"lowland","Upland",216
-"horizons","hrc","Whanganui at Wades Landing","whanganui at wades landing","hrc-00061",7009502,-39.11164,175.06128,"lowland","Upland",204.666666666667
+"manawatu-whanganui","hrc","Kahuterawa at Johnstons Rata","kahuterawa at johnstons rata","hrc-00005",7041729,-40.4490699999999,175.62164,"lowland","Upland",174.666666666667
+"manawatu-whanganui","hrc","Makuri at Tuscan Hills","makuri at tuscan hills","hrc-00010",7044151,-40.5236599999999,175.93115,"lowland","Upland",186.666666666667
+"manawatu-whanganui","niwa","Manawatu at Teachers Coll. (NRWQN) (WA8)","WA8","hrc-00015",7039894,-40.372486114502,175.624130249023,"unstated","Lowland",36
+"manawatu-whanganui","hrc","Manawatu at Upper Gorge","manawatu at upper gorge","hrc-00017",7039002,-40.33185,175.81803,"lowland","Upland",284
+"manawatu-whanganui","hrc","Mangatera at Dannevirke","mangatera at dannevirke","hrc-00075",7036853,-40.22455,176.10159,"lowland","Upland",182
+"manawatu-whanganui","hrc","Mangawhero at Raupiu Road","mangawhero at raupiu road","hrc-00027",7024561,-39.70028,175.33113,"lowland","Upland",277
+"manawatu-whanganui","hrc","Oroua at Almadale Slackline","oroua at almadale slackline","hrc-00035",7035276,-40.1734099999999,175.6599,"lowland","Upland",153.666666666667
+"manawatu-whanganui","hrc","Porewa at Onepuhi Road","porewa at onepuhi","hrc-00042",7033068,-40.0770899999999,175.45319,"lowland","Upland",372.5
+"manawatu-whanganui","hrc","Whanganui at Te Rewa","whanganui at te rewa","hrc-00059",7026174,-39.7694,175.16185,"lowland","Upland",216
+"manawatu-whanganui","hrc","Whanganui at Wades Landing","whanganui at wades landing","hrc-00061",7009502,-39.11164,175.06128,"lowland","Upland",204.666666666667

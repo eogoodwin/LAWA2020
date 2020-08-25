@@ -1,4 +1,5 @@
 "Region","Agency","CouncilSiteID","SiteID","LawaSiteID","NZReach","Lat","Long","SWQAltitude","AltitudeCl","Altitude"
 "southland","es","Dipton Stream at South Hillend-Dipton Road","dipton stream at south hillend-dipton road","es-00163",15046191,-45.9827622824049,168.312332032032,"lowland","Upland",843.5
 "southland","es","Dunsdale Stream at Dunsdale Reserve","dunsdale stream at dunsdale reserve","es-00016",15051163,-46.1347057505432,168.601870071154,"lowland","Upland",161
+"southland","niwa","Oreti at Riverton HW Br. (NRWQN) (DN8)","DN8","es-00010",15057908,-46.3262634277344,168.265930175781,"unstated","Lowland",9
 "southland","es","Waiau River at Sunnyside","waiau river at sunnyside","es-00121",15038276,-45.7986974283497,167.640024852344,"lowland","Upland",202

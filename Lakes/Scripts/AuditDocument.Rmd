@@ -332,7 +332,8 @@ Calculating state and trend values requires measurements representative of multi
 
 ```{r echo=F, results='asis'}
 agencyCSVn = agencyCSV%>%group_by(Date,CouncilSiteID,Measurement)%>%
-  transmute(n=n(),min=min(Value),max=max(Value),range=max-min,mean=signif(mean(Value),2),median=median(Value))%>%ungroup
+  transmute(n=n(),min=signif(min(Value),2),max=signif(max(Value),2),range=signif(max-min,2),
+            mean=signif(mean(Value),2),median=signif(median(Value),2))%>%ungroup
 if(any(agencyCSVn$n>1)){
   cat("There are replicate sites in your data.\n\n")
 
@@ -444,6 +445,7 @@ This year there are many more results shown, because we're also looking at histo
 ### Bands summary
 
 ```{r echo=F,results='asis'}
+nfts <- nfts%>%filter(Year=="2015to2019")
 DT::datatable(nfts%>%dplyr::select(CouncilSiteID,Year,contains('band'))%>%
                      rename_all(.funs = ~gsub(x=.,pattern = '_band|band',replacement = '',ignore.case = T)),
                 extensions='Buttons',options=list(dom='Bfpl',buttons=c('copy','csv','excel')))

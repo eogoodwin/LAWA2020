@@ -206,53 +206,13 @@ foreach(h = 1:length(urls$URL),.combine = rbind,.errorhandling = "stop")%dopar%{
 stopCluster(workers)
 rm(workers)
 
-startTime-Sys.time()
+Sys.time()-startTime  #15s
 
 siteTable$SiteID=as.character(siteTable$SiteID)
 siteTable$LawaSiteID=as.character(siteTable$LawaSiteID)
 siteTable$Region=as.character(siteTable$Region)
 siteTable$Agency=as.character(siteTable$Agency)
 
-# appears to be not needed as of 29/7/2020
-# ################################################################################################
-# #Load Auckland metadata separately.  
-# acMetaData=read.csv("H:/ericg/16666LAWA/LAWA2020/Lakes/Metadata/ACLakesMetaData.csv",stringsAsFactors = F)[1:5,]
-# names(acMetaData)=c("CouncilSiteID","SiteID","NZTME","NZMTN","SWQAltitude","Depth","SWQLanduse","SWQFrequencyLast5","SWQFrequencyAll")
-# acMetaData$Region='auckland'
-# acMetaData$Agency='ac'
-# acMetaData$accessDate=format(file.info("H:/ericg/16666LAWA/LAWA2020/Lakes/Metadata/ACLakesMetaData.csv")$mtime,"%d-%b-%Y")
-# source("k:/R_functions/nztm2wgs.r")
-# latlon=nztm2wgs(ce = acMetaData$NZTME,cn = acMetaData$NZMTN)
-# acMetaData$Long=latlon[,2]
-# acMetaData$Lat=latlon[,1]
-# rm(latlon)
-
-# lawaIDs=read.csv("H:/ericg/16666LAWA/LAWA2020/Metadata/LAWAMasterSiteListasatMarch2018.csv",stringsAsFactors = F)
-# lawaIDs=lawaIDs[lawaIDs$Module=="Lakes",]
-# lawaIDs$Lat=as.numeric(lawaIDs$Latitude)
-# lawaIDs$Long=as.numeric(lawaIDs$Longitude)
-# sum(is.na(lawaIDs$Lat))
-# sum(is.na(lawaIDs$Long))
-# 
-# md=rep(0,dim(acMetaData)[1])
-# nameMatch=rep("",dim(acMetaData)[1])
-# bestMatch=rep(NA,dim(acMetaData)[1])
-# for(ast in 1:dim(acMetaData)[1]){
-#   dists=sqrt((acMetaData$Lat[ast]-lawaIDs$Lat)^2+(acMetaData$Long[ast]-lawaIDs$Long)^2)
-#   cat(min(dists,na.rm=T)*111000,'\t')
-#   bestMatch[ast]=which.min(dists)
-#   md[ast]=min(dists,na.rm=T)
-#   nameMatch[ast]=lawaIDs$SiteName[which.min(dists)]
-# }
-# bestMatch[md>0.01] <- NA
-# nameMatch[md>0.01] <- NA
-# mean(md)*111000 #9.8 km?
-# cbind(acMetaData[,1:2],nameMatch,md*111000)
-# acMetaData$LawaSiteID=lawaIDs$LawaID[bestMatch]
-# siteTable <- merge(siteTable,acMetaData,all=T)%>%select(c("CouncilSiteID", "LawaSiteID", "SiteID", "LFENZID",
-#                                                           "LType","GeomorphicLType", 
-#                                                           "Region", "Agency", "Lat", "Long", "accessDate"))
-# rm(acMetaData,nameMatch,dists,md,ast,bestMatch)
 
 
 siteTable$Region=tolower(siteTable$Region)
@@ -271,7 +231,7 @@ siteTable$Region[siteTable$Region=='havelock nth'] <- 'hawkes bay'
 siteTable$Region[siteTable$Region=='hbrc'] <- 'hawkes bay'
 siteTable$Region[siteTable$Region=='ncc'] <- 'nelson'
 siteTable$Region[siteTable$Region=='rotorua'] <- 'bay of plenty'
-siteTable$Region[siteTable$Region%in%c('wanganui','horizons','HRC')] <- 'manawatu-whanganui'
+siteTable$Region[siteTable$Region%in%c('wanganui','horizons','hrc')] <- 'manawatu-whanganui'
 siteTable$Region[siteTable$Region=='gwrc'] <- 'wellington'
 siteTable$Region[siteTable$Region=='whangarei'] <- 'northland'
 siteTable$Region[siteTable$Region=='nrc'] <- 'northland'
@@ -345,7 +305,7 @@ siteTable$LFENZID[grep(x = siteTable$CouncilSiteID,pattern = "Waipu",ignore.case
 
 
 siteTable$LFENZID[which(siteTable$CouncilSiteID=="SQ36148")] <- (-16)
-siteTable$LFENZID[grepl('brunner',siteTable$CouncilSiteID,ignore.case=T)&siteTable$Agency=='wcrc'] <- 38974
+# siteTable$LFENZID[grepl('brunner',siteTable$CouncilSiteID,ignore.case=T)&siteTable$Agency=='wcrc'] <- 38974
 siteTable$LFENZID[grepl('haupiri',siteTable$CouncilSiteID,ignore.case=T)&siteTable$Agency=='wcrc'] <- 39225
 
 #These next two are now taken care of by the general solution below 29/7/2020
@@ -373,10 +333,14 @@ siteTable$GeomorphicLType=pseudo.titlecase(tolower(siteTable$GeomorphicLType))
 table(siteTable$Agency,siteTable$LType)
 table(siteTable$Agency,siteTable$GeomorphicLType)
 
-if(!'hrc'%in%unique(siteTable$Agency)){  #actually if you need to pull sites in from an old WFS sesh, like if one of them doesn respond
-  oldsiteTable = read.csv("H:/ericg/16666LAWA/LAWA2020/Lakes/Data/2020-07-29/SiteTable_Lakes29Jul20.csv",stringsAsFactors = F)
-  hrcs=oldsiteTable%>%filter(Agency=='hrc')
-  siteTable = rbind(siteTable,hrcs)
+if(!all(c('ac','boprc','ecan','es','gwrc','hbrc','hrc','nrc','orc','trc','wcrc','wrc')%in%unique(siteTable$Agency))){  #actually if you need to pull sites in from an old WFS sesh, like if one of them doesn respond
+  oldsiteTable = read.csv("H:/ericg/16666LAWA/LAWA2020/Lakes/Data/2020-07-31/SiteTable_Lakes31Jul20.csv",stringsAsFactors = F)
+  missingCouncils = c('ac','boprc','ecan','es','gwrc','hbrc','hrc','nrc','orc','trc','wcrc','wrc')[!c('ac','boprc','ecan','es','gwrc','hbrc','hrc','nrc','orc','trc','wcrc','wrc')%in%unique(siteTable$Agency)]
+  oldsiteTable=oldsiteTable%>%filter(Agency%in%missingCouncils)
+  if(dim(oldsiteTable)[1]>0){
+    siteTable = rbind(siteTable,oldsiteTable)
+  }
+  rm(oldsiteTable)
 }
 
 
@@ -398,25 +362,25 @@ for(wsf in LakeWFSsiteFiles){
   colnames(AgencyRep)[dim(AgencyRep)[2]] = strTo(strFrom(wsf,'_Lakes'),'.csv')
   rm(agencyRep)
 }
-AgencyRep=AgencyRep[,-1]
-
+AgencyRep=cbind(AgencyRep[,-1],AgencyRep[,1])
+colnames(AgencyRep)[dim(AgencyRep)[2]]=format(Sys.Date(),'%d%b%y')
 rm(LakeWFSsiteFiles)
 write.csv(AgencyRep,'h:/ericg/16666LAWA/LAWA2020/Metadata/AgencyRepLakeWFS.csv')
 
-#        14Apr20 23Jun20 25Jun20 03Jul20 09Jul20 16Jul20 24Jul20 29Jul20 31Jul20
-# ac          0       0       0       0       0       0       5       4       4
-# boprc      14      14      14      14      12      12      12      12      12
-# ecan       43      43      43      43      43      43      43      43      43
-# es         18      18      18      18      18      18      18      18      18
-# gdc         0       0       0       0       0       0       0       0       0
-# gwrc        5       5       5       5       5       5       5       5       5
-# hbrc        7       7       7       7       7       7       7       3       3
-# hrc        10      10      10      10      10      10      10      15       0
-# mdc         0       0       0       0       0       0       0       0       0
-# ncc         0       0       0       0       0       0       0       0       0
-# nrc        26      26      26      26      26      26      26      26      26
-# orc         9       9       9      14      14      14      14      13      14
-# tdc         0       0       0       0       0       0       0       0       0
-# trc         9       9       9       9       9       9       9       9       9
-# wcrc        3       3       3       3       3       3       3       3       3
-# wrc        12       0      12      12      12      12      12      12      12
+# 14Apr20 23Jun20 25Jun20 03Jul20 09Jul20 16Jul20 24Jul20 29Jul20 31Jul20 07Aug20 14Aug20 21Aug20 21Aug20
+# ac          0       0       0       0       0       0       5       4       4       4       4       4       4
+# boprc      14      14      14      14      12      12      12      12      12      12      12      12      12
+# ecan       43      43      43      43      43      43      43      43      43      43      43      43      43
+# es         18      18      18      18      18      18      18      18      18      18      18      18      18
+# gdc         0       0       0       0       0       0       0       0       0       0       0       0       0
+# gwrc        5       5       5       5       5       5       5       5       5       5       5       5       5
+# hbrc        7       7       7       7       7       7       7       3       3       7       7       7       7
+# hrc        10      10      10      10      10      10      10      15      15      15      15      15      15
+# mdc         0       0       0       0       0       0       0       0       0       0       0       0       0
+# ncc         0       0       0       0       0       0       0       0       0       0       0       0       0
+# nrc        26      26      26      26      26      26      26      26      26      26      26      26      26
+# orc         9       9       9      14      14      14      14      13      14      13      14      14      14
+# tdc         0       0       0       0       0       0       0       0       0       0       0       0       0
+# trc         9       9       9       9       9       9       9       9       9       9       9       9       9
+# wcrc        3       3       3       3       3       3       3       3       3       3       3       3       3
+# wrc        12       0      12      12      12      12      12      12      12      12      12      12      12
