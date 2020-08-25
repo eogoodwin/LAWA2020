@@ -1,1 +1,5 @@
 WaterQuality/Analysis/2020-07-03/ITERiversRawData03Jul2020.csv filter=lfs diff=lfs merge=lfs -text
+groundwater/Data/2020-08-04GWdata.csv filter=lfs diff=lfs merge=lfs -text
+groundwater/Data/2020-08-10GWdata.csv filter=lfs diff=lfs merge=lfs -text
+groundwater/Data/2020-08-14GWdata.csv filter=lfs diff=lfs merge=lfs -text
+WaterQuality/Analysis/*.csv filter=lfs diff=lfs merge=lfs -text
