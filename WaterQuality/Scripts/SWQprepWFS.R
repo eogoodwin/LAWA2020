@@ -396,7 +396,7 @@ table(siteTable$Agency)
 
 
 siteTable=unique(siteTable)  #boprc had four dupliates, boprc had two duplicates
-#31/7/2020 1055 to 1049  
+#25/8/2020 1033 to 1027  
 by(INDICES = siteTable$Agency,data = siteTable,FUN = function(x)head(x))
 
 
@@ -458,7 +458,7 @@ siteTable <- siteTable%>%select(-StreamOrder,-Order)
 
 
 if(!all(agencies%in%unique(siteTable$Agency))){  #actually if you need to pull sites in from an old WFS sesh, like if one of them doesn respond
-  oldsiteTable = read.csv("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/2020-07-29/SiteTable_River29Jul20.csv",stringsAsFactors = F)
+  oldsiteTable = read.csv("H:/ericg/16666LAWA/LAWA2020/WaterQuality/Data/2020-08-14/SiteTable_River14Aug20.csv",stringsAsFactors = F)
   missingCouncils = agencies[!agencies%in%unique(siteTable$Agency)]
   oldsiteTable=oldsiteTable%>%filter(Agency%in%missingCouncils)
   if(dim(oldsiteTable)[1]>0){
@@ -564,24 +564,24 @@ for(wsf in WQWFSsiteFiles){
 AgencyRep=AgencyRep[,-2]
 rm(WQWFSsiteFiles)
 
-# agency 23Jun20 25Jun20 03Jul20 09Jul20 16Jul20 24Jul20 29Jul20 31Jul20 14Aug20 17Aug20 21Aug20
-# 1      ac       0       0       0       0       0      41      36      35      35      35      35
-# 2   boprc      47      47      47      47      47      47      47      47      55      55      55
-# 3    ecan     183     183     184     184     184     184     184     184     184     184     184
-# 4      es      60      60      60      60      60      60      60      60      60      60      60
-# 5     gdc      39      39      39      39      39      39      39      39      39      39      39
-# 6    gwrc      43      43      43      43      43      43      43      43      43      43      43
-# 7    hbrc      71      71      85      85      85      85      85      85      86      86      86
-# 8     hrc     138     138     138     138     138     138     138     138     137     137     137
-# 9     mdc      32      32      32      32      32      32      32      32      32      32      32
-# 10    ncc      25      25      25      25      25      25      25      25      25      25      25
-# 11   niwa      77      77      77      77      77      77      77      77      77      77      77
-# 12    nrc      32      32      32      32      32      32      32      32      32      32      32
-# 13    orc      50      50      50      50      50      50      50      50      50      50      50
-# 14    tdc      26      26      26      26      26      26      26      26      26      26      26
-# 15    trc      22      22      22      22      22      22      22      22      22      22      22
-# 16   wcrc      38      38      38      38      38      38      38      38      38      38      38
-# 17    wrc       0     108     108     108     108     108     108     108     108     108     108
+#    agency 23Jun20 25Jun20 03Jul20 09Jul20 16Jul20 24Jul20 29Jul20 31Jul20 14Aug20 17Aug20 21Aug20  25Aug20
+# 1      ac       0       0       0       0       0      41      36      35      35      35      35  35
+# 2   boprc      47      47      47      47      47      47      47      47      55      55      55  55
+# 3    ecan     183     183     184     184     184     184     184     184     184     184     184  184
+# 4      es      60      60      60      60      60      60      60      60      60      60      60  60
+# 5     gdc      39      39      39      39      39      39      39      39      39      39      39  39
+# 6    gwrc      43      43      43      43      43      43      43      43      43      43      43  43
+# 7    hbrc      71      71      85      85      85      85      85      85      86      86      86  86
+# 8     hrc     138     138     138     138     138     138     138     138     137     137     137  137
+# 9     mdc      32      32      32      32      32      32      32      32      32      32      32  32
+# 10    ncc      25      25      25      25      25      25      25      25      25      25      25  25
+# 11   niwa      77      77      77      77      77      77      77      77      77      77      77  77
+# 12    nrc      32      32      32      32      32      32      32      32      32      32      32  32
+# 13    orc      50      50      50      50      50      50      50      50      50      50      50  50
+# 14    tdc      26      26      26      26      26      26      26      26      26      26      26  26
+# 15    trc      22      22      22      22      22      22      22      22      22      22      22  22
+# 16   wcrc      38      38      38      38      38      38      38      38      38      38      38  38
+# 17    wrc       0     108     108     108     108     108     108     108     108     108     108  108
    
 
 plot(x=as.numeric(AgencyRep[1,-1]),type='l',ylim=c(10,200))

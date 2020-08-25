@@ -24,7 +24,7 @@ if(!exists('wqdata')){
   wqdata$DetectionLimit[wqdata$Symbol==">"] <- 2
   storeSci=options('scipen')
   options(scipen=5)
-  write.csv(wqdata%>%transmute(LAWAID=LawaSiteID,
+  write.csv(wqdata%>%transmute(LAWAID=gsub('_NIWA','',LawaSiteID,ignore.case = T),
                                Region=Region,
                                Site=CouncilSiteID,
                                Date=format(lubridate::dmy(Date),'%Y-%m-%d'),

@@ -34,7 +34,7 @@ if(!exists('macroData')){
 #Output for ITE
 write.csv(macroData%>%
             filter(Measurement%in%c("MCI","TaxaRichness","PercentageEPTTaxa"))%>%
-            transmute(LAWAID=LawaSiteID,
+            transmute(LAWAID=gsub('_NIWA','',LawaSiteID,ignore.case = T),
                       SiteName = CouncilSiteID,
                       CollectionDate=format(lubridate::dmy(Date),"%Y-%m-%d"),
                       Metric=Measurement,
