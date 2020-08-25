@@ -1,0 +1,12 @@
+NO LONGER USED, SITES FROM SITE TABLE, MEAUREMENTS FROM TRANSFER TABLE
+Council,Value,Type
+MDC,Ammonia - Nitrogen,Measurement
+MDC,Black Disc,Measurement
+MDC,Dissolved Reactive Phosphorus,Measurement
+MDC,E. coli,Measurement
+MDC,Nitrite/Nitrate - Nitrogen,Measurement
+MDC,pH (Lab),Measurement
+MDC,Total Nitrogen,Measurement
+MDC,Total Phosphorus,Measurement
+MDC,Turbidity (Lab),Measurement
+MDC,WQ Sample,Measurement

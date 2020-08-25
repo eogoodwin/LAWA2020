@@ -1,6 +1,7 @@
 "Region","Agency","CouncilSiteID","SiteID","LawaSiteID","NZReach","Lat","Long","SWQAltitude","AltitudeCl","Altitude"
 "hawkes bay","hbrc","Esk River at Waipunga Bridge","182","hbrc-00002",8021730,-39.3853701500731,176.821159325303,"lowland","Upland",247
 "hawkes bay","hbrc","Hangaroa River at Doneraille Park","279","hbrc-00032",8003680,-38.7334297866137,177.584339842185,"lowland","Upland",439
+"hawkes bay","niwa","HV4","Ngaruroro at Kuripapango (NRWQN) (HV4)","lawa-100218",8021350,-39.3799285888672,176.330612182617,"unstated","Upland",500
 "hawkes bay","hbrc","Kopuawhara Stream at Railway Bridge","441","hbrc-00029",8013534,-39.0143637897516,177.858250356098,"lowland","Upland",156
 "hawkes bay","hbrc","Makara Stream at St Lawrence Road","514","lawa-102693",8029575,-39.8838039008932,176.769347876539,"lowland","Upland",198
 "hawkes bay","hbrc","Makaroro River at Burnt Bridge","533","lawa-100228",8028042,-39.8187642407385,176.304052000106,"unstated","Upland",376.2

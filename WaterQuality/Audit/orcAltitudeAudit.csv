@@ -1,4 +1,6 @@
 "Region","Agency","CouncilSiteID","SiteID","LawaSiteID","NZReach","Lat","Long","SWQAltitude","AltitudeCl","Altitude"
-"otago","niwa","Haast at Roaring Billy (NRWQN) (GY4)","GY4","nrwqn-00050",12052271,-43.9424743652344,169.297927856445,"lowland","Upland",942
+"otago","niwa","AX2","Kawarau at Chard Rd (NRWQN) (AX2)","nrwqn-00030",14027411,-45.0063629150391,168.868743896484,"unstated","Upland",405
+"otago","niwa","DN2","Sutton at SH87 (NRWQN) (DN2)","nrwqn-00028",14052240,-45.5962066650391,170.094131469727,"unstated","Upland",250
+"otago","niwa","GY4","Haast at Roaring Billy (NRWQN) (GY4)","nrwqn-00050",12052271,-43.9424743652344,169.297927856445,"lowland","Upland",942
 "otago","orc","Shag at Craig Road","shag river at craig rd","orc-00133",14045797,-45.42550192,170.66332312,"lowland","Upland",162
 "otago","orc","Tokomairiro at West Branch Bridge","tokomairiro river at west branch br","orc-00159",14066851,-46.08198102,169.85232574,"lowland","Upland",161

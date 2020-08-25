@@ -1,0 +1,1009 @@
+"SiteID","CouncilSiteID","LawaSiteID","Macro","Region","Agency","SWQLanduse","SWQAltitude","Lat","Long"
+"Waiharakeke at Stringers Road","100007","NRC-00028",FALSE,"northland","nrc","rural","lowland",-35.39381151,174.01971179
+"Hatea at Mair Park","100194","NRC-00019",FALSE,"northland","nrc","urban","lowland",-35.71100271,174.32972329
+"Mangahahuru at Main Road","100237","NRC-00013",FALSE,"northland","nrc","forest","lowland",-35.63994339,174.31310476
+"Mangahahuru at Apotu Road","100281","NRC-00014",FALSE,"northland","nrc","rural","lowland",-35.61771787,174.26008474
+"Awanui at FNDC","100363","NRC-00016",FALSE,"northland","nrc","rural","lowland",-35.12158307,173.27541636
+"Awanui at Waihue Channel","100370","NRC-00017",FALSE,"northland","nrc","rural","lowland",-35.10803978,173.22728661
+"Mangakahia at Titoki","101038","NRWQN-00021",FALSE,"northland","nrc","rural","lowland",-35.73415795,174.05051642
+"Waipapa at Landing","101524","NRC-00031",FALSE,"northland","nrc","rural","lowland",-35.20326296,173.96839515
+"Kerikeri at Stone Store","101530","NRC-00021",FALSE,"northland","nrc","rural","lowland",-35.21718382,173.96285807
+"Mangere at Knight Road","101625","NRC-00001",FALSE,"northland","nrc","rural","lowland",-35.69795439,174.1449511
+"Wairua at Purua","101753","NRWQN-00022",FALSE,"northland","nrc","rural","lowland",-35.65281793,174.15189542
+"Waiotu at SH1","102248","NRC-00012",FALSE,"northland","nrc","rural","lowland",-35.53221197,174.22856874
+"Whakapara at Cableway","102249","NRC-00011",FALSE,"northland","nrc","rural","lowland",-35.54190088,174.27149499
+"Kaihu at Gorge","102256","NRC-00006",FALSE,"northland","nrc","rural","lowland",-35.76264196,173.68526146
+"Manganui at Mititai Road","102257","NRC-00002",FALSE,"northland","nrc","rural","lowland",-35.96148471,174.11295815
+"Opouteke at Suspension Bridge","102258","NRC-00008",FALSE,"northland","nrc","forest","lowland",-35.69565634,173.86768807
+"Kaeo at Dip Road","102674","NRC-00020",FALSE,"northland","nrc","rural","lowland",-35.09785338,173.77159365
+"Waitangi at Waimate North Road","103178","NRC-00010",FALSE,"northland","nrc","rural","lowland",-35.29616152,173.90069715
+"Waipoua at SH12","103304","NRC-00007",FALSE,"northland","nrc","forest","lowland",-35.65250409,173.57039274
+"Ruakaka at Flyger Road","105008","NRC-00026",FALSE,"northland","nrc","rural","lowland",-35.86945027,174.40261082
+"Punakitere at Taheke","105231","NRC-00005",FALSE,"northland","nrc","rural","lowland",-35.46260455,173.66127167
+"Victoria at Victoria Valley Road","105532","NRC-00015",FALSE,"northland","nrc","forest","lowland",-35.147225,173.40764898
+"Waiarohia at Second Avenue","108359","NRC-00004",FALSE,"northland","nrc","urban","lowland",-35.72266387,174.31624099
+"Waipao at Draffin Road","108941","NRC-00030",FALSE,"northland","nrc","rural","lowland",-35.72655755,174.12530358
+"Mangamuka at Iwitaua Road","108978","NRC-00022",FALSE,"northland","nrc","forest","lowland",-35.20920885,173.54106138
+"Oruru at Oruru Road","108979","NRC-00024",FALSE,"northland","nrc","rural","lowland",-35.03863042,173.49052107
+"Utakura at Horeke Road","109020","NRC-00027",FALSE,"northland","nrc","rural","lowland",-35.3399122,173.62625659
+"Hakaru at Topuni","109021","NRC-00018",FALSE,"northland","nrc","rural","lowland",-36.20376405,174.49424394
+"Mangakahia at Twin Bridges","109096","NRC-00009",FALSE,"northland","nrc","rural","lowland",-35.62991807,173.85405607
+"Waimamaku at SH12","109098","NRC-00029",FALSE,"northland","nrc","rural","lowland",-35.55860768,173.44871601
+"Otaika at Otaika Valley Road","110431","NRC-00045",FALSE,"northland","nrc","rural","lowland",-35.77783168,174.27764197
+"Ngunguru at Coalhill Lane","110603","LAWA-100668",FALSE,"northland","nrc","rural","lowland",-35.64242325,174.42564673
+"Awakino River at Gribbon Rd","14393","EW-00001",FALSE,"waikato","wrc","rural","lowland",-38.5631084931943,174.837116995288
+"Awakino River at SH3 Awakau Rd Junction","14395","EW-00002",FALSE,"waikato","wrc","forest","lowland",-38.6723891180482,174.709009324741
+"Awaroa River (Waiuku) at Otaua Rd Br opp Moseley Rd","14419","EW-00003",FALSE,"waikato","wrc","rural","lowland",-37.3017487330735,174.758607034067
+"Awaroa Stm (Rotowaro) at Sansons Br @ Rotowaro-Huntly Rd","14435","EW-00004",FALSE,"waikato","wrc","rural","lowland",-37.5870112217529,175.09097104267
+"Hikutaia River at Old Maratoto Rd","24166","EW-00005",FALSE,"waikato","wrc","rural","lowland",-37.2896499189232,175.671016007859
+"Hinemaiaia River at SH1","24172","EW-00006",FALSE,"waikato","wrc","forest","upland",-38.853963249184,176.020692474093
+"Kaniwhaniwha Stm at Wright Rd","36706","EW-00007",FALSE,"waikato","wrc","rural","lowland",-37.8708851171096,175.140464893556
+"Karapiro Stm at Hickey Rd Bridge - Cambridge","36745","EW-00008",FALSE,"waikato","wrc","forest","lowland",-37.8995516346389,175.534949083881
+"Kauaeranga River at Smiths Cableway/Recorder","36768","EW-00009",FALSE,"waikato","wrc","forest","lowland",-37.1573656960264,175.590522392679
+"Kawaunui Stm at SH5 Br","36800","EW-00010",FALSE,"waikato","wrc","rural","upland",-38.382238370817,176.342556260567
+"Kirikiriroa Stm at Tauhara Dr","36867","EW-00011",FALSE,"waikato","wrc","urban","lowland",-37.7449944685449,175.261451019445
+"Komakorau Stm at Henry Rd","36890","EW-00012",FALSE,"waikato","wrc","rural","lowland",-37.6261837368706,175.253074645438
+"Kuratau River at SH41 Moerangi","36998","EW-00013",FALSE,"waikato","wrc","forest","upland",-38.8914253331204,175.600163900779
+"Kuratau River at Te Rae Street T10","37003","EW-00014",FALSE,"waikato","wrc","forest","upland",-38.8887306216126,175.768600585648
+"Little Waipa Stm at Arapuni - Putaruru Rd","37523","EW-00016",FALSE,"waikato","wrc","rural","lowland",-38.0553211955092,175.696788242224
+"Mangaharakeke Stm (Atiamuri) at SH30 (Off Jct SH1)","37631","EW-00017",FALSE,"waikato","wrc","rural","upland",-38.347165834374,176.011757433945
+"Mangakara Stm (Reporoa) at SH5","37700","EW-00018",FALSE,"waikato","wrc","rural","upland",-38.4525976713696,176.317506581143
+"Mangakino Stm (Whakamaru) at Sandel Rd","37720","EW-00019",FALSE,"waikato","wrc","forest","upland",-38.459216207122,175.733059864485
+"Mangakotukutuku Stm (Rukuhia) at Peacockes Rd","37768","EW-00020",FALSE,"waikato","wrc","rural","lowland",-37.8117970730327,175.300494505438
+"Mangamingi Stm (Tokoroa) at Paraonui Rd Br","37825","EW-00021",FALSE,"waikato","wrc","rural","upland",-38.196940583132,175.83942566983
+"Manganui River at Off Manganui Rd","37841","EW-00022",FALSE,"waikato","wrc","rural","lowland",-38.6441643644694,174.669238071743
+"Mangaohoi Stm at South Branch Maru Rd","37860","EW-00023",FALSE,"waikato","wrc","rural","upland",-38.0509174723394,175.538158089752
+"Mangaokewa Stm at Lawrence Street Br","37891","EW-00024",FALSE,"waikato","wrc","forest","lowland",-38.3372177292096,175.169782228371
+"Mangaone Stm (Waikato) at Annebrooke Rd Br","37939","EW-00025",FALSE,"waikato","wrc","rural","lowland",-37.8092456754195,175.336250342001
+"Mangaonua Stm at Hoeka Rd","37986","EW-00026",FALSE,"waikato","wrc","rural","lowland",-37.7793094894846,175.387499343319
+"Mangaonua Stm at Te Miro Rd (a.k.a Waitakaruru stm)","37993","EW-00027",FALSE,"waikato","wrc","rural","lowland",-37.8171203197853,175.512645177134
+"Mangaotaki River at SH3 Br","38025","EW-00028",FALSE,"waikato","wrc","rural","lowland",-38.5213762151192,174.907124533541
+"Mangapiko Stm (Pirongia/Te Awamutu) at Bowman Rd","38101","EW-00029",FALSE,"waikato","wrc","rural","lowland",-37.976548643878,175.266696679873
+"Mangapu River at Otorohanga","38165","EW-00030",FALSE,"waikato","wrc","rural","lowland",-38.1959117036534,175.205339327183
+"Mangatangi River at SH2 Maramarua","38220","EW-00031",FALSE,"waikato","wrc","rural","lowland",-37.2470697626325,175.184824815733
+"Mangatawhiri River at Lyons Rd At Buckingham Br","38263","EW-00032",FALSE,"waikato","wrc","rural","lowland",-37.1977004227715,175.133413105767
+"Mangatutu Stm (Waikeria) at Walker Rd Br","38350","EW-00033",FALSE,"waikato","wrc","rural","lowland",-38.0982243078572,175.396145259323
+"Mangauika Stm at Te Awamutu Borough W/S Intake","38367","EW-00034",FALSE,"waikato","wrc","rural","upland",-38.0304880234985,175.13741278133
+"Mangawara Stm at Rutherford Rd Br","38386","EW-00035",FALSE,"waikato","wrc","forest","lowland",-37.5596796902786,175.2430095199
+"Mangawhero Stm (Cambridge) at Cambridge-Ohaupo Rd","38424","EW-00036",FALSE,"waikato","wrc","rural","lowland",-37.8898105697782,175.404914373312
+"Mangawhero Stm (Kaihere) at Mangawara Rd","38431","EW-00037",FALSE,"waikato","wrc","forest","lowland",-37.4008056846073,175.424354884271
+"Marokopa River at Speedies Rd (Off Te Anga Rd)","38533","EW-00040",FALSE,"waikato","wrc","rural","lowland",-38.2594414936044,174.834722021283
+"Matahuru Stm at Waiterimu Road Below Confluence","38551","EW-00042",FALSE,"waikato","wrc","rural","lowland",-37.4822375688604,175.23939080529
+"Mokau River at Mangaokewa Rd (Off SH30)","40716","EW-00044",FALSE,"waikato","wrc","rural","upland",-38.4655875860095,175.286169269964
+"Mokau River at Awakau Rd","40718","EW-00043",FALSE,"waikato","wrc","rural","lowland",-38.6847715332841,174.72426079586
+"Mokau River at Totoro Rd Recorder","40720","EW-00045",FALSE,"waikato","wrc","forest","lowland",-38.5715687207091,174.90481260219
+"Mokauiti Stm at Three Way Point - Aria","40738","EW-00046",FALSE,"waikato","wrc","rural","lowland",-38.5507164620967,174.98139526696
+"Ohaeroa Stm at SH22 Br","40966","EW-00047",FALSE,"waikato","wrc","rural","lowland",-37.3128495943554,174.952980808004
+"Ohautira Stm at Waingaro Te Uku Rd","40998","EW-00048",FALSE,"waikato","wrc","rural","lowland",-37.7631544554243,174.972518351917
+"Ohinemuri River at Queens Head","41010","EW-00049",FALSE,"waikato","wrc","rural","lowland",-37.4146383541911,175.794422436125
+"Ohinemuri River at SH25 Br","41011","EW-00050",FALSE,"waikato","wrc","rural","lowland",-37.3734378909694,175.866745259212
+"Ohote Stm at Whatawhata/Horotiu Rd","41071","EW-00051",FALSE,"waikato","wrc","rural","lowland",-37.7679353179394,175.150922330953
+"Oparau River at Langdon Rd (Off Okupata Rd)","41211","EW-00052",FALSE,"waikato","wrc","rural","lowland",-38.0432515211826,174.933805313697
+"Opuatia Stm at Ponganui Rd","41249","EW-00053",FALSE,"waikato","wrc","forest","lowland",-37.3652522107812,174.884997320586
+"Oraka Stm at Lake Rd","41303","EW-00054",FALSE,"waikato","wrc","rural","lowland",-37.9221423882887,175.770603877803
+"Otamakokore Stm at Hossack Rd","41355","EW-00056",FALSE,"waikato","wrc","forest","upland",-38.3071920215625,176.263725392085
+"Piako River at Kiwitahi","41630","EW-00057",FALSE,"waikato","wrc","rural","lowland",-37.7023395427299,175.60384868366
+"Piako River at Paeroa-Tahuna Rd Br","41634","EW-00058",FALSE,"waikato","wrc","rural","lowland",-37.5134598526515,175.506337379609
+"Piakonui Stm at Piakonui Rd","41667","EW-00059",FALSE,"waikato","wrc","rural","upland",-37.8270354795721,175.630061524085
+"Pokaiwhenua Stm at Arapuni - Putaruru Rd","41766","EW-00060",FALSE,"waikato","wrc","rural","lowland",-38.0579166582422,175.722546791127
+"Pueto Stm at Broadlands Rd Br","41835","EW-00061",FALSE,"waikato","wrc","forest","upland",-38.6129915484636,176.258454325785
+"Puniu River at Bartons Corner Rd Br","41893","EW-00063",FALSE,"waikato","wrc","rural","lowland",-38.0300773769626,175.293511605056
+"Tahunaatara Stm at Ohakuri Rd","42292","EW-00064",FALSE,"waikato","wrc","forest","upland",-38.3378467366305,176.070544240897
+"Tairua River at Morrisons Br Hikuai","42340","EW-00065",FALSE,"waikato","wrc","forest","lowland",-37.0744325020849,175.770936873536
+"Tapu River at Tapu-Coroglen Rd","42385","EW-00066",FALSE,"waikato","wrc","forest","lowland",-36.9815869379655,175.505094549805
+"Tawarau River at Off Speedies Rd","42477","EW-00068",FALSE,"waikato","wrc","forest","lowland",-38.2655585382858,174.846317185097
+"Tokaanu Power Station Tailrace Canal at SH41 Bridge Over Canal","42678","EW-00069",FALSE,"waikato","wrc","forest","upland",-38.9792349360231,175.774386593026
+"Tokaanu Stm at Off SH41 Turangi","42685","EW-00070",FALSE,"waikato","wrc","rural","upland",-38.9896778228372,175.78981315851
+"Torepatutahi Stm at Vaile Rd Br","42773","EW-00071",FALSE,"waikato","wrc","forest","upland",-38.487186909678,176.306519978245
+"Waerenga Stm at Taniwha Rd","42974","EW-00072",FALSE,"waikato","wrc","forest","lowland",-37.3838306179297,175.290465863315
+"Waiau River at E309 Rd Ford","42993","EW-00073",FALSE,"waikato","wrc","rural","lowland",-36.7938607100792,175.524390510656
+"Waihaha River at SH32","43010","EW-00074",FALSE,"waikato","wrc","rural","upland",-38.7002032737525,175.682716302898
+"Waihou River at Whites Rd","43145","EW-00076",FALSE,"waikato","wrc","rural","lowland",-38.0192588201407,175.814088326377
+"Waihou River at Okauia","43171","EW-00075",FALSE,"waikato","wrc","urban","lowland",-37.7874458617256,175.839374136597
+"Waikato River at Huntly-Tainui Br","43224","EW-00078",FALSE,"waikato","wrc","forest","lowland",-37.5662443743287,175.154277323428
+"Waikato River at Whakamaru Tailrace","43278","EW-00086",FALSE,"waikato","wrc","forest","upland",-38.4187135947562,175.806337994402
+"Waikato River at Horotiu Br","43313","EW-00077",FALSE,"waikato","wrc","forest","lowland",-37.6977289352494,175.206777865847
+"Waikato River at Ohaaki Br","43334","EW-00082",FALSE,"waikato","wrc","forest","upland",-38.5327953576151,176.303745860361
+"Waikato River at Ohakuri Tailrace Br","43336","EW-00083",FALSE,"waikato","wrc","forest","upland",-38.406997966736,176.086134019175
+"Waikato River at Taupo Control Gates","43349","EW-00119",FALSE,"waikato","wrc","forest","upland",-38.6810584711027,176.06993982251
+"Waikato River at Waipapa Tailrace","43361","EW-00085",FALSE,"waikato","wrc","forest","lowland",-38.285510362379,175.685227433566
+"Waikato River at Mercer Br","43401","EW-00079",FALSE,"waikato","wrc","forest","lowland",-37.281271741161,175.046703329257
+"Waikato River at Tuakau Br","43411","EW-00084",FALSE,"waikato","wrc","forest","lowland",-37.2960074716085,174.945178573855
+"Waikato River at Narrows Boat Ramp","43552","EW-00080",FALSE,"waikato","wrc","forest","lowland",-37.8396283916306,175.347742162208
+"Waingaro River (Pukemiro) at Ruakiwi Rd Off SH22","43768","EW-00087",FALSE,"waikato","wrc","rural","lowland",-37.7325943186377,174.968246198867
+"Waiohotu Stm at Waiohotu Rd (Off SH5)","43794","EW-00088",FALSE,"waikato","wrc","forest","upland",-38.0037813714963,175.919258464045
+"Waiomou Stm at Matamata-Tauranga Rd","43809","EW-00089",FALSE,"waikato","wrc","rural","lowland",-37.853300774061,175.865479835301
+"Waiotapu Stm at Homestead Rd Br","43855","EW-00091",FALSE,"waikato","wrc","rural","upland",-38.4550691435155,176.325650999376
+"Waiotapu Stm at Campbell Rd Br","43879","EW-00090",FALSE,"waikato","wrc","rural","upland",-38.3805314788798,176.346174289548
+"Waipa River at Mangaokewa Rd","43910","EW-00092",FALSE,"waikato","wrc","rural","upland",-38.4523697766534,175.442766277182
+"Waipa River at Pirongia-Ngutunui Rd Br","43913","EW-00093",FALSE,"waikato","wrc","forest","lowland",-38.0057504966296,175.203853645951
+"Waipa River at SH3 Otorohanga","43915","EW-00094",FALSE,"waikato","wrc","forest","lowland",-38.1922361711938,175.208642332889
+"Waipapa Stm (Mokai) at Tirohanga Rd Br","43992","EW-00095",FALSE,"waikato","wrc","rural","upland",-38.4228487324215,175.959677040022
+"Waitahanui River at Blake Rd","44082","EW-00096",FALSE,"waikato","wrc","forest","upland",-38.7981140981171,176.086242026119
+"Waitakaruru River (Hauraki Plains) at Coxhead Rd Br","44092","EW-00097",FALSE,"waikato","wrc","rural","lowland",-37.2724332763866,175.357903688482
+"Waitawhiriwhiri Stm at Edgecumbe Street","44178","EW-00098",FALSE,"waikato","wrc","forest","lowland",-37.7729705043793,175.270125304754
+"Waitekauri River at U/S Ohinemuri Conflu","44241","EW-00099",FALSE,"waikato","wrc","forest","lowland",-37.4167234480118,175.783202547386
+"Waitetuna River at Te Uku-Waingaro Rd","44285","EW-00100",FALSE,"waikato","wrc","rural","lowland",-37.8180906700705,174.975218123383
+"Waitoa River at Landsdowne Rd Br","44331","EW-00101",FALSE,"waikato","wrc","rural","lowland",-37.7653456084661,175.741164634185
+"Waitoa River at Mellon Rd Recorder","44334","EW-00102",FALSE,"waikato","wrc","rural","lowland",-37.5295583767832,175.629157415427
+"Waitomo Stm at Tumutumu Rd","44379","EW-00105",FALSE,"waikato","wrc","rural","lowland",-38.2601596511047,175.098779177931
+"Waitomo Stm at SH31 Otorohanga","44391","EW-00104",FALSE,"waikato","wrc","rural","lowland",-38.1808463852947,175.192293108196
+"Waiwawa River at SH25 Coroglen","44407","EW-00106",FALSE,"waikato","wrc","forest","lowland",-36.9239897954475,175.693228531
+"Whakapipi Stm at SH22 Br","44529","EW-00108",FALSE,"waikato","wrc","rural","lowland",-37.2574938127379,174.924951629489
+"Whakauru Stm at U/S  SH1 Br","44580","EW-00109",FALSE,"waikato","wrc","forest","upland",-38.21446945527,175.871808732372
+"Whangamarino River at Jefferies Rd Br","44607","EW-00111",FALSE,"waikato","wrc","forest","lowland",-37.3355278371707,175.235770830708
+"Whangamarino River at Island Block Rd","44617","EW-00110",FALSE,"waikato","wrc","forest","lowland",-37.3058356070678,175.088188775756
+"Whangamata Stm (Kinloch) at Whangamata Rd","44668","EW-00112",FALSE,"waikato","wrc","forest","upland",-38.6427545776433,175.927628796565
+"Whanganui Stm at Lakeside Lake Taupo T8","44674","EW-00113",FALSE,"waikato","wrc","forest","upland",-38.7828631481345,175.731049439201
+"Whangape Stm at Rangiriri-Glen Murray Rd","44677","EW-00114",FALSE,"waikato","wrc","rural","lowland",-37.4446579822405,175.087826398824
+"Wharekawa River at SH25","44749","EW-00115",FALSE,"waikato","wrc","rural","lowland",-37.1357467196371,175.842021846597
+"Whareroa Stm (Taupo) at Lakeside Lake Taupo T9","44791","EW-00116",FALSE,"waikato","wrc","forest","upland",-38.8592591914886,175.782701152047
+"Whirinaki Stm at Corbett Rd","44845","EW-00118",FALSE,"waikato","wrc","rural","upland",-38.3030801759577,176.265152969159
+"Akatarawa River at Hutt Confluence","Akatarawa River at Hutt Confluence","GW-00025",FALSE,"wellington","gwrc","forest","lowland",-41.08952998,175.09766097
+"24","Aniwaniwa Stream at Aniwaniwa","HBRC-00030",FALSE,"hawkes bay","hbrc","forest","upland",-38.7401383467398,177.170314247403
+"Arawhata Drain at Hokio Beach Road","Arawhata Drain at Hokio Beach Road","HRC-00001",FALSE,"horizons","hrc","rural","lowland",-40.6219,175.24728
+"Are Are Creek at Kaituna Tuamarina Track","Are Are Creek at Kaituna Tuamarina Track","MDC-00001",FALSE,"marlborough","mdc","rural","lowland",-41.46644209,173.82486088
+"Arnold Rv @ Blairs Rd No. 2 Br","Arnold Rv @ Blairs Rd No. 2 Br","WCRC-00031",FALSE,"west coast","wcrc","forest","lowland",-42.48180414,171.37623219
+"Arnold Rv @ Kotuku Fishing Access","Arnold Rv @ Kotuku Fishing Access","WCRC-00032",FALSE,"west coast","wcrc","forest","lowland",-42.55666403,171.45947445
+"39","Aropaoanui River at Aropaoanui","HBRC-00024",FALSE,"hawkes bay","hbrc","rural","lowland",-39.2701184160888,176.978862007857
+"Avon River at Pages/Seaview Bridge","AVON01","CCC-00012",FALSE,"canterbury","ecan","urban","lowland",-43.5109612586597,172.721312654641
+"Avon River at Bridge Street","AVON02","CCC-00013",FALSE,"canterbury","ecan","urban","lowland",-43.5269609130163,172.723800118103
+"Avon River at Dallington Terrace/Gayhurst Road","AVON03","CCC-00009",FALSE,"canterbury","ecan","urban","lowland",-43.5232541352865,172.672709377272
+"Avon River at Manchester Street","AVON04","CCC-00007",FALSE,"canterbury","ecan","urban","lowland",-43.5297168443237,172.639621835872
+"Wairarapa Stream","AVON05","CCC-00001",FALSE,"canterbury","ecan","urban","lowland",-43.5222119317298,172.607012899531
+"Waimairi Stream","AVON06","CCC-00002",FALSE,"canterbury","ecan","urban","lowland",-43.5233902165382,172.606782674794
+"Avon River at Mona Vale","AVON07","CCC-00003",FALSE,"canterbury","ecan","urban","lowland",-43.5245285539517,172.608036996872
+"Riccarton Main Drain","AVON08","CCC-00005",FALSE,"canterbury","ecan","urban","lowland",-43.53364735907,172.616452586676
+"Addington Brook","AVON09","CCC-00006",FALSE,"canterbury","ecan","urban","lowland",-43.5355540897489,172.621488125689
+"Dudley Creek","AVON10","CCC-00008",FALSE,"canterbury","ecan","urban","lowland",-43.5147495497519,172.660548678238
+"Horseshoe Lake Discharge","AVON11","CCC-00010",FALSE,"canterbury","ecan","urban","lowland",-43.5045155077624,172.682479186561
+"Avon River at Carlton Mill Corner","AVON12","CCC-00004",FALSE,"canterbury","ecan","urban","lowland",-43.5226691608001,172.625402289893
+"Avon River at Avondale Road Bridge","AVON13","CCC-00011",FALSE,"canterbury","ecan","urban","lowland",-43.502162275476,172.687560852363
+"8019","Avondale Stream @ Shadbolt Park","ARC-00036",FALSE,"auckland","ac","urban","lowland",-36.92329,174.69178
+"48","Awanui Stream at Flume","HBRC-00090",FALSE,"hawkes bay","hbrc","rural","lowland",-39.6908403104276,176.798436502995
+"Awapuni Drain Site 6","Awapuni Drain Site 6 U/S Of Rayonier at Fenceline","LAWA-102234",FALSE,"gisborne","gdc","rural","lowland",-38.69545828,177.94182729
+"Awatere River at Awapiri","Awatere River at Awapiri","MDC-00003",FALSE,"marlborough","mdc","rural","upland",-41.83477611,173.73081669
+"Awatere River at River Mouth","Awatere River at River Mouth","MDC-00002",FALSE,"marlborough","mdc","rural","lowland",-41.60808432,174.15146174
+"Awatere River at SH35 Bridge","Awatere River at SH35 Bridge","GDC-00002",FALSE,"gisborne","gdc","rural","lowland",-37.67457224,178.34813828
+"Awhea River at Tora Rd","Awhea River at Tora Rd","GW-00053",FALSE,"wellington","gwrc","rural","lowland",-41.4945283,175.515193
+"Baker Ck @ Baker Ck Rd","Baker Ck @ Baker Ck Rd","WCRC-00027",FALSE,"west coast","wcrc","forest","lowland",-41.24401316,172.14600626
+"Baker Ck @ Oparara Rd","Baker Ck @ Oparara Rd","WCRC-00028",FALSE,"west coast","wcrc","rural","lowland",-41.24605607,172.13011843
+"Berry Ck @ N Brch Wanganui Flat Rd","Berry Ck @ N Brch Wanganui Flat Rd","WCRC-00021",FALSE,"west coast","wcrc","rural","lowland",-43.0840546,170.56915426
+"Black Birch Stream at Awatere Intake","Black Birch Stream at Awatere Intake","MDC-00004",FALSE,"marlborough","mdc","rural","upland",-41.70749614,173.88026864
+"Blackwater Ck @ Farm 846","Blackwater Ck @ Farm 846","WCRC-00030",FALSE,"west coast","wcrc","rural","lowland",-41.30719863,172.09717193
+"Te Rereatukahia at SH2","BQ708712","EBOP-00027",FALSE,"bay of plenty","boprc","rural","lowland",-37.5770915770481,175.911188609567
+"Te Mania at SH2","BQ711622","EBOP-00026",FALSE,"bay of plenty","boprc","rural","lowland",-37.5851497196765,175.911808371647
+"Uretara at Henry Rd Ford","BQ723939","EBOP-00052",FALSE,"bay of plenty","boprc","rural","lowland",-37.5565881128289,175.912099144522
+"Waitekohe at SH2","BQ739463","EBOP-00040",FALSE,"bay of plenty","boprc","rural","lowland",-37.5993647067078,175.915601617197
+"Aongatete at SH2","BQ966369","EBOP-00001",FALSE,"bay of plenty","boprc","rural","lowland",-37.6073828302249,175.941409491124
+"Tuapiro at Hikurangi Rd","BR809582","EBOP-00028",FALSE,"bay of plenty","boprc","rural","lowland",-37.4984489368448,175.919507525151
+"Bradshaws Ck @ Bradshaw Rd","Bradshaws Ck @ Bradshaw Rd","WCRC-00016",FALSE,"west coast","wcrc","rural","lowland",-41.76023604,171.54501704
+"Branch River at Weir Intake","Branch River at Weir Intake","MDC-00005",FALSE,"marlborough","mdc","forest","upland",-41.70014713,173.18326957
+"Brook at Burn Pl","Brook at Burn Pl","NCC-00011",FALSE,"nelson","ncc","forest","lowland",-41.28921044,173.29170139
+"Brook at Manuka St","Brook at Manuka St","NCC-00010",FALSE,"nelson","ncc","urban","lowland",-41.27825433,173.28918088
+"Brook at Motor Camp","Brook at Motor Camp","NCC-00012",FALSE,"nelson","ncc","forest","lowland",-41.31154835,173.29221908
+"Waiau at Waiau Rd Ford","BS961133","EBOP-00030",FALSE,"bay of plenty","boprc","rural","lowland",-37.4484483244256,175.934796941143
+"Buller at Longford","Buller at Longford","NRWQN-00037",FALSE,"nelson","niwa","forest","upland",-41.7650884367679,172.386762208879
+"Buller @ Te Kuha","Buller at Te Kuha","NRWQN-00053",FALSE,"west coast","niwa","forest","lowland",-41.8349020171928,171.699853937906
+"Burkes Ck @ SH69","Burkes Ck @ SH69","WCRC-00005",FALSE,"west coast","wcrc","rural","upland",-42.08800417,171.84740747
+"Cardrona River at Mt Barker","Cardrona at Mt Barker","ORC-00103",FALSE,"otago","orc","rural","upland",-44.75005579,169.11690806
+"74701","Cascades @ Whakanewha","ARC-00040",FALSE,"auckland","ac","rural","upland",-36.81832,175.08472
+"44603","Cascades Stream @ Confluence","ARC-00001",FALSE,"auckland","ac","forest","lowland",-36.88865,174.52165
+"Catlins River at Houipapa","Catlins at Houipapa","ORC-00105",FALSE,"otago","orc","rural","lowland",-46.46115241,169.55050121
+"1925","Clive River U/S Whakatu Rail Bridge","HBRC-00003",FALSE,"hawkes bay","hbrc","rural","lowland",-39.599052587315,176.87787555936
+"Clutha River at Balclutha","Clutha at Balclutha","NRWQN-00025",FALSE,"otago","niwa","rural","lowland",-46.2372775701064,169.747987601102
+"Clutha River at Luggate Bridge","Clutha at Luggate Br.","NRWQN-00032",FALSE,"otago","niwa","rural","upland",-44.7290965407403,169.280578315219
+"Clutha River at Millers Flat","Clutha at Millers Flat","NRWQN-00027",FALSE,"otago","niwa","rural","lowland",-45.6647496873505,169.41006377037
+"Ngamuwahine at Old Bridge","CO543022","EBOP-00009",FALSE,"bay of plenty","boprc","rural","lowland",-37.816784458299,176.015399445936
+"Wairoa d/s Ruahihi Power Station","CO938527","EBOP-00036",FALSE,"bay of plenty","boprc","forest","lowland",-37.7701834581922,176.058395583913
+"Collins at SH6","Collins at SH6","NCC-00038",FALSE,"nelson","ncc","forest","lowland",-41.15972008,173.53368155
+"Waipapa at Old Highway","CP466747","EBOP-00035",FALSE,"bay of plenty","boprc","rural","lowland",-37.6617415079616,176.000395344288
+"Crooked Rv @ Rotomanu-Bell Hill Rd","Crooked Rv @ Rotomanu-Bell Hill Rd","WCRC-00033",FALSE,"west coast","wcrc","forest","lowland",-42.63002914,171.59664514
+"Crooked Rv @ Te Kinga","Crooked Rv @ Te Kinga","WCRC-00039",FALSE,"west coast","wcrc","forest","lowland",-42.60115919,171.49737356
+"Crookston Burn at Kelso Road","Crookston Burn at Kelso Road","ORC-00096",FALSE,"otago","orc","rural","upland",-45.89854092,169.23515025
+"Cullen Creek at Road Bridge","Cullen Creek at Road Bridge","MDC-00006",FALSE,"marlborough","mdc","forest","lowland",-41.29465472,173.85758011
+"Dart River at The Hillocks","Dart at The Hillocks","ORC-00107",FALSE,"otago","orc","forest","upland",-44.77397608,168.32442871
+"Deep Ck @ Arnold Vly Rd Br","Deep Ck @ Arnold Vly Rd Br","WCRC-00001",FALSE,"west coast","wcrc","forest","lowland",-42.5525352,171.45514239
+"Dencker at Kokorua Rd","Dencker at Kokorua Rd","NCC-00039",FALSE,"nelson","ncc","forest","lowland",-41.14096842,173.53693741
+"Omanawa at SH29","DO047598","EBOP-00013",FALSE,"bay of plenty","boprc","rural","lowland",-37.7545342603477,176.070120033999
+"Kopurererua at SH29","DO406909","EBOP-00005",FALSE,"bay of plenty","boprc","rural","lowland",-37.7344497947606,176.109995199841
+"Waimapu 100m d/s of SH29","DO688849","EBOP-00033",FALSE,"bay of plenty","boprc","rural","lowland",-37.7381884351537,176.141918776596
+"Waimapu at Pukemapu Rd","DO712717","EBOP-00032",FALSE,"bay of plenty","boprc","rural","lowland",-37.7507801226566,176.14544731734
+"Doctors Creek Upstream Taylor","Doctors Creek Upstream Taylor","MDC-00008",FALSE,"marlborough","mdc","rural","lowland",-41.51472761,173.94246076
+"Wairoa at SH2","DP281304","EBOP-00037",FALSE,"bay of plenty","boprc","rural","lowland",-37.6992169435331,176.094403671783
+"Kopurererua at SH2","DP784306","EBOP-00006",FALSE,"bay of plenty","boprc","urban","lowland",-37.6975746328178,176.151257931251
+"Duck Ck @ Kokatahi-Kowhitirangi Rd Br","Duck Ck @ Kokatahi-Kowhitirangi Rd Br","WCRC-00013",FALSE,"west coast","wcrc","rural","lowland",-42.83256048,171.03231518
+"Duncan Stream at Outlet","Duncan Stream at Outlet","MDC-00007",FALSE,"marlborough","mdc","rural","lowland",-41.28193721,173.90219322
+"Dunstan Creek at Beattie Road","Dunstan Creek at Beattie Road","ORC-00012",FALSE,"otago","orc","rural","upland",-44.93943275,169.76486579
+"Puarenga at FRI","EK598179","EBOP-00019",FALSE,"bay of plenty","boprc","urban","upland",-38.1564389941754,176.263799380814
+"Ngongotaha at SH36","EL174017","EBOP-00010",FALSE,"bay of plenty","boprc","rural","upland",-38.0823576072631,176.212205642004
+"Ellis Ck @ 50m d/s Ferry Rd Br","Ellis Ck @ 50m d/s Ferry Rd Br","WCRC-00020",FALSE,"west coast","wcrc","rural","lowland",-42.98688033,170.703026
+"Enaki Stream upstream of Mangatarere Stream confluence","Enaki Stream D/S site for Riparian","LAWA-100394",FALSE,"wellington","gwrc","urban","lowland",-41.02534566,175.49726909
+"Waitao at Waitao Rd","EO451883","EBOP-00039",FALSE,"bay of plenty","boprc","rural","lowland",-37.7336210997026,176.228499689903
+"Rocky at Mangatawa Lane","EP623312","EBOP-00023",FALSE,"bay of plenty","boprc","rural","lowland",-37.6944799012024,176.246312200819
+"176","Esk River at Berry Road","HBRC-00022",FALSE,"hawkes bay","hbrc","rural","upland",-39.2294717511904,176.796762558524
+"182","Esk River at Waipunga Bridge","HBRC-00002",FALSE,"hawkes bay","hbrc","rural","lowland",-39.3853701410824,176.821159324812
+"Rangitaiki at SH5","FC231176","EBOP-00104",FALSE,"bay of plenty","boprc","forest","upland",-38.8743772139806,176.369370465762
+"Otamatea at Wairere Rd","FD445529","EBOP-00102",FALSE,"bay of plenty","boprc","forest","upland",-38.7519290511337,176.388310645361
+"Ohau Channel at SH33","FL230406","EBOP-00012",FALSE,"bay of plenty","boprc","rural","upland",-38.0439971161231,176.330840055897
+"Kaituna at Rotoiti Outlet","FL356693","EBOP-00007",FALSE,"bay of plenty","boprc","rural","upland",-38.0177585587837,176.343976823451
+"Flaxbourne River at Quarry","Flaxbourne River at Quarry","MDC-00009",FALSE,"marlborough","mdc","rural","lowland",-41.83359628,174.17396926
+"Kaituna at Maungarangi Rd","FN834668","EBOP-00003",FALSE,"bay of plenty","boprc","rural","lowland",-37.8384673935175,176.390192548793
+"Kaituna at Te Matai","FO620177","EBOP-00057",FALSE,"bay of plenty","boprc","rural","lowland",-37.7934217549296,176.363800997398
+"Ford Ck @ Blackball-Taylorville Rd","Ford Ck @ Blackball-Taylorville Rd","WCRC-00004",FALSE,"west coast","wcrc","forest","lowland",-42.37775303,171.41290187
+"Fraser River at Marshall Road","Fraser at Marshall Road","ORC-00013",FALSE,"otago","orc","rural","lowland",-45.24738821,169.35625335
+"Tarawera at Lake Outlet","GJ662805","EBOP-00051",FALSE,"bay of plenty","boprc","forest","upland",-38.1832613030459,176.500596760016
+"Pongakawa at Pumphouse","GM781934","EBOP-00047",FALSE,"bay of plenty","boprc","forest","lowland",-37.9013550234117,176.500737085208
+"Pongakawa at Old Coach Rd","GN849464","EBOP-00017",FALSE,"bay of plenty","boprc","rural","lowland",-37.8534811960477,176.506195407174
+"Pongakawa at SH2","GN922883","EBOP-00016",FALSE,"bay of plenty","boprc","forest","lowland",-37.8155217087343,176.512698416166
+"Graham River at Road Bridge","Graham River at Road Bridge","MDC-00010",FALSE,"marlborough","mdc","forest","lowland",-41.27076198,174.07392726
+"Grey @ Dobson","Grey at Dobson","NRWQN-00051",FALSE,"west coast","niwa","forest","lowland",-42.4535168194064,171.297900391258
+"Grey @ Waipuna","Grey at Waipuna","NRWQN-00052",FALSE,"west coast","niwa","forest","upland",-42.3544585375834,171.786160547587
+"Groom at Maitai Confluence","Groom at Maitai Confluence","NCC-00018",FALSE,"nelson","ncc","forest","lowland",-41.2881737,173.32561357
+"Haast @ Roaring Billy","Haast at Roaring Billy","NRWQN-00050",FALSE,"west coast","niwa","forest","lowland",-43.9424643223375,169.297934950188
+"Hakatakamea above MH Br.","Hakatakamea above MH Br.","NRWQN-00004",FALSE,"otago","niwa","rural","upland",-44.7247992574589,170.490550497447
+"Nottingham Stream at Candys Road","HALS03","CCC-00036",FALSE,"canterbury","ecan","rural","lowland",-43.5960820755419,172.560469911407
+"Halswell River at Akaroa Highway (Tai Tapu Road)","HALS04","CCC-00038",FALSE,"canterbury","ecan","rural","lowland",-43.6083092292221,172.559316723578
+"Knights Stream at Sabys Road","HALS05","CCC-00037",FALSE,"canterbury","ecan","rural","lowland",-43.5980955591596,172.550424215425
+"Hamanatua Stream at Okitu Bridge","Hamanatua Stream at Okitu Bridge","GDC-00032",FALSE,"gisborne","gdc","rural","lowland",-38.67822058,178.08004372
+"279","Hangaroa River at Doneraille Park","HBRC-00032",FALSE,"hawkes bay","hbrc","rural","lowland",-38.7334297771801,177.584339853078
+"Harris Ck @ Mulvaney Rd","Harris Ck @ Mulvaney Rd","WCRC-00014",FALSE,"west coast","wcrc","rural","lowland",-42.8525437,171.0115477
+"Hautapu at Alabasters","Hautapu at Alabasters","HRC-00003",FALSE,"horizons","hrc","rural","upland",-39.6568799999999,175.78086
+"Hautapu at d/s Taihape STP","Hautapu at d/s Taihape STP","LAWA-101919",FALSE,"horizons","hrc","rural","upland",-39.68303099,175.816911
+"Hautapu at Papakai Road Bridge","Hautapu at Papakai Road Bridge","LAWA-100545",FALSE,"horizons","hrc","rural","upland",-39.6721439099999,175.8026666
+"Hautapu at US Rangitikei River Conf","Hautapu at US Rangitikei River Conf","HRC-00002",FALSE,"horizons","hrc","rural","upland",-39.7537599999999,175.83617
+"Hawea River at Camphill Bridge","Hawea at Camphill Bridge","ORC-00015",FALSE,"otago","orc","rural","upland",-44.65045243,169.24640206
+"Heathcote River at Ferrymead Bridge","HEATH01","CCC-00027",FALSE,"canterbury","ecan","urban","lowland",-43.559910251614,172.708799883464
+"Heathcote River at Tunnel Road","HEATH02","CCC-00026",FALSE,"canterbury","ecan","urban","lowland",-43.5563186448341,172.691268649199
+"Heathcote River at Opawa Road/Clarendon Terrace","HEATH03","CCC-00023",FALSE,"canterbury","ecan","urban","lowland",-43.5556017193212,172.666472146971
+"Heathcote River at Bowenvale Avenue","HEATH04","CCC-00022",FALSE,"canterbury","ecan","urban","lowland",-43.5720568323126,172.643184667368
+"Cashmere Stream at Worsleys Road","HEATH05","CCC-00020",FALSE,"canterbury","ecan","urban","lowland",-43.5775960140065,172.616312750997
+"Heathcote River at Rose Street","HEATH06","CCC-00018",FALSE,"canterbury","ecan","urban","lowland",-43.5707152325921,172.612271040374
+"Heathcote River at Ferniehurst Street","HEATH07","CCC-00021",FALSE,"canterbury","ecan","urban","lowland",-43.5734881315978,172.617910682521
+"Heathcote River at Templetons Road","HEATH08","CCC-00014",FALSE,"canterbury","ecan","urban","lowland",-43.5617741065307,172.577833809996
+"Haytons Stream at Retention Basin","HEATH09","CCC-00015",FALSE,"canterbury","ecan","urban","lowland",-43.5554877149543,172.579189062079
+"Curletts Road Stream Upstream of Heathcote River","HEATH10","CCC-00016",FALSE,"canterbury","ecan","urban","lowland",-43.5544930878685,172.590432667221
+"Heathcote River at Catherine Street","HEATH11","ECAN-10005",FALSE,"canterbury","ecan","urban","lowland",-43.5532364348419,172.683104461899
+"Heathcote River at MacKenzie Avenue","HEATH12","CCC-00024",FALSE,"canterbury","ecan","urban","lowland",-43.5528995571183,172.672043169022
+"Curletts Road Stream at Motorway","HEATH14","CCC-00017",FALSE,"canterbury","ecan","urban","lowland",-43.548646774227,172.58400022271
+"Cashmere Stream at Sutherlands Road","HEATH16","CCC-00019",FALSE,"canterbury","ecan","rural","lowland",-43.5879724435027,172.579770063283
+"310","Herehere Stream at Te Aute Road","HBRC-00067",FALSE,"hawkes bay","hbrc","rural","lowland",-39.6722056259224,176.866223198764
+"Heriot Burn at Park Hill Road","Heriot Burn at Park Hill Road","ORC-00017",FALSE,"otago","orc","rural","upland",-45.87150623,169.21244457
+"Hikuwai River at No 4 Bridge","Hikuwai River at No 4 Bridge","GDC-00003",FALSE,"gisborne","gdc","rural","lowland",-38.20389326,178.25582994
+"Hikuwai River at Willowflat","Hikuwai River at Willowflat","GDC-00004",FALSE,"gisborne","gdc","rural","lowland",-38.29225747,178.26918382
+"Hillwood at Glen Rd","Hillwood at Glen Rd","NCC-00040",FALSE,"nelson","ncc","rural","lowland",-41.20348936,173.35949584
+"Waitahanui at Otamarakau Marae","HN674689","EBOP-00038",FALSE,"bay of plenty","boprc","rural","lowland",-37.8304503881097,176.598798594433
+"Hohonu Rv @ Mitchells-Kumara Rd Br","Hohonu Rv @ Mitchells-Kumara Rd Br","WCRC-00036",FALSE,"west coast","wcrc","forest","upland",-42.64485315,171.35324867
+"Hohonu Rv @ Mouth","Hohonu Rv @ Mouth","WCRC-00040",FALSE,"west coast","wcrc","forest","lowland",-42.61157882,171.41325576
+"Hokio at Lake Horowhenua","Hokio at Lake Horowhenua","HRC-00004",FALSE,"horizons","hrc","rural","lowland",-40.605,175.23608
+"Horokiri Stream at Snodgrass","Horokiri Stream at Snodgrass","GW-00013",FALSE,"wellington","gwrc","rural","lowland",-41.07930266,174.92617299
+"Hoteo @ Gubbs","Hoteo at Gubbs","NRWQN-00002",FALSE,"auckland","niwa","rural","lowland",-36.3852736887752,174.516971647545
+"45703","Hoteo River @ Gubbs","ARC-00051",FALSE,"auckland","ac","rural","lowland",-36.38438,174.50989
+"Huangarua River at Ponatahi Bridge","Huangarua River at Ponatahi Bridge","GW-00051",FALSE,"wellington","gwrc","rural","lowland",-41.20800072,175.46909416
+"Hurunui River at Mandamus","Hurunui at Mandamus","NRWQN-00009",FALSE,"canterbury","niwa","forest","upland",-42.7903885901527,172.541553472042
+"Hurunui River at SH1 Bridge","Hurunui at SH1 Br.","NRWQN-00059",FALSE,"canterbury","niwa","rural","lowland",-42.898431402399,173.09662217794
+"Hutt River at Boulcott","Hutt River at Boulcott","GW-00022",FALSE,"wellington","gwrc","forest","lowland",-41.19670926,174.92047746
+"Hutt River at Kaitoke","Hutt River at Kaitoke","NRWQN-00047",FALSE,"wellington","gwrc","forest","upland",-41.05101129,175.19123118
+"Hutt River at Te Marua Intake Site","Hutt River at Te Marua Intake Site","GW-00020",FALSE,"wellington","gwrc","forest","lowland",-41.07991041,175.14363637
+"Hutt River Opposite Manor Park Golf Club","Hutt River Opposite Manor Park Golf Club","GW-00021",FALSE,"wellington","gwrc","forest","lowland",-41.15364323,174.98644435
+"Motueka at Woodmans Bend","HY Motueka at Woodmans Bend","TDC-00030",FALSE,"tasman","tdc","rural","lowland",-41.12398843,172.95682822
+"Riwaka at Hickmotts","HY Riwaka at Hickmotts","TDC-00010",FALSE,"tasman","tdc","rural","lowland",-41.06758739,172.98950194
+"Rangitaiki at Murupara","IG265664","EBOP-00048",FALSE,"bay of plenty","boprc","forest","upland",-38.4601551204011,176.69768552677
+"Whirinaki at Galatea","IG619428","EBOP-00053",FALSE,"bay of plenty","boprc","forest","upland",-38.4798169932264,176.747577277343
+"Ihungia River at Ihungia Rd Br","Ihungia River at Ihungia Rd Br","GDC-00005",FALSE,"gisborne","gdc","forest","lowland",-38.04691689,178.1766513
+"Tarawera at Kawerau Bridge","IK564876","EBOP-00024",FALSE,"bay of plenty","boprc","urban","lowland",-38.0802784158219,176.712421137622
+"Tarawera at SH30","IL818464","EBOP-00025",FALSE,"bay of plenty","boprc","rural","lowland",-38.0265092686686,176.738648828543
+"Jenkins at Pascoe St","Jenkins at Pascoe St","NCC-00006",FALSE,"nelson","ncc","urban","lowland",-41.295048,173.24084684
+"Rangitaiki at Inlet to Aniwhenua Canal","JI148319","LAWA-100396",FALSE,"bay of plenty","boprc","forest","lowland",-38.308112112467,176.79087706243
+"Rangitaiki at Matahina Dam","JK491452","EBOP-00021",FALSE,"bay of plenty","boprc","forest","lowland",-38.1150203795324,176.819978908605
+"Rangitaiki at Te Teko","JL350292","EBOP-00049",FALSE,"bay of plenty","boprc","forest","lowland",-38.0400378942047,176.800003428746
+"Tarawera at Awakaponga","JM102399","EBOP-00050",FALSE,"bay of plenty","boprc","forest","lowland",-37.9414091255637,176.766690971962
+"2003","Kahahakuri Stream U/S Tukituki Confl","LAWA-100648",FALSE,"hawkes bay","hbrc","rural","upland",-39.9767936527499,176.505357969403
+"Kahuterawa at Johnstons Rata","Kahuterawa at Johnstons Rata","HRC-00005",FALSE,"horizons","hrc","forest","lowland",-40.4490699999999,175.62164
+"Kahuterawa at Keebles Farm","Kahuterawa at Keebles Farm","HRC-00345",FALSE,"horizons","hrc","rural","lowland",-40.39313,175.59101
+"Kaikorai Stream at Brighton Road","Kaikorai Stream at Brighton Road","ORC-00021",FALSE,"otago","orc","urban","lowland",-45.90427956,170.42170867
+"Kaituna River at Higgins Bridge","Kaituna River at Higgins Bridge","MDC-00012",FALSE,"marlborough","mdc","rural","lowland",-41.31128476,173.77473321
+"Kaiwharawhara Stream at Ngaio Gorge","Kaiwharawhara Stream at Ngaio Gorge","GW-00019",FALSE,"wellington","gwrc","urban","lowland",-41.25798289,174.77940709
+"Kakanui River at Clifton Falls Br","Kakanui at Clifton Falls Bridge","ORC-00115",FALSE,"otago","orc","rural","lowland",-45.03179169,170.75220051
+"Kakanui River at McCones","Kakanui at McCones","ORC-00025",FALSE,"otago","orc","rural","lowland",-45.17720505,170.881087
+"Karakatuwhero River at SH35 Br","Karakatuwhero River at SH35 Br","GDC-00006",FALSE,"gisborne","gdc","rural","lowland",-37.62563187,178.33460144
+"400","Karewarewa Stream at Paki Paki","HBRC-00014",FALSE,"hawkes bay","hbrc","rural","lowland",-39.693927637103,176.790917077682
+"Karori Stream at Makara Peak Mountain Bike Park","Karori Stream at Makara Peak Mountain Bike Park","GW-00018",FALSE,"wellington","gwrc","urban","lowland",-41.29542655,174.72253616
+"ARC-00057 *or* 45415","Kaukapakapa *or* Kaukapakapa @ Taylors","ARC-00057",FALSE,"auckland","ac","rural","lowland",-36.6305992482745,174.518987898735
+"Kauru River at Ewings","Kauru at Ewings","ORC-00117",FALSE,"otago","orc","rural","lowland",-45.11102763,170.73635297
+"Kawarau River at Chards","Kawarau at Chards","NRWQN-00030",FALSE,"otago","niwa","rural","upland",-45.0063638975341,168.868745379252
+"Kenepuru Stream at Kenepuru Head","Kenepuru Stream at Kenepuru Head","MDC-00011",FALSE,"marlborough","mdc","rural","lowland",-41.16612951,174.12387854
+"Kiwitea at Kimbolton Rd","Kiwitea at Kimbolton Rd","HRC-00346",FALSE,"horizons","hrc","rural","lowland",-40.2109,175.59674
+"Whakatane at Pekatahi Bridge","KL998150","EBOP-00042",FALSE,"bay of plenty","boprc","rural","lowland",-38.0465484125758,176.987968121962
+"Kopuaranga River at Stuarts","Kopuaranga River at Stuarts","GW-00038",FALSE,"wellington","gwrc","rural","lowland",-40.89357041,175.69179599
+"Kopuawhakapata Stream at Hirini St","Kopuawhakapata Stream at Hirini St","GDC-00007",FALSE,"gisborne","gdc","urban","lowland",-38.67070898,178.03168577
+"441","Kopuawhara Stream at Railway Bridge","HBRC-00029",FALSE,"hawkes bay","hbrc","forest","lowland",-39.0143637717938,177.858250354866
+"Koputaroa at Tavistock Rd","Koputaroa at Tavistock Rd","HRC-00347",FALSE,"horizons","hrc","rural","lowland",-40.5966799999999,175.33744
+"Kumeti at Te Rehunga","Kumeti at Te Rehunga","HRC-00006",FALSE,"horizons","hrc","rural","upland",-40.21971,176.01202
+"45313","Kumeu River At Weza Lane","ARC-00003",FALSE,"auckland","ac","rural","lowland",-36.77658,174.56054
+"Kye Burn at SH85 Bridge","Kye Burn at SH85 Bridge","ORC-00098",FALSE,"otago","orc","rural","upland",-45.15003543,170.26123708
+"Domain Drain","L Horowhenua Inflow at culv d/s Queen St","LAWA-101921",FALSE,"horizons","hrc","urban","lowland",-40.61066464,175.266236
+"L Horowhenua Inflow at Hokio Sand Rd","L Horowhenua Inflow at Hokio Sand Rd","LAWA-101922",FALSE,"horizons","hrc","rural","lowland",-40.61988321,175.23742
+"Mangaroa at Lindsay Road","L Horowhenua Inflow at Lindsay Road","LAWA-101923",FALSE,"horizons","hrc","rural","lowland",-40.58654365,175.2684342
+"La Fontaine Stm @ Airstrip Fishing Access","La Fontaine Stm @ Airstrip Fishing Access","WCRC-00022",FALSE,"west coast","wcrc","rural","lowland",-43.06857049,170.51941215
+"La Fontaine Stm @ Herepo Fishing Access","La Fontaine Stm @ Herepo Fishing Access","WCRC-00023",FALSE,"west coast","wcrc","rural","lowland",-43.11252981,170.55326617
+"Lake Hayes","Lake Hayes at Bendemeer Bay","ORC-00031",FALSE,"otago","orc","rural","upland",-44.98194765,168.81587539
+"Water of Leith at Dundas Street Bridge","Leith at Dundas Street Bridge","ORC-00095",FALSE,"otago","orc","urban","lowland",-45.86223451,170.51746769
+"Tauranga at Ranger Station","LI953392","EBOP-00103",FALSE,"bay of plenty","boprc","rural","lowland",-38.2908003479183,177.110507683301
+"Lindis River at Ardgour Road","Lindis at Ardgour Road","ORC-00041",FALSE,"otago","orc","rural","upland",-44.88495626,169.38427631
+"Lindis River at Lindis Peak","Lindis at Lindis Peak","ORC-00040",FALSE,"otago","orc","rural","upland",-44.74537543,169.50782299
+"Lindsays Creek at North Rd Bridge","Lindsays Creek at North Road Bridge","ORC-00119",FALSE,"otago","orc","rural","lowland",-45.85174277,170.52383408
+"Whakatane at Ruatoki","LK082095","EBOP-00041",FALSE,"bay of plenty","boprc","forest","lowland",-38.1410629954322,177.002809818585
+"Tauranga at Taneatua Bridge","LK149881","EBOP-00031",FALSE,"bay of plenty","boprc","forest","lowland",-38.0701442364387,177.006514019474
+"7830","Lucas @ Gills Road","ARC-00004",FALSE,"auckland","ac","urban","lowland",-36.72308,174.6962
+"Lud at 4.7km","Lud at 4.7km","NCC-00030",FALSE,"nelson","ncc","rural","lowland",-41.25036732,173.3815591
+"Lud at SH6","Lud at SH6","NCC-00029",FALSE,"nelson","ncc","rural","lowland",-41.21740564,173.39549217
+"Luggate Creek at SH6 Bridge","Luggate Creek at SH6 Bridge","ORC-00043",FALSE,"otago","orc","rural","upland",-44.7484624,169.26871836
+"496","Mahiaruhe Stream at Tutira Outlet S.H.2","LAWA-101795",FALSE,"hawkes bay","hbrc","rural","upland",-39.2093899407756,176.87985057161
+"6804","Mahurangi @ Warkworth Water Treatment Plant","ARC-00006",FALSE,"auckland","ac","rural","lowland",-36.39951,174.66004
+"Main Drain at Waipori Pump","Main Drain at Waipori Pump","ORC-00044",FALSE,"otago","orc","rural","lowland",-45.96822077,170.12896611
+"Maitai at Groom Rd","Maitai at Groom Rd","NCC-00015",FALSE,"nelson","ncc","forest","lowland",-41.28842246,173.32683295
+"Maitai at Riverside","Maitai at Riverside","NCC-00013",FALSE,"nelson","ncc","urban","lowland",-41.27159588,173.28985592
+"Maitai South Branch at Intake","Maitai South Branch at Intake","NCC-00016",FALSE,"nelson","ncc","forest","upland",-41.29941726,173.36691412
+"Makakahi at d/s Eketahuna STP","Makakahi at d/s Eketahuna STP","LAWA-101925",FALSE,"horizons","hrc","rural","upland",-40.6325591099999,175.714745
+"Makakahi at end Kaiparoro Road","Makakahi at end Kaiparoro Road","HRC-00348",FALSE,"horizons","hrc","forest","upland",-40.71343,175.60673
+"Makakahi at Hamua","Makakahi at Hamua","HRC-00008",FALSE,"horizons","hrc","rural","upland",-40.56517,175.74511
+"Makakahi at u/s Eketahuna STP","Makakahi at u/s Eketahuna STP","HRC-00077",FALSE,"horizons","hrc","rural","upland",-40.6517499999999,175.7037
+"Makara Stream at Kennels","Makara Stream at Kennels","GW-00017",FALSE,"wellington","gwrc","rural","lowland",-41.23595385,174.71271629
+"45505","Makarau @ Railway","ARC-00033",FALSE,"auckland","ac","rural","lowland",-36.55704,174.52113
+"528","Makaretu Stream at State Highway 50","HBRC-00008",FALSE,"hawkes bay","hbrc","rural","upland",-40.015430709631,176.323099487699
+"Makaroro at Burnt Bridge","Makaroro at Burnt Br.","NRWQN-00013",FALSE,"hawkes bay","niwa","forest","upland",-39.8178641436364,176.304008554753
+"Makomako Road Drain at L Horowhenua","Makomako Road Drain at L Horowhenua","LAWA-101927",FALSE,"horizons","hrc","urban","lowland",-40.61960763,175.2571286
+"Makotuku at Above Sewage Plant","Makotuku at Above Sewage Plant","HRC-00066",FALSE,"horizons","hrc","rural","upland",-39.43825,175.28904
+"Makotuku at d/s Raetihi STP","Makotuku at d/s Raetihi STP","LAWA-101929",FALSE,"horizons","hrc","rural","upland",-39.4377831799999,175.2854268
+"Makotuku at Raetihi","Makotuku at Raetihi","HRC-00007",FALSE,"horizons","hrc","rural","upland",-39.4210199999999,175.2821
+"Makotuku at SH49A","Makotuku at SH49A","HRC-00009",FALSE,"horizons","hrc","forest","upland",-39.3714899999999,175.32457
+"Makuri at Tuscan Hills","Makuri at Tuscan Hills","HRC-00010",FALSE,"horizons","hrc","rural","lowland",-40.5236599999999,175.93115
+"Manakau at S.H.1 Bridge","Manakau at S.H.1 Bridge","HRC-00011",FALSE,"horizons","hrc","rural","lowland",-40.7243799999999,175.21165
+"Manawatu at d/s PNCC STP","Manawatu at d/s PNCC STP","LAWA-101931",FALSE,"horizons","hrc","rural","lowland",-40.39400746,175.5834723
+"Manawatu at d/s Fonterra Longburn","Manawatu at ds Fonterra Longburn","LAWA-101932",FALSE,"horizons","hrc","rural","lowland",-40.4046547799999,175.5546929
+"Manawatu at Hopelands","Manawatu at Hopelands","HRC-00016",FALSE,"horizons","hrc","rural","lowland",-40.3588599999999,175.96286
+"Manawatu at Ngawapurua Bridge","Manawatu at Ngawapurua Bridge","HRC-00014",FALSE,"horizons","hrc","rural","lowland",-40.38685,175.88985
+"Manawatu at Opiki Bridge","Manawatu at Opiki Br","HRC-00013",FALSE,"horizons","hrc","rural","lowland",-40.43535,175.46978
+"Manawatu at Fitzherbert","Manawatu at Teachers Coll.","LAWA-00669",FALSE,"horizons","niwa","rural","lowland",-40.3724687695665,175.62416405335
+"Manawatu at Teachers College","Manawatu at Teachers College","HRC-00015",FALSE,"horizons","hrc","rural","lowland",-40.3732899999999,175.62773
+"Manawatu at u/s PNCC STP","Manawatu at u/s PNCC STP","HRC-00080",FALSE,"horizons","hrc","rural","lowland",-40.38783,175.58234
+"Manawatu at u/s PPCS Shannon","Manawatu at u/s PPCS Shannon","HRC-00082",FALSE,"horizons","hrc","rural","lowland",-40.5260299999999,175.39992
+"Manawatu at Upper Gorge","Manawatu at Upper Gorge","HRC-00017",FALSE,"horizons","hrc","rural","lowland",-40.33185,175.81803
+"Manawatu at us Fonterra Longburn","Manawatu at us Fonterra Longburn","HRC-00081",FALSE,"horizons","hrc","rural","lowland",-40.39832,175.55681
+"Manawatu at Weber Road","Manawatu at Weber Road","HRC-00018",FALSE,"horizons","hrc","rural","upland",-40.23947,176.11638
+"Manawatu at Whirokino","Manawatu at Whirokino","HRC-00012",FALSE,"horizons","hrc","rural","lowland",-40.5115699999999,175.26837
+"Mangaatua at d/s Woodville STP","Mangaatua at d/s Woodville STP","LAWA-101933",FALSE,"horizons","hrc","rural","lowland",-40.3445402999999,175.8515346
+"Mangaatua at u/s Woodville STP","Mangaatua at u/s Woodville STP","HRC-00076",FALSE,"horizons","hrc","rural","lowland",-40.34449,175.85389
+"34309 *or* Mangaehu River at Raupuha Rd Bridge","Mangaehu at Bridge *or* MGH000950","TRC-00001",FALSE,"taranaki","trc","rural","lowland",-39.388696695389,174.46659514071
+"Mangaehuehu at d/s Rangataua STP","Mangaehuehu at d/s Rangataua STP","LAWA-101934",FALSE,"horizons","hrc","forest","upland",-39.43163636,175.4637507
+"Mangaehuehu at u/s Rangataua STP","Mangaehuehu at u/s Rangataua STP","HRC-00065",FALSE,"horizons","hrc","forest","upland",-39.43074,175.46372
+"Mangahao at Ballance","Mangahao at Ballance","HRC-00019",FALSE,"horizons","hrc","rural","lowland",-40.43611,175.79173
+"Mangaheia River at Paroa Road Bridge","Mangaheia River at Paroa Road Bridge","GDC-00008",FALSE,"gisborne","gdc","rural","lowland",-38.34737089,178.24910813
+"546","Mangakuri River at Kairakau","HBRC-00053",FALSE,"hawkes bay","hbrc","rural","lowland",-39.9648866087868,176.906039546711
+"Manganui River @ SH3","Manganui at SH3","NRWQN-00035",FALSE,"taranaki","niwa","rural","upland",-39.281172115548,174.261795455862
+"Manganui o te Ao at Ruatiti Domain","Manganui o te Ao at Ruatiti Domain","LAWA-100557",FALSE,"horizons","hrc","forest","upland",-39.3135450999999,175.1987531
+"569","Mangaone River at Rissington","HBRC-00015",FALSE,"hawkes bay","hbrc","rural","lowland",-39.4403508062227,176.719099942797
+"Mangaone Stream at Sims Road Bridge","Mangaone Stream at Sims Road Bridge","GW-00007",FALSE,"wellington","gwrc","rural","lowland",-40.79042456,175.0889146
+"589","Mangaonuku Stream at Waipawa Tikokino Rd","HBRC-00020",FALSE,"hawkes bay","hbrc","rural","upland",-39.9070765525801,176.524815715528
+"Mangaoporo River at Tutumatai Bridge","Mangaoporo River at Tutumatai Bridge","GDC-00009",FALSE,"gisborne","gdc","rural","lowland",-37.83774273,178.29385929
+"39402 *or* Mangaoraka Stream at Corbett Rd. (Recorder site).","Mangaoraka at Corbett Rd *or* MRK000420","TRC-00003",FALSE,"taranaki","trc","forest","lowland",-39.0561874531992,174.185074587009
+"623","Mangaorapa Stream at Mangaorapa Road","HBRC-00011",FALSE,"hawkes bay","hbrc","rural","lowland",-40.2945013051612,176.555849568314
+"Mangaore at d/s Shannon STP","Mangaore at d/s Shannon STP","LAWA-101936",FALSE,"horizons","hrc","forest","lowland",-40.5368914599999,175.3982241
+"Mangaore at u/s Shannon STP","Mangaore at u/s Shannon STP","HRC-00074",FALSE,"horizons","hrc","forest","lowland",-40.53773,175.40034
+"Mangapapa at Troup Rd","Mangapapa at Troup Rd","HRC-00020",FALSE,"horizons","hrc","rural","lowland",-40.3419299999999,175.84788
+"636","Mangapoike River at Suspension Bridge","HBRC-00083",FALSE,"hawkes bay","hbrc","rural","lowland",-38.8901018297015,177.522145182722
+"Mangapouri Stream at Bennetts Rd","Mangapouri Stream at Bennetts Rd","GW-00002",FALSE,"wellington","gwrc","urban","lowland",-40.74299396,175.14078335
+"Mangarangiora at d/s Ormondville STP","Mangarangiora at d/s Ormondville STP","LAWA-101937",FALSE,"horizons","hrc","rural","upland",-40.11587804,176.2708569
+"Mangarangiora at u/s Ormondville STP","Mangarangiora at u/s Ormondville STP","LAWA-101938",FALSE,"horizons","hrc","rural","upland",-40.1155075899999,176.2708977
+"Mangarangiora trib at ds Norsewood STP","Mangarangiora trib at ds Norsewood STP","LAWA-101939",FALSE,"horizons","hrc","rural","upland",-40.0842257699999,176.2230681
+"Mangarangiora Trib at US Norsewood STP","Mangarangiora Trib at us Norsewood STP","HRC-00086",FALSE,"horizons","hrc","rural","upland",-40.08064,176.2229
+"Mangaroa River at Te Marua","Mangaroa River at Te Marua","GW-00024",FALSE,"wellington","gwrc","rural","lowland",-41.09432204,175.1280911
+"Mangatainoka at Brewery - S.H.2 Bridge","Mangatainoka at Brewery - S.H.2 Bridge","HRC-00024",FALSE,"horizons","hrc","rural","lowland",-40.42268,175.86191
+"Mangatainoka at d/s DB Breweries","Mangatainoka at d/s DB Breweries","LAWA-101940",FALSE,"horizons","hrc","rural","lowland",-40.41887136,175.870005
+"Mangatainoka at d/s Pahiatua STP","Mangatainoka at d/s Pahiatua STP","LAWA-101941",FALSE,"horizons","hrc","rural","lowland",-40.43847492,175.8425347
+"Mangatainoka at Larsons Road","Mangatainoka at Larsons Road","HRC-00022",FALSE,"horizons","hrc","forest","upland",-40.6403599999999,175.61099
+"Mangatainoka at Pahiatua Town Bridge","Mangatainoka at Pahiatua Town Bridge","HRC-00023",FALSE,"horizons","hrc","rural","lowland",-40.4495699999999,175.83121
+"Mangatainoka at Putara","Mangatainoka at Putara","HRC-00021",FALSE,"horizons","hrc","forest","upland",-40.6805199999999,175.54746
+"Mangatainoka at Scarborough Konini Rd","Mangatainoka at Scarborough Konini Rd","HRC-00343",FALSE,"horizons","hrc","rural","lowland",-40.4756599999999,175.79573
+"Mangatainoka at u/s Pahiatua STP","Mangatainoka at u/s Pahiatua STP","HRC-00083",FALSE,"horizons","hrc","rural","lowland",-40.4394399999999,175.84022
+"Mangatainoka at u/s Tiraumea Confluence","Mangatainoka at u/s Tiraumea Confluence","HRC-00344",FALSE,"horizons","hrc","rural","lowland",-40.4026299999999,175.88269
+"667","Mangatarata Stream at Mangatarata Road","HBRC-00018",FALSE,"hawkes bay","hbrc","rural","lowland",-39.9960672470266,176.626866285652
+"Mangatarere River at State Highway 2","Mangatarere River at State Highway 2","GW-00050",FALSE,"wellington","gwrc","rural","lowland",-41.05477704,175.49618121
+"Mangatera at d/s Dannevirke STP","Mangatera at d/s Dannevirke STP","LAWA-101942",FALSE,"horizons","hrc","rural","upland",-40.22644299,176.1017423
+"Mangatera at Dannevirke","Mangatera at Dannevirke","HRC-00075",FALSE,"horizons","hrc","rural","lowland",-40.22455,176.10159
+"Mangatera at u/s Manawatu confluence","Mangatera at u/s Manawatu confluence","HRC-00025",FALSE,"horizons","hrc","rural","upland",-40.24085,176.0988
+"Mangatera at u/s Dannevirke STP","Mangatera at u/s T.D.C. Ox Ponds","LAWA-101943",FALSE,"horizons","hrc","rural","upland",-40.2247147699999,176.1016987
+"Mangatewainui at Hardys","Mangatewainui at Hardys","HRC-00351",FALSE,"horizons","hrc","rural","upland",-40.1697799999999,176.19306
+"Mangatoro at Mangahei Road","Mangatoro at Mangahei Road","HRC-00026",FALSE,"horizons","hrc","rural","upland",-40.24468,176.18953
+"Mangatu River at Omapere Station","Mangatu River at Omapere Station","GDC-00010",FALSE,"gisborne","gdc","rural","lowland",-38.37861727,177.79314223
+"Mangatutu Str at Sh35-Waipahuru Bridge","Mangatutu Str at Sh35-Waipahuru Bridge","LAWA-100336",FALSE,"gisborne","gdc","rural","lowland",-37.59944782,178.26023485
+"684","Mangatutu Stream at Mangatutu Stn Br","HBRC-00079",FALSE,"hawkes bay","hbrc","rural","upland",-39.4264106051746,176.553737393238
+"Mangawhero at d/s Ohakune STP","Mangawhero at d/s Ohakune STP","LAWA-101944",FALSE,"horizons","hrc","rural","upland",-39.4081261699999,175.3827436
+"Mangawhero at DOC Headquarters","Mangawhero at DOC Headquarters","HRC-00029",FALSE,"horizons","hrc","forest","upland",-39.4016999999999,175.41228
+"Mangawhero at Pakihi Rd Bridge","Mangawhero at Pakihi Rd Bridge","HRC-00028",FALSE,"horizons","hrc","rural","upland",-39.431,175.32311
+"Mangawhero at Raupiu Road","Mangawhero at Raupiu Road","HRC-00027",FALSE,"horizons","hrc","rural","lowland",-39.70028,175.33113
+"Mangawhero at u/s Ohakune STP","Mangawhero at u/s Ohakune STP","HRC-00064",FALSE,"horizons","hrc","rural","upland",-39.40901,175.38394
+"Manuherikia River at Galloway","Manuherikia at Galloway","ORC-00046",FALSE,"otago","orc","rural","upland",-45.22638046,169.4306264
+"Manuherikia River at Ophir","Manuherikia at Ophir","ORC-00047",FALSE,"otago","orc","rural","upland",-45.11085125,169.59158896
+"698","Maraekakaho Stream at Maraekakaho","HBRC-00075",FALSE,"hawkes bay","hbrc","rural","lowland",-39.649636592634,176.62240766112
+"714","Maraetotara River at Te Awanga","HBRC-00004",FALSE,"hawkes bay","hbrc","rural","lowland",-39.6392669660873,176.988103324578
+"715","Maraetotara River at Waimarama Road","HBRC-00012",FALSE,"hawkes bay","hbrc","rural","lowland",-39.7326748696578,176.953001336709
+"Mata River at Aorangi (Makarika Road)","Mata River at Aorangi (Makarika Road)","GDC-00011",FALSE,"gisborne","gdc","rural","lowland",-37.94877976,178.21088895
+"Mata River at Pouturu Br","Mata River at Pouturu Br","LAWA-100348",FALSE,"gisborne","gdc","forest","upland",-38.04748307,178.12338148
+"6604","Matakana @ Wenzlicks Farm","ARC-00008",FALSE,"auckland","ac","rural","lowland",-36.34443,174.71055
+"Matawai Stream at Tawai","Matawai Stream at Tawai","LAWA-100332",FALSE,"gisborne","gdc","rural","upland",-38.38021422,177.55207132
+"Matukituki River at West Wanaka","Matukituki at West Wanaka","ORC-00048",FALSE,"otago","orc","rural","upland",-44.63582466,168.990675
+"Mawheraiti River at Atarau Bridge","Mawheraiti Rv @ Atarau Br","LAWA-102196",FALSE,"west coast","wcrc","rural","lowland",-42.27079969,171.67144481
+"Mawheraiti Rv @ SH7 Maimai","Mawheraiti Rv @ SH7 Maimai","WCRC-00006",FALSE,"west coast","wcrc","forest","upland",-42.1988594,171.71895519
+"Mill Creek at Fish Trap.","Mill Creek at Fish Trap","ORC-00049",FALSE,"otago","orc","rural","upland",-44.96747122,168.81436833
+"Mill Creek at Ormonds","Mill Creek at Ormonds","MDC-00013",FALSE,"marlborough","mdc","rural","upland",-41.56218999,173.5138337
+"Nukuhou at Old Quarry","MK283728","EBOP-00011",FALSE,"bay of plenty","boprc","rural","lowland",-38.079460107068,177.136212187178
+"Nukuhou at Glenholme Rd","MK788545","EBOP-00062",FALSE,"bay of plenty","boprc","rural","lowland",-38.0876915281408,177.139409587158
+"Maketawa Stream at Tarata Rd.","MKW000300","TRC-00002",FALSE,"taranaki","trc","rural","lowland",-39.1553326474269,174.259022657298
+"Waiotahe at Toone Rd","ML715056","LAWA-100395",FALSE,"bay of plenty","boprc","rural","lowland",-38.048228714927,177.183676915395
+"Mohaka at Glenfalls","Mohaka at Glenfalls","NRWQN-00016",FALSE,"hawkes bay","niwa","forest","upland",-39.1777476223308,176.634818793976
+"749","Mohaka River at Raupunga","NRWQN-00017",FALSE,"hawkes bay","hbrc","rural","lowland",-39.0729793942294,177.12926456651
+"5274","Mohaka River D/S Ripia River","HBRC-00071",FALSE,"hawkes bay","hbrc","rural","upland",-39.2072916019879,176.516996020128
+"753","Mohaka River D/S Taharua","HBRC-00070",FALSE,"hawkes bay","hbrc","rural","upland",-39.0822605624851,176.30746287011
+"5273","Mohaka River D/S Waipunga River","HBRC-00072",FALSE,"hawkes bay","hbrc","rural","upland",-39.1000450826981,176.702160201764
+"754","Mohaka River U/S Taharua","HBRC-00062",FALSE,"hawkes bay","hbrc","rural","upland",-39.0792486114759,176.286569043924
+"757","Mokomokonui Stream U/S Waipunga","HBRC-00026",FALSE,"hawkes bay","hbrc","forest","upland",-39.048018078821,176.589039620183
+"Molloy Ck @ Rail Line","Molloy Ck @ Rail Line","WCRC-00002",FALSE,"west coast","wcrc","forest","lowland",-42.5560052,171.46070875
+"Monowai below Gates","Monowai below Gates","NRWQN-00034",FALSE,"otago","niwa","forest","upland",-45.8050296853467,167.53426373621
+"Motu @ Waitangirua","Motu at Waitangirua","NRWQN-00012",FALSE,"gisborne","niwa","rural","upland",-38.1997332253724,177.621010970621
+"Motu River above Falls","Motu River above Falls","LAWA-100331",FALSE,"gisborne","gdc","rural","upland",-38.24861874,177.59480185
+"Motu River at Kotare Station Bridge","Motu River at Kotare Station Bridge","LAWA-100330",FALSE,"gisborne","gdc","rural","upland",-38.36155298,177.49807902
+"Motu River at Matawai Conservation Area","Motu River at Matawai Conservation Area","LAWA-100329",FALSE,"gisborne","gdc","forest","upland",-38.42453214,177.46114325
+"Motueka @ Gorge","Motueka at Gorge","NRWQN-00056",FALSE,"nelson","niwa","forest","upland",-41.6334841544444,172.913705914254
+"Motueka @ Woodstock","Motueka at Woodstock","NRWQN-00057",FALSE,"nelson","niwa","forest","lowland",-41.2497958873417,172.8247746319
+"Mowhanau Stream at Footbridge","Mowhanau Stream at Footbridge","HRC-00089",FALSE,"horizons","hrc","rural","lowland",-39.88667,174.90126
+"Murphys Creek at Nelson Street","Murphys Creek at Nelson Street","MDC-00014",FALSE,"marlborough","mdc","urban","lowland",-41.50874417,173.94167897
+"Murray Ck @ Ford Rd S","Murray Ck @ Ford Rd S","WCRC-00015",FALSE,"west coast","wcrc","rural","lowland",-42.85921478,171.02968164
+"Nelson Ck @ Swimming Hole Reserve","Nelson Ck @ Swimming Hole Reserve","WCRC-00003",FALSE,"west coast","wcrc","forest","lowland",-42.40441564,171.52035452
+"43829","Ngakoroa Stream @ Mill Rd","ARC-00009",FALSE,"auckland","ac","rural","upland",-37.19547,174.97351
+"Ngaruroro at Chesterhope","Ngaruroro at Chesterhope","NRWQN-00014",FALSE,"hawkes bay","niwa","rural","lowland",-39.5964216393517,176.872472013636
+"Ngaruroro at Kuripapango","Ngaruroro at Kuripapango","NRWQN-00015",FALSE,"hawkes bay","niwa","forest","upland",-39.3799182273577,176.330641119247
+"799","Ngaruroro River at Fernhill","HBRC-00038",FALSE,"hawkes bay","hbrc","rural","lowland",-39.5867339712565,176.760319611954
+"815","Ngaruroro River at Whanawhana","HBRC-00021",FALSE,"hawkes bay","hbrc","forest","upland",-39.5583644415179,176.398366595202
+"1924","Ngaruroro River D/S Hawkes Bay Dairies","HBRC-00061",FALSE,"hawkes bay","hbrc","rural","lowland",-39.5998512928447,176.577115297132
+"Ngatahaka Stream at u/s Makakahi Confl","Ngatahaka Stream at u/s Makakahi Confl","LAWA-101945",FALSE,"horizons","hrc","rural","upland",-40.64685974,175.6945002
+"Waioeka at Mouth of Gorge","NK608503","EBOP-00044",FALSE,"bay of plenty","boprc","forest","lowland",-38.094286346682,177.288046746424
+"7171","Nukumea @ Upper Site","ARC-00038",FALSE,"auckland","ac","forest","upland",-36.57117,174.66983
+"8110","Oakley Creek @ Carrington","ARC-00010",FALSE,"auckland","ac","urban","lowland",-36.87531,174.70508
+"837","Ohara Stream at Big Hill Road","LAWA-101796",FALSE,"hawkes bay","hbrc","rural","upland",-39.6005171195921,176.431048959581
+"Ohau at Gladstone Reserve","Ohau at Gladstone Reserve","HRC-00030",FALSE,"horizons","hrc","forest","lowland",-40.66335,175.3374
+"Ohau at Haines Property","Ohau at Haines Property","HRC-00031",FALSE,"horizons","hrc","rural","lowland",-40.6642899999999,175.19784
+"Ohinemuri @ Karangahake","Ohinemuri at Karangahake","NRWQN-00045",FALSE,"waikato","niwa","rural","lowland",-37.4147935814437,175.715306712675
+"841","Ohiwia Stream at Broughtons Br.","LAWA-101797",FALSE,"hawkes bay","hbrc","rural","lowland",-39.5800699689581,176.7399063608
+"Ohura at Tokorima","Ohura at Tokorima","HRC-00032",FALSE,"horizons","hrc","rural","lowland",-38.9175,175.03238
+"Otara at Browns Bridge","OK300616","EBOP-00014",FALSE,"bay of plenty","boprc","rural","lowland",-38.0811717506377,177.366198500991
+"7502","Okura Creek @ Awanohi Rd","ARC-00011",FALSE,"auckland","ac","rural","lowland",-36.68415,174.69584
+"Okutua Ck @ New Rd Br-Okarito Forest","Okutua Ck @ New Rd Br-Okarito Forest","WCRC-00024",FALSE,"west coast","wcrc","forest","lowland",-43.20416114,170.26646791
+"Omaka River at Hawkesbury Road Bridge","Omaka River at Hawkesbury Road Bridge","MDC-00015",FALSE,"marlborough","mdc","rural","lowland",-41.52290352,173.81681618
+"8249","Omaru @ Maybury Street","ARC-00034",FALSE,"auckland","ac","urban","lowland",-36.88052,174.863
+"Ohinemahuta River at Northbank Road","Onamalutu River at Northbank Road","MDC-00016",FALSE,"marlborough","mdc","forest","lowland",-41.47790727,173.78116979
+"74401","Onetangi @ Waiheke Rd","ARC-00039",FALSE,"auckland","ac","rural","upland",-36.79168,175.08737
+"Ongarue at Taringamotu","Ongarue at Taringamotu","HRC-00033",FALSE,"horizons","hrc","rural","upland",-38.86223,175.23823
+"7904","Opanuku Stream @ Candia Road Bridge","ARC-00013",FALSE,"auckland","ac","rural","lowland",-36.89519,174.59551
+"Opaoa River at Hammerichs Road","Opawa River at Hammerichs Road","MDC-00019",FALSE,"marlborough","mdc","rural","lowland",-41.48709991,173.90917839
+"Opaoa River at Swamp Road","Opawa River at Swamp Road","MDC-00018",FALSE,"marlborough","mdc","rural","lowland",-41.51726924,174.01732797
+"Opihi River at Grassy Banks","Opihi at Grassy Banks","NRWQN-00006",FALSE,"otago","niwa","rural","lowland",-44.2680313194373,171.324132179398
+"Opihi River at Rockwood","Opihi at Rockwood","NRWQN-00007",FALSE,"otago","niwa","rural","upland",-44.168254539683,170.941688656554
+"Opouri River at Tunakino Valley Road","Opouri River at Tunakino Valley Road","MDC-00017",FALSE,"marlborough","mdc","rural","lowland",-41.21217636,173.62272553
+"Opuha River at Skipton Bridge","Opuha at Skipton Br.","NRWQN-00008",FALSE,"otago","niwa","rural","upland",-44.0788934251613,170.979719555096
+"Orangipuku Rv @ Mouth","Orangipuku Rv @ Mouth","WCRC-00037",FALSE,"west coast","wcrc","rural","lowland",-42.65262754,171.43501385
+"Oreti River at Wallacetown","Oreti at Riverton HW Br.","ES-00010",FALSE,"southland","niwa","rural","lowland",-46.3262754414818,168.265963456013
+"Oroua at Almadale Slackline","Oroua at Almadale","HRC-00035",FALSE,"horizons","hrc","rural","lowland",-40.1734099999999,175.6599
+"Oroua at Apiti Gorge Bridge","Oroua at Apiti","HRC-00036",FALSE,"horizons","hrc","forest","upland",-39.93807,175.9258
+"Oroua at Awahuri Bridge","Oroua at Awahuri Bridge","HRC-00034",FALSE,"horizons","hrc","rural","lowland",-40.27565,175.52158
+"Oroua at d/s AFFCO Feilding","Oroua at d/s AFFCO Feilding","LAWA-101948",FALSE,"horizons","hrc","rural","lowland",-40.23742684,175.5789424
+"Oroua at d/s Feilding STP","Oroua at d/s Feilding STP","LAWA-101949",FALSE,"horizons","hrc","rural","lowland",-40.2634951799999,175.5411179
+"Oroua at Mangawhata","Oroua at Mangawhata","LAWA-100248",FALSE,"horizons","hrc","rural","lowland",-40.392866,175.435158
+"Oroua at U/S AFFCO Feilding","Oroua at U/S AFFCO Feilding","HRC-00078",FALSE,"horizons","hrc","rural","lowland",-40.23195,175.58226
+"Oroua at U/S Feilding STP","Oroua at U/S Feilding STP","HRC-00079",FALSE,"horizons","hrc","rural","lowland",-40.26253,175.54461
+"Oroua Trib at U/S Kimbolton STP","Oroua Trib at U/S Kimbolton STP","HRC-00088",FALSE,"horizons","hrc","rural","upland",-40.0621399999999,175.79276
+"Oroua tributary at d/s Kimbolton STP","Oroua tributary at d/s Kimbolton STP","LAWA-101950",FALSE,"horizons","hrc","rural","upland",-40.06392512,175.7928277
+"Orowaiti Rv @ Excelsior Rd","Orowaiti Rv @ Excelsior Rd","WCRC-00018",FALSE,"west coast","wcrc","rural","lowland",-41.77099829,171.62539531
+"Orowaiti Rv @ Keoghans Rd","Orowaiti Rv @ Keoghans Rd","WCRC-00019",FALSE,"west coast","wcrc","forest","lowland",-41.76873193,171.66152429
+"Orphanage at Saxton Rd East","Orphanage at Saxton Rd East","NCC-00002",FALSE,"nelson","ncc","rural","lowland",-41.32696384,173.21751917
+"Oruakeretaki at d/s PPCS Oringi STP","Oruakeretaki at d/s PPCS Oringi STP","LAWA-101951",FALSE,"horizons","hrc","rural","upland",-40.26133508,176.0397533
+"Oruakeretaki at S.H.2 Napier","Oruakeretaki at S.H.2 Napier","HRC-00037",FALSE,"horizons","hrc","rural","upland",-40.2534199999999,176.03234
+"8219","Otaki @ Middlemore Crescent","ARC-00014",FALSE,"auckland","ac","urban","lowland",-36.96659,174.84565
+"Otaki River at Mouth","Otaki River at Mouth","GW-00006",FALSE,"wellington","gwrc","forest","lowland",-40.75873884,175.1085342
+"Otaki River at Pukehinau","Otaki River at Pukehinau","GW-00005",FALSE,"wellington","gwrc","forest","lowland",-40.8220466,175.19957526
+"8214","Otara @ East Tamaki Rd","ARC-00015",FALSE,"auckland","ac","urban","lowland",-36.96228,174.87998
+"8205","Otara Stream @ Kennel Hill","ARC-00016",FALSE,"auckland","ac","urban","lowland",-36.9557,174.89063
+"ARC-00074 *or* 7811","Oteha *or* Oteha River @ Days Bridge","ARC-00074",FALSE,"auckland","ac","urban","upland",-36.731938340597,174.694780268754
+"Otukaikino River at Groynes Inlet","OTUKAI01","CCC-00039",FALSE,"canterbury","ecan","urban","lowland",-43.4540719302806,172.602855421428
+"Wilsons Stream","OTUKAI02","CCC-00040",FALSE,"canterbury","ecan","rural","lowland",-43.4368820331632,172.644517314171
+"Otukaikino Creek at Omaka Scout Camp","OTUKAI03","CCC-00042",FALSE,"canterbury","ecan","rural","lowland",-43.4614535476,172.575437939442
+"Linwood Canal/City Outfall Drain","OUT01","CCC-00041",FALSE,"canterbury","ecan","urban","lowland",-43.5520000579572,172.70215530663
+"Owahanga at Branscombe Bridge","Owahanga at Branscombe Bridge","HRC-00038",FALSE,"horizons","hrc","rural","lowland",-40.6307899999999,176.30245
+"Oweka River at SH35 Bridge","Oweka River at SH35 Bridge","GDC-00013",FALSE,"gisborne","gdc","rural","lowland",-37.5927497,178.15253622
+"Page Stm @ Chasm Ck Walkway","Page Stm @ Chasm Ck Walkway","WCRC-00029",FALSE,"west coast","wcrc","rural","lowland",-41.54556872,171.97948291
+"Pakarae River at Pakarae Station Bridge","Pakarae River at Pakarae Station Bridge","GDC-00014",FALSE,"gisborne","gdc","rural","lowland",-38.51508062,178.25492637
+"8217","Pakuranga @ Botany Rd","ARC-00018",FALSE,"auckland","ac","urban","lowland",-36.91324,174.91608
+"8215","Pakuranga @ Greenmount Drive","ARC-00019",FALSE,"auckland","ac","urban","lowland",-36.93337,174.9029
+"Pakuratahi River 50m Below Farm Creek","Pakuratahi River 50m Below Farm Creek","GW-00023",FALSE,"wellington","gwrc","forest","lowland",-41.0652202,175.19714172
+"1043837","Papakura @ Alfriston/Ardmore Rd","ARC-00037",FALSE,"auckland","ac","rural","lowland",-37.00645,174.95822
+"43856","Papakura Stream @ Porchester Road Bridge","ARC-00021",FALSE,"auckland","ac","rural","lowland",-37.02795,174.92501
+"915","Papanui Stream at Middle Road","HBRC-00085",FALSE,"hawkes bay","hbrc","rural","lowland",-39.856714411593,176.715225003343
+"Parkvale Stream at Renalls Weir","Parkvale Stream at Renalls Weir","GW-00046",FALSE,"wellington","gwrc","rural","lowland",-41.07801993,175.54166084
+"Parkvale tributary at Lowes Reserve","Parkvale tributary at Lowes Reserve","GW-00045",FALSE,"wellington","gwrc","rural","lowland",-40.99686768,175.59297497
+"Patea River at Barclay Road Bridge","PAT000200","TRC-00004",FALSE,"taranaki","trc","rural","upland",-39.3239468868425,174.190532112583
+"Patea River at Skinner Road Bridge *or* 34308","PAT000360 *or* Patea at Skinner Rd","TRC-00005",FALSE,"taranaki","trc","rural","upland",-39.339535909765,174.345112058216
+"Patiki Stream at Kawiu Road","Patiki Stream at Kawiu Road","HRC-00039",FALSE,"horizons","hrc","rural","lowland",-40.60803,175.27923
+"Pauatahanui Stream at Elmwood Bridge","Pauatahanui Stream at Elmwood Bridge","GW-00014",FALSE,"wellington","gwrc","rural","lowland",-41.11427573,174.91877486
+"Te Hoiere/Pelorus River at Fishermans Flat","Pelorus River at Fishermans Flat","MDC-00020",FALSE,"marlborough","mdc","rural","lowland",-41.30073927,173.71156417
+"Te Hoiere/Pelorus River at Kahikatea Flat","Pelorus River at Kahikatea Flat","MDC-00021",FALSE,"marlborough","mdc","forest","lowland",-41.30153522,173.56840131
+"Piakatutu at d/s Sanson STP","Piakatutu at d/s Sanson STP","LAWA-101952",FALSE,"horizons","hrc","rural","lowland",-40.2158399899999,175.4112216
+"Piakatutu at u/s Sanson STP","Piakatutu at u/s Sanson STP","HRC-00073",FALSE,"horizons","hrc","rural","lowland",-40.2149499999999,175.41119
+"Punehu Stream at Wiremu Rd.","PNH000200","TRC-00006",FALSE,"taranaki","trc","rural","upland",-39.4119183245758,174.014342055553
+"Punehu Stream at S.H. 45","PNH000900","TRC-00007",FALSE,"taranaki","trc","forest","lowland",-39.4960109396189,173.906510937029
+"Poerua Rv @ Rail Br","Poerua Rv @ Station Rd end","WCRC-00038",FALSE,"west coast","wcrc","forest","lowland",-42.6494887,171.53400374
+"Pohangina at Mais Reach","Pohangina at Mais Reach","HRC-00040",FALSE,"horizons","hrc","rural","lowland",-40.22457,175.783
+"Pohangina at Piripiri","Pohangina at Piripiri","HRC-00041",FALSE,"horizons","hrc","forest","upland",-40.05216,175.94009
+"Pomahaka River at Burkes Ford","Pomahaka at Burkes Ford","ORC-00130",FALSE,"otago","orc","rural","lowland",-46.05896356,169.40166119
+"Pomahaka River at Glenken","Pomahaka at Glenken","ORC-00131",FALSE,"otago","orc","rural","upland",-45.86593043,169.14033686
+"Pongaroa at d/s Pongaroa STP","Pongaroa at d/s Pongaroa STP","LAWA-101953",FALSE,"horizons","hrc","rural","lowland",-40.5489888399999,176.19768
+"Pongaroa at u/s Pongaroa STP","Pongaroa at u/s Pongaroa STP","HRC-00067",FALSE,"horizons","hrc","rural","lowland",-40.5497,176.20633
+"Poorman at Barnicoat Walkway","Poorman at Barnicoat Walkway","NCC-00005",FALSE,"nelson","ncc","forest","upland",-41.32811127,173.26330279
+"Poorman at Seaview Rd","Poorman at Seaview Rd","NCC-00004",FALSE,"nelson","ncc","urban","lowland",-41.30323727,173.22694876
+"991","Poporangi Stream at Ohara Stn.","LAWA-101798",FALSE,"hawkes bay","hbrc","rural","upland",-39.5812327017901,176.442901315101
+"998","Porangahau River at SH52 Opposite Quarry","HBRC-00006",FALSE,"hawkes bay","hbrc","rural","lowland",-40.2966808135443,176.58072803493
+"1003","Porangahau Stream at Oruawhara Road","HBRC-00042",FALSE,"hawkes bay","hbrc","rural","upland",-40.0240694684561,176.371057906781
+"Porewa at d/s Hunterville STP","Porewa at d/s Hunterville STP site A","LAWA-101954",FALSE,"horizons","hrc","rural","upland",-39.9469715399999,175.5699621
+"Porewa at Onepuhi","Porewa at Onepuhi Road","HRC-00042",FALSE,"horizons","hrc","rural","lowland",-40.0770899999999,175.45319
+"Porewa at u/s Hunterville STP","Porewa at U/S Hunterville STP Site A","HRC-00068",FALSE,"horizons","hrc","rural","upland",-39.9465999999999,175.56907
+"Porirua Stream at Wall Park","Porirua Stream at Milk Depot","GW-00016",FALSE,"wellington","gwrc","urban","lowland",-41.14936353,174.83958812
+"Poroporo River at Rangitukia Rd Bridge","Poroporo River at Rangitukia Rd Bridge","GDC-00015",FALSE,"gisborne","gdc","rural","lowland",-37.78527353,178.42755259
+"1044","Poukawa Stream at Stock Road","HBRC-00010",FALSE,"hawkes bay","hbrc","rural","lowland",-39.697679095599,176.793889558384
+"ARC-00079 *or* 43807","Puhinui *or* Puhinui @ Drop Structure","ARC-00079",FALSE,"auckland","ac","urban","lowland",-36.9925809149482,174.870118227004
+"1051","Puhokio Stream at Te Apiti Rd","HBRC-00041",FALSE,"hawkes bay","hbrc","rural","lowland",-39.8258516055328,176.981118783376
+"Motu at Houpoto","QM756918","EBOP-00045",FALSE,"bay of plenty","boprc","forest","lowland",-37.8636965795139,177.632294880597
+"Queen Street Drain at L Horowhenua","Queen Street Drain at L Horowhenua","LAWA-101955",FALSE,"horizons","hrc","urban","lowland",-40.6124025999999,175.2644272
+"Rai River at Rai Falls","Rai River at Rai Falls","MDC-00022",FALSE,"marlborough","mdc","rural","lowland",-41.28556058,173.57463968
+"Rangitawa Stream at d/s Halcombe oxpond","Rangitawa Stream at ds Halcombe oxpond","LAWA-101956",FALSE,"horizons","hrc","rural","lowland",-40.1331789399999,175.484581
+"Rangitawa Stream at us Halcombe oxpond","Rangitawa Stream at us Halcombe oxpond","HRC-00070",FALSE,"horizons","hrc","rural","lowland",-40.13316,175.48576
+"Rangitikei at d/s Riverlands","Rangitikei at d/s Riverlands","LAWA-101957",FALSE,"horizons","hrc","rural","lowland",-40.19549245,175.3493926
+"Rangitikei at Kakariki","Rangitikei at Kakariki","NRWQN-00018",FALSE,"horizons","hrc","rural","lowland",-40.12504,175.44437
+"Rangitikei at Mangaweka","Rangitikei at Mangaweka","HRC-00045",FALSE,"horizons","hrc","rural","upland",-39.8094199999999,175.80811
+"Rangitikei at McKelvies","Rangitikei at McKelvies","HRC-00043",FALSE,"horizons","hrc","rural","lowland",-40.29556,175.27557
+"Rangitikei at Onepuhi","Rangitikei at Onepuhi","HRC-00044",FALSE,"horizons","hrc","rural","lowland",-40.0795699999999,175.46384
+"Rangitikei at Pukeokahu","Rangitikei at Pukeokahu","HRC-00046",FALSE,"horizons","hrc","forest","upland",-39.62765,176.04425
+"Rangitikei at u/s Bulls STP","Rangitikei at u/s Bulls STP","HRC-00069",FALSE,"horizons","hrc","rural","lowland",-40.18952,175.37738
+"Rangitikei at u/s Riverlands STP","Rangitikei at us Riverlands STP","LAWA-101958",FALSE,"horizons","hrc","rural","lowland",-40.18950695,175.3773763
+"7805","Rangitopuni at Walkers","ARC-00082",FALSE,"auckland","ac","rural","lowland",-36.73702,174.61939
+"Rangitopuni @ Walkers","Rangitopuni at Walkers","NRWQN-00001",FALSE,"auckland","niwa","rural","lowland",-36.74427865661,174.617914848712
+"Raparapawai at Jackson Rd","Raparapawai at Jackson Rd","HRC-00047",FALSE,"horizons","hrc","rural","lowland",-40.32287,175.99543
+"Ratahi Lagoon at Sh35 Culvert","Ratahi Lagoon at Sh35 Culvert","GDC-00039",FALSE,"gisborne","gdc","rural","lowland",-38.05290109,178.30501341
+"6811","Redwood Stream @ Forestry H.Q.","ARC-00005",FALSE,"auckland","ac","forest","upland",-36.44847,174.6488
+"1096","Ripia River U/S Mohaka","HBRC-00048",FALSE,"hawkes bay","hbrc","forest","upland",-39.200369127527,176.516656445081
+"45373","Riverhead @ Ararimu Valley Road","ARC-00031",FALSE,"auckland","ac","forest","upland",-36.73586,174.53559
+"Haparapara at SH35","RN123610","EBOP-00002",FALSE,"bay of plenty","boprc","forest","lowland",-37.7998397579293,177.6698989117
+"Kereu at SH35","RO629568","EBOP-00101",FALSE,"bay of plenty","boprc","forest","lowland",-37.7115237930874,177.721793712608
+"Ronga River at Upstream Rai River","Ronga River at Upstream Rai River","MDC-00023",FALSE,"marlborough","mdc","rural","lowland",-41.21043507,173.59601344
+"1126","Ruakituri River at Sports Ground","HBRC-00031",FALSE,"hawkes bay","hbrc","rural","lowland",-38.8157173377148,177.483150950296
+"Ruamahanga River at Gladstone Bridge","Ruamahanga River at Gladstone Bridge","GW-00033",FALSE,"wellington","gwrc","rural","lowland",-41.07237221,175.62913522
+"Ruamahanga River at McLays","Ruamahanga River at McLays","GW-00031",FALSE,"wellington","gwrc","forest","upland",-40.74966737,175.58256015
+"Ruamahanga River at Pukio","Ruamahanga River at Pukio","GW-00034",FALSE,"wellington","gwrc","rural","lowland",-41.24812292,175.36108795
+"Ruamahanga River at Te Ore Ore","Ruamahanga River at Te Ore Ore","GW-00032",FALSE,"wellington","gwrc","rural","lowland",-40.95283816,175.68011378
+"Ruamahanga River at Waihenga Bridge","Ruamahanga River at Waihenga Bridge","NRWQN-00046",FALSE,"wellington","gwrc","rural","lowland",-41.19685836,175.43999678
+"Ruamahanga River at Wardells","Ruamahanga River at Wardells","NRWQN-00048",FALSE,"wellington","gwrc","rural","lowland",-41.00481677,175.67236373
+"Ruamahanga at SH2","Ruramahanga at SH2","NRWQN-00049",FALSE,"wellington","niwa","forest","upland",-40.7621213167216,175.605074524208
+"RW Aorere @ Devils Boots","RW Aorere @ Devils Boots","TDC-00001",FALSE,"tasman","tdc","rural","lowland",-40.74719333,172.62601043
+"Aorere at Le Comte","RW Aorere @ Le Comte","TDC-00002",FALSE,"tasman","tdc","rural","lowland",-40.66933395,172.64390894
+"Black Valley Stream at Lake","RW Black Vly @ 30m us Lake","TDC-00003",FALSE,"tasman","tdc","rural","upland",-41.80629339,172.84617482
+"Graham at Farm Forest Boundary","RW Graham @ farm forest bdy","TDC-00052",FALSE,"tasman","tdc","forest","upland",-41.64667155,172.84094712
+"Hunters at Kikiwa","RW Hunters @ Kikiwa","TDC-00032",FALSE,"tasman","tdc","rural","upland",-41.67616535,172.86541913
+"Kaituna at 500m u-s Track start","RW Kaituna @ 500m us Track start","TDC-00048",FALSE,"tasman","tdc","rural","upland",-40.71319654,172.57206017
+"Kaituna at Sollys Road","RW Kaituna @ Sollys Rd","TDC-00004",FALSE,"tasman","tdc","rural","lowland",-40.7144525,172.61401095
+"Kikiwa at Kikiwa","RW Kikiwa @ Kikiwa","TDC-00031",FALSE,"tasman","tdc","rural","upland",-41.65521451,172.85783634
+"Lee at Meads Br","RW Lee @ Meads Br","TDC-00020",FALSE,"tasman","tdc","rural","lowland",-41.40767821,173.15891132
+"Little Sydney at Factory Rd","RW Little Sydney @ Factory Rd","TDC-00025",FALSE,"tasman","tdc","rural","lowland",-41.07574819,172.98451286
+"Mangles at 1.5km u-s Tutaki","RW Mangles @ 1.5 km u-s Tutaki","TDC-00024",FALSE,"tasman","tdc","rural","lowland",-41.81640301,172.4733996
+"Mangles at Gorge","RW Mangles @ Gorge","TDC-00005",FALSE,"tasman","tdc","rural","upland",-41.81735147,172.43055247
+"Matakitaki at SH6 Murchison","RW Matakitaki @ SH6 Murchison","TDC-00022",FALSE,"tasman","tdc","rural","lowland",-41.79958182,172.31978935
+"Motueka at u-s Wangapeka","RW Motueka @ u-s Wangapeka","TDC-00034",FALSE,"tasman","tdc","rural","lowland",-41.33434574,172.79478968
+"RW Motupiko @ Christies","RW Motupiko @ Christies","TDC-00008",FALSE,"tasman","tdc","rural","upland",-41.61867038,172.80716657
+"Motupipi at Abel Tasman Dr","RW Motupipi @ Abel Tasman Dr","TDC-00037",FALSE,"tasman","tdc","rural","lowland",-40.84929637,172.84042531
+"Motupipi at Factory Farm Br","RW Motupipi @ Factory Farm Br","TDC-00041",FALSE,"tasman","tdc","rural","lowland",-40.85827395,172.8194739
+"Motupipi at Reillys Br","RW Motupipi @ Reillys Br","TDC-00038",FALSE,"tasman","tdc","rural","lowland",-40.85596829,172.83172442
+"Murchison Creek at 20m u-s SH6","RW Murchison Ck @ 20m u-s SH6","TDC-00023",FALSE,"tasman","tdc","rural","upland",-41.79984114,172.32251901
+"Onahau at Onahau Rd","RW Onahau @ Onahau Rd","TDC-00047",FALSE,"tasman","tdc","rural","lowland",-40.80679783,172.76373695
+"Onekaka at Shambala Br","RW Onekaka @ Shambala Br","TDC-00046",FALSE,"tasman","tdc","rural","lowland",-40.7584504,172.70563171
+"Onekaka at u-s Ironstone","RW Onekaka @ u-s Ironstone","TDC-00045",FALSE,"tasman","tdc","rural","lowland",-40.77669534,172.69618933
+"Powell at 40m u-s Motupipi Rv","RW Powell @ 40m u-s Motupipi Rv","TDC-00040",FALSE,"tasman","tdc","rural","lowland",-40.85631073,172.8318066
+"Powell at Glenview Rd","RW Powell @ Glenview Rd","TDC-00039",FALSE,"tasman","tdc","rural","lowland",-40.87882013,172.82996934
+"Redwood Valley at Greenacres Rd","RW Redwood Vly @ Greenacres Rd","TDC-00086",FALSE,"tasman","tdc","rural","lowland",-41.30195394,173.0944855
+"Reservoir Creek at 20m d-s Salisbury Rd","RW Reservoir Ck @ 20m d-s Salisbury Rd","TDC-00019",FALSE,"tasman","tdc","urban","lowland",-41.3342452,173.20093156
+"Reservoir Creek at Marlborough Crescent","RW Reservoir Ck @ Marlborough Cr","TDC-00009",FALSE,"tasman","tdc","rural","lowland",-41.34853759,173.20254141
+"Riwaka at Northbranch Source","RW Riwaka @ Northbranch Source","TDC-00026",FALSE,"tasman","tdc","rural","lowland",-41.03388182,172.90096178
+"Roding at Twin Bridges","RW Roding @ Twin Bridges","TDC-00011",FALSE,"tasman","tdc","rural","lowland",-41.38627437,173.16017485
+"Seaton Valley at Stafford Dr","RW Seaton Vly @ Stafford Dr","TDC-00027",FALSE,"tasman","tdc","rural","lowland",-41.24374003,173.09004552
+"Sherry at Blue Rock","RW Sherry @ Blue Rock","TDC-00035",FALSE,"tasman","tdc","rural","upland",-41.38086745,172.73593439
+"Sherry at u-s Cave Cr","RW Sherry @ u-s Cave Ck","TDC-00012",FALSE,"tasman","tdc","rural","upland",-41.48734013,172.70058363
+"RW Takaka @ Harwoods","RW Takaka @ Harwoods","TDC-00013",FALSE,"tasman","tdc","rural","lowland",-41.02990805,172.79696308
+"RW Takaka @ Kotinga","RW Takaka @ Kotinga","TDC-00014",FALSE,"tasman","tdc","rural","lowland",-40.86370741,172.80376047
+"Tasman Valley at u-s Jesters House","RW Tasman @ u-s Jesters Hse","TDC-00028",FALSE,"tasman","tdc","rural","lowland",-41.19648733,173.05774509
+"Waimea at SH60 Appleby","RW Waimea @ SH60 Appleby","TDC-00015",FALSE,"tasman","tdc","rural","lowland",-41.30970201,173.13000163
+"RW Wairoa @ Irvines","RW Wairoa @ Irvines","TDC-00016",FALSE,"tasman","tdc","rural","lowland",-41.40313729,173.13119261
+"Wairoa at Pig Valley","RW Wairoa @ Pig Vly","TDC-00021",FALSE,"tasman","tdc","rural","upland",-41.47104811,173.07863479
+"Waiwhero at Cemetery","RW Waiwhero @ Cemetery","TDC-00029",FALSE,"tasman","tdc","rural","lowland",-41.1879233,172.93049313
+"Wangapeka at 5km u-s Dart","RW Wangapeka @ 5km u-s Dart","TDC-00036",FALSE,"tasman","tdc","rural","upland",-41.44334463,172.5964473
+"RW Wangapeka @ Walter Peak","RW Wangapeka @ Walter Peak","TDC-00017",FALSE,"tasman","tdc","rural","lowland",-41.3400888,172.76454499
+"Watercress at u-s Dairy Factory","RW Watercress @ u-s Dairy Factory","TDC-00042",FALSE,"tasman","tdc","rural","lowland",-40.85502234,172.81408441
+"Winter Creek at 50m u-s Abel Tasman Dr","RW Winter @ 50m u-s Abel Tasman Dr","TDC-00018",FALSE,"tasman","tdc","rural","lowland",-40.83140405,172.8939222
+"1146","Sandy Creek U/S Lake Tutira Outlet","HBRC-00023",FALSE,"hawkes bay","hbrc","rural","upland",-39.2104610359818,176.889495199643
+"Sawyers Ck @ Bush Fringe","Sawyers Ck @ Bush Fringe","WCRC-00008",FALSE,"west coast","wcrc","forest","lowland",-42.49104989,171.2149949
+"Sawyers Ck @ Dixon Pk","Sawyers Ck @ Dixon Pk","WCRC-00007",FALSE,"west coast","wcrc","forest","lowland",-42.45722201,171.20557022
+"Seven Mile Ck @ 300m d/s Raleigh Ck","Seven Mile Ck @ 300m d/s Raleigh Ck","WCRC-00010",FALSE,"west coast","wcrc","forest","lowland",-42.38618464,171.25152223
+"Seven Mile Ck @ Dunollie 400m u/s Ox Pd","Seven Mile Ck @ Dunollie 400m u/s Ox Pd","WCRC-00009",FALSE,"west coast","wcrc","forest","lowland",-42.38985385,171.25591537
+"Seven Mile Ck @ SH6 Rapahoe","Seven Mile Ck @ SH6 Rapahoe","WCRC-00012",FALSE,"west coast","wcrc","forest","lowland",-42.37614725,171.24294636
+"Seven Mile Ck @ u/s Tillers Mine Ck","Seven Mile Ck @ u/s Tillers Mine Ck","WCRC-00011",FALSE,"west coast","wcrc","forest","lowland",-42.38660338,171.28399442
+"Shag River at Craig Rd","Shag at Craig Road","ORC-00133",FALSE,"otago","orc","rural","lowland",-45.42550192,170.66332312
+"Shag River at Goodwood Pump","Shag at Goodwood Pump","ORC-00061",FALSE,"otago","orc","rural","lowland",-45.47478249,170.7547475
+"Sharland at Maitai Confluence","Sharland at Maitai Confluence","NCC-00017",FALSE,"nelson","ncc","forest","lowland",-41.27530175,173.32872569
+"Shotover River at Bowens Peak","Shotover at Bowens Peak","NRWQN-00031",FALSE,"otago","niwa","rural","upland",-44.9899736487785,168.714982015375
+"Silverstream at Taieri Depot","Silverstream at Taieri Depot","ORC-00066",FALSE,"otago","orc","rural","lowland",-45.87270712,170.32208411
+"Raukokore at SH35","SO991920","EBOP-00022",FALSE,"bay of plenty","boprc","forest","lowland",-37.6736212535426,177.873695915599
+"Spring Creek at Wairau River Floodgates","Spring Creek at Wairau River Floodgates","MDC-00024",FALSE,"marlborough","mdc","rural","lowland",-41.44547299,173.97029634
+"Omarama Stream SH8","SQ10005","ECAN-00117",FALSE,"canterbury","ecan","forest","upland",-44.4898317092287,169.957668950886
+"Willowburn Quailburn Road","SQ10012","ECAN-00001",FALSE,"canterbury","ecan","rural","upland",-44.4586391847475,169.97260940189
+"Sutherlands Creek Ben Omar Road","SQ10037","ECAN-00002",FALSE,"canterbury","ecan","rural","upland",-44.4652256134142,170.037831405501
+"Hakataramea River Cattle Creek","SQ10057","ECAN-00003",FALSE,"canterbury","ecan","rural","upland",-44.5092562695125,170.680355318672
+"Maerewhenua River SH83","SQ10160","ECAN-00118",FALSE,"canterbury","ecan","rural","lowland",-44.8564982075111,170.689990017747
+"Otiake River Mt Bell Station","SQ10167","ECAN-00119",FALSE,"canterbury","ecan","rural","upland",-44.8177079794271,170.509193269944
+"Penticotico Stream SH83","SQ10174","ECAN-00121",FALSE,"canterbury","ecan","rural","lowland",-44.8159015795211,170.636526011416
+"Mary Burn d/s SH8","SQ10275","ECAN-00123",FALSE,"canterbury","ecan","rural","upland",-44.1748838871789,170.323268662045
+"Otematata River SH83","SQ10301","ECAN-00124",FALSE,"canterbury","ecan","rural","upland",-44.6045386487108,170.202876326489
+"Wairepo Creek at Arm Inlet","SQ10804","ECAN-00007",FALSE,"canterbury","ecan","forest","upland",-44.304589203999,170.070366166664
+"Cattle Creek Morland Settlement Road","SQ10814","ECAN-00008",FALSE,"canterbury","ecan","rural","upland",-44.5088760634413,170.675740062008
+"Deadman Stream Hakataramea Valley Road","SQ10818","ECAN-00010",FALSE,"canterbury","ecan","rural","upland",-44.5980074564774,170.63545129395
+"Ashburton River at SH1","SQ20104","ECAN-00014",FALSE,"canterbury","ecan","urban","lowland",-43.9095209565713,171.738744417191
+"Ashburton River North Branch at Digbys Bridge","SQ20106","ECAN-00016",FALSE,"canterbury","ecan","rural","lowland",-43.8538069758746,171.731047467937
+"Ashburton River South Branch at Hills Road","SQ20107","ECAN-00018",FALSE,"canterbury","ecan","rural","lowland",-43.8677201381674,171.699936171661
+"Ashburton River North Branch at SH72","SQ20112","ECAN-00020",FALSE,"canterbury","ecan","rural","upland",-43.6052352191034,171.531915171048
+"Rangitata River Mouth","SQ20175","ECAN-00181",FALSE,"canterbury","ecan","rural","lowland",-44.1850131926087,171.508910788281
+"Rangitata River Upstream of SH1 bridge","SQ20176","ECAN-00025",FALSE,"canterbury","ecan","rural","lowland",-44.0514733151779,171.402048221479
+"Rangitata River SH72","SQ20177","ECAN-00026",FALSE,"canterbury","ecan","rural","upland",-43.9746291022334,171.300218477889
+"Smithfield Creek Te Awa Rd","SQ20195","ECAN-00027",FALSE,"canterbury","ecan","rural","lowland",-44.2107394898403,171.26315101513
+"Taumatakahu Stream Murray St","SQ20199","ECAN-00028",FALSE,"canterbury","ecan","urban","lowland",-44.2492570143838,171.300171998514
+"Orari River Gorge","SQ20203","ECAN-10026",FALSE,"canterbury","ecan","rural","upland",-43.9271448534264,171.191418354195
+"Opihi River mouth/Milford Lagoon","SQ20236","LAWA-102226",FALSE,"canterbury","ecan","rural","lowland",-44.2806996853321,171.346370688226
+"Temuka River Manse Bridge","SQ20252","ECAN-00034",FALSE,"canterbury","ecan","rural","lowland",-44.244727215606,171.267715890338
+"Raukapuka Creek Coach Road","SQ20318","ECAN-00036",FALSE,"canterbury","ecan","rural","lowland",-44.1263406312623,171.26409968914
+"Waihi River Waimarie","SQ20332","ECAN-00038",FALSE,"canterbury","ecan","rural","upland",-44.0034631945214,171.165278923676
+"Te Ngawai River 200m u/s Te Ngawai Road","SQ20350","ECAN-00040",FALSE,"canterbury","ecan","rural","lowland",-44.245427456632,171.113245952234
+"Saltwater Creek SH1 Bridge","SQ20401","ECAN-00042",FALSE,"canterbury","ecan","urban","lowland",-44.4177432490757,171.242543374206
+"Pareora River SH1","SQ20450","ECAN-00180",FALSE,"canterbury","ecan","rural","lowland",-44.4914282600275,171.192857999736
+"Ashburton River South Branch at Buicks Bridge","SQ20497","LAWA-102225",FALSE,"canterbury","ecan","rural","upland",-43.5831579951859,171.160981174229
+"Boundary Drain Trigpole Road","SQ20509","ECAN-00045",FALSE,"canterbury","ecan","rural","lowland",-44.0944191842254,171.62389841754
+"Petries Drain Canal Road","SQ20541","ECAN-00182",FALSE,"canterbury","ecan","rural","lowland",-44.2081917534209,171.379688390064
+"Rhodes Stream Parke Road","SQ20545","ECAN-00046",FALSE,"canterbury","ecan","rural","lowland",-44.2266638342398,171.407107057755
+"Waihao River Bradshaw Bridge","SQ20575","ECAN-00047",FALSE,"canterbury","ecan","rural","lowland",-44.7793002290277,171.157808543354
+"Waihao River McCulloch Bridge","SQ20577","ECAN-00049",FALSE,"canterbury","ecan","rural","lowland",-44.8004997872664,170.975731755204
+"Pareora River Pareora Huts","SQ20606","ECAN-10029",FALSE,"canterbury","ecan","rural","lowland",-44.4116398447393,171.057029185073
+"Hae Hae Te Moana River South Branch Sheep Dip Road","SQ20725","ECAN-00050",FALSE,"canterbury","ecan","rural","upland",-44.0414997577651,171.111039569109
+"Tekapo River at Steel Bridge","SQ20785","ECAN-00184",FALSE,"canterbury","ecan","rural","upland",-44.3084801868937,170.234077755284
+"North Branch Ohapi Creek Guild Rd","SQ21044","ECAN-00177",FALSE,"canterbury","ecan","rural","lowland",-44.2020107208561,171.345405334911
+"Ohapi Creek Guild Rd","SQ21045","ECAN-00178",FALSE,"canterbury","ecan","forest","lowland",-44.2152131930692,171.32631762896
+"Ohapi Creek South Branch Guild Rd","SQ21046","ECAN-00179",FALSE,"canterbury","ecan","forest","lowland",-44.2159607438904,171.325095232981
+"Ohapi Creek upstream Orari River Confluence","SQ21047","ECAN-00052",FALSE,"canterbury","ecan","rural","lowland",-44.2399269167372,171.386471284131
+"Orakipaoa Creek Milford Lagoon Rd","SQ21049","ECAN-00053",FALSE,"canterbury","ecan","rural","lowland",-44.2639841523325,171.336934555297
+"Waikakahi Stream Cock & Hen Road","SQ21160","ECAN-00054",FALSE,"canterbury","ecan","rural","lowland",-44.871471120161,170.965024215105
+"Waikakahi Stream Te Maiharoa Road","SQ21254","ECAN-00183",FALSE,"canterbury","ecan","rural","lowland",-44.9163014487447,171.09499556633
+"Waikakahi Stream Old Ferry Road","SQ21255","LAWA-100476",FALSE,"canterbury","ecan","rural","lowland",-44.8904881714994,171.034245077109
+"Whitneys Creek Carrolls Rd","SQ21289","ECAN-00055",FALSE,"canterbury","ecan","rural","lowland",-44.8990727578079,171.122406750752
+"Buchanans Creek upstream confluence Waihao River","SQ21292","ECAN-00057",FALSE,"canterbury","ecan","rural","lowland",-44.7753082562782,171.152927657569
+"Sir Charles Creek end of Haymans Road","SQ21296","ECAN-00058",FALSE,"canterbury","ecan","rural","lowland",-44.749172725692,171.160595312284
+"Hook River Beach Road","SQ21298","ECAN-00059",FALSE,"canterbury","ecan","rural","lowland",-44.6762283808225,171.147463390604
+"Hook Drain end Hook-Beach Road","SQ21299","ECAN-00061",FALSE,"canterbury","ecan","rural","lowland",-44.6656823451987,171.161980272293
+"Coopers Creek SH72","SQ21309","ECAN-00062",FALSE,"canterbury","ecan","forest","upland",-44.0155449931473,171.277695291966
+"Taitarakihi Creek SH1","SQ22030","ECAN-00127",FALSE,"canterbury","ecan","urban","lowland",-44.3733473973493,171.24138452967
+"McKinnons Stream Wallaces Bridge","SQ26221","ECAN-00065",FALSE,"canterbury","ecan","urban","lowland",-44.1521484301623,171.480380494462
+"Parakanoi Drain Lower Beach Road","SQ26242","ECAN-00194",FALSE,"canterbury","ecan","rural","lowland",-44.0857748989782,171.697862008791
+"Forks Stream u/s SH8","SQ26368","ECAN-00128",FALSE,"canterbury","ecan","rural","upland",-44.000725375594,170.411869590627
+"Irishman Creek u/s SH8","SQ26369","ECAN-00129",FALSE,"canterbury","ecan","rural","upland",-44.0873506144388,170.348796015335
+"Orari River Parke Rd","SQ26633","ECAN-00069",FALSE,"canterbury","ecan","forest","lowland",-44.2376928368112,171.392203175831
+"Bush Stream Rangitata Gorge Road, at bridge","SQ26931","ECAN-00145",FALSE,"canterbury","ecan","rural","upland",-43.6217877106542,170.878482539016
+"Deep Stream Access Road near Tui House","SQ26932","ECAN-00146",FALSE,"canterbury","ecan","rural","upland",-43.6625053791851,170.928847143554
+"Leader River u/s SH1","SQ30011","ECAN-00130",FALSE,"canterbury","ecan","rural","lowland",-42.6875872916473,173.302487731526
+"Waipara River u/s Teviotdale Bridge","SQ30162","ECAN-00070",FALSE,"canterbury","ecan","rural","lowland",-43.1278646888299,172.778902375745
+"Ashley River 50m u/s SH1","SQ30175","ECAN-00071",FALSE,"canterbury","ecan","rural","lowland",-43.2768152586731,172.688643197524
+"Ashley River u/s Ashley Gorge Rd","SQ30184","ECAN-00134",FALSE,"canterbury","ecan","forest","upland",-43.2279572476556,172.228581147845
+"Taranaki Creek 20m u/s Gressons Rd","SQ30215","ECAN-00175",FALSE,"canterbury","ecan","rural","lowland",-43.304987806574,172.64219236937
+"Waikuku Stream d/s SH1","SQ30222","ECAN-00072",FALSE,"canterbury","ecan","rural","lowland",-43.2896237670408,172.685238044038
+"Kaputone Creek Belfast Road","SQ30305","LAWA-102235",FALSE,"canterbury","ecan","rural","lowland",-43.4521937116552,172.639706390701
+"Kaiapoi River u/s Island Rd","SQ30332","ECAN-00079",FALSE,"canterbury","ecan","rural","lowland",-43.3755752336847,172.633582842597
+"Cam River u/s Bramleys Road","SQ30369","ECAN-00080",FALSE,"canterbury","ecan","rural","lowland",-43.3433888423596,172.636995813286
+"South Brook u/s Marsh Rd","SQ30390","ECAN-00148",FALSE,"canterbury","ecan","urban","lowland",-43.3250996233005,172.602311594076
+"Cust River u/s Skewbridge Road","SQ30400","ECAN-00081",FALSE,"canterbury","ecan","rural","lowland",-43.3713567159681,172.628944258392
+"Ohoka River u/s Island Rd","SQ30426","ECAN-00082",FALSE,"canterbury","ecan","rural","lowland",-43.3751033368526,172.632388763135
+"Otukaikino Creek u/s Dickeys Rd","SQ30445","ECAN-00083",FALSE,"canterbury","ecan","urban","lowland",-43.4355809672572,172.634987541677
+"Aylmers Valley Stream opposite Aubrey St","SQ30707","ECAN-00149",FALSE,"canterbury","ecan","urban","lowland",-43.8103151997242,172.961527112424
+"Kaituna Stream off Kaituna Valley Road","SQ30782","ECAN-00084",FALSE,"canterbury","ecan","rural","lowland",-43.7564555430136,172.682471130228
+"LII Stream u/s Pannetts Rd","SQ30878","ECAN-00085",FALSE,"canterbury","ecan","rural","lowland",-43.6949731028679,172.450465203507
+"Selwyn River u/s Coes Ford bridge","SQ30916","ECAN-00086",FALSE,"canterbury","ecan","rural","lowland",-43.6961298123559,172.412879789812
+"Selwyn River u/s Whitecliffs Rd","SQ30928","ECAN-00088",FALSE,"canterbury","ecan","rural","upland",-43.4613290495938,171.892979434992
+"Waireka/Waianiwaniwa River u/s Auchenflower Rd","SQ30945","ECAN-00151",FALSE,"canterbury","ecan","rural","upland",-43.4349392519096,171.985995621527
+"Boggy Creek u/s Lake Road","SQ30976","ECAN-00091",FALSE,"canterbury","ecan","rural","lowland",-43.7655479551051,172.357850515526
+"Doyleston Drain at Drain Rd recorder","SQ30977","ECAN-00092",FALSE,"canterbury","ecan","rural","lowland",-43.7709325765678,172.353396823308
+"Harts Creek d/s Lower Lake Rd","SQ30992","ECAN-00093",FALSE,"canterbury","ecan","rural","lowland",-43.7972389587475,172.338616217212
+"Rakaia River north bank d/s SH1","SQ31018","ECAN-00094",FALSE,"canterbury","ecan","rural","lowland",-43.7397115223236,172.043162753025
+"Rakaia River Gorge 50m d/s recorder","SQ31020","ECAN-00095",FALSE,"canterbury","ecan","rural","upland",-43.5180350275828,171.657604831457
+"French Farm Stream at recorder","SQ32732","ECAN-00152",FALSE,"canterbury","ecan","rural","lowland",-43.7776260788377,172.905677484553
+"Halswell River u/s McCartneys bridge","SQ32872","ECAN-00097",FALSE,"canterbury","ecan","rural","lowland",-43.6843103268173,172.526588768498
+"Kaiapoi River u/s Harpers Road","SQ32943","LAWA-100475",FALSE,"canterbury","ecan","rural","lowland",-43.4244280315712,172.56521827859
+"Okuti River u/s Kinloch Road","SQ33055","ECAN-00100",FALSE,"canterbury","ecan","rural","lowland",-43.7874056111727,172.795547156479
+"Okana River u/s SH75","SQ33056","ECAN-00101",FALSE,"canterbury","ecan","rural","lowland",-43.7649802686936,172.796801013942
+"Conway River u/s Inland Road","SQ33148","ECAN-00153",FALSE,"canterbury","ecan","rural","upland",-42.462460042992,173.273456191827
+"Kowhai River 100m u/s SH1","SQ33270","ECAN-00102",FALSE,"canterbury","ecan","rural","lowland",-42.4154852651802,173.631868766433
+"Lyell Creek u/s SH1","SQ33273","ECAN-00103",FALSE,"canterbury","ecan","urban","lowland",-42.399110895721,173.679833150177
+"Lyell Creek at Mill Road","SQ33274","ECAN-00176",FALSE,"canterbury","ecan","rural","lowland",-42.3765111944835,173.678720369756
+"Lyell Creek above mouth","SQ33476","ECAN-10086",FALSE,"canterbury","ecan","urban","lowland",-42.4039557526444,173.68424533371
+"Okarahia Stream u/s SH1","SQ33899","ECAN-00154",FALSE,"canterbury","ecan","forest","lowland",-42.5420066479243,173.450541729351
+"Waipara River at Laidmore Rd","SQ33962","ECAN-00104",FALSE,"canterbury","ecan","rural","upland",-43.0594437966749,172.589733664695
+"Taranaki Creek u/s Preeces Rd","SQ34191","ECAN-00106",FALSE,"canterbury","ecan","rural","lowland",-43.3048006696495,172.688770481981
+"Warren Creek u/s Rorrisons Road","SQ34412","ECAN-00107",FALSE,"canterbury","ecan","rural","lowland",-42.3919663301672,173.672956353846
+"Pahau River at recorder","SQ34417","ECAN-00172",FALSE,"canterbury","ecan","rural","lowland",-42.8288704887752,172.897317873205
+"Dry Stream above Hurunui confl.","SQ34418","ECAN-00173",FALSE,"canterbury","ecan","rural","lowland",-42.8336805864753,172.860187248303
+"Hurunui River above swing bridge","SQ34420","LAWA-102227",FALSE,"canterbury","ecan","rural","lowland",-42.907028389893,173.272968380587
+"Lee River u/s Brooklands Farm bridge","SQ34538","ECAN-00109",FALSE,"canterbury","ecan","rural","lowland",-43.8555454576627,172.281227061587
+"Waikekewai Creek u/s Gullivers Rd","SQ34540","ECAN-00110",FALSE,"canterbury","ecan","rural","lowland",-43.8537083711891,172.356385515877
+"Middle Creek u/s Beach Rd","SQ34557","ECAN-00111",FALSE,"canterbury","ecan","rural","lowland",-42.3669867738309,173.684799562882
+"Te Wharau Stream u/s Charteris Bay Road","SQ34569","ECAN-00155",FALSE,"canterbury","ecan","urban","lowland",-43.6541222165407,172.702475051359
+"Hawkins River u/s Deans Road","SQ34580","ECAN-00112",FALSE,"canterbury","ecan","rural","upland",-43.4143966925868,172.033991084003
+"Living Springs Stream at Allendale","SQ34626","ECAN-00135",FALSE,"canterbury","ecan","rural","lowland",-43.6409773453805,172.649371923523
+"Saltwater Creek u/s Factory Rd","SQ34646","ECAN-00113",FALSE,"canterbury","ecan","rural","lowland",-43.2549060346199,172.688681951739
+"Waiau River u/s Leslie Hills Road","SQ34704","ECAN-00114",FALSE,"canterbury","ecan","rural","upland",-42.6882154542009,172.799009745481
+"Waiau River u/s Waiau bridge","SQ34705","ECAN-00115",FALSE,"canterbury","ecan","rural","lowland",-42.6543597722288,173.03486350283
+"Waiau River u/s SH1","SQ34706","ECAN-00116",FALSE,"canterbury","ecan","rural","lowland",-42.7191671647482,173.284200534323
+"Conway River u/s SH1","SQ34711","ECAN-00136",FALSE,"canterbury","ecan","rural","lowland",-42.5991126280267,173.417846725885
+"Waitohi River 1.6km u/s Hurunui Confluence","SQ34865","ECAN-00137",FALSE,"canterbury","ecan","forest","upland",-42.8762436099963,172.749083166737
+"St Leonards Drain at recorder","SQ34866","ECAN-00138",FALSE,"canterbury","ecan","rural","lowland",-42.8325038265467,172.903096631837
+"Mason River d/s SH70","SQ34869","ECAN-00139",FALSE,"canterbury","ecan","rural","upland",-42.6347062112004,173.064848844442
+"Zephyr Stream u/s Governors Bay Road","SQ34884","ECAN-00140",FALSE,"canterbury","ecan","forest","lowland",-43.6193323981988,172.649768621716
+"North Brook u/s Marsh Rd","SQ34903","ECAN-00141",FALSE,"canterbury","ecan","rural","lowland",-43.3224069854104,172.623152639909
+"Cam River 50m d/s Marsh Rd","SQ34905","ECAN-00189",FALSE,"canterbury","ecan","rural","lowland",-43.3221510815768,172.630218615612
+"Ashburton River u/s mouth - Nth bank","SQ35080","ECAN-00168",FALSE,"canterbury","ecan","rural","lowland",-44.051088903944,171.804718001994
+"Twizel River d/s Black Stilt Reserve","SQ35119","ECAN-00185",FALSE,"canterbury","ecan","rural","upland",-44.3306879606976,170.186715283422
+"Wainui Stream u/s Wainui Main Rd","SQ35156","ECAN-00156",FALSE,"canterbury","ecan","rural","lowland",-43.8152149214658,172.902701061588
+"Takamatua Stream u/s SH75","SQ35157","ECAN-00157",FALSE,"canterbury","ecan","rural","lowland",-43.7821941017146,172.970424245678
+"Kahutara River at Dairy Farm Rd","SQ35172","ECAN-00160",FALSE,"canterbury","ecan","rural","lowland",-42.4081575233949,173.541717802496
+"Blue Duck Creek Above SH1","SQ35173","ECAN-00161",FALSE,"canterbury","ecan","forest","lowland",-42.2791582986772,173.768140444263
+"Hapuku River at SH1","SQ35174","ECAN-00162",FALSE,"canterbury","ecan","rural","lowland",-42.3113410056166,173.717602424253
+"Barrys Bay Stream u/s Barrys Bay Valley Rd","SQ35234","ECAN-00163",FALSE,"canterbury","ecan","rural","lowland",-43.7607737262461,172.91094265321
+"Pawsons Stream u/s Pawsons Valley Road","SQ35235","ECAN-00164",FALSE,"canterbury","ecan","rural","lowland",-43.740475723204,172.933227817536
+"Purau Stream 100m u/s Purau Ave","SQ35236","ECAN-00190",FALSE,"canterbury","ecan","urban","lowland",-43.6398887786581,172.750504758188
+"Teddington Stream off Gebbies Pass Road","SQ35545","ECAN-00191",FALSE,"canterbury","ecan","rural","lowland",-43.6738041516159,172.656177282696
+"Quailburn Quailburn Road","SQ35792","ECAN-00186",FALSE,"canterbury","ecan","rural","upland",-44.4190472242949,169.900485924474
+"Hinds River Lower Beach Road","SQ35798","ECAN-00193",FALSE,"canterbury","ecan","forest","lowland",-44.1049567805405,171.652852136689
+"Clarence River above river mouth","SQ35800","ECAN-00195",FALSE,"canterbury","ecan","rural","lowland",-42.1697064366688,173.925876618539
+"Clarence River over Jacks Pass","SQ35818","ECAN-00192",FALSE,"canterbury","ecan","rural","upland",-42.4577108842469,172.841467731169
+"Otekaieke River Special School Road","SQ35871","ECAN-00188",FALSE,"canterbury","ecan","rural","upland",-44.8802143417114,170.53204048668
+"Mandamus River at Tekoa Road","SQ35872","ECAN-00174",FALSE,"canterbury","ecan","rural","upland",-42.7877300364061,172.556570509842
+"Ashburton River South Branch at Quarry Road","SQ35873","ECAN-00169",FALSE,"canterbury","ecan","rural","upland",-43.6600406392925,171.296705817493
+"Gentleman Smith Stream at Hakatere-Heron Road","SQ35874","ECAN-00170",FALSE,"canterbury","ecan","rural","upland",-43.5374144020876,171.184322593976
+"Lambies Stream at Ashburton Gorge Road","SQ35875","ECAN-00171",FALSE,"canterbury","ecan","rural","upland",-43.6173618848878,171.181902258707
+"Ahuriri River Ben Omar","SQ35876","ECAN-00187",FALSE,"canterbury","ecan","rural","upland",-44.4883902984972,170.058049786652
+"38002 *or* Stony River at Mangatete Road","Stony at Mangatete Bridge *or* STY000300","TRC-00008",FALSE,"taranaki","trc","rural","upland",-39.2250290649146,173.896921086552
+"Smacks Creek at Gardiners Road","STYX01","CCC-00028",FALSE,"canterbury","ecan","urban","lowland",-43.4622427363149,172.589518939099
+"Styx River at Gardiners Road","STYX02","CCC-00029",FALSE,"canterbury","ecan","rural","lowland",-43.4688124753422,172.589301725774
+"Styx River at Main North Road","STYX03","CCC-00030",FALSE,"canterbury","ecan","urban","lowland",-43.4689725120054,172.617439572524
+"Kaputone Creek at Blakes Road","STYX04","CCC-00031",FALSE,"canterbury","ecan","rural","lowland",-43.4617268213067,172.633980776857
+"Kaputone Creek at Belfast Rd","STYX05","CCC-00032",FALSE,"canterbury","ecan","rural","lowland",-43.4596621439944,172.656159701242
+"Styx River at Marshland Road Bridge","STYX06","CCC-00033",FALSE,"canterbury","ecan","urban","lowland",-43.4640694167338,172.658161372718
+"Styx River at Richards Bridge","STYX07","CCC-00034",FALSE,"canterbury","ecan","rural","lowland",-43.4473682406571,172.678242764415
+"Styx River at Harbour Road Bridge","STYX08","CCC-00035",FALSE,"canterbury","ecan","rural","lowland",-43.4014011517447,172.691113348629
+"Sutton Stream at SH87","Sutton at SH87","NRWQN-00028",FALSE,"otago","niwa","rural","upland",-45.5961992149771,170.094137224024
+"1932","Taharua Stream at Henrys Bridge","HBRC-00073",FALSE,"hawkes bay","hbrc","rural","upland",-39.0006405360206,176.280758773115
+"1948","Taharua Stream at Red Hut Mohaka Confl","HBRC-00069",FALSE,"hawkes bay","hbrc","rural","upland",-39.0741266762876,176.302240766045
+"1194","Taharua Stream at Wairango Rd","HBRC-00056",FALSE,"hawkes bay","hbrc","rural","upland",-38.9152131632541,176.275345016549
+"1195","Taharua Stream at Wrights Twin Culvert","HBRC-00055",FALSE,"hawkes bay","hbrc","rural","upland",-38.9478651481365,176.285126300938
+"Taieri River at Allanton Bridge","Taieri at Allanton Bridge","ORC-00070",FALSE,"otago","orc","rural","lowland",-45.91094976,170.26241336
+"Taieri River at Linnburn Runs Road","Taieri at Linnburn Runs Road","ORC-00074",FALSE,"otago","orc","rural","upland",-45.4835422,169.81390371
+"Taieri River at Outram","Taieri at Outram","NRWQN-00026",FALSE,"otago","niwa","rural","lowland",-45.846428280037,170.243938457681
+"Taieri River at Stonehenge","Taieri at Stonehenge","ORC-00071",FALSE,"otago","orc","rural","upland",-45.32616959,169.95433519
+"Taieri River at Sutton","Taieri at Sutton","ORC-00154",FALSE,"otago","orc","rural","upland",-45.56852041,170.14036832
+"Taieri River at Tiroiti","Taieri at Tiroiti","NRWQN-00029",FALSE,"otago","niwa","rural","upland",-45.2565378833938,170.272845482873
+"Taieri River at Waipiata","Taieri at Waipiata","ORC-00156",FALSE,"otago","orc","rural","upland",-45.19673042,170.15322202
+"1201","Taipo Stream at Church Road","HBRC-00063",FALSE,"hawkes bay","hbrc","rural","lowland",-39.5137518272885,176.849584888511
+"Tamaki at Stephensons","Tamaki at Stephensons","HRC-00048",FALSE,"horizons","hrc","rural","upland",-40.24535,176.06491
+"Tamaki at Tamaki Reserve","Tamaki at Tamaki Reserve","HRC-00049",FALSE,"horizons","hrc","forest","upland",-40.12272,176.03354
+"Tarawera","Tarawera at Lake outlet","EBOP-00223",FALSE,"bay of plenty","niwa","forest","upland",-38.1819481802025,176.502382852878
+"Taruheru River at Tuckers Rd Bridge","Taruheru River at Tuckers Rd Bridge","GDC-00016",FALSE,"gisborne","gdc","rural","lowland",-38.63415353,177.96817629
+"Taueru River at Gladstone","Taueru River at Gladstone","GW-00037",FALSE,"wellington","gwrc","rural","lowland",-41.06304782,175.66761699
+"Tauherenikau River at Websters","Tauherenikau River at Websters","GW-00055",FALSE,"wellington","gwrc","forest","lowland",-41.16791526,175.34926521
+"1237","Taurekaitai Stream at Wallingford","HBRC-00036",FALSE,"hawkes bay","hbrc","rural","lowland",-40.2066302691437,176.591121331764
+"Taylor River at Rail Bridge","Taylor River at Rail Bridge","MDC-00026",FALSE,"marlborough","mdc","rural","lowland",-41.51209271,173.96045758
+"Te Arai River at Pykes Weir","Te Arai River at Pykes Weir","GDC-00017",FALSE,"gisborne","gdc","rural","lowland",-38.7594811,177.81765186
+"1274","Te Ngarue Stream D/S Kotomangengi","LAWA-101799",FALSE,"hawkes bay","hbrc","rural","lowland",-39.3256738392748,176.907252948668
+"Teal at 1.9km","Teal at 1.9km","NCC-00032",FALSE,"nelson","ncc","forest","lowland",-41.24010444,173.40098724
+"Tiraumea at Ngaturi","Tiraumea at Ngaturi","HRC-00050",FALSE,"horizons","hrc","rural","lowland",-40.4671099999999,175.92279
+"Tiraumea u/s Manawatu Confluence","Tiraumea u/s Manawatu Confluence","HRC-00051",FALSE,"horizons","hrc","rural","lowland",-40.38868,175.88875
+"Todds at SH6","Todds at SH6","NCC-00021",FALSE,"nelson","ncc","rural","lowland",-41.21402686,173.33620841
+"Tokiahuru at Junction","Tokiahuru at Junction","HRC-00053",FALSE,"horizons","hrc","forest","upland",-39.4961999999999,175.45767
+"Tokomairiro River at West Branch Br","Tokomairiro at West Branch Bridge","ORC-00159",FALSE,"otago","orc","rural","lowland",-46.08198102,169.85232574
+"Tokomaru River at Horseshoe bend","Tokomaru River at Horseshoe bend","HRC-00054",FALSE,"horizons","hrc","forest","lowland",-40.48729,175.52598
+"Tongariro @ Turangi","Tongariro at Turangi","NRWQN-00038",FALSE,"waikato","niwa","forest","upland",-38.9945094602719,175.813115155211
+"Trotters Creek at Mathesons","Trotters Creek at Mathesons","ORC-00079",FALSE,"otago","orc","rural","lowland",-45.39218711,170.8387501
+"Tuamarina River at State Highway One","Tuamarina River at State Highway One","MDC-00025",FALSE,"marlborough","mdc","rural","lowland",-41.43823364,173.96463451
+"1349","Tukipo River at State Highway 50","HBRC-00009",FALSE,"hawkes bay","hbrc","rural","upland",-39.9658908401686,176.334202998987
+"1373","Tukituki River at Ashcott Bridge S.H. 50","HBRC-00039",FALSE,"hawkes bay","hbrc","rural","upland",-39.9352709837036,176.35076124642
+"1374","Tukituki River at Black Bridge","HBRC-00007",FALSE,"hawkes bay","hbrc","rural","lowland",-39.6045571631162,176.931971244572
+"1382","Tukituki River at Red Bridge","HBRC-00043",FALSE,"hawkes bay","hbrc","rural","lowland",-39.7154664130706,176.92789556721
+"1397","Tukituki River at Tamumu Br.","HBRC-00088",FALSE,"hawkes bay","hbrc","rural","upland",-39.9623313952071,176.682308013424
+"1404","Tukituki River at Waipukurau","HBRC-00087",FALSE,"hawkes bay","hbrc","rural","lowland",-39.9887542474307,176.55835024005
+"Turakina at ONeills Bridge","Turakina at ONeills Bridge","HRC-00055",FALSE,"horizons","hrc","rural","lowland",-40.02572,175.23333
+"Turanganui River at Gladstone Rd Bridge","Turanganui River at Gladstone Rd Bridge","GDC-00033",FALSE,"gisborne","gdc","urban","lowland",-38.66849384,178.02855565
+"Turitea at No1 Dairy","Turitea at No1 Dairy","HRC-00353",FALSE,"horizons","hrc","rural","lowland",-40.38548,175.60685
+"1424","Tutaekuri River at Brookfields Bridge","HBRC-00005",FALSE,"hawkes bay","hbrc","rural","lowland",-39.5685281568473,176.881040376654
+"1429","Tutaekuri River at Lawrence Hut","HBRC-00017",FALSE,"hawkes bay","hbrc","forest","upland",-39.3709401621232,176.439000193844
+"1441","Tutaekuri River U/S Mangaone","HBRC-00077",FALSE,"hawkes bay","hbrc","rural","lowland",-39.4849038581011,176.699848200242
+"1447","Tutaekuri Waimate Stm at Chesterhope","HBRC-00044",FALSE,"hawkes bay","hbrc","rural","lowland",-39.5970909557783,176.863012209108
+"Tutaenui Stream at d/s Marton STP","Tutaenui Stream at d/s Marton STP","LAWA-101959",FALSE,"horizons","hrc","rural","lowland",-40.10638325,175.3885447
+"Tutaenui Stream at u/s Marton STP","Tutaenui Stream at u/s Marton STP","HRC-00085",FALSE,"horizons","hrc","rural","lowland",-40.10551,175.38734
+"Unnamed Ck @ Adamson Rd Whataroa","Unnamed Ck @ Adamson Rd Whataroa","WCRC-00025",FALSE,"west coast","wcrc","forest","lowland",-43.173443,170.37734367
+"Unnamed Trib of Waipu at d/s Ratana STP","Unnamed Trib of Waipu at ds Ratana STP","LAWA-101960",FALSE,"horizons","hrc","rural","lowland",-40.0398577199999,175.1677423
+"Unnamed Trib of Waipu at us Ratana STP","Unnamed Trib of Waipu at us Ratana STP","HRC-00087",FALSE,"horizons","hrc","rural","lowland",-40.04013,175.16846
+"7506","Vaughn Stream @ Lower Weir","ARC-00024",FALSE,"auckland","ac","rural","lowland",-36.68437,174.73955
+"Vickers Ck @ Whataroa N Base","Vickers Ck @ Whataroa N Base","WCRC-00026",FALSE,"west coast","wcrc","rural","lowland",-43.18302616,170.38296238
+"Waianakarua River at Browns","Waianakarua at Browns","ORC-00081",FALSE,"otago","orc","rural","lowland",-45.25300894,170.84127241
+"Waiapu River at Rotokautuku Br (SH35)","Waiapu River at Rotokautuku Br (SH35)","GDC-00018",FALSE,"gisborne","gdc","rural","lowland",-37.8944444,178.29512263
+"Waiareka Creek at Taipo Road","Waiareka Creek at Taipo Road","ORC-00082",FALSE,"otago","orc","rural","lowland",-45.15381604,170.88191613
+"1489","Waiarua at S.H.5","HBRC-00028",FALSE,"hawkes bay","hbrc","forest","upland",-38.9444047606241,176.50803372774
+"1500","Waiau River at Otoi","HBRC-00081",FALSE,"hawkes bay","hbrc","rural","lowland",-38.9479137570574,177.061617635699
+"Waihirere Str at Domain","Waihirere Str at Domain","LAWA-100333",FALSE,"gisborne","gdc","forest","lowland",-38.57138316,177.94697884
+"Waihopai River at Craiglochart","Waihopai River at Craiglochart","MDC-00030",FALSE,"marlborough","mdc","rural","upland",-41.62117201,173.68897967
+"Waihopai River at SH63 Bridge","Waihopai River at SH63 Bridge","MDC-00029",FALSE,"marlborough","mdc","rural","lowland",-41.52835529,173.73221222
+"Waihou @ Te Aroha","Waihou at Te Aroha","NRWQN-00043",FALSE,"waikato","niwa","rural","lowland",-37.5466256679627,175.706788153916
+"1513","Waihua River at Waihua Valley Road","LAWA-101800",FALSE,"hawkes bay","hbrc","rural","lowland",-39.0417925128339,177.233594513419
+"Waikanae Creek at Grey St Bridge","Waikanae Creek at Grey St Bridge","GDC-00020",FALSE,"gisborne","gdc","urban","lowland",-38.66828115,178.01990384
+"Waikanae River at Greenaway Rd","Waikanae River at Greenaway Rd","GW-00010",FALSE,"wellington","gwrc","forest","lowland",-40.87694978,175.03207168
+"1525","Waikari River at Glenbrook Road","HBRC-00046",FALSE,"hawkes bay","hbrc","rural","lowland",-39.1429812056763,177.020791674608
+"Waikato @ Hamilton Traffic Br.","Waikato at Hamilton Traffic Br.","NRWQN-00042",FALSE,"waikato","niwa","rural","lowland",-37.7921995570871,175.289109571497
+"Waikato @ Rangiriri","Waikato at Rangiriri","NRWQN-00044",FALSE,"waikato","niwa","rural","lowland",-37.432096892726,175.13153603859
+"Waikato @ Reids Farm","Waikato at Reids Farm","NRWQN-00039",FALSE,"bay of plenty","niwa","forest","upland",-38.6757476283953,176.077371745454
+"Waikawa Stream at Huritini","Waikawa at Huritini","HRC-00057",FALSE,"horizons","hrc","rural","lowland",-40.68652,175.16542
+"Waikawa at North Manakau Road","Waikawa at North Manakau Road","HRC-00056",FALSE,"horizons","hrc","forest","lowland",-40.7077399999999,175.23359
+"1536","Waikoau River at Waikoau Road","LAWA-101801",FALSE,"hawkes bay","hbrc","rural","upland",-39.2144361592612,176.863905792789
+"Waikohu @ No. 1 Br.","Waikohu at No. 1 Br.","NRWQN-00011",FALSE,"gisborne","niwa","rural","upland",-38.4150017586275,177.561681535569
+"Waikohu River at Mahaki Station","Waikohu River at Mahaki Station","GDC-00021",FALSE,"gisborne","gdc","rural","lowland",-38.42684599,177.7223845
+"Waikouaiti River d/s of confluence","Waikouaiti at Confluence d/s","ORC-00085",FALSE,"otago","orc","rural","lowland",-45.6160923,170.59646631
+"Waima (Ure) River at SH1 Bridge","Waima (Ure) River at SH1 Bridge","MDC-00027",FALSE,"marlborough","mdc","rural","lowland",-41.90198596,174.11131256
+"Otukaikino Creek at swimming hole","Waimakariri above old HW Br.","ECAN-10028",FALSE,"canterbury","niwa","rural","lowland",-43.417276274255,172.641765153281
+"Waimakariri River at Gorge","Waimakariri at Gorge","NRWQN-00055",FALSE,"canterbury","niwa","rural","upland",-43.358997843821,172.05117898171
+"Waimata River at Goodwins Rd Bridge","Waimata River at Goodwins Rd Bridge","GDC-00022",FALSE,"gisborne","gdc","rural","lowland",-38.63968344,178.06823401
+"Waimata River at Monowai Bridge","Waimata River at Monowai Bridge","GDC-00023",FALSE,"gisborne","gdc","rural","lowland",-38.51418655,178.04028432
+"Waingaromia River at Terrace Station","Waingaromia River at Terrace Station","GDC-00024",FALSE,"gisborne","gdc","rural","lowland",-38.359148,177.93349507
+"Waingawa River at South Rd","Waingawa River at South Rd","GW-00041",FALSE,"wellington","gwrc","forest","lowland",-40.97549224,175.62329773
+"35004 *or* Waingongoro River at Eltham Rd Bridge","Waingongoro at Eltham Rd *or* WGG000500","TRC-00009",FALSE,"taranaki","trc","rural","upland",-39.4290325603954,174.284754654696
+"35005 *or* Waingongoro River at SH45","Waingongoro at SH45 *or* WGG000900","TRC-00010",FALSE,"taranaki","trc","rural","lowland",-39.5762833937108,174.210241450866
+"1552","Waingongoro Stream at Waimarama Road","HBRC-00040",FALSE,"hawkes bay","hbrc","rural","lowland",-39.8010566346873,176.97914358118
+"Wainui Stream at Pare Street","Wainui Stream at Pare Street","GDC-00026",FALSE,"gisborne","gdc","rural","lowland",-38.69179364,178.07147029
+"Wainuiomata River at Manuka Track","Wainuiomata River at Manuka Track","GW-00028",FALSE,"wellington","gwrc","forest","upland",-41.25677265,175.00892684
+"Wainuiomata River Dnstr of White Bridge","Wainuiomata River Dnstr of White Bridge","GW-00029",FALSE,"wellington","gwrc","forest","lowland",-41.39450591,174.88175858
+"Waiohine River at Bicknells","Waiohine River at Bicknells","GW-00048",FALSE,"wellington","gwrc","rural","lowland",-41.09110551,175.5076284
+"Waiomoko River at SH35 Bridge","Waiomoko River at SH35 Bridge","LAWA-100335",FALSE,"gisborne","gdc","rural","lowland",-38.55581647,178.21529022
+"Waipa @ Otewa","Waipa at Otewa","NRWQN-00040",FALSE,"waikato","niwa","rural","lowland",-38.2687055112283,175.348280960467
+"Waipa @ Whatawhata","Waipa at Whatawhata","NRWQN-00041",FALSE,"waikato","niwa","rural","lowland",-37.7985592992416,175.151866354412
+"Waipahi River at Cairns Peak","Waipahi at Cairns Peak","ORC-00088",FALSE,"otago","orc","rural","upland",-46.28964035,169.23105996
+"Waipahi River at Waipahi","Waipahi at Waipahi","ORC-00162",FALSE,"otago","orc","rural","lowland",-46.10746729,169.25167828
+"Waipaoa River at Kanakanaia","Waipaoa River at Kanakanaia","GDC-00027",FALSE,"gisborne","gdc","rural","lowland",-38.46138921,177.87635772
+"Waipaoa River at Matawhero Bridge","Waipaoa River at Matawhero Bridge","GDC-00028",FALSE,"gisborne","gdc","rural","lowland",-38.65370647,177.91769479
+"Waipapa at Forest Ranger","Waipapa at Forest Ranger","NRWQN-00024",FALSE,"northland","niwa","forest","lowland",-35.2733910580538,173.688107516857
+"1588","Waipawa River at RDS/SH2","HBRC-00139",FALSE,"hawkes bay","hbrc","rural","lowland",-39.9450170712204,176.573637790982
+"1590","Waipawa River at State Highway 50","HBRC-00019",FALSE,"hawkes bay","hbrc","rural","upland",-39.8622508973644,176.44559233214
+"Waipaoa@ Kanakanaia","Waipoa at Kanakanaia","NRWQN-00010",FALSE,"gisborne","niwa","rural","lowland",-38.4685489935012,177.88181981421
+"Waipori River at Waipori Falls Reserve","Waipori at Waipori Falls Reserve","ORC-00089",FALSE,"otago","orc","rural","lowland",-45.9305015,170.0660589
+"Waipoua River at Colombo Rd Bridge","Waipoua River at Colombo Rd Bridge","GW-00040",FALSE,"wellington","gwrc","rural","lowland",-40.95415228,175.6735615
+"Wairau River at Dip Flat","Wairau at Dip Flat","NRWQN-00058",FALSE,"nelson","niwa","forest","upland",-41.8964074198987,172.922950021053
+"Wairau @ Tuamarina","Wairau at Tuamarina","NRWQN-00020",FALSE,"nelson","niwa","forest","lowland",-41.4387489489386,173.952675680312
+"Wairau Diversion at Neals Road Bridge","Wairau Diversion at Neals Road Bridge","MDC-00028",FALSE,"marlborough","mdc","rural","lowland",-41.44231908,174.00610115
+"ARC-00090 *or* 8516","Wairoa *or* Wairoa River @ Tourist Road","ARC-00090",FALSE,"auckland","ac","forest","lowland",-37.0133496793961,175.053186127891
+"1642","Wairoa River at Railway Br.","HBRC-00033",FALSE,"hawkes bay","hbrc","rural","lowland",-39.0014225076835,177.395032215183
+"8568","Wairoa Trib @ Caitchons Rd","ARC-00030",FALSE,"auckland","ac","forest","upland",-37.09308,175.10047
+"Wairuna Stream at Millar Road","Wairuna at Millar Road","ORC-00097",FALSE,"otago","orc","rural","lowland",-46.10268447,169.32073747
+"Waitahuna River at Tweeds Bridge","Waitahuna at Tweeds Bridge","ORC-00163",FALSE,"otago","orc","rural","lowland",-46.02484629,169.69722631
+"Waitaki @ Kurow","Waitaki at Kurow","NRWQN-00005",FALSE,"otago","niwa","rural","upland",-44.7005363013018,170.451179628666
+"Waitaki @ SH1 Br.","Waitaki at SH1 Br.","NRWQN-00003",FALSE,"otago","niwa","rural","lowland",-44.9271074929625,171.100338555097
+"43601","Waitangi @ Waitangi Falls Bridge.","ARC-00028",FALSE,"auckland","ac","rural","lowland",-37.22697,174.73983
+"Waitangi at d/s Waiouru STP","Waitangi at d/s Waiouru STP","LAWA-101962",FALSE,"horizons","hrc","rural","upland",-39.4624227699999,175.6578585
+"Waitangi at u/s Waiouru STP","Waitangi at u/s Waiouru STP","HRC-00072",FALSE,"horizons","hrc","rural","upland",-39.4614999999999,175.65899
+"Waitangi River at Wakelins","Waitangi at Wakelins","NRWQN-00023",FALSE,"northland","niwa","rural","lowland",-35.2763420178008,174.047541422264
+"39503","Waitara at Bertrand Rd","NRWQN-00036",FALSE,"taranaki","trc","rural","lowland",-39.0479013294817,174.255104112262
+"1654","Waitio Stream at Ohiti Road","HBRC-00059",FALSE,"hawkes bay","hbrc","rural","lowland",-39.5994463533642,176.711405670004
+"Waitohi River at State Highway One","Waitohi River at State Highway One","MDC-00034",FALSE,"marlborough","mdc","rural","lowland",-41.29364252,174.00495969
+"Waitohu Stream at Norfolk Crescent","Waitohu Stream at Norfolk Crescent","GW-00004",FALSE,"wellington","gwrc","rural","lowland",-40.73663304,175.12625035
+"Waiwera River at Maws Farm","Waiwera at Maws Farm","ORC-00094",FALSE,"otago","orc","rural","lowland",-46.16708793,169.55625484
+"7104","Waiwera Stream @ Upper Waiwera Road","ARC-00026",FALSE,"auckland","ac","rural","lowland",-36.55098,174.6605
+"39201 *or* Waiwhakaiho River at S.H.3","Waiwhakaiho at Egmont Village *or* WKH000500","TRC-00011",FALSE,"taranaki","trc","rural","upland",-39.1416070338834,174.137432765365
+"Waiwhetu Stream at Whites Line East","Waiwhetu Stream at Whites Line East","GW-00264",FALSE,"wellington","gwrc","urban","lowland",-41.22479224,174.92057144
+"Wakamarina River at SH6","Wakamarina River at SH6","MDC-00031",FALSE,"marlborough","mdc","forest","lowland",-41.29102334,173.66894164
+"Wakapuaka at Duckpond Rd","Wakapuaka at Duckpond Rd","NCC-00028",FALSE,"nelson","ncc","forest","lowland",-41.2292104,173.40200646
+"Wakapuaka at Hira","Wakapuaka at Hira","NCC-00027",FALSE,"nelson","ncc","forest","lowland",-41.21578438,173.39544662
+"Wakapuaka at Maori Pa Rd","Wakapuaka at Maori Pa Rd","NCC-00025",FALSE,"nelson","ncc","rural","lowland",-41.18987457,173.41924727
+"ARC-00095 *or* 7206","West Hoe *or* West Hoe @ Halls","ARC-00095",FALSE,"auckland","ac","forest","upland",-36.5787259795285,174.657597605105
+"Whakaahu Str at Brunton Rd","Whakaahu Str at Brunton Rd","GDC-00031",FALSE,"gisborne","gdc","rural","lowland",-38.63111823,177.85760067
+"Whakatikei River at Riverstone","Whakatikei River at Riverstone","GW-00026",FALSE,"wellington","gwrc","forest","lowland",-41.11230111,175.05161711
+"Whangaehu at d/s Winstone Pulp","Whangaehu at d/s Winstone Pulp","LAWA-101963",FALSE,"horizons","hrc","rural","upland",-39.46611582,175.5754543
+"Whangaehu at Kauangaroa","Whangaehu at Kauangaroa","HRC-00058",FALSE,"horizons","hrc","rural","lowland",-39.9257699999999,175.27568
+"Whangaehu at u/s Winstone Pulp","Whangaehu at u/s Winstone Pulp","HRC-00071",FALSE,"horizons","hrc","rural","upland",-39.46329,175.58116
+"Whangaehu River at 250m from Confluence","Whangaehu River at 250m from Confluence","GW-00039",FALSE,"wellington","gwrc","rural","lowland",-40.98628944,175.68901633
+"438100","Whangamaire @ Woodhouse Road","ARC-00029",FALSE,"auckland","ac","rural","lowland",-37.17069,174.84243
+"Whangamoa at Hippolite Rd","Whangamoa at Hippolite Rd","NCC-00036",FALSE,"nelson","ncc","forest","lowland",-41.18887274,173.48406216
+"Whangamoa at Kokorua Bridge","Whangamoa at Kokorua Bridge","NCC-00034",FALSE,"nelson","ncc","rural","lowland",-41.12889597,173.5411636
+"Whanganui @ Paetawa","Whanganui @ Paetawa","NRWQN-00019",FALSE,"horizons","hrc","rural","lowland",-39.7868799999999,175.14255
+"Whanganui at Cherry Grove","Whanganui at Cherry Grove","HRC-00063",FALSE,"horizons","hrc","forest","upland",-38.89163,175.25534
+"Whanganui at Pipiriki","Whanganui at Pipiriki","HRC-00060",FALSE,"horizons","hrc","forest","lowland",-39.47961,175.04452
+"Whanganui at Te Maire","Whanganui at Te Maire","HRC-00062",FALSE,"horizons","hrc","forest","upland",-38.94251,175.18891
+"Whanganui at Te Rewa","Whanganui at Te Rewa","HRC-00059",FALSE,"horizons","hrc","rural","lowland",-39.7694,175.16185
+"Whanganui at u/s Taumarunui STP","Whanganui at u/s Taumarunui STP","LAWA-100249",FALSE,"horizons","hrc","rural","upland",-38.8934449999999,175.249168
+"Whanganui at Wades Landing","Whanganui at Wades Landing","HRC-00061",FALSE,"horizons","hrc","rural","lowland",-39.11164,175.06128
+"Whareama River at Gauge","Whareama River at Gauge","GW-00042",FALSE,"wellington","gwrc","rural","lowland",-40.95994723,176.04296485
+"Wharekahika River U/S of Wharf Bridge","Wharekahika River U/S of Wharf Bridge","GDC-00029",FALSE,"gisborne","gdc","rural","lowland",-37.57137121,178.28161313
+"Wharekopae River at Rangimoe","Wharekopae River at Rangimoe","GDC-00030",FALSE,"gisborne","gdc","rural","lowland",-38.54675218,177.65955182
+"York at Waimea Rd","York at Waimea Rd","NCC-00009",FALSE,"nelson","ncc","rural","lowland",-41.29575659,173.26673193
+"Aparima River at Thornbury","Aparima River at Thornbury","ES-00072",FALSE,"southland","es","rural","lowland",-46.2859273277536,168.082923403251
+"Oreti River at Wallacetown","Oreti River at Wallacetown","ES-00112",FALSE,"southland","es","rural","lowland",-46.3263007993515,168.266192874427
+"Waituna Creek at Marshall Road","Waituna Creek at Marshall Road","ES-00135",FALSE,"southland","es","rural","lowland",-46.5202487334586,168.542712519181
+"Dunsdale Stream at Dunsdale Reserve","Dunsdale Stream at Dunsdale Reserve","ES-00016",FALSE,"southland","es","forest","lowland",-46.1347057505432,168.601870071154
+"Hamilton Burn at Affleck Road","Hamilton Burn at Affleck Road","ES-00164",FALSE,"southland","es","rural","upland",-45.7848090419463,168.191258548416
+"Hedgehope Stream 20m u/s Makarewa Confluence","Hedgehope Stream 20m u/s Makarewa Confluence","ES-00165",FALSE,"southland","es","rural","lowland",-46.2667698347913,168.453503410746
+"Lill Burn at Lill Burn-Monowai Road","Lill Burn at Lill Burn-Monowai Road","ES-00166",FALSE,"southland","es","forest","lowland",-46.0024211861941,167.669296552426
+"Longridge Stream at Sandstone","Longridge Stream at Sandstone","ES-00065",FALSE,"southland","es","rural","upland",-45.8863808434473,168.60145273655
+"Makarewa River at Lora Gorge Road","Makarewa River at Lora Gorge Road","ES-00047",FALSE,"southland","es","rural","lowland",-46.0666514266213,168.482654787264
+"Waiau River at Tuatapere","Waiau River at Tuatapere","ES-00001",FALSE,"southland","es","rural","lowland",-46.1307733359097,167.685996922745
+"Waihopai River u/s Queens Drive","Waihopai River u/s Queens Drive","ES-00018",FALSE,"southland","es","rural","lowland",-46.3847497460943,168.366722870716
+"Waikaia River at Waikaia","Waikaia River at Waikaia","ES-00042",FALSE,"southland","es","rural","upland",-45.7226284184622,168.841892089722
+"Waikaia River at Waipounamu Bridge Road","Waikaia River at Waipounamu Bridge Road","ES-00025",FALSE,"southland","es","rural","lowland",-45.8519215328535,168.792988864516
+"Waikaia River u/s Piano Flat","Waikaia River u/s Piano Flat","ES-00026",FALSE,"southland","es","rural","upland",-45.5496419462252,169.02887492495
+"Waikaka Stream at Gore","Waikaka Stream at Gore","ES-00027",FALSE,"southland","es","rural","lowland",-46.1074572965357,168.954301132957
+"Mataura River at Mataura Island Bridge","Mataura River at Mataura Island Bridge","ES-00021",FALSE,"southland","es","rural","lowland",-46.3890685346813,168.777560827914
+"Mimihau Stream Tributary at Venlaw Forest","Mimihau Stream Tributary at Venlaw Forest","ES-00029",FALSE,"southland","es","rural","upland",-46.3096253091344,169.082228480021
+"Mimihau Stream at Wyndham","Mimihau Stream at Wyndham","ES-00044",FALSE,"southland","es","rural","lowland",-46.3211744547906,168.860121400877
+"Mokoreta River at Wyndham River Road","Mokoreta River at Wyndham River Road","ES-00028",FALSE,"southland","es","rural","lowland",-46.3585169685426,168.843464801531
+"Mokotua Stream at Awarua","Mokotua Stream at Awarua","ES-00054",FALSE,"southland","es","rural","lowland",-46.5421399463717,168.433873252685
+"Waiau River at Sunnyside","Waiau River at Sunnyside","ES-00121",FALSE,"southland","es","forest","lowland",-45.7986974283497,167.640024852344
+"Waimea Stream at Mandeville","Waimea Stream at Mandeville","ES-00130",FALSE,"southland","es","rural","lowland",-45.9872387968892,168.801093080172
+"Bog Burn d/s Hundred Line Road","Bog Burn d/s Hundred Line Road","ES-00048",FALSE,"southland","es","rural","lowland",-46.0623949587389,168.234734679969
+"Mataura River at Parawa","Mataura River at Parawa","ES-00024",FALSE,"southland","es","rural","upland",-45.5594017593903,168.561467430689
+"Orauea River at Orawia Pukemaori Road","Orauea River at Orawia Pukemaori Road","ES-00061",FALSE,"southland","es","rural","lowland",-46.0772372324477,167.791628968043
+"Oreti River at Three Kings","Oreti River at Three Kings","ES-00009",FALSE,"southland","es","rural","upland",-45.4471272879787,168.136247769802
+"Otapiri Stream at Otapiri Gorge","Otapiri Stream at Otapiri Gorge","ES-00046",FALSE,"southland","es","rural","lowland",-46.0005077984258,168.45767333948
+"Carran Creek at Waituna Lagoon Road","Carran Creek at Waituna Lagoon Road","ES-00057",FALSE,"southland","es","rural","lowland",-46.5427930869726,168.651157054852
+"Cascade Stream at Pourakino Valley Road","Cascade Stream at Pourakino Valley Road","ES-00006",FALSE,"southland","es","forest","lowland",-46.249498924569,167.935858078261
+"Cromel Stream at Selbie Road","Cromel Stream at Selbie Road","ES-00012",FALSE,"southland","es","forest","upland",-45.5813773655988,168.37384442081
+"Dipton Stream at South Hillend-Dipton Rd","Dipton Stream at South Hillend-Dipton Rd","ES-00163",FALSE,"southland","es","rural","lowland",-45.9827622824049,168.312332032032
+"Makarewa River at Wallacetown","Makarewa River at Wallacetown","ES-00015",FALSE,"southland","es","rural","lowland",-46.3297954257162,168.299116272918
+"Mararoa River at South Mavora Lake","Mararoa River at South Mavora Lake","ES-00003",FALSE,"southland","es","forest","upland",-45.3158287755195,168.179275975
+"Mararoa River at The Key","Mararoa River at The Key","ES-00045",FALSE,"southland","es","rural","upland",-45.541514151631,167.888330498612
+"Mararoa River at Weir Road","Mararoa River at Weir Road","ES-00002",FALSE,"southland","es","rural","upland",-45.6061614579925,167.702255644554
+"Mataura River 200m d/s Mataura Bridge","Mataura River 200m d/s Mataura Bridge","ES-00022",FALSE,"southland","es","rural","lowland",-46.1985696291369,168.863521606528
+"North Peak Stream at Waimea Valley Road","North Peak Stream at Waimea Valley Road","ES-00067",FALSE,"southland","es","rural","lowland",-45.9449512233652,168.622477754027
+"Opouriki Stream at Tweedie Road","Opouriki Stream at Tweedie Road","ES-00052",FALSE,"southland","es","rural","lowland",-46.2816469701361,167.976238717471
+"Oreti River at Lumsden Bridge","Oreti River at Lumsden Bridge","ES-00011",FALSE,"southland","es","rural","upland",-45.7162088027125,168.427766948936
+"Otamita Stream at Mandeville","Otamita Stream at Mandeville","ES-00030",FALSE,"southland","es","rural","lowland",-45.9980415193623,168.824180709994
+"Otautau Stream at Otautau-Tuatapere Road","Otautau Stream at Otautau-Tuatapere Road","ES-00008",FALSE,"southland","es","rural","lowland",-46.1266337620799,167.977089360567
+"Otautau Stream at Waikouro","Otautau Stream at Waikouro","ES-00053",FALSE,"southland","es","rural","lowland",-46.0991876074267,167.962184806747
+"Otepuni Creek at Nith Street","Otepuni Creek at Nith Street","ES-00019",FALSE,"southland","es","urban","lowland",-46.414114105061,168.350410301998
+"Oteramika Stream at Seaward Downs","Oteramika Stream at Seaward Downs","ES-00036",FALSE,"southland","es","rural","lowland",-46.3828106047144,168.761227184044
+"Pourakino River at Traill Road","Pourakino River at Traill Road","ES-00051",FALSE,"southland","es","forest","lowland",-46.2920802685694,167.957895106544
+"Sandstone Stream at Kingston Crossing Rd","Sandstone Stream at Kingston Crossing Rd","ES-00068",FALSE,"southland","es","rural","lowland",-45.9392403133049,168.729456510051
+"Tokanui River at Fortrose Otara Road","Tokanui River at Fortrose Otara Road","ES-00064",FALSE,"southland","es","rural","lowland",-46.6214459867044,168.879668108632
+"Tussock Creek at Cooper Road","Tussock Creek at Cooper Road","ES-00049",FALSE,"southland","es","rural","lowland",-46.2459936497591,168.413214223016
+"Upukerora River at Te Anau Milford Road","Upukerora River at Te Anau Milford Road","ES-00043",FALSE,"southland","es","forest","upland",-45.4101606598051,167.74121317168
+"Waikawa River at Progress Valley","Waikawa River at Progress Valley","ES-00034",FALSE,"southland","es","rural","lowland",-46.5742168489349,169.146731113072
+"Waikiwi Stream at North Road","Waikiwi Stream at North Road","ES-00017",FALSE,"southland","es","rural","lowland",-46.3629448040163,168.34671453597
+"Waikopikopiko Stream at Haldane CurioBay","Waikopikopiko Stream at Haldane CurioBay","ES-00033",FALSE,"southland","es","forest","lowland",-46.629711242192,169.023215881862
+"Waimatuku Stream at Lorneville Riverton Hwy","Waimatuku Stream at Lorneville Riverton Hwy","ES-00035",FALSE,"southland","es","rural","lowland",-46.2995424429551,168.172389275987
+"Aparima River at Dunrobin","Aparima River at Dunrobin","ES-00004",FALSE,"southland","es","forest","upland",-45.737409990996,168.1203806593
+"Irthing Stream at Ellis Road","Irthing Stream at Ellis Road","ES-00013",FALSE,"southland","es","rural","upland",-45.6796047663668,168.425875807601
+"Mataura River at Gore","Mataura River at Gore","ES-00037",FALSE,"southland","es","urban","lowland",-46.1002193469584,168.949448755793
+"Wairaki River at Blackmount Road","Wairaki River at Blackmount Road","ES-00167",FALSE,"southland","es","rural","lowland",-45.9348877203632,167.699734330932
+"Whitestone River d/s Manapouri-Hillside","Whitestone River d/s Manapouri-Hillside","ES-00062",FALSE,"southland","es","rural","upland",-45.530665015226,167.754617897032
+"Winton Stream at Lochiel","Winton Stream at Lochiel","ES-00014",FALSE,"southland","es","rural","lowland",-46.1994833846124,168.303033200888
+"Hakataramea River u/s SH82 bridge","SQ10067","ECAN-10004",FALSE,"Canterbury","niwa","Rural","Upland",-44.7261003265148,170.490343900741
+"Waipapa @ Forest Ranger","103248","NRC-10008",FALSE,"Northland","niwa","","",-35.2763146207668,173.684049395477
